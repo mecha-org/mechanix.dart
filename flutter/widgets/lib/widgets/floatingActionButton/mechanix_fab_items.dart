@@ -1,52 +1,48 @@
 import 'package:flutter/material.dart';
 import 'mechanix_fab_item_theme.dart';
 
-/// Defines a single FAB item (like an action in a SpeedDial).
 class MechanixFabItem {
-  final IconData icon;
+  final Widget? iconWidget;
   final String? label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color? backgroundColor;
-  final Color? iconColor;
-  final double? iconSize;
   final TextStyle? labelTextStyle;
-
   final LayerLink? anchorLink;
+  final double? iconSize;
 
-  const MechanixFabItem({
-    required this.icon,
-    this.label,
-    required this.onTap,
-    this.backgroundColor,
-    this.iconColor,
-    this.iconSize,
-    this.labelTextStyle,
-    this.anchorLink,
-  });
+  const MechanixFabItem(
+      {required this.iconWidget,
+      this.label,
+      this.onTap,
+      this.backgroundColor,
+      this.labelTextStyle,
+      this.anchorLink,
+      this.iconSize});
 
-  Widget build(BuildContext context) {
+  // Modified to accept icon size
+  Widget build(BuildContext context, double computedIconSize) {
+    final itemTheme = MechanixFabItemTheme.of(context);
+    final resolvedIconSize = iconSize ?? itemTheme.iconSize ?? computedIconSize;
+
+    return anchorLink != null
+        ? CompositedTransformTarget(
+            link: anchorLink!,
+            child: _buildButton(context, resolvedIconSize),
+          )
+        : _buildButton(context, resolvedIconSize);
+  }
+
+  Widget _buildButton(BuildContext context, double computedIconSize) {
     final itemTheme = MechanixFabItemTheme.of(context);
 
-    final resolvedIconColor = iconColor ??
-        itemTheme.iconColor?.resolve({}) ??
-        Theme.of(context).colorScheme.onSurface;
+    final resolvedIconSize = iconSize ?? itemTheme.iconSize ?? computedIconSize;
 
-    final resolvedIconSize = iconSize ?? itemTheme.iconSize ?? 24.0;
-
-    final button = IconButton(
+    return IconButton(
       tooltip: label,
-      icon: Icon(
-        icon,
-        color: resolvedIconColor,
-        size: resolvedIconSize,
-      ),
+      icon: iconWidget ?? const Icon(Icons.help_outline),
+      iconSize: resolvedIconSize,
       onPressed: onTap,
     );
-
-    // If an anchorLink is provided, wrap the button so overlays can follow it.
-    return anchorLink != null
-        ? CompositedTransformTarget(link: anchorLink!, child: button)
-        : button;
   }
 }
 
@@ -113,27 +109,15 @@ class _ExpandableFabState extends State<ExpandableFab>
                   itemTheme.backgroundColor?.resolve({}) ??
                   Theme.of(context).primaryColor;
 
-              final resolvedIconColor = item.iconColor ??
-                  itemTheme.iconColor?.resolve({}) ??
-                  Colors.white;
-
-              final resolvedIconSize =
-                  item.iconSize ?? itemTheme.iconSize ?? 24.0;
-
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
                 child: FloatingActionButton.extended(
                   heroTag: null,
                   backgroundColor: resolvedBackground,
                   onPressed: item.onTap,
-                  icon: Icon(
-                    item.icon,
-                    color: resolvedIconColor,
-                    size: resolvedIconSize,
-                  ),
+                  icon: item.iconWidget,
                   label: Text(
                     item.label ?? '',
-                    // style: resolvedLabelStyle,
                   ),
                 ),
               );

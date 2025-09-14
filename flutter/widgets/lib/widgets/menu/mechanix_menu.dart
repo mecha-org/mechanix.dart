@@ -18,6 +18,7 @@ class MechanixMenu extends StatefulWidget {
     this.backgroundColor,
     this.borderRadius,
     this.shadowColor,
+    this.itemPadding,
   });
 
   final List<Widget> items; // Can include any widget (items, dividers, etc.)
@@ -27,6 +28,7 @@ class MechanixMenu extends StatefulWidget {
   final Color? backgroundColor;
   final double? borderRadius;
   final Color? shadowColor;
+  final EdgeInsetsGeometry? itemPadding;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -93,6 +95,7 @@ class _MechanixMenuState extends State<MechanixMenu> {
               if (child is MechanixMenuItem) {
                 final isSelected = _selectedItems.contains(child.label);
                 return MechanixMenuItem(
+                  itemPadding: widget.itemPadding,
                   key: ValueKey(child.label),
                   label: child.label,
                   leadingWidget: child.leadingWidget,

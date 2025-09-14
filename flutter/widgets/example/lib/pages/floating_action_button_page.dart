@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets.dart';
+import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/floatingActionButton/mechanix_fab_item_theme.dart';
 import 'package:widgets/widgets/floatingActionButton/mechanix_fab_items.dart';
 import 'package:widgets/widgets/floatingActionButton/mechanix_fab_theme.dart';
@@ -26,6 +26,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
     setState(() {
       showBottomFAB = false;
     });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final renderBox =
           _overlayButtonKey.currentContext?.findRenderObject() as RenderBox?;
@@ -56,7 +57,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
               child: MechanixFloatingActionMenu(
                 items: [
                   MechanixFabItem(
-                    icon: Icons.copy,
+                    iconWidget: Icon(Icons.copy),
                     label: "Copy",
                     onTap: () {
                       debugPrint("Overlay FAB: Copy tapped");
@@ -64,7 +65,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
                     },
                   ),
                   MechanixFabItem(
-                    icon: Icons.cut,
+                    iconWidget: Icon(Icons.cut),
                     label: "Cut",
                     onTap: () {
                       debugPrint("Overlay FAB: Cut tapped");
@@ -72,7 +73,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
                     },
                   ),
                   MechanixFabItem(
-                    icon: Icons.paste,
+                    iconWidget: Icon(Icons.paste),
                     label: "Paste",
                     onTap: () {
                       debugPrint("Overlay FAB: Paste tapped");
@@ -80,7 +81,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
                     },
                   ),
                   MechanixFabItem(
-                    icon: Icons.select_all_rounded,
+                    iconWidget: Icon(Icons.select_all_rounded),
                     label: "Select All",
                     onTap: () {
                       debugPrint("Overlay FAB: Select All tapped");
@@ -94,7 +95,6 @@ class _FabExamplePageState extends State<FabExamplePage> {
         ),
       );
 
-      // Ensure Overlay.of(context) is not null
       Overlay.of(context, rootOverlay: true).insert(_fabOverlay!);
     });
   }
@@ -108,80 +108,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
     debugPrint("Bottom FAB: triggered via button");
     setState(() {
       showBottomFAB = true;
-    }); // Here you can trigger any Bottom FAB action or open a menu if needed
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-        extensions: [
-          MechanixFabThemeData(
-            backgroundColor: WidgetStateProperty.all(Colors.grey[800]),
-            size: 56,
-            // borderRadius: 50,
-            shadowColor: WidgetStateProperty.all(Colors.black54),
-          ),
-          MechanixFabItemThemeData(iconSize: 24),
-        ],
-      ),
-      child: GestureDetector(
-        onTap: _hideOverlayFab,
-        child: Scaffold(
-          appBar: AppBar(title: const Text("Overlay & Bottom FAB")),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  key: _overlayButtonKey,
-                  onPressed: _showOverlayFab,
-                  child: const Text("Show Overlay FAB"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _triggerBottomFabAction,
-                  child: const Text("Trigger Bottom FAB Action"),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: showBottomFAB
-              ? MechanixFloatingActionMenu(
-                  items: [
-                    MechanixFabItem(
-                      anchorLink: _menuLink,
-                      icon: Icons.menu_rounded,
-                      onTap: () {
-                        if (_isMenuOpen) {
-                          _hideMenu();
-                        } else {
-                          _showAttachedMenuAbove(context);
-                        }
-                      },
-                      iconColor: _isMenuOpen
-                          ? Colors.grey
-                          : Colors.white, // dynamic color
-                    ),
-                    MechanixFabItem(
-                      icon: Icons.add,
-                      onTap: () => debugPrint("Bottom FAB: Add tapped"),
-                    ),
-                    MechanixFabItem(
-                      icon: Icons.copy,
-                      onTap: () => debugPrint("Bottom FAB: Copy tapped"),
-                    ),
-                    MechanixFabItem(
-                      icon: Icons.delete,
-                      label: "Delete",
-                      onTap: () => debugPrint("Bottom FAB: Delete tapped"),
-                    ),
-                  ],
-                )
-              : null,
-        ),
-      ),
-    );
+    });
   }
 
   void _showAttachedMenuAbove(BuildContext context) {
@@ -271,5 +198,75 @@ class _FabExamplePageState extends State<FabExamplePage> {
     setState(() {
       _isMenuOpen = false;
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        extensions: [
+          MechanixFabThemeData(
+            backgroundColor: WidgetStateProperty.all(Colors.grey[800]),
+            size: 56,
+            shadowColor: WidgetStateProperty.all(Colors.black54),
+          ),
+          MechanixFabItemThemeData(iconSize: 24),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: _hideOverlayFab,
+        child: Scaffold(
+          appBar: AppBar(title: const Text("Overlay & Bottom FAB")),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  key: _overlayButtonKey,
+                  onPressed: _showOverlayFab,
+                  child: const Text("Show Overlay FAB"),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _triggerBottomFabAction,
+                  child: const Text("Trigger Bottom FAB Action"),
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: showBottomFAB
+              ? MechanixFloatingActionMenu(
+                  height: 40,
+                  items: [
+                    MechanixFabItem(
+                      anchorLink: _menuLink,
+                      iconWidget: Icon(Icons.menu_rounded),
+                      onTap: () {
+                        if (_isMenuOpen) {
+                          _hideMenu();
+                        } else {
+                          _showAttachedMenuAbove(context);
+                        }
+                      },
+                    ),
+                    MechanixFabItem(
+                      iconWidget: Icon(Icons.add),
+                      onTap: () => debugPrint("Bottom FAB: Add tapped"),
+                    ),
+                    MechanixFabItem(
+                      iconWidget: Icon(Icons.copy),
+                      onTap: () => debugPrint("Bottom FAB: Copy tapped"),
+                    ),
+                    MechanixFabItem(
+                      iconWidget: Icon(Icons.delete),
+                      label: "Delete",
+                      onTap: () => debugPrint("Bottom FAB: Delete tapped"),
+                    ),
+                  ],
+                ).padHorizontal(200)
+              : null,
+        ),
+      ),
+    );
   }
 }

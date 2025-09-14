@@ -15,6 +15,9 @@ class _MechanixTextInputPageState extends State<MechanixTextInputPage> {
       child: Column(
         children: [
           MechanixTextInput.textInput(),
+          MechanixTextInput.textInput(
+            initialValue: "Initial Value",
+          ),
           MechanixTextInput.password(
             hintText: 'Enter Password',
           ),

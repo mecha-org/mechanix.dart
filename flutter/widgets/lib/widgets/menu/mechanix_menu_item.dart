@@ -22,6 +22,7 @@ class MechanixMenuItem extends StatefulWidget {
   final ValueChanged<bool>? onCheckChanged;
   final bool selectable; // Whether this item supports selection
   final bool isRadio; // true for single-select, false for multi-select
+  final EdgeInsetsGeometry? itemPadding;
 
   const MechanixMenuItem({
     super.key,
@@ -35,6 +36,7 @@ class MechanixMenuItem extends StatefulWidget {
     this.onCheckChanged,
     this.selectable = false,
     this.isRadio = false,
+    this.itemPadding,
   });
 
   @override
@@ -47,6 +49,9 @@ class _MechanixMenuItemState extends State<MechanixMenuItem> {
   @override
   Widget build(BuildContext context) {
     final theme = MechanixMenuItemTheme.of(context);
+
+    final resolvedPadding = widget.itemPadding ??
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
 
     final resolvedTextStyle = widget.textStyle ??
         theme.textStyle ??
@@ -173,7 +178,7 @@ class _MechanixMenuItemState extends State<MechanixMenuItem> {
           },
           borderRadius: BorderRadius.circular(6),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: resolvedPadding,
             child: Row(children: children),
           ),
         ),

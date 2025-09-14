@@ -4,31 +4,31 @@ import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
 
 class MechanixTextInput<T> extends StatefulWidget {
-  const MechanixTextInput.textInput({
-    super.key,
-    this.isPasswordField = false,
-    this.onChanged,
-    this.hintText,
-    this.isFormField = false,
-    this.inputDecoration,
-    this.validator,
-    this.onFieldSubmitted,
-    this.label,
-    this.theme,
-  });
+  const MechanixTextInput.textInput(
+      {super.key,
+      this.isPasswordField = false,
+      this.onChanged,
+      this.hintText,
+      this.isFormField = false,
+      this.inputDecoration,
+      this.validator,
+      this.onFieldSubmitted,
+      this.label,
+      this.theme,
+      this.initialValue});
 
-  const MechanixTextInput.password({
-    super.key,
-    this.isPasswordField = true,
-    this.onChanged,
-    this.hintText,
-    this.isFormField = false,
-    this.inputDecoration,
-    this.label,
-    this.onFieldSubmitted,
-    this.validator,
-    this.theme,
-  });
+  const MechanixTextInput.password(
+      {super.key,
+      this.isPasswordField = true,
+      this.onChanged,
+      this.hintText,
+      this.isFormField = false,
+      this.inputDecoration,
+      this.label,
+      this.onFieldSubmitted,
+      this.validator,
+      this.theme,
+      this.initialValue});
 
   final String? label;
   final bool isPasswordField;
@@ -39,6 +39,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final void Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
   final MechanixTextInputThemeData? theme;
+  final String? initialValue;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -57,7 +58,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.initialValue ?? '');
   }
 
   @override

@@ -196,6 +196,7 @@ class _MultiSelectMenuExampleState extends State<MultiSelectMenuExample> {
       selectionMode: MenuSelectionMode.multiple,
       selectedItems: ["Name"],
       onSelectionChanged: (selected) => print("Selected: $selected"),
+      itemPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       items: [
         MechanixMenuItem(label: "Name", layout: MenuItemLayout.checkLeft),
         MechanixMenuDivider(color: Colors.white24),

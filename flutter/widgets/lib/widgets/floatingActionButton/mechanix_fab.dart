@@ -42,6 +42,13 @@ class MechanixFloatingActionMenu extends StatelessWidget {
 
     final resolvedHeight = height ?? fabTheme.size ?? 56;
 
+    // Compute icon size as a proportion of container height
+    final double minSize = 16.0;
+    final double maxSize = resolvedHeight * 0.6;
+
+    final resolvedIconSize = (resolvedHeight * 0.5)
+        .clamp(minSize, maxSize >= minSize ? maxSize : minSize);
+
     return Container(
       height: resolvedHeight,
       decoration: BoxDecoration(
@@ -57,7 +64,9 @@ class MechanixFloatingActionMenu extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: items.map((item) => item.build(context)).toList(),
+        children: items.map((item) {
+          return item.build(context, resolvedIconSize);
+        }).toList(),
       ),
     ).padHorizontal(mechanixPaddingXl);
   }
