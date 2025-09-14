@@ -16,7 +16,7 @@ class MechanixSectionListThemeData
     this.divider,
     this.widgetPadding = const EdgeInsets.only(bottom: 40),
     this.titlePadding = const EdgeInsets.only(bottom: 8),
-    this.itemPadding = const EdgeInsets.all(16),
+    this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
     this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
     this.widgetRadius = const BorderRadius.all(Radius.circular(4)),
     this.itemBorderRadius = BorderRadius.zero,
@@ -52,6 +52,8 @@ class MechanixSectionListThemeData
     EdgeInsets? titlePadding,
     EdgeInsets? itemPadding,
     EdgeInsets? dividerPadding,
+    BorderRadius? widgetRadius,
+    BorderRadius? itemBorderRadius,
   }) {
     return MechanixSectionListThemeData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -65,6 +67,8 @@ class MechanixSectionListThemeData
       titlePadding: titlePadding ?? this.titlePadding,
       itemPadding: itemPadding ?? this.itemPadding,
       dividerPadding: dividerPadding ?? this.dividerPadding,
+      widgetRadius: widgetRadius ?? this.widgetRadius,
+      itemBorderRadius: itemBorderRadius ?? this.itemBorderRadius,
     );
   }
 

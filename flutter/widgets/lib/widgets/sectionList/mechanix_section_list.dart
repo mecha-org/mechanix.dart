@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/sectionList/section_list_items_type.dart';
@@ -16,6 +17,7 @@ class MechanixSectionList extends StatelessWidget {
     this.separatorBuilder,
     this.physics,
     this.controller,
+    this.theme,
   }) : itemCount = null;
 
   const MechanixSectionList.builder({
@@ -28,6 +30,7 @@ class MechanixSectionList extends StatelessWidget {
     required this.itemCount,
     required this.itemBuilder,
     this.physics,
+    this.theme,
     this.controller,
   })  : separatorBuilder = null,
         sectionListItems = const [];
@@ -44,6 +47,7 @@ class MechanixSectionList extends StatelessWidget {
     required this.separatorBuilder,
     this.physics,
     this.controller,
+    this.theme,
   }) : itemCount = null;
 
   final String? title;
@@ -68,55 +72,70 @@ class MechanixSectionList extends StatelessWidget {
 
   final ScrollController? controller;
 
+  final MechanixSectionListThemeData? theme;
+
   Widget _buildSectionList(BuildContext context, SectionListItems item,
       MechanixSectionListThemeData listTheme) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: item.onTap,
-      onTapUp: item.onTapUp,
-      onTapDown: item.onTapDown,
-      onDoubleTap: item.onDoubleTap,
-      child: Container(
-        padding: listTheme.itemPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                if (item.leading != null) item.leading!.padRight(),
-                Text(
-                  item.title,
-                  style:
-                      context.textTheme.labelMedium?.merge(item.titleTextStyle),
-                )
-              ],
-            ),
-            if (item.defaultTrailing && item.trailing == null)
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: FittedBox(
-                  fit: BoxFit.none,
-                  child: SizedBox(
-                    width: 10,
-                    height: 17,
-                    child: Image.asset(
-                      MechanixIconImages.rightCaret,
-                      package: 'widgets',
-                    ),
+    final bool isDisabled = item.disabled;
+    return IgnorePointer(
+      ignoring: isDisabled,
+      child: Opacity(
+        opacity: isDisabled ? 0.5 : 1.0,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: isDisabled ? null : item.onTap,
+          onTapUp: isDisabled ? null : item.onTapUp,
+          onTapDown: isDisabled ? null : item.onTapDown,
+          onDoubleTap: isDisabled ? null : item.onDoubleTap,
+          child: Container(
+            height: 56,
+            padding: listTheme.itemPadding,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      if (item.leading != null) item.leading!.padRight(),
+                      Text(
+                        item.title,
+                        style: context.textTheme.labelMedium
+                            ?.merge(item.titleTextStyle),
+                      )
+                    ],
                   ),
-                ),
-              )
-            else if (item.trailing != null)
-              item.trailing!,
-          ],
+                  Row(
+                    children: [
+                      if (item.trailing != null) item.trailing!,
+                      if (item.defaultTrailingIcon)
+                        SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: FittedBox(
+                            fit: BoxFit.none,
+                            child: SizedBox(
+                              width: 10,
+                              height: 17,
+                              child: Image.asset(
+                                MechanixIconImages.rightCaret,
+                                package: 'widgets',
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildDefaultSeparator(BuildContext context, int index) {
-    final listTheme = MechanixSectionListTheme.of(context);
+    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
     if (listTheme.divider != null) {
       return listTheme.divider!;
     } else {
@@ -131,11 +150,12 @@ class MechanixSectionList extends StatelessWidget {
     }
   }
 
-  Widget _buildListView(
-      {required BuildContext context,
-      required bool useSeparator,
-      required bool themeRequiresDivider}) {
-    final listTheme = MechanixSectionListTheme.of(context);
+  Widget _buildListView({
+    required BuildContext context,
+    required bool useSeparator,
+    required bool themeRequiresDivider,
+  }) {
+    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
 
     if (useSeparator) {
       return ListView.separated(
@@ -174,7 +194,7 @@ class MechanixSectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final listTheme = MechanixSectionListTheme.of(context);
+    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
     final bool useSeparator = separatorBuilder != null;
     final bool themeRequiresDivider =
         listTheme.isDividerRequired && !useSeparator;
