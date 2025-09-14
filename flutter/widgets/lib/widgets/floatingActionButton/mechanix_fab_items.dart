@@ -42,6 +42,7 @@ class MechanixFabItem {
       icon: iconWidget ?? const Icon(Icons.help_outline),
       iconSize: resolvedIconSize,
       onPressed: onTap,
+      highlightColor: Colors.transparent, // Remove ripple effect on press
     );
   }
 }

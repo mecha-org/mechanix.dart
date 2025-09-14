@@ -25,6 +25,8 @@ class MechanixTextButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
+      ).copyWith(
+        splashFactory: NoSplash.splashFactory, // Disable ripple animation
       ),
       onPressed: onPressed,
       child: Text(label),
