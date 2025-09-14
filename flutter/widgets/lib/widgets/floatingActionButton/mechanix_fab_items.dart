@@ -4,7 +4,7 @@ import 'mechanix_fab_item_theme.dart';
 class MechanixFabItem {
   final Widget? iconWidget;
   final String? label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Color? backgroundColor;
   final TextStyle? labelTextStyle;
   final LayerLink? anchorLink;
@@ -13,7 +13,7 @@ class MechanixFabItem {
   const MechanixFabItem(
       {required this.iconWidget,
       this.label,
-      required this.onTap,
+      this.onTap,
       this.backgroundColor,
       this.labelTextStyle,
       this.anchorLink,

@@ -28,11 +28,14 @@ class MechanixSelect<T> extends StatelessWidget {
   final double trailingIconSize;
 
   bool _isSelected(SelectOption<T> option) => option.value == value;
+  int getSelectedIndex() {
+    return options.indexWhere((option) => option.value == value);
+  }
 
   @override
   Widget build(BuildContext context) {
     final selectTheme = MechanixSelectTheme.of(context);
-
+    final selectedIndex = getSelectedIndex();
     return Material(
       elevation: selectTheme.elevation,
       borderRadius: selectTheme.borderRadius ?? BorderRadius.circular(8),
@@ -42,16 +45,23 @@ class MechanixSelect<T> extends StatelessWidget {
         shrinkWrap: shrinkWrap,
         primary: primary,
         itemCount: options.length,
-        separatorBuilder: (context, index) =>
-            divider ??
-            Divider(height: 1, color: context.colorScheme.outline)
-                .padHorizontal(16),
+        separatorBuilder: (context, index) {
+          final isBeforeSelected = index == selectedIndex - 1;
+          final isAfterSelected = index == selectedIndex;
+          final shouldHavePadding = !isBeforeSelected && !isAfterSelected;
+
+          return divider ??
+              Divider(height: 1, color: context.colorScheme.outline)
+                  .padHorizontal(shouldHavePadding ? 16 : 0);
+        },
         itemBuilder: (context, index) {
           final option = options[index];
           final isSelected = _isSelected(option);
 
           return _SelectItem(
+            index: index,
             option: option,
+            options: options,
             isSelected: isSelected,
             selectionColor:
                 selectTheme.selectionColor ?? context.colorScheme.outline,
@@ -75,6 +85,7 @@ class MechanixSelect<T> extends StatelessWidget {
 class _SelectItem<T> extends StatelessWidget {
   const _SelectItem({
     required this.option,
+    required this.options,
     required this.isSelected,
     required this.selectionColor,
     required this.titleStyle,
@@ -85,9 +96,12 @@ class _SelectItem<T> extends StatelessWidget {
     required this.padding,
     required this.onTap,
     required this.trailingIconSize,
+    required this.index,
   });
 
+  final int index;
   final SelectOption<T> option;
+  final List<SelectOption<T>> options;
   final bool isSelected;
   final Color selectionColor;
   final TextStyle? titleStyle;
@@ -101,12 +115,21 @@ class _SelectItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BorderRadius? borderRadius;
+    if (index == 0) {
+      borderRadius = const BorderRadius.vertical(top: Radius.circular(4));
+    } else if (index == options.length - 1) {
+      borderRadius = const BorderRadius.vertical(bottom: Radius.circular(4));
+    } else {
+      borderRadius = BorderRadius.zero;
+    }
     return Material(
+      borderRadius: borderRadius,
       color: isSelected ? selectionColor : Colors.transparent,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: onTap,
-        child: Padding(
+        child: Container(
           padding: padding,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

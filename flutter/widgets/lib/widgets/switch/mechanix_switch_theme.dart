@@ -20,8 +20,8 @@ class MechanixSwitchStyle with Diagnosticable {
     this.activeThumbIcon,
     this.inactiveThumbIcon,
     // Dimensions
-    this.width = 76.0,
-    this.height = 36.0,
+    this.width = 75.0,
+    this.height = 30.0,
     this.trackPadding = 5.0,
     this.thumbSize = const Size(24, 24),
     // Border radius

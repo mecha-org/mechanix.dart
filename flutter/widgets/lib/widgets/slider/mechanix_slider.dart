@@ -49,6 +49,17 @@ class _MechanixSliderState extends State<MechanixSlider> {
     _currentValue = widget.initialValue;
   }
 
+  // Add this method to handle prop changes
+  @override
+  void didUpdateWidget(MechanixSlider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Update internal value when initialValue prop changes
+    if (widget.initialValue != oldWidget.initialValue) {
+      _currentValue = widget.initialValue;
+    }
+  }
+
   void _updateValue(double localPositionX, double containerWidth) {
     final newValue = (localPositionX / containerWidth).clamp(0.0, 1.0);
 

@@ -1,4 +1,5 @@
 import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
+import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
 import 'package:widgets/widgets/wheelScroll/mechanix_wheel_scroll_theme.dart';
@@ -75,6 +76,29 @@ extension MechanixSliderThemeDataExtensions on MechanixSliderThemeData {
       dotColor: other.dotColor,
       barBackgroundColor: other.barBackgroundColor,
       containerColor: other.containerColor,
+    );
+  }
+}
+
+extension MechanixSectionListThemeDataExtensions
+    on MechanixSectionListThemeData {
+  MechanixSectionListThemeData merge(MechanixSectionListThemeData? other) {
+    if (other == null) return this;
+
+    return copyWith(
+      backgroundColor: other.backgroundColor,
+      titleTextStyle: other.titleTextStyle,
+      dividerThickness: other.dividerThickness,
+      dividerHeight: other.dividerHeight,
+      dividerColor: other.dividerColor,
+      isDividerRequired: other.isDividerRequired,
+      divider: other.divider,
+      widgetPadding: other.widgetPadding,
+      titlePadding: other.titlePadding,
+      itemPadding: other.itemPadding,
+      dividerPadding: other.dividerPadding,
+      widgetRadius: other.widgetRadius,
+      itemBorderRadius: other.itemBorderRadius,
     );
   }
 }

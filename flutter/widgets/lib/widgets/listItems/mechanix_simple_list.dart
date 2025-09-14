@@ -121,39 +121,45 @@ class MechanixSimpleList extends StatelessWidget {
   Widget _buildListItem(BuildContext context, SimpleListItems item,
       MechanixSimpleListThemeData theme, int index) {
     final itemTheme = MechanixSimpleListTheme.of(context);
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: item.onTap,
-      onTapUp: item.onTapUp,
-      onTapDown: item.onTapDown,
-      onDoubleTap: item.onDoubleTap,
-      child: Container(
-        padding: theme.itemPadding,
-        decoration: BoxDecoration(
-            // color: itemTheme.backgroundColor ?? context.colorScheme.secondary,
-            borderRadius: itemTheme.itemRadius ??
-                (index == 0
-                    ? CircularRadius.topAll(4)
-                    : index == (listItems.length - 1)
-                        ? CircularRadius.bottomAll(4)
-                        : BorderRadius.zero)),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    if (item.leading != null) item.leading!.padRight(),
-                    Text(item.title,
-                        style: item.titleTextStyle ??
-                            context.textTheme.labelMedium)
-                  ],
-                ),
-                if (item.trailing != null) item.trailing!,
-              ],
+    final bool isDisabled = item.disabled;
+
+    return IgnorePointer(
+      ignoring: isDisabled,
+      child: Opacity(
+        opacity: isDisabled ? 0.5 : 1.0,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: isDisabled ? null : item.onTap,
+          onTapUp: isDisabled ? null : item.onTapUp,
+          onTapDown: isDisabled ? null : item.onTapDown,
+          onDoubleTap: isDisabled ? null : item.onDoubleTap,
+          child: Container(
+            height: 56,
+            padding: theme.itemPadding,
+            decoration: BoxDecoration(
+                borderRadius: itemTheme.itemRadius ??
+                    (index == 0
+                        ? CircularRadius.topAll(4)
+                        : index == (listItems.length - 1)
+                            ? CircularRadius.bottomAll(4)
+                            : BorderRadius.zero)),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      if (item.leading != null) item.leading!.padRight(),
+                      Text(item.title, style: context.textTheme.labelMedium
+                          // ?.merge(item.titleTextStyle),
+                          )
+                    ],
+                  ),
+                  if (item.trailing != null) item.trailing!,
+                ],
+              ),
             ),
-          ],
+          ),
         ),
       ),
     );

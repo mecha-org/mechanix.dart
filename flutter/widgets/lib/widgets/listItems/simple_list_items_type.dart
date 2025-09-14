@@ -10,6 +10,7 @@ class SimpleListItems {
     this.onTapDown,
     this.onDoubleTap,
     this.titleTextStyle,
+    this.disabled = false,
   });
 
   final Widget? leading;
@@ -27,4 +28,6 @@ class SimpleListItems {
   final GestureTapDownCallback? onTapDown;
 
   final GestureTapCallback? onDoubleTap;
+
+  final bool disabled;
 }
