@@ -88,7 +88,7 @@ class MechanixSectionList extends StatelessWidget {
           onTapDown: isDisabled ? null : item.onTapDown,
           onDoubleTap: isDisabled ? null : item.onDoubleTap,
           child: Container(
-            height: 56,
+            height: listTheme.height,
             padding: listTheme.itemPadding,
             child: Center(
               child: Row(

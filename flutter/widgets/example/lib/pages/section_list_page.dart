@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
+import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/sectionList/section_list_items_type.dart';
 
 class MechanixSettingsMenuPage extends StatefulWidget {
@@ -15,34 +16,40 @@ class _MenuPageState extends State<MechanixSettingsMenuPage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          MechanixSectionList(title: 'Connectivity', sectionListItems: [
-            SectionListItems(
-                title: 'Network',
+          MechanixSectionListTheme(
+            style: MechanixSectionListThemeData(
+              height: 40,
+            ),
+            child:
+                MechanixSectionList(title: 'Connectivity', sectionListItems: [
+              SectionListItems(
+                  title: 'Network',
+                  leading: SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: Icon(
+                        Icons.wifi,
+                        size: 24,
+                      )),
+                  trailing: SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: Icon(Icons.abc),
+                  )),
+              SectionListItems(
+                title: 'Mobile Data',
                 leading: SizedBox(
                     height: 24,
                     width: 24,
                     child: Icon(
-                      Icons.wifi,
-                      size: 24,
+                      Icons.network_cell,
                     )),
-                trailing: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: Icon(Icons.abc),
-                )),
-            SectionListItems(
-              title: 'Mobile Data',
-              leading: SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: Icon(
-                    Icons.network_cell,
-                  )),
-            ),
-            SectionListItems(
-              title: 'Bluetooth',
-            ),
-          ]),
+              ),
+              SectionListItems(
+                title: 'Bluetooth',
+              ),
+            ]),
+          ),
           MechanixSectionList.builder(
             title: 'Connectivity',
             itemCount: 2,

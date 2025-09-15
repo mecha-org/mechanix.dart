@@ -6,21 +6,21 @@ import 'package:flutter/material.dart';
 @immutable
 class MechanixSectionListThemeData
     extends ThemeExtension<MechanixSectionListThemeData> with Diagnosticable {
-  const MechanixSectionListThemeData({
-    this.backgroundColor,
-    this.titleTextStyle,
-    this.dividerThickness = 1,
-    this.dividerHeight = 1,
-    this.dividerColor,
-    this.isDividerRequired = true,
-    this.divider,
-    this.widgetPadding = const EdgeInsets.only(bottom: 40),
-    this.titlePadding = const EdgeInsets.only(bottom: 8),
-    this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
-    this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
-    this.widgetRadius = const BorderRadius.all(Radius.circular(4)),
-    this.itemBorderRadius = BorderRadius.zero,
-  });
+  const MechanixSectionListThemeData(
+      {this.backgroundColor,
+      this.titleTextStyle,
+      this.dividerThickness = 1,
+      this.dividerHeight = 1,
+      this.dividerColor,
+      this.isDividerRequired = true,
+      this.divider,
+      this.widgetPadding = const EdgeInsets.only(bottom: 40),
+      this.titlePadding = const EdgeInsets.only(bottom: 8),
+      this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
+      this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
+      this.widgetRadius = const BorderRadius.all(Radius.circular(4)),
+      this.itemBorderRadius = BorderRadius.zero,
+      this.height = 56});
 
   final WidgetStateProperty<Color?>? backgroundColor;
   final EdgeInsets widgetPadding;
@@ -38,6 +38,7 @@ class MechanixSectionListThemeData
 
   final EdgeInsets itemPadding;
   final BorderRadius? itemBorderRadius;
+  final double? height;
 
   @override
   MechanixSectionListThemeData copyWith({
@@ -110,6 +111,7 @@ class MechanixSectionListThemeData
     properties.add(DiagnosticsProperty('titlePadding', titlePadding));
     properties.add(DiagnosticsProperty('itemPadding', itemPadding));
     properties.add(DiagnosticsProperty('dividerPadding', dividerPadding));
+    properties.add(DiagnosticsProperty('height', height));
   }
 
   @override

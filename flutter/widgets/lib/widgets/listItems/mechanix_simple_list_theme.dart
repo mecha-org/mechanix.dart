@@ -15,6 +15,7 @@ class MechanixSimpleListThemeData
     this.dividerHeight = 1,
     this.dividerColor,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
+    this.height = 56,
   });
 
   final Color? backgroundColor;
@@ -32,6 +33,7 @@ class MechanixSimpleListThemeData
   final EdgeInsets? widgetMargin;
 
   final BorderRadius? itemRadius;
+  final double? height;
 
   @override
   MechanixSimpleListThemeData copyWith({
@@ -84,6 +86,7 @@ class MechanixSimpleListThemeData
     properties.add(DiagnosticsProperty('itemPadding', itemPadding));
     properties.add(DiagnosticsProperty('widgetMargin', widgetMargin));
     properties.add(DiagnosticsProperty('itemRadius', itemRadius));
+    properties.add(DiagnosticsProperty('height', height));
   }
 
   @override

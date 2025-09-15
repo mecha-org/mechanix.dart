@@ -134,7 +134,7 @@ class MechanixSimpleList extends StatelessWidget {
           onTapDown: isDisabled ? null : item.onTapDown,
           onDoubleTap: isDisabled ? null : item.onDoubleTap,
           child: Container(
-            height: 56,
+            height: theme.height,
             padding: theme.itemPadding,
             decoration: BoxDecoration(
                 borderRadius: itemTheme.itemRadius ??
