@@ -28,6 +28,8 @@ class MechanixElevatedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         padding: padding,
+      ).copyWith(
+        splashFactory: NoSplash.splashFactory, // Disable ripple animation
       ),
       onPressed: onPressed,
       child: Text(label),
