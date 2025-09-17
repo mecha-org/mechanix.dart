@@ -14,26 +14,29 @@ class MechanixSearchBar extends StatelessWidget {
   final Widget? leading;
   final List<Widget>? trailing;
   final bool showDefaultTrailing;
+  final VoidCallback? onTap;
+  final TapRegionCallback? onTapOutside;
 
   final VoidCallback? onBackwardIconPress;
   final VoidCallback? onCloseIconPress;
 
-  const MechanixSearchBar({
-    super.key,
-    this.onChanged,
-    this.side,
-    this.backgroundColor,
-    this.overlayColor,
-    required this.controller,
-    this.autoFocus = true,
-    this.hintText = "Search...",
-    this.hintStyle,
-    this.leading,
-    this.trailing,
-    this.showDefaultTrailing = true,
-    this.onBackwardIconPress,
-    this.onCloseIconPress,
-  });
+  const MechanixSearchBar(
+      {super.key,
+      this.onChanged,
+      this.side,
+      this.backgroundColor,
+      this.overlayColor,
+      required this.controller,
+      this.autoFocus = true,
+      this.hintText = "Search...",
+      this.hintStyle,
+      this.leading,
+      this.trailing,
+      this.showDefaultTrailing = true,
+      this.onBackwardIconPress,
+      this.onCloseIconPress,
+      this.onTap,
+      this.onTapOutside});
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,8 @@ class MechanixSearchBar extends StatelessWidget {
         hintStyle ?? barTheme.hintStyle ?? _MechanixSearchBarTheme.hintStyle;
 
     return SearchBar(
+      onTap: onTap,
+      onTapOutside: onTapOutside,
       onChanged: onChanged,
       side: resolvedSide,
       backgroundColor: resolvedBackgroundColor,
@@ -87,15 +92,15 @@ class MechanixSearchBar extends StatelessWidget {
       SizedBox(
         width: _MechanixSearchBarTheme.trailingContainerWidth,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            _TrailingButton(
-              onPressed: onBackwardIconPress,
-              icon: MechanixIconImages.backwardIcon,
-              backgroundColor: _MechanixSearchBarTheme.buttonBackgroundColor,
-              showBorder: false,
-            ),
-            _buildVerticalDivider(),
+            // _TrailingButton(
+            //   onPressed: onBackwardIconPress,
+            //   icon: MechanixIconImages.backwardIcon,
+            //   backgroundColor: _MechanixSearchBarTheme.buttonBackgroundColor,
+            //   showBorder: false,
+            // ),
+            // _buildVerticalDivider(),
             _TrailingButton(
               onPressed: onCloseIconPress,
               icon: MechanixIconImages.closeIcon,
@@ -108,16 +113,16 @@ class MechanixSearchBar extends StatelessWidget {
     ];
   }
 
-  Widget _buildVerticalDivider() {
-    return SizedBox(
-      width: _MechanixSearchBarTheme.dividerWidth,
-      height: _MechanixSearchBarTheme.dividerHeight,
-      child: VerticalDivider(
-        color: _MechanixSearchBarTheme.dividerColor,
-        width: _MechanixSearchBarTheme.dividerWidth,
-      ),
-    );
-  }
+  // Widget _buildVerticalDivider() {
+  //   return SizedBox(
+  //     width: _MechanixSearchBarTheme.dividerWidth,
+  //     height: _MechanixSearchBarTheme.dividerHeight,
+  //     child: VerticalDivider(
+  //       color: _MechanixSearchBarTheme.dividerColor,
+  //       width: _MechanixSearchBarTheme.dividerWidth,
+  //     ),
+  //   );
+  // }
 }
 
 class _MechanixIcon extends StatelessWidget {
@@ -158,7 +163,7 @@ class _TrailingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _MechanixSearchBarTheme.buttonSize,
+      width: 48,
       height: _MechanixSearchBarTheme.buttonSize,
       decoration: BoxDecoration(
         color: backgroundColor,

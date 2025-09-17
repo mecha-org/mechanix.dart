@@ -55,9 +55,8 @@ class MechanixNavigationBar extends StatelessWidget
 
     final resolvedHeight = height ?? barTheme.height ?? kToolbarHeight;
 
-    final resolvedBackgroundColor = backgroundColor ??
-        barTheme.backgroundColor ??
-        theme.colorScheme.surface;
+    final resolvedBackgroundColor =
+        backgroundColor ?? barTheme.backgroundColor ?? Colors.transparent;
 
     final resolvedForegroundColor = foregroundColor ??
         barTheme.foregroundColor ??
