@@ -5,7 +5,7 @@ homepage:
 
 environment:
   sdk: ^3.6.0
-  flutter: '>=3.3.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   collection: ^1.19.1
@@ -53,6 +53,8 @@ flutter:
     - assets/icons/tick_icon.png
     - assets/icons/close_icon.png
     - assets/icons/backward_icon.png
+    - assets/screenshots/nav_bar_1.png
+    - assets/screenshots/nav_bar_2.png
 
   fonts:
     - family: Inter
