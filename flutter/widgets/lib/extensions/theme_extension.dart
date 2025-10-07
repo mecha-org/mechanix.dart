@@ -1,4 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:widgets/extensions/build_context.dart';
 import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
+import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
+import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
+import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
@@ -99,6 +104,66 @@ extension MechanixSectionListThemeDataExtensions
       dividerPadding: other.dividerPadding,
       widgetRadius: other.widgetRadius,
       itemBorderRadius: other.itemBorderRadius,
+    );
+  }
+}
+
+extension MechanixSelectableListThemeDataExtensions
+    on MechanixSelectableListThemeData {
+  MechanixSelectableListThemeData merge(
+      MechanixSelectableListThemeData? other, BuildContext context) {
+    if (other == null) return this;
+
+    return copyWith(
+      backgroundColor: other.backgroundColor ??
+          backgroundColor ??
+          Theme.of(context).colorScheme.secondary,
+      titleTextStyle: other.titleTextStyle ?? titleTextStyle,
+      itemPadding: other.itemPadding ?? itemPadding,
+      leadingIconPadding: other.leadingIconPadding ?? leadingIconPadding,
+      trailingPadding: other.trailingPadding ?? trailingPadding,
+      checkboxSpacing: other.checkboxSpacing ?? checkboxSpacing,
+      checkboxColor: other.checkboxColor ?? checkboxColor,
+      borderRadius: other.borderRadius ?? borderRadius,
+    );
+  }
+}
+
+extension MechanixNavigationBarThemeDataExtensions
+    on MechanixNavigationBarThemeData {
+  MechanixNavigationBarThemeData merge(
+      MechanixNavigationBarThemeData? other, BuildContext context) {
+    if (other == null) return this;
+
+    return copyWith(
+      backgroundColor:
+          other.backgroundColor ?? backgroundColor ?? Colors.transparent,
+      leadingWidth: other.leadingWidth ?? leadingWidth,
+      titleStyle: other.titleStyle ?? titleStyle,
+      foregroundColor: other.foregroundColor ??
+          foregroundColor ??
+          context.colorScheme.surfaceContainer,
+      elevation: other.elevation ?? elevation,
+      actionsIconTheme: other.actionsIconTheme ?? actionsIconTheme,
+      titleSpacing: other.titleSpacing ?? titleSpacing,
+      scrolledUnderElevation:
+          other.scrolledUnderElevation ?? scrolledUnderElevation,
+      actionsPadding: other.actionsPadding ?? actionsPadding,
+    );
+  }
+}
+
+extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
+  MechanixMenuThemeData merge(
+      MechanixMenuThemeData? other, BuildContext context) {
+    if (other == null) return this;
+
+    return copyWith(
+      backgroundColor:
+          other.backgroundColor ?? backgroundColor ?? Colors.transparent,
+      borderRadius: other.borderRadius ?? borderRadius,
+      boxShadow: other.boxShadow ?? boxShadow,
+      itemPadding: other.itemPadding ?? itemPadding,
     );
   }
 }

@@ -20,7 +20,7 @@ class _MechanixListState extends State<MechanixList> {
       itemCount: 4,
       itemBuilder: (context, index) {
         //checkbox color changes at theme level in main.dart can be change here also
-        return MechanixPressableList(
+        return MechanixSelectableList(
           onLongPress: () {
             setState(() {
               if (!selectionMode) {

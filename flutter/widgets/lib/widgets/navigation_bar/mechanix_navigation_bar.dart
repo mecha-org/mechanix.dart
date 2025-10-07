@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 
 import 'mechanix_navigation_bar_theme.dart';
@@ -9,90 +10,40 @@ class MechanixNavigationBar extends StatelessWidget
   final Widget? leadingWidget;
   final Widget? backIcon;
   final List<Widget>? actionWidgets;
+  final bool centerTitle;
+  final bool automaticallyImplyLeading;
+  final MechanixNavigationBarThemeData? theme;
+  final double height;
 
-  final bool? centerTitle;
-  final bool? automaticallyImplyLeading;
-  final double? leadingWidth;
-  final double? height;
-  final TextStyle? titleStyle;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final double? elevation;
-  final IconThemeData? actionsIconTheme;
-  final double? titleSpacing;
-  final double? scrolledUnderElevation;
-
-  const MechanixNavigationBar(
-      {super.key,
-      this.backIcon,
-      this.title,
-      this.height,
-      this.automaticallyImplyLeading,
-      this.centerTitle,
-      this.titleStyle,
-      this.leadingWidget,
-      this.leadingWidth,
-      this.titleSpacing,
-      this.elevation,
-      this.foregroundColor,
-      this.actionsIconTheme,
-      this.actionWidgets,
-      this.backgroundColor,
-      this.scrolledUnderElevation});
+  const MechanixNavigationBar({
+    super.key,
+    this.backIcon,
+    this.title,
+    this.automaticallyImplyLeading = true,
+    this.centerTitle = false,
+    this.leadingWidget,
+    this.actionWidgets,
+    this.theme,
+    this.height = 50,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final barTheme = MechanixNavigationBarTheme.of(context);
-    final theme = Theme.of(context);
-    final resolvedCenterTitle = centerTitle ?? barTheme.centerTitle ?? false;
-    final resolvedScrolledUnderElevation =
-        scrolledUnderElevation ?? barTheme.scrolledUnderElevation ?? 0;
-
-    final resolvedAutomaticallyImplyLeading =
-        automaticallyImplyLeading ?? barTheme.automaticallyImplyLeading;
-
-    final resolvedLeadingWidth = leadingWidth ?? barTheme.leadingWidth ?? 44;
-
-    final resolvedHeight = height ?? barTheme.height ?? kToolbarHeight;
-
-    final resolvedBackgroundColor =
-        backgroundColor ?? barTheme.backgroundColor ?? Colors.transparent;
-
-    final resolvedForegroundColor = foregroundColor ??
-        barTheme.foregroundColor ??
-        theme.colorScheme.surfaceContainer;
-
-    final resolvedElevation = elevation ?? barTheme.elevation ?? 0;
-
-    final resolvedActionsIconTheme =
-        actionsIconTheme ?? barTheme.actionsIconTheme ?? theme.iconTheme;
-
-    final resolvedTitleSpacing = titleSpacing ?? barTheme.titleSpacing ?? 2;
-
-    // Resolve title text style with proper merging
-    final defaultTitleStyle = TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.w500,
-      fontSize: 18,
-    );
-
-    final themedTitleStyle = barTheme.titleStyle;
-
-    final resolvedtitleStyle =
-        defaultTitleStyle.merge(themedTitleStyle).merge(titleStyle);
+    final barTheme =
+        MechanixNavigationBarTheme.of(context).merge(theme, context);
 
     return AppBar(
-      toolbarHeight: resolvedHeight,
-      scrolledUnderElevation: resolvedScrolledUnderElevation,
-      automaticallyImplyLeading: resolvedAutomaticallyImplyLeading,
-      backgroundColor: resolvedBackgroundColor,
-      leadingWidth: resolvedLeadingWidth,
-      centerTitle: resolvedCenterTitle,
-      actionsIconTheme: resolvedActionsIconTheme,
-      titleSpacing: resolvedTitleSpacing,
-      foregroundColor: resolvedForegroundColor,
+      toolbarHeight: height,
+      scrolledUnderElevation: barTheme.scrolledUnderElevation,
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      backgroundColor: barTheme.backgroundColor,
+      leadingWidth: barTheme.leadingWidth,
+      centerTitle: centerTitle,
+      actionsIconTheme: barTheme.actionsIconTheme,
+      titleSpacing: barTheme.titleSpacing,
+      foregroundColor: barTheme.foregroundColor,
       leading: leadingWidget ??
-          (resolvedAutomaticallyImplyLeading && Navigator.canPop(context)
+          (automaticallyImplyLeading && Navigator.canPop(context)
               ? IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: SizedBox(
@@ -105,7 +56,7 @@ class MechanixNavigationBar extends StatelessWidget
                           )),
                 )
               : null),
-      elevation: resolvedElevation,
+      elevation: barTheme.elevation,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,15 +65,15 @@ class MechanixNavigationBar extends StatelessWidget
           if (title != null)
             Text(
               title ?? '',
-              style: resolvedtitleStyle,
+              style: barTheme.titleStyle?.merge(context.textTheme.bodySmall),
             )
         ],
       ),
-      actionsPadding: Spacing.symmetric(h: 2, v: 5),
+      actionsPadding: barTheme.actionsPadding,
       actions: actionWidgets,
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(height ?? 50.0);
+  Size get preferredSize => Size.fromHeight(height);
 }

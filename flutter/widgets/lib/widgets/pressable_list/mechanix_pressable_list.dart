@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 
-class MechanixPressableList extends StatelessWidget {
+class MechanixSelectableList extends StatelessWidget {
   final GestureTapCallback? onLongPress;
   final GestureTapCallback? onTap;
   final bool selectionMode;
@@ -10,73 +11,40 @@ class MechanixPressableList extends StatelessWidget {
   final Widget? leadingIcon;
   final Widget? trailingWidget;
   final String title;
-  final TextStyle? titleTextStyle;
-  final Color? backgroundColor;
-  final EdgeInsetsGeometry? itemPadding;
-  final EdgeInsetsGeometry? leadingIconPadding;
-  final EdgeInsetsGeometry? trailingPadding;
-  final EdgeInsetsGeometry? checkboxSpacing;
-  final Color? checkboxColor;
   final ValueChanged<bool?>? onCheckboxClick;
-  final MouseCursor? mouseCursor;
-  final BorderRadius? borderRadius;
+  final MouseCursor mouseCursor;
+  final MechanixSelectableListThemeData? theme;
 
-  const MechanixPressableList(
-      {super.key,
-      this.onLongPress,
-      this.onTap,
-      this.selectionMode = false,
-      this.isSelected = false,
-      this.title = '',
-      this.titleTextStyle,
-      this.leadingIcon,
-      this.backgroundColor,
-      this.itemPadding,
-      this.leadingIconPadding,
-      this.checkboxSpacing,
-      this.checkboxColor,
-      this.onCheckboxClick,
-      this.trailingWidget,
-      this.mouseCursor,
-      this.trailingPadding,
-      this.borderRadius});
+  const MechanixSelectableList({
+    super.key,
+    this.onLongPress,
+    this.onTap,
+    this.selectionMode = false,
+    this.isSelected = false,
+    this.title = '',
+    this.leadingIcon,
+    this.onCheckboxClick,
+    this.trailingWidget,
+    this.theme,
+    this.mouseCursor = SystemMouseCursors.click,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final barTheme = MechanixPressableListTheme.of(context);
-
-    final resolvedTitleTextStyle = titleTextStyle ??
-        barTheme.titleTextStyle ??
-        context.textTheme.bodyLarge;
-    final resolvedBackgroundColor =
-        backgroundColor ?? barTheme.backgroundColor ?? Color(0xFF2B2B2B);
-    final resolvedItemPadding =
-        itemPadding ?? barTheme.itemPadding ?? EdgeInsets.all(10);
-    final resolvedLeadingIconPadding =
-        leadingIconPadding ?? barTheme.leadingIconPadding ?? EdgeInsets.all(10);
-    final resolvedcheckboxSpacing = checkboxSpacing ??
-        barTheme.checkboxSpacing ??
-        EdgeInsets.only(right: 10, left: 5);
-    final resolvedCheckboxColor =
-        checkboxColor ?? barTheme.checkboxColor ?? Color(0xFF3176FF);
-    final resolvedMouseCursor =
-        mouseCursor ?? barTheme.mouseCursor ?? SystemMouseCursors.click;
-    final resolvedTrailingPadding =
-        trailingPadding ?? barTheme.trailingPadding ?? EdgeInsets.all(10);
-    final resolvedBorderRadius =
-        borderRadius ?? barTheme.borderRadius ?? CircularRadius.sm;
+    final listTheme =
+        MechanixSelectableListTheme.of(context).merge(theme, context);
 
     return Material(
-      borderRadius: resolvedBorderRadius,
-      color: resolvedBackgroundColor,
+      borderRadius: listTheme.borderRadius,
+      color: listTheme.backgroundColor,
       child: MouseRegion(
-          cursor: resolvedMouseCursor,
+          cursor: mouseCursor,
           child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onLongPress: onLongPress,
               onTap: onTap,
               child: Container(
-                padding: resolvedItemPadding,
+                padding: listTheme.itemPadding,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -84,30 +52,31 @@ class MechanixPressableList extends StatelessWidget {
                       children: [
                         if (selectionMode)
                           Container(
-                              padding: resolvedcheckboxSpacing,
+                              padding: listTheme.checkboxSpacing,
                               child: MechanixCircleCheckbox(
                                 value: isSelected,
                                 onChanged: onCheckboxClick,
-                                activeColor: resolvedCheckboxColor,
+                                activeColor: listTheme.checkboxColor ??
+                                    context.colorScheme.primary,
                                 autofocus: false,
                                 tristate: false,
                                 width: 20,
                               )),
                         if (leadingIcon != null)
                           Container(
-                            padding: resolvedLeadingIconPadding,
+                            padding: listTheme.leadingIconPadding,
                             child: leadingIcon,
                           ),
                         if (title.isNotEmpty)
                           Text(
                             title,
-                            style: resolvedTitleTextStyle,
+                            style: listTheme.titleTextStyle,
                           ),
                       ],
                     ),
                     if (trailingWidget != null)
                       Container(
-                        padding: resolvedTrailingPadding,
+                        padding: listTheme.trailingPadding,
                         child: trailingWidget,
                       )
                   ],

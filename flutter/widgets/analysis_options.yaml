@@ -2,3 +2,33 @@ include: package:flutter_lints/flutter.yaml
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+analyzer:
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  errors:
+    unused_element: warning
+    unused_field: warning
+    unused_import: warning
+    unused_local_variable: warning
+
+linter:
+  rules:
+    # Unused code rules
+    - avoid_unused_constructor_parameters
+    - no_duplicate_case_values
+    - unnecessary_async
+    - unnecessary_await_in_return
+    - unnecessary_const
+    - unnecessary_late
+    - unnecessary_constructor_name
+    - unnecessary_getters_setters
+    - unnecessary_parenthesis
+    - unnecessary_null_aware_assignments
+    - unnecessary_null_aware_operator_on_extension_on_nullable
+    - unnecessary_null_checks
+    - unnecessary_null_in_if_null_operators
+    - unnecessary_nullable_for_final_variable_declarations
+    - unnecessary_this
+    - unnecessary_to_list_in_spreads

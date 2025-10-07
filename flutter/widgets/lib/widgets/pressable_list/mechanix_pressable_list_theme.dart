@@ -2,18 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class MechanixPressableListThemeData
-    extends ThemeExtension<MechanixPressableListThemeData> with Diagnosticable {
-  const MechanixPressableListThemeData({
+class MechanixSelectableListThemeData
+    extends ThemeExtension<MechanixSelectableListThemeData>
+    with Diagnosticable {
+  const MechanixSelectableListThemeData({
     this.titleTextStyle,
     this.backgroundColor,
-    this.itemPadding,
-    this.leadingIconPadding,
-    this.trailingPadding,
-    this.checkboxSpacing,
-    this.checkboxColor,
-    this.mouseCursor,
-    this.borderRadius,
+    this.itemPadding = const EdgeInsets.all(10),
+    this.leadingIconPadding = const EdgeInsets.all(10),
+    this.trailingPadding = const EdgeInsets.all(10),
+    this.checkboxSpacing = const EdgeInsets.only(right: 10, left: 5),
+    this.checkboxColor = const Color(0xFF3176FF), // LATER DO IT AS PER THEME
+    this.borderRadius = const BorderRadius.all(Radius.circular(4)),
   });
 
   final TextStyle? titleTextStyle;
@@ -23,11 +23,10 @@ class MechanixPressableListThemeData
   final EdgeInsetsGeometry? trailingPadding;
   final EdgeInsetsGeometry? checkboxSpacing;
   final Color? checkboxColor;
-  final MouseCursor? mouseCursor;
   final BorderRadius? borderRadius;
 
   @override
-  MechanixPressableListThemeData copyWith({
+  MechanixSelectableListThemeData copyWith({
     TextStyle? titleTextStyle,
     Color? backgroundColor,
     EdgeInsetsGeometry? itemPadding,
@@ -38,7 +37,7 @@ class MechanixPressableListThemeData
     MouseCursor? mouseCursor,
     BorderRadius? borderRadius,
   }) {
-    return MechanixPressableListThemeData(
+    return MechanixSelectableListThemeData(
       titleTextStyle: titleTextStyle ?? this.titleTextStyle,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       itemPadding: itemPadding ?? this.itemPadding,
@@ -46,44 +45,19 @@ class MechanixPressableListThemeData
       trailingPadding: trailingPadding ?? this.trailingPadding,
       checkboxSpacing: checkboxSpacing ?? this.checkboxSpacing,
       checkboxColor: checkboxColor ?? this.checkboxColor,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
-      borderRadius: borderRadius ?? this.borderRadius,
-    );
-  }
-
-  MechanixPressableListThemeData mergeWith({
-    TextStyle? titleTextStyle,
-    Color? backgroundColor,
-    EdgeInsetsGeometry? itemPadding,
-    EdgeInsetsGeometry? leadingIconPadding,
-    EdgeInsetsGeometry? trailingPadding,
-    EdgeInsetsGeometry? checkboxSpacing,
-    Color? checkboxColor,
-    MouseCursor? mouseCursor,
-    BorderRadius? borderRadius,
-  }) {
-    return copyWith(
-      titleTextStyle: titleTextStyle ?? this.titleTextStyle,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      itemPadding: itemPadding ?? this.itemPadding,
-      leadingIconPadding: leadingIconPadding ?? this.leadingIconPadding,
-      trailingPadding: trailingPadding ?? this.trailingPadding,
-      checkboxSpacing: checkboxSpacing ?? this.checkboxSpacing,
-      checkboxColor: checkboxColor ?? this.checkboxColor,
-      mouseCursor: mouseCursor ?? this.mouseCursor,
       borderRadius: borderRadius ?? this.borderRadius,
     );
   }
 
   @override
-  ThemeExtension<MechanixPressableListThemeData> lerp(
-    ThemeExtension<MechanixPressableListThemeData>? other,
+  ThemeExtension<MechanixSelectableListThemeData> lerp(
+    ThemeExtension<MechanixSelectableListThemeData>? other,
     double t,
   ) {
-    final o = other as MechanixPressableListThemeData?;
+    final o = other as MechanixSelectableListThemeData?;
     if (o == null) return this;
 
-    return MechanixPressableListThemeData(
+    return MechanixSelectableListThemeData(
       titleTextStyle: TextStyle.lerp(titleTextStyle, o.titleTextStyle, t),
       backgroundColor: Color.lerp(backgroundColor, o.backgroundColor, t),
       itemPadding: EdgeInsetsGeometry.lerp(itemPadding, o.itemPadding, t),
@@ -94,7 +68,6 @@ class MechanixPressableListThemeData
       checkboxSpacing:
           EdgeInsetsGeometry.lerp(checkboxSpacing, o.checkboxSpacing, t),
       checkboxColor: Color.lerp(checkboxColor, o.checkboxColor, t),
-      mouseCursor: t < 0.5 ? mouseCursor : o.mouseCursor,
       borderRadius: BorderRadius.lerp(borderRadius, o.borderRadius, t),
     );
   }
@@ -116,15 +89,13 @@ class MechanixPressableListThemeData
         'checkboxSpacing', checkboxSpacing));
     properties.add(ColorProperty('checkboxColor', checkboxColor));
     properties
-        .add(DiagnosticsProperty<MouseCursor?>('mouseCursor', mouseCursor));
-    properties
         .add(DiagnosticsProperty<BorderRadius?>('borderRadius', borderRadius));
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is MechanixPressableListThemeData &&
+    return other is MechanixSelectableListThemeData &&
         other.titleTextStyle == titleTextStyle &&
         other.backgroundColor == backgroundColor &&
         other.itemPadding == itemPadding &&
@@ -132,7 +103,6 @@ class MechanixPressableListThemeData
         other.trailingPadding == trailingPadding &&
         other.checkboxSpacing == checkboxSpacing &&
         other.checkboxColor == checkboxColor &&
-        other.mouseCursor == mouseCursor &&
         other.borderRadius == borderRadius;
   }
 
@@ -146,36 +116,35 @@ class MechanixPressableListThemeData
       trailingPadding,
       checkboxSpacing,
       checkboxColor,
-      mouseCursor,
       borderRadius,
     );
   }
 }
 
-class MechanixPressableListTheme extends InheritedTheme {
-  const MechanixPressableListTheme({
+class MechanixSelectableListTheme extends InheritedTheme {
+  const MechanixSelectableListTheme({
     super.key,
     required this.data,
     required super.child,
   });
 
-  final MechanixPressableListThemeData data;
+  final MechanixSelectableListThemeData data;
 
-  static MechanixPressableListThemeData of(BuildContext context) {
+  static MechanixSelectableListThemeData of(BuildContext context) {
     final theme = context
-        .dependOnInheritedWidgetOfExactType<MechanixPressableListTheme>();
+        .dependOnInheritedWidgetOfExactType<MechanixSelectableListTheme>();
     return theme?.data ??
-        Theme.of(context).extension<MechanixPressableListThemeData>() ??
-        const MechanixPressableListThemeData();
+        Theme.of(context).extension<MechanixSelectableListThemeData>() ??
+        const MechanixSelectableListThemeData();
   }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    return MechanixPressableListTheme(data: data, child: child);
+    return MechanixSelectableListTheme(data: data, child: child);
   }
 
   @override
-  bool updateShouldNotify(MechanixPressableListTheme oldWidget) {
+  bool updateShouldNotify(MechanixSelectableListTheme oldWidget) {
     return data != oldWidget.data;
   }
 }

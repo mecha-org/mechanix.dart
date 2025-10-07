@@ -6,23 +6,20 @@ import 'package:flutter/material.dart';
 @immutable
 class MechanixNavigationBarThemeData
     extends ThemeExtension<MechanixNavigationBarThemeData> with Diagnosticable {
-  const MechanixNavigationBarThemeData(
-      {this.centerTitle = false,
-      this.automaticallyImplyLeading = true,
-      this.leadingWidth,
-      this.height,
-      this.titleStyle,
-      this.backgroundColor,
-      this.foregroundColor,
-      this.elevation,
-      this.actionsIconTheme,
-      this.titleSpacing,
-      this.scrolledUnderElevation});
+  const MechanixNavigationBarThemeData({
+    this.leadingWidth,
+    this.titleStyle,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.elevation,
+    this.actionsIconTheme,
+    this.titleSpacing,
+    this.scrolledUnderElevation,
+    this.actionsPadding =
+        const EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+  });
 
-  final bool? centerTitle;
-  final bool automaticallyImplyLeading;
   final double? leadingWidth;
-  final double? height;
   final TextStyle? titleStyle;
   final Color? backgroundColor;
   final Color? foregroundColor;
@@ -30,13 +27,11 @@ class MechanixNavigationBarThemeData
   final IconThemeData? actionsIconTheme;
   final double? titleSpacing;
   final double? scrolledUnderElevation;
+  final EdgeInsetsGeometry? actionsPadding;
 
   @override
   MechanixNavigationBarThemeData copyWith({
-    bool? centerTitle,
-    bool? automaticallyImplyLeading,
     double? leadingWidth,
-    double? height,
     TextStyle? titleStyle,
     Color? backgroundColor,
     Color? foregroundColor,
@@ -44,51 +39,19 @@ class MechanixNavigationBarThemeData
     IconThemeData? actionsIconTheme,
     double? titleSpacing,
     double? scrolledUnderElevation,
+    EdgeInsetsGeometry? actionsPadding,
   }) {
     return MechanixNavigationBarThemeData(
-      centerTitle: centerTitle ?? this.centerTitle,
       scrolledUnderElevation:
           scrolledUnderElevation ?? this.scrolledUnderElevation,
-      automaticallyImplyLeading:
-          automaticallyImplyLeading ?? this.automaticallyImplyLeading,
       leadingWidth: leadingWidth ?? this.leadingWidth,
-      height: height ?? this.height,
       titleStyle: titleStyle ?? this.titleStyle,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
       elevation: elevation ?? this.elevation,
       actionsIconTheme: actionsIconTheme ?? this.actionsIconTheme,
       titleSpacing: titleSpacing ?? this.titleSpacing,
-    );
-  }
-
-  MechanixNavigationBarThemeData mergeWith({
-    bool? centerTitle,
-    bool? automaticallyImplyLeading,
-    double? leadingWidth,
-    double? height,
-    TextStyle? titleStyle,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    double? elevation,
-    IconThemeData? actionsIconTheme,
-    double? titleSpacing,
-    double? scrolledUnderElevation,
-  }) {
-    return copyWith(
-      centerTitle: centerTitle ?? this.centerTitle,
-      scrolledUnderElevation:
-          scrolledUnderElevation ?? this.scrolledUnderElevation,
-      automaticallyImplyLeading:
-          automaticallyImplyLeading ?? this.automaticallyImplyLeading,
-      leadingWidth: leadingWidth ?? this.leadingWidth,
-      height: height ?? this.height,
-      titleStyle: titleStyle ?? this.titleStyle,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      foregroundColor: foregroundColor ?? this.foregroundColor,
-      elevation: elevation ?? this.elevation,
-      actionsIconTheme: actionsIconTheme ?? this.actionsIconTheme,
-      titleSpacing: titleSpacing ?? this.titleSpacing,
+      actionsPadding: actionsPadding ?? this.actionsPadding,
     );
   }
 
@@ -101,13 +64,9 @@ class MechanixNavigationBarThemeData
     if (o == null) return this;
 
     return MechanixNavigationBarThemeData(
-      centerTitle: t < 0.5 ? centerTitle : o.centerTitle,
       scrolledUnderElevation:
           lerpDouble(scrolledUnderElevation, o.scrolledUnderElevation, t),
-      automaticallyImplyLeading:
-          t < 0.5 ? automaticallyImplyLeading : o.automaticallyImplyLeading,
       leadingWidth: lerpDouble(leadingWidth, o.leadingWidth, t),
-      height: lerpDouble(height, o.height, t),
       titleStyle: TextStyle.lerp(titleStyle, o.titleStyle, t),
       backgroundColor: Color.lerp(backgroundColor, o.backgroundColor, t),
       foregroundColor: Color.lerp(foregroundColor, o.foregroundColor, t),
@@ -115,6 +74,8 @@ class MechanixNavigationBarThemeData
       actionsIconTheme:
           IconThemeData.lerp(actionsIconTheme, o.actionsIconTheme, t),
       titleSpacing: lerpDouble(titleSpacing, o.titleSpacing, t),
+      actionsPadding:
+          EdgeInsetsGeometry.lerp(actionsPadding, o.actionsPadding, t),
     );
   }
 
@@ -122,19 +83,6 @@ class MechanixNavigationBarThemeData
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
 
-    properties.add(DoubleProperty('height', height));
-    properties.add(FlagProperty(
-      'automaticallyImplyLeading',
-      value: automaticallyImplyLeading,
-      ifTrue: 'true',
-      ifFalse: 'false',
-    ));
-    properties.add(FlagProperty(
-      'centerTitle',
-      value: centerTitle,
-      ifTrue: 'true',
-      ifFalse: 'false',
-    ));
     properties.add(DoubleProperty('leadingWidth', leadingWidth));
     properties.add(DoubleProperty('titleSpacing', titleSpacing));
     properties.add(DiagnosticsProperty<TextStyle?>('titleStyle', titleStyle));
@@ -151,9 +99,6 @@ class MechanixNavigationBarThemeData
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is MechanixNavigationBarThemeData &&
-        other.height == height &&
-        other.automaticallyImplyLeading == automaticallyImplyLeading &&
-        other.centerTitle == centerTitle &&
         other.titleSpacing == titleSpacing &&
         other.titleStyle == titleStyle &&
         other.leadingWidth == leadingWidth &&
@@ -161,23 +106,23 @@ class MechanixNavigationBarThemeData
         other.foregroundColor == foregroundColor &&
         other.elevation == elevation &&
         other.scrolledUnderElevation == scrolledUnderElevation &&
-        other.actionsIconTheme == actionsIconTheme;
+        other.actionsIconTheme == actionsIconTheme &&
+        other.actionsPadding == actionsPadding;
   }
 
   @override
   int get hashCode {
     return Object.hash(
-        height,
-        automaticallyImplyLeading,
-        centerTitle,
-        titleSpacing,
-        titleStyle,
-        leadingWidth,
-        backgroundColor,
-        foregroundColor,
-        elevation,
-        actionsIconTheme,
-        scrolledUnderElevation);
+      titleSpacing,
+      titleStyle,
+      leadingWidth,
+      backgroundColor,
+      foregroundColor,
+      elevation,
+      actionsIconTheme,
+      scrolledUnderElevation,
+      actionsPadding,
+    );
   }
 }
 
