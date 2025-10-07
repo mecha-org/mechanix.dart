@@ -10,8 +10,6 @@ class NavigationPage extends StatelessWidget {
         appBar: MechanixNavigationBar(
           title: "Home Page",
           height: 50,
-          backgroundColor: Colors.red,
-          elevation: 20,
           actionWidgets: [
             IconButton(onPressed: () {}, icon: Icon(Icons.search)),
             IconButton(onPressed: () {}, icon: Icon(Icons.sort)),

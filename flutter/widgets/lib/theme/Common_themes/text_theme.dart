@@ -76,7 +76,8 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     bodySmall: TextStyle(
       color: onSurface,
-      fontSize: 12,
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
       fontFamily: 'Inter',
       package: 'widgets',
     ),

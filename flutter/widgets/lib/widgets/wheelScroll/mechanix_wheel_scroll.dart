@@ -16,10 +16,11 @@ class MechanixWheelScroll<T> extends StatefulWidget {
     this.itemExtent = 40,
     this.squeeze = 1,
     this.theme,
-    this.scrollEnabled = true,
     this.isLoop = true,
     this.showLeading = true,
     this.showTrailing = true,
+    this.scrollBehavior,
+    this.physics = const FixedExtentScrollPhysics(),
     required this.value,
     required this.options,
     required this.onSelectedItemChanged,
@@ -31,7 +32,6 @@ class MechanixWheelScroll<T> extends StatefulWidget {
   final double? selectionWidth;
   final bool useMagnifier;
   final bool isLoop;
-  final bool scrollEnabled;
   final bool showLeading;
   final bool showTrailing;
   final double squeeze;
@@ -39,7 +39,9 @@ class MechanixWheelScroll<T> extends StatefulWidget {
   final double offAxisFraction;
   final MechanixWheelScrollThemeData? theme;
   final List<WheelScrollOption<T>> options;
+  final ScrollBehavior? scrollBehavior;
   final T value;
+  final ScrollPhysics physics;
   final void Function(T value)? onSelectedItemChanged;
 
   @override
@@ -85,35 +87,26 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
 
   Widget _buildItem(
       BuildContext context, WheelScrollOption<T> option, bool isSelected) {
-    final clockTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
+    final itemTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.showLeading && option.leading != null)
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: option.leading!,
-            ),
           Expanded(
             child: Text(
               option.label,
               textAlign: TextAlign.center,
               style: isSelected
-                  ? clockTheme.selectedTextStyle?.copyWith(color: Colors.white)
-                  : clockTheme.notSelectedTextStyle
+                  ? itemTheme.selectedTextStyle
+                      ?.copyWith(color: itemTheme.selectionTextColor)
+                  : itemTheme.notSelectedTextStyle
                       ?.copyWith(color: context.colorScheme.secondary),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          if (widget.showTrailing && option.trailing != null)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: option.trailing!,
-            ),
         ],
       ),
     );
@@ -129,7 +122,7 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final clockTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
+    var wheelTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
 
     return SizedBox(
       width: widget.width,
@@ -138,14 +131,14 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
         children: [
           Center(
             child: Padding(
-              padding: clockTheme.selectionPadding,
+              padding: wheelTheme.selectionPadding,
               child: Container(
                 height: widget.selectionHeight,
                 width: widget.selectionWidth,
                 decoration: BoxDecoration(
-                  color: clockTheme.selectionColor ??
+                  color: wheelTheme.selectionColor ??
                       context.colorScheme.secondary,
-                  borderRadius: clockTheme.selectionBorderRadius,
+                  borderRadius: wheelTheme.selectionBorderRadius,
                 ),
               ),
             ),
@@ -156,14 +149,9 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
             squeeze: widget.squeeze,
             useMagnifier: widget.useMagnifier,
             offAxisFraction: widget.offAxisFraction,
-            scrollBehavior: widget.scrollEnabled
-                ? null
-                : const ScrollBehavior().copyWith(scrollbars: false),
-            physics: widget.scrollEnabled
-                ? const FixedExtentScrollPhysics()
-                : const NeverScrollableScrollPhysics(),
-            onSelectedItemChanged:
-                widget.scrollEnabled ? _handleSelectedItemChanged : null,
+            scrollBehavior: widget.scrollBehavior,
+            physics: widget.physics,
+            onSelectedItemChanged: _handleSelectedItemChanged,
             childDelegate: widget.isLoop
                 ? ListWheelChildLoopingListDelegate(
                     children: List.generate(widget.options.length, (index) {

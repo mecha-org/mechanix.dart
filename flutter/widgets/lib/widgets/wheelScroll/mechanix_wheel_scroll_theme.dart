@@ -11,6 +11,7 @@ class MechanixWheelScrollThemeData
       fontSize: 20,
     ),
     this.selectionColor,
+    this.selectionTextColor = Colors.white,
     this.selectionBorderRadius = const BorderRadius.all(Radius.circular(8)),
   });
 
@@ -18,6 +19,7 @@ class MechanixWheelScrollThemeData
   final TextStyle? selectedTextStyle;
   final TextStyle? notSelectedTextStyle;
   final Color? selectionColor;
+  final Color? selectionTextColor;
   final BorderRadius? selectionBorderRadius;
 
   @override
@@ -26,6 +28,7 @@ class MechanixWheelScrollThemeData
     TextStyle? selectedTextStyle,
     TextStyle? notSelectedTextStyle,
     Color? selectionColor,
+    Color? selectionTextColor,
     BorderRadius? selectionBorderRadius,
   }) {
     return MechanixWheelScrollThemeData(
@@ -35,6 +38,7 @@ class MechanixWheelScrollThemeData
       selectionColor: selectionColor ?? this.selectionColor,
       selectionBorderRadius:
           selectionBorderRadius ?? this.selectionBorderRadius,
+      selectionTextColor: selectionTextColor ?? this.selectionTextColor,
     );
   }
 
@@ -56,6 +60,8 @@ class MechanixWheelScrollThemeData
       notSelectedTextStyle:
           TextStyle.lerp(notSelectedTextStyle, other.notSelectedTextStyle, t),
       selectionColor: Color.lerp(selectionColor, other.selectionColor, t),
+      selectionTextColor:
+          Color.lerp(selectionTextColor, other.selectionTextColor, t),
       selectionBorderRadius: BorderRadius.lerp(
           selectionBorderRadius, other.selectionBorderRadius, t),
     );
@@ -74,6 +80,8 @@ class MechanixWheelScrollThemeData
         .add(DiagnosticsProperty<Color>('selectionColor', selectionColor));
     properties.add(DiagnosticsProperty<BorderRadius>(
         'selectionBorderRadius', selectionBorderRadius));
+    properties.add(
+        DiagnosticsProperty<Color>('selectionTextColor', selectionTextColor));
   }
 
   @override
@@ -86,6 +94,7 @@ class MechanixWheelScrollThemeData
         other.selectedTextStyle == selectedTextStyle &&
         other.notSelectedTextStyle == notSelectedTextStyle &&
         other.selectionColor == selectionColor &&
+        other.selectionTextColor == selectionTextColor &&
         other.selectionBorderRadius == selectionBorderRadius;
   }
 
@@ -96,6 +105,7 @@ class MechanixWheelScrollThemeData
       selectedTextStyle,
       notSelectedTextStyle,
       selectionColor,
+      selectionTextColor,
       selectionBorderRadius,
     );
   }
