@@ -4,6 +4,7 @@ import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
+import 'package:widgets/widgets/searchbar/mechanix_search_bar_theme.dart';
 import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
@@ -153,17 +154,56 @@ extension MechanixNavigationBarThemeDataExtensions
   }
 }
 
-extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
-  MechanixMenuThemeData merge(
-      MechanixMenuThemeData? other, BuildContext context) {
+extension MechanixSearchBarThemeDataExtensions on MechanixSearchBarThemeData {
+  MechanixSearchBarThemeData merge(
+      MechanixSearchBarThemeData? other, BuildContext context) {
     if (other == null) return this;
 
     return copyWith(
-      backgroundColor:
-          other.backgroundColor ?? backgroundColor ?? Colors.transparent,
-      borderRadius: other.borderRadius ?? borderRadius,
-      boxShadow: other.boxShadow ?? boxShadow,
-      itemPadding: other.itemPadding ?? itemPadding,
+      borderSide: other.borderSide ?? borderSide,
+      backgroundColor: other.backgroundColor ??
+          backgroundColor ??
+          WidgetStatePropertyAll(context.colorScheme.secondary),
+      overlayColor: other.overlayColor ?? overlayColor,
+      hintStyle: other.hintStyle ?? hintStyle,
+      borderColor: other.borderColor ?? borderColor,
+      defaultLeadingIconSize:
+          other.defaultLeadingIconSize ?? defaultLeadingIconSize,
+      searchIconSize: other.searchIconSize ?? searchIconSize,
+      defaultTrailingIconSize:
+          other.defaultTrailingIconSize ?? defaultTrailingIconSize,
+      buttonSize: other.buttonSize ?? buttonSize,
+      buttonBorderRadius: other.buttonBorderRadius ?? buttonBorderRadius,
+      trailingContainerWidth:
+          other.trailingContainerWidth ?? trailingContainerWidth,
+    );
+  }
+}
+
+extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
+  MechanixMenuThemeData merge(
+      MechanixMenuThemeData? other, BuildContext context) {
+    // if (other == null) return this;
+
+    return copyWith(
+      elevation: other?.elevation ?? elevation,
+      borderRadius: other?.borderRadius ?? borderRadius,
+      width: other?.width ?? width,
+      maxHeight: other?.maxHeight ?? maxHeight,
+      constraints: other?.constraints ?? constraints,
+      itemBackgroundColor: other?.itemBackgroundColor ??
+          itemBackgroundColor ??
+          context.colorScheme.secondary,
+      itemHoverColor: other?.itemHoverColor ??
+          itemHoverColor ??
+          context.colorScheme.outline,
+      itemPadding: other?.itemPadding ?? itemPadding,
+      itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
+      itemHeight: other?.itemHeight ?? itemHeight,
+      disabledTextStyle: other?.disabledTextStyle ?? disabledTextStyle,
+      titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
+      iconColor: other?.iconColor ?? iconColor,
+      disabledIconColor: other?.disabledIconColor ?? disabledIconColor,
     );
   }
 }

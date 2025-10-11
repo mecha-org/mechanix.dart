@@ -16,7 +16,6 @@ export 'widgets/floatingActionButton/mechanix_fab.dart';
 export 'widgets/icon_widget.dart';
 export 'widgets/listItems/mechanix_simple_list.dart';
 export 'widgets/menu/mechanix_menu.dart';
-export 'widgets/menu/mechanix_menu_item.dart';
 export 'widgets/navigation_bar/mechanix_navigation_bar.dart';
 export 'widgets/pressable_list/mechanix_pressable_list.dart';
 export 'widgets/sectionList/mechanix_section_list.dart';
