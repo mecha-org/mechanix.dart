@@ -4,7 +4,8 @@ import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/sectionList/section_list_items_type.dart';
 
-class MechanixSectionList extends StatelessWidget {
+class MechanixSectionList extends StatefulWidget {
+  // Basic constructor for small lists (no infinite scroll)
   const MechanixSectionList({
     super.key,
     this.title,
@@ -18,8 +19,31 @@ class MechanixSectionList extends StatelessWidget {
     this.physics,
     this.controller,
     this.theme,
-  }) : itemCount = null;
+  })  : itemCount = null,
+        enableInfiniteScroll = false,
+        initialItemCount = null,
+        batchSize = null;
 
+  // Constructor for large lists with infinite scroll
+  const MechanixSectionList.lazy({
+    super.key,
+    this.title,
+    required this.sectionListItems,
+    this.onTap,
+    this.onTapUp,
+    this.onTapDown,
+    this.onDoubleTap,
+    this.itemBuilder,
+    this.separatorBuilder,
+    this.physics,
+    this.controller,
+    this.theme,
+    this.initialItemCount = 50,
+    this.batchSize = 50,
+  })  : itemCount = null,
+        enableInfiniteScroll = true;
+
+  // Builder constructor for small lists
   const MechanixSectionList.builder({
     super.key,
     this.title,
@@ -33,8 +57,31 @@ class MechanixSectionList extends StatelessWidget {
     this.theme,
     this.controller,
   })  : separatorBuilder = null,
-        sectionListItems = const [];
+        sectionListItems = const [],
+        enableInfiniteScroll = false,
+        initialItemCount = null,
+        batchSize = null;
 
+  // Builder constructor for large lists with infinite scroll
+  const MechanixSectionList.lazyBuilder({
+    super.key,
+    this.title,
+    this.onTap,
+    this.onTapUp,
+    this.onTapDown,
+    this.onDoubleTap,
+    required this.itemCount,
+    required this.itemBuilder,
+    this.physics,
+    this.theme,
+    this.controller,
+    this.initialItemCount = 50,
+    this.batchSize = 50,
+  })  : separatorBuilder = null,
+        sectionListItems = const [],
+        enableInfiniteScroll = true;
+
+  // Separated constructor for small lists
   const MechanixSectionList.separated({
     super.key,
     this.title,
@@ -48,7 +95,29 @@ class MechanixSectionList extends StatelessWidget {
     this.physics,
     this.controller,
     this.theme,
-  }) : itemCount = null;
+  })  : itemCount = null,
+        enableInfiniteScroll = false,
+        initialItemCount = null,
+        batchSize = null;
+
+  // Separated constructor for large lists with infinite scroll
+  const MechanixSectionList.lazySeparated({
+    super.key,
+    this.title,
+    required this.sectionListItems,
+    this.onTap,
+    this.onTapUp,
+    this.onTapDown,
+    this.onDoubleTap,
+    this.itemBuilder,
+    required this.separatorBuilder,
+    this.physics,
+    this.controller,
+    this.theme,
+    this.initialItemCount = 50,
+    this.batchSize = 50,
+  })  : itemCount = null,
+        enableInfiniteScroll = true;
 
   final String? title;
 
@@ -64,15 +133,85 @@ class MechanixSectionList extends StatelessWidget {
 
   final GestureTapCallback? onDoubleTap;
 
-  final Widget? Function(BuildContext, int)? itemBuilder;
+  final Widget? Function(BuildContext context, int index)? itemBuilder;
 
-  final Widget Function(BuildContext, int)? separatorBuilder;
+  final Widget Function(BuildContext context, int index)? separatorBuilder;
 
   final ScrollPhysics? physics;
 
   final ScrollController? controller;
 
   final MechanixSectionListThemeData? theme;
+
+  final bool enableInfiniteScroll;
+
+  final int? initialItemCount;
+
+  final int? batchSize;
+
+  @override
+  State<MechanixSectionList> createState() => _MechanixSectionListState();
+}
+
+class _MechanixSectionListState extends State<MechanixSectionList> {
+  late int _visibleCount;
+  late final ScrollController _scrollController;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final totalItems = widget.itemCount ?? widget.sectionListItems.length;
+
+    // Initialize visible count based on whether infinite scroll is enabled
+    if (widget.enableInfiniteScroll) {
+      _visibleCount = widget.initialItemCount!;
+      if (_visibleCount > totalItems) {
+        _visibleCount = totalItems;
+      }
+    } else {
+      _visibleCount = totalItems;
+    }
+
+    // Use provided controller or create our own
+    _scrollController = widget.controller ?? ScrollController();
+
+    // Add scroll listener only if infinite scroll is enabled and we have more items to load
+    if (widget.enableInfiniteScroll && _visibleCount < totalItems) {
+      _scrollController.addListener(_onScroll);
+    }
+  }
+
+  void _onScroll() {
+    final totalItems = widget.itemCount ?? widget.sectionListItems.length;
+
+    if (_isLoading || _visibleCount >= totalItems) return;
+
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      _loadMore();
+    }
+  }
+
+  Future<void> _loadMore() async {
+    final totalItems = widget.itemCount ?? widget.sectionListItems.length;
+
+    if (_isLoading || _visibleCount >= totalItems) return;
+
+    setState(() => _isLoading = true);
+
+    // Simulate loading delay
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    setState(() {
+      _visibleCount += widget.batchSize!;
+      if (_visibleCount > totalItems) {
+        _visibleCount = totalItems;
+      }
+      _isLoading = false;
+    });
+  }
 
   Widget _buildSectionList(BuildContext context, SectionListItems item,
       MechanixSectionListThemeData listTheme) {
@@ -135,7 +274,7 @@ class MechanixSectionList extends StatelessWidget {
   }
 
   Widget _buildDefaultSeparator(BuildContext context, int index) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
+    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
     if (listTheme.divider != null) {
       return listTheme.divider!;
     } else {
@@ -154,48 +293,136 @@ class MechanixSectionList extends StatelessWidget {
     required BuildContext context,
     required bool useSeparator,
     required bool themeRequiresDivider,
+    required MechanixSectionListThemeData listTheme,
   }) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
+    final effectiveItemCount = _visibleCount;
+
+    final shouldScroll = effectiveItemCount > 1;
+
+    final effectivePhysics = shouldScroll
+        ? (widget.physics ?? const ClampingScrollPhysics())
+        : const NeverScrollableScrollPhysics();
 
     if (useSeparator) {
       return ListView.separated(
         shrinkWrap: true,
-        physics: physics,
-        controller: controller,
-        itemCount: sectionListItems.length,
-        itemBuilder: itemBuilder ??
-            (context, index) =>
-                _buildSectionList(context, sectionListItems[index], listTheme),
-        separatorBuilder: separatorBuilder!,
+        physics: effectivePhysics,
+        controller: _scrollController,
+        itemCount: effectiveItemCount,
+        cacheExtent: 500,
+        addAutomaticKeepAlives: true,
+        itemBuilder: (context, index) {
+          return widget.itemBuilder?.call(context, index) ??
+              _buildSectionList(
+                  context, widget.sectionListItems[index], listTheme);
+        },
+        separatorBuilder: widget.separatorBuilder!,
       );
     } else if (themeRequiresDivider) {
       return ListView.separated(
         shrinkWrap: true,
-        physics: physics,
-        controller: controller,
-        itemCount: itemCount ?? sectionListItems.length,
-        itemBuilder: itemBuilder ??
-            (context, index) =>
-                _buildSectionList(context, sectionListItems[index], listTheme),
+        physics: effectivePhysics,
+        controller: _scrollController,
+        itemCount: effectiveItemCount,
+        cacheExtent: 500,
+        addAutomaticKeepAlives: true,
+        itemBuilder: (context, index) {
+          return widget.itemBuilder?.call(context, index) ??
+              _buildSectionList(
+                  context, widget.sectionListItems[index], listTheme);
+        },
         separatorBuilder: _buildDefaultSeparator,
       );
     } else {
       return ListView.builder(
         shrinkWrap: true,
-        physics: physics,
-        controller: controller,
-        itemCount: sectionListItems.length,
-        itemBuilder: itemBuilder ??
-            (context, index) =>
-                _buildSectionList(context, sectionListItems[index], listTheme),
+        physics: effectivePhysics,
+        controller: _scrollController,
+        itemCount: effectiveItemCount,
+        cacheExtent: 500,
+        addAutomaticKeepAlives: true,
+        itemBuilder: (context, index) {
+          return widget.itemBuilder?.call(context, index) ??
+              _buildSectionList(
+                  context, widget.sectionListItems[index], listTheme);
+        },
       );
     }
   }
 
   @override
+  void dispose() {
+    // Only dispose the controller if we created it
+    if (widget.controller == null) {
+      _scrollController.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(theme);
-    final bool useSeparator = separatorBuilder != null;
+    if (widget.enableInfiniteScroll) {
+      return _buildLazyListView(context);
+    } else {
+      return _buildRegularListView(context);
+    }
+  }
+
+  Widget _buildLazyListView(BuildContext context) {
+    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
+    final bool useSeparator = widget.separatorBuilder != null;
+    final bool themeRequiresDivider =
+        listTheme.isDividerRequired && !useSeparator;
+
+    return Container(
+      padding: listTheme.widgetPadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (widget.title != null)
+            Padding(
+              padding: listTheme.titlePadding,
+              child: Text(
+                widget.title!,
+                style: context.textTheme.labelMedium
+                    ?.copyWith(color: context.colorScheme.surfaceDim)
+                    .merge(listTheme.titleTextStyle),
+              ),
+            ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: 100,
+              maxHeight: MediaQuery.of(context).size.height * 0.7,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: listTheme.widgetRadius,
+                color: listTheme.backgroundColor?.resolve({}) ??
+                    context.colorScheme.secondary,
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: _buildListView(
+                      context: context,
+                      useSeparator: useSeparator,
+                      themeRequiresDivider: themeRequiresDivider,
+                      listTheme: listTheme,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRegularListView(BuildContext context) {
+    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
+    final bool useSeparator = widget.separatorBuilder != null;
     final bool themeRequiresDivider =
         listTheme.isDividerRequired && !useSeparator;
 
@@ -204,26 +431,29 @@ class MechanixSectionList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (title != null)
+          if (widget.title != null)
             Padding(
               padding: listTheme.titlePadding,
               child: Text(
-                title!,
+                widget.title!,
                 style: context.textTheme.labelMedium
                     ?.copyWith(color: context.colorScheme.surfaceDim)
                     .merge(listTheme.titleTextStyle),
               ),
             ),
           Container(
-              decoration: BoxDecoration(
-                borderRadius: listTheme.widgetRadius,
-                color: listTheme.backgroundColor?.resolve({}) ??
-                    context.colorScheme.secondary,
-              ),
-              child: _buildListView(
-                  context: context,
-                  useSeparator: useSeparator,
-                  themeRequiresDivider: themeRequiresDivider)),
+            decoration: BoxDecoration(
+              borderRadius: listTheme.widgetRadius,
+              color: listTheme.backgroundColor?.resolve({}) ??
+                  context.colorScheme.secondary,
+            ),
+            child: _buildListView(
+              context: context,
+              useSeparator: useSeparator,
+              themeRequiresDivider: themeRequiresDivider,
+              listTheme: listTheme,
+            ),
+          ),
         ],
       ),
     );
