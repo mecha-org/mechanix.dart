@@ -4,7 +4,7 @@ import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
-import 'package:widgets/widgets/searchbar/mechanix_search_bar_theme.dart';
+import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
 import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';

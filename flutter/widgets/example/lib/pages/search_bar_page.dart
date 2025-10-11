@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets/searchbar/mechanix_search_bar.dart';
-import 'package:widgets/widgets/select/select_type.dart';
+import 'package:widgets/widgets/search_bar/mechanix_search_bar.dart';
 
 class SearchBarPage extends StatefulWidget {
   const SearchBarPage({super.key});
@@ -11,11 +10,10 @@ class SearchBarPage extends StatefulWidget {
 
 class _SearchBarPageState extends State<SearchBarPage> {
   String selectValue = '';
-  final TextEditingController textController = TextEditingController();
 
-  void onChanged(SelectOption option) {
+  void onChanged(String value) {
     setState(() {
-      selectValue = option.value;
+      selectValue = value;
     });
   }
 
@@ -25,11 +23,9 @@ class _SearchBarPageState extends State<SearchBarPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MechanixSearchBar(
-          onChanged: (value) {},
-          controller: textController,
-          onBackwardIconPress: () => textController.clear(),
-          onCloseIconPress: () => textController.clear(),
-        )
+          onChanged: onChanged,
+        ),
+        Text(selectValue)
       ],
     );
   }
