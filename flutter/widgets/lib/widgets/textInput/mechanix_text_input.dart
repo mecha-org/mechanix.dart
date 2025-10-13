@@ -94,7 +94,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             controller: _controller,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
-            decoration: _buildInputDecoration(context, theme, widget.errorText),
+            decoration: _buildInputDecoration(context, theme),
             onChanged: widget.onChanged,
             onFieldSubmitted: widget.onFieldSubmitted,
             validator: widget.validator,
@@ -104,15 +104,15 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             controller: _controller,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
-            decoration: _buildInputDecoration(context, theme, widget.errorText),
+            decoration: _buildInputDecoration(context, theme),
             onChanged: widget.onChanged,
           ),
       ],
     );
   }
 
-  InputDecoration _buildInputDecoration(BuildContext context,
-      MechanixTextInputThemeData theme, String? errorText) {
+  InputDecoration _buildInputDecoration(
+      BuildContext context, MechanixTextInputThemeData theme) {
     final baseDecoration = InputDecoration(
       fillColor: theme.fillColor,
       filled: true,
@@ -121,7 +121,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       hintStyle: theme.hintTextStyle ??
           context.textTheme.labelSmall
               ?.copyWith(color: const Color(0xFF898A8D)),
-      errorText: errorText,
+      errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? IconButton(
               iconSize: 20,

@@ -28,8 +28,11 @@ class _MechanixTextInputPageState extends State<MechanixTextInputPage> {
           ),
           const SizedBox(height: 20),
           MechanixTextInput.password(
-            errorText: "Error Text",
-            prefixIcon: Icon(Icons.lock_outline),
+            inputDecoration: InputDecoration(
+              suffixIcon: Icon(Icons.close),
+              prefixIcon: Icon(Icons.lock_outline),
+              errorText: "Error Text",
+            ),
           ),
         ],
       ),
