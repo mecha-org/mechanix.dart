@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:widgets/mechanix.dart';
 
@@ -15,11 +16,20 @@ class _MechanixTextInputPageState extends State<MechanixTextInputPage> {
       child: Column(
         children: [
           MechanixTextInput.textInput(),
+          const SizedBox(height: 20),
           MechanixTextInput.textInput(
             initialValue: "Initial Value",
           ),
+          const SizedBox(height: 20),
           MechanixTextInput.password(
             hintText: 'Enter Password',
+          ),
+          const SizedBox(height: 20),
+          MechanixTextInput.password(
+            inputDecoration: InputDecoration(
+              prefixIcon: Icon(Icons.lock_outline),
+              errorText: "Error Text",
+            ),
           ),
         ],
       ),
