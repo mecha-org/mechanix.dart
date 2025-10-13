@@ -4,31 +4,37 @@ import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
 
 class MechanixTextInput<T> extends StatefulWidget {
-  const MechanixTextInput.textInput(
-      {super.key,
-      this.isPasswordField = false,
-      this.onChanged,
-      this.hintText,
-      this.isFormField = false,
-      this.inputDecoration,
-      this.validator,
-      this.onFieldSubmitted,
-      this.label,
-      this.theme,
-      this.initialValue});
+  const MechanixTextInput.textInput({
+    super.key,
+    this.isPasswordField = false,
+    this.onChanged,
+    this.hintText,
+    this.isFormField = false,
+    this.inputDecoration,
+    this.validator,
+    this.onFieldSubmitted,
+    this.label,
+    this.theme,
+    this.initialValue,
+    this.errorText,
+    this.prefixIcon,
+  });
 
-  const MechanixTextInput.password(
-      {super.key,
-      this.isPasswordField = true,
-      this.onChanged,
-      this.hintText,
-      this.isFormField = false,
-      this.inputDecoration,
-      this.label,
-      this.onFieldSubmitted,
-      this.validator,
-      this.theme,
-      this.initialValue});
+  const MechanixTextInput.password({
+    super.key,
+    this.isPasswordField = true,
+    this.onChanged,
+    this.hintText,
+    this.isFormField = false,
+    this.inputDecoration,
+    this.label,
+    this.onFieldSubmitted,
+    this.validator,
+    this.theme,
+    this.initialValue,
+    this.errorText,
+    this.prefixIcon,
+  });
 
   final String? label;
   final bool isPasswordField;
@@ -40,6 +46,8 @@ class MechanixTextInput<T> extends StatefulWidget {
   final String? Function(String?)? validator;
   final MechanixTextInputThemeData? theme;
   final String? initialValue;
+  final String? errorText;
+  final Widget? prefixIcon;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -86,7 +94,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             controller: _controller,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
-            decoration: _buildInputDecoration(context, theme),
+            decoration: _buildInputDecoration(context, theme, widget.errorText),
             onChanged: widget.onChanged,
             onFieldSubmitted: widget.onFieldSubmitted,
             validator: widget.validator,
@@ -96,15 +104,15 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             controller: _controller,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
-            decoration: _buildInputDecoration(context, theme),
+            decoration: _buildInputDecoration(context, theme, widget.errorText),
             onChanged: widget.onChanged,
           ),
       ],
     );
   }
 
-  InputDecoration _buildInputDecoration(
-      BuildContext context, MechanixTextInputThemeData theme) {
+  InputDecoration _buildInputDecoration(BuildContext context,
+      MechanixTextInputThemeData theme, String? errorText) {
     final baseDecoration = InputDecoration(
       fillColor: theme.fillColor,
       filled: true,
@@ -113,6 +121,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       hintStyle: theme.hintTextStyle ??
           context.textTheme.labelSmall
               ?.copyWith(color: const Color(0xFF898A8D)),
+      errorText: errorText,
       suffixIcon: widget.isPasswordField
           ? IconButton(
               iconSize: 20,
@@ -123,6 +132,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
               onPressed: togglePasswordVisibility,
             )
           : null,
+      prefixIcon: widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius ?? CircularRadius.sm,
         borderSide: theme.focusedBorderSide ?? context.borderSideXs,
@@ -150,6 +160,10 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 widget.inputDecoration?.hintText ?? baseDecoration.hintText,
             hintStyle:
                 widget.inputDecoration?.hintStyle ?? baseDecoration.hintStyle,
+            errorText:
+                widget.inputDecoration?.errorText ?? baseDecoration.errorText,
+            prefixIcon:
+                widget.inputDecoration?.prefixIcon ?? baseDecoration.prefixIcon,
             suffixIcon:
                 widget.inputDecoration?.suffixIcon ?? baseDecoration.suffixIcon,
             focusedBorder: widget.inputDecoration?.focusedBorder ??
