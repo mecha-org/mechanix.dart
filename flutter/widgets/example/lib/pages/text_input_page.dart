@@ -10,8 +10,6 @@ class MechanixTextInputPage extends StatefulWidget {
 }
 
 class _MechanixTextInputPageState extends State<MechanixTextInputPage> {
-  String? errorText;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -29,7 +27,6 @@ class _MechanixTextInputPageState extends State<MechanixTextInputPage> {
           const SizedBox(height: 20),
           MechanixTextInput.password(
             inputDecoration: InputDecoration(
-              suffixIcon: Icon(Icons.close),
               prefixIcon: Icon(Icons.lock_outline),
               errorText: "Error Text",
             ),
