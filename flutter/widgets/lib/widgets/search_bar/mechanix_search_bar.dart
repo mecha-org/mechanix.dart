@@ -5,6 +5,28 @@ import 'package:widgets/widgets.dart';
 
 import 'mechanix_search_bar_theme.dart';
 
+//   final FocusNode? focusNode;
+//  const MechanixSearchBar(
+//       {super.key,
+//       this.onChanged,
+//       this.side,
+//       this.backgroundColor,
+//       this.overlayColor,
+//       required this.controller,
+//       this.autoFocus = true,
+//       this.hintText = "Search...",
+//       this.hintStyle,
+//       this.leading,
+//       this.trailing,
+//       this.showDefaultTrailing = true,
+//       this.onBackwardIconPress,
+//       this.onCloseIconPress,
+//       this.onTap,
+//       this.onTapOutside,
+//       this.focusNode});
+
+//       focusNode: focusNode ?? FocusNode(),
+
 class MechanixSearchBar extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final bool autoFocus;
@@ -17,6 +39,7 @@ class MechanixSearchBar extends StatefulWidget {
   final MechanixSearchBarThemeData? theme;
   final double trailingHeight;
   final double trailingWidth;
+  final FocusNode? focusNode;
 
   const MechanixSearchBar({
     super.key,
@@ -31,6 +54,7 @@ class MechanixSearchBar extends StatefulWidget {
     this.theme,
     this.trailingHeight = 40,
     this.trailingWidth = 50,
+    this.focusNode,
   });
 
   @override
@@ -46,6 +70,7 @@ class _MechanixSearchBarState extends State<MechanixSearchBar> {
         MechanixSearchBarTheme.of(context).merge(widget.theme, context);
 
     return SearchBar(
+      focusNode: widget.focusNode,
       onTap: widget.onTap,
       onTapOutside: widget.onTapOutside,
       onChanged: widget.onChanged,

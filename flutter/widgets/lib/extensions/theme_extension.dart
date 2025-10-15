@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/build_context.dart';
+import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
@@ -183,8 +184,6 @@ extension MechanixSearchBarThemeDataExtensions on MechanixSearchBarThemeData {
 extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
   MechanixMenuThemeData merge(
       MechanixMenuThemeData? other, BuildContext context) {
-    // if (other == null) return this;
-
     return copyWith(
       elevation: other?.elevation ?? elevation,
       borderRadius: other?.borderRadius ?? borderRadius,
@@ -204,6 +203,23 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
       iconColor: other?.iconColor ?? iconColor,
       disabledIconColor: other?.disabledIconColor ?? disabledIconColor,
+    );
+  }
+}
+
+extension MechanixFloatingActionBarThemeDataExtensions
+    on MechanixFloatingActionBarThemeData {
+  MechanixFloatingActionBarThemeData merge(
+      MechanixFloatingActionBarThemeData? other, BuildContext context) {
+    return copyWith(
+      height: other?.height ?? height,
+      decoration: other?.decoration ??
+          decoration ??
+          BoxDecoration(
+            color: context.colorScheme.secondary,
+            borderRadius: BorderRadius.circular(8),
+          ),
+      padding: other?.padding ?? padding,
     );
   }
 }

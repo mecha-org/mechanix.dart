@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class MechanixMenuItemsType {
-  MechanixMenuItemsType({
+  const MechanixMenuItemsType({
     required this.title,
     this.leading,
     this.trailing,
+    this.titleTextStyle,
     this.onTap,
     this.onTapUp,
     this.onTapDown,
     this.onDoubleTap,
-    this.titleTextStyle,
     this.disabled = false,
     this.isSelected = false,
-    this.checked = false,
+    this.value = '',
+    this.leadingPadding = const EdgeInsets.only(right: 12),
+    this.trailingPadding = const EdgeInsets.only(left: 12),
   });
 
   final Widget? leading;
@@ -35,5 +37,9 @@ class MechanixMenuItemsType {
 
   final bool isSelected;
 
-  final bool checked;
+  final String value;
+
+  final EdgeInsets leadingPadding;
+
+  final EdgeInsets trailingPadding;
 }
