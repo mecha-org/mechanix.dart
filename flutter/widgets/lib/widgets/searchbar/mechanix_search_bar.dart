@@ -19,6 +19,7 @@ class MechanixSearchBar extends StatelessWidget {
 
   final VoidCallback? onBackwardIconPress;
   final VoidCallback? onCloseIconPress;
+  final FocusNode? focusNode;
 
   const MechanixSearchBar(
       {super.key,
@@ -36,7 +37,8 @@ class MechanixSearchBar extends StatelessWidget {
       this.onBackwardIconPress,
       this.onCloseIconPress,
       this.onTap,
-      this.onTapOutside});
+      this.onTapOutside,
+      this.focusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class MechanixSearchBar extends StatelessWidget {
       backgroundColor: resolvedBackgroundColor,
       overlayColor: resolvedOverlayColor,
       controller: controller,
+      focusNode: focusNode,
       autoFocus: autoFocus,
       hintText: hintText,
       hintStyle: resolvedHintStyle,
