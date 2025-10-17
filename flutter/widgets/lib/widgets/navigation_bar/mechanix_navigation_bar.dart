@@ -65,7 +65,7 @@ class MechanixNavigationBar extends StatelessWidget
           if (title != null)
             Text(
               title ?? '',
-              style: barTheme.titleStyle?.merge(context.textTheme.bodySmall),
+              style: context.textTheme.bodySmall?.merge(barTheme.titleStyle),
             )
         ],
       ),

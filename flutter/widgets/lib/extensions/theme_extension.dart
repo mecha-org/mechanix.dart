@@ -141,7 +141,7 @@ extension MechanixNavigationBarThemeDataExtensions
       backgroundColor:
           other.backgroundColor ?? backgroundColor ?? Colors.transparent,
       leadingWidth: other.leadingWidth ?? leadingWidth,
-      titleStyle: other.titleStyle ?? titleStyle,
+      titleStyle: titleStyle?.merge(other.titleStyle),
       foregroundColor: other.foregroundColor ??
           foregroundColor ??
           context.colorScheme.surfaceContainer,

@@ -21,7 +21,27 @@ class MechanixMenu extends StatefulWidget {
     this.closeMenu,
     this.onSelectionChanged,
     this.selectionType = MenuSelection.none,
-  });
+    this.separatorBuilder,
+  })  : itemCount = 0,
+        itemBuilder = null,
+        isCustomBuilder = false;
+
+  const MechanixMenu.builder({
+    super.key,
+    this.menuButton,
+    this.animationType = MenuTransitions.fade,
+    this.animationDuration = const Duration(milliseconds: 600),
+    this.dropdownPosition = DropdownPosition.bottomCenter,
+    this.theme,
+    this.openMenu,
+    this.closeMenu,
+    this.onSelectionChanged,
+    this.selectionType = MenuSelection.none,
+    this.separatorBuilder,
+    required this.itemBuilder,
+    required this.itemCount,
+  })  : items = const [],
+        isCustomBuilder = true;
 
   final List<MechanixMenuItemsType> items;
   final IconButton? menuButton;
@@ -33,6 +53,10 @@ class MechanixMenu extends StatefulWidget {
   final VoidCallback? closeMenu;
   final Function(List<String> selectedValues)? onSelectionChanged;
   final MenuSelection selectionType;
+  final bool isCustomBuilder;
+  final int itemCount;
+  final Widget? Function(BuildContext context, int index)? itemBuilder;
+  final Widget Function(BuildContext context, int index)? separatorBuilder;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -73,6 +97,10 @@ class _MechanixMenuState extends State<MechanixMenu> {
         selectionType: widget.selectionType,
         selectedValues: _selectedValues,
         onSelectionChanged: _handleSelectionChanged,
+        separatorBuilder: widget.separatorBuilder,
+        itemBuilder: widget.itemBuilder,
+        isCustomBuilder: widget.isCustomBuilder,
+        itemCount: widget.itemCount,
       ),
     );
 
@@ -142,6 +170,10 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.selectionType,
     required this.selectedValues,
     required this.onSelectionChanged,
+    required this.separatorBuilder,
+    required this.itemBuilder,
+    required this.isCustomBuilder,
+    required this.itemCount,
   });
 
   final LayerLink layerLink;
@@ -153,7 +185,11 @@ class _MechanixMenuContainer extends StatefulWidget {
   final MechanixMenuThemeData? theme;
   final MenuSelection selectionType;
   final List<String> selectedValues;
+  final bool isCustomBuilder;
+  final int itemCount;
   final Function(List<String> selectedValues) onSelectionChanged;
+  final Widget? Function(BuildContext context, int index)? itemBuilder;
+  final Widget Function(BuildContext context, int index)? separatorBuilder;
 
   @override
   State<_MechanixMenuContainer> createState() => _MechanixMenuContainerState();
@@ -469,6 +505,53 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     }
   }
 
+  Widget getMenuBUilder(MechanixMenuThemeData menuTheme) {
+    if (widget.isCustomBuilder) {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: widget.itemCount,
+        itemBuilder: (context, index) {
+          return widget.itemBuilder?.call(context, index);
+        },
+      );
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.items.length,
+      itemBuilder: (context, index) {
+        final MechanixMenuItemsType item = widget.items[index];
+        final bool isSelected = _isItemSelected(index.toString());
+
+        return _MenuItem(
+          theme: menuTheme,
+          index: index,
+          title: item.title,
+          leading: item.leading,
+          trailing: _buildTrailing(index, item, isSelected, menuTheme),
+          onTap: () => _handleItemTap(index, item),
+          onTapUp: item.onTapUp,
+          onTapDown: item.onTapDown,
+          onDoubleTap: item.onDoubleTap,
+          titleTextStyle: item.titleTextStyle,
+          disabled: item.disabled,
+          isSelected: item.isSelected,
+          selectionType: widget.selectionType,
+          leadingPadding: item.leadingPadding,
+          trailingPadding: item.trailingPadding,
+        );
+      },
+      separatorBuilder: widget.separatorBuilder ??
+          (context, index) => Divider(
+                color: context.outline,
+                thickness: 1,
+                height: 1,
+              ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final menuTheme =
@@ -494,39 +577,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
                       BoxConstraints(
                         maxHeight: menuTheme.maxHeight ?? 400,
                       ),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: widget.items.length,
-                    itemBuilder: (context, index) {
-                      final MechanixMenuItemsType item = widget.items[index];
-                      final bool isSelected = _isItemSelected(index.toString());
-
-                      return _MenuItem(
-                        theme: menuTheme,
-                        index: index,
-                        title: item.title,
-                        leading: item.leading,
-                        trailing:
-                            _buildTrailing(index, item, isSelected, menuTheme),
-                        onTap: () => _handleItemTap(index, item),
-                        onTapUp: item.onTapUp,
-                        onTapDown: item.onTapDown,
-                        onDoubleTap: item.onDoubleTap,
-                        titleTextStyle: item.titleTextStyle,
-                        disabled: item.disabled,
-                        isSelected: item.isSelected,
-                        selectionType: widget.selectionType,
-                        leadingPadding: item.leadingPadding,
-                        trailingPadding: item.trailingPadding,
-                      );
-                    },
-                    separatorBuilder: (context, index) => Divider(
-                      color: context.outline,
-                      thickness: 1,
-                      height: 1,
-                    ),
-                  ),
+                  child: getMenuBUilder(menuTheme),
                 ),
                 theme: menuTheme,
               ),
