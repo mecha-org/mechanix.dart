@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
@@ -21,7 +22,24 @@ class MechanixMenu extends StatefulWidget {
     this.closeMenu,
     this.onSelectionChanged,
     this.selectionType = MenuSelection.none,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
     this.separatorBuilder,
+    this.cacheExtent,
+    this.clipBehavior = Clip.hardEdge,
+    this.controller,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.offset = Offset.zero,
+    this.shrinkWrap = true,
   })  : itemCount = 0,
         itemBuilder = null,
         isCustomBuilder = false;
@@ -38,6 +56,23 @@ class MechanixMenu extends StatefulWidget {
     this.onSelectionChanged,
     this.selectionType = MenuSelection.none,
     this.separatorBuilder,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent,
+    this.controller,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.findChildIndexCallback,
+    this.offset = Offset.zero,
+    this.shrinkWrap = true,
     required this.itemBuilder,
     required this.itemCount,
   })  : items = const [],
@@ -57,6 +92,23 @@ class MechanixMenu extends StatefulWidget {
   final int itemCount;
   final Widget? Function(BuildContext context, int index)? itemBuilder;
   final Widget Function(BuildContext context, int index)? separatorBuilder;
+  final bool addAutomaticKeepAlives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+  final double? cacheExtent;
+  final Clip clipBehavior;
+  final ScrollController? controller;
+  final DragStartBehavior dragStartBehavior;
+  final HitTestBehavior hitTestBehavior;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final EdgeInsetsGeometry? padding;
+  final bool? primary;
+  final String? restorationId;
+  final bool reverse;
+  final Axis scrollDirection;
+  final int? Function(Key key)? findChildIndexCallback;
+  final Offset offset;
+  final bool shrinkWrap;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -101,6 +153,23 @@ class _MechanixMenuState extends State<MechanixMenu> {
         itemBuilder: widget.itemBuilder,
         isCustomBuilder: widget.isCustomBuilder,
         itemCount: widget.itemCount,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        controller: widget.controller,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        offset: widget.offset,
+        shrinkWrap: widget.shrinkWrap,
       ),
     );
 
@@ -174,6 +243,23 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.itemBuilder,
     required this.isCustomBuilder,
     required this.itemCount,
+    required this.addAutomaticKeepAlives,
+    required this.addRepaintBoundaries,
+    required this.addSemanticIndexes,
+    required this.cacheExtent,
+    required this.clipBehavior,
+    required this.controller,
+    required this.dragStartBehavior,
+    required this.hitTestBehavior,
+    required this.keyboardDismissBehavior,
+    required this.padding,
+    required this.primary,
+    required this.restorationId,
+    required this.reverse,
+    required this.scrollDirection,
+    required this.findChildIndexCallback,
+    required this.offset,
+    required this.shrinkWrap,
   });
 
   final LayerLink layerLink;
@@ -190,6 +276,23 @@ class _MechanixMenuContainer extends StatefulWidget {
   final Function(List<String> selectedValues) onSelectionChanged;
   final Widget? Function(BuildContext context, int index)? itemBuilder;
   final Widget Function(BuildContext context, int index)? separatorBuilder;
+  final bool addAutomaticKeepAlives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+  final double? cacheExtent;
+  final Clip clipBehavior;
+  final ScrollController? controller;
+  final DragStartBehavior dragStartBehavior;
+  final HitTestBehavior hitTestBehavior;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final EdgeInsetsGeometry? padding;
+  final bool? primary;
+  final String? restorationId;
+  final bool reverse;
+  final Axis scrollDirection;
+  final int? Function(Key key)? findChildIndexCallback;
+  final bool shrinkWrap;
+  final Offset offset;
 
   @override
   State<_MechanixMenuContainer> createState() => _MechanixMenuContainerState();
@@ -508,17 +611,31 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
   Widget getMenuBUilder(MechanixMenuThemeData menuTheme) {
     if (widget.isCustomBuilder) {
       return ListView.builder(
-        shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: widget.itemCount,
         itemBuilder: (context, index) {
           return widget.itemBuilder?.call(context, index);
         },
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        controller: widget.controller,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     }
 
     return ListView.separated(
-      shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
@@ -543,6 +660,22 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           trailingPadding: item.trailingPadding,
         );
       },
+      shrinkWrap: widget.shrinkWrap,
+      addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+      addRepaintBoundaries: widget.addRepaintBoundaries,
+      addSemanticIndexes: widget.addSemanticIndexes,
+      cacheExtent: widget.cacheExtent,
+      clipBehavior: widget.clipBehavior,
+      controller: widget.controller,
+      dragStartBehavior: widget.dragStartBehavior,
+      hitTestBehavior: widget.hitTestBehavior,
+      keyboardDismissBehavior: widget.keyboardDismissBehavior,
+      padding: widget.padding,
+      primary: widget.primary,
+      restorationId: widget.restorationId,
+      reverse: widget.reverse,
+      scrollDirection: widget.scrollDirection,
+      findChildIndexCallback: widget.findChildIndexCallback,
       separatorBuilder: widget.separatorBuilder ??
           (context, index) => Divider(
                 color: context.outline,
@@ -570,6 +703,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
               showWhenUnlinked: false,
               followerAnchor: anchors.followerAnchor,
               targetAnchor: anchors.targetAnchor,
+              offset: widget.offset,
               child: _buildAnimatedMenuContent(
                 child: Container(
                   width: menuTheme.width,

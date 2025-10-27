@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
@@ -19,6 +20,21 @@ class MechanixSectionList extends StatefulWidget {
     this.physics,
     this.controller,
     this.theme,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : itemCount = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
@@ -40,6 +56,21 @@ class MechanixSectionList extends StatefulWidget {
     this.theme,
     this.initialItemCount = 50,
     this.batchSize = 50,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : itemCount = null,
         enableInfiniteScroll = true;
 
@@ -56,6 +87,21 @@ class MechanixSectionList extends StatefulWidget {
     this.physics,
     this.theme,
     this.controller,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : separatorBuilder = null,
         sectionListItems = const [],
         enableInfiniteScroll = false,
@@ -77,6 +123,21 @@ class MechanixSectionList extends StatefulWidget {
     this.controller,
     this.initialItemCount = 50,
     this.batchSize = 50,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : separatorBuilder = null,
         sectionListItems = const [],
         enableInfiniteScroll = true;
@@ -95,6 +156,21 @@ class MechanixSectionList extends StatefulWidget {
     this.physics,
     this.controller,
     this.theme,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : itemCount = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
@@ -116,6 +192,21 @@ class MechanixSectionList extends StatefulWidget {
     this.theme,
     this.initialItemCount = 50,
     this.batchSize = 50,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : itemCount = null,
         enableInfiniteScroll = true;
 
@@ -148,6 +239,36 @@ class MechanixSectionList extends StatefulWidget {
   final int? initialItemCount;
 
   final int? batchSize;
+
+  final bool addAutomaticKeepAlives;
+
+  final bool addRepaintBoundaries;
+
+  final bool addSemanticIndexes;
+
+  final double? cacheExtent;
+
+  final Clip clipBehavior;
+
+  final DragStartBehavior dragStartBehavior;
+
+  final HitTestBehavior hitTestBehavior;
+
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
+  final EdgeInsetsGeometry? padding;
+
+  final bool? primary;
+
+  final String? restorationId;
+
+  final bool reverse;
+
+  final Axis scrollDirection;
+
+  final int? Function(Key key)? findChildIndexCallback;
+
+  final bool shrinkWrap;
 
   @override
   State<MechanixSectionList> createState() => _MechanixSectionListState();
@@ -305,47 +426,83 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
 
     if (useSeparator) {
       return ListView.separated(
-        shrinkWrap: true,
         physics: effectivePhysics,
         controller: _scrollController,
         itemCount: effectiveItemCount,
-        cacheExtent: 500,
-        addAutomaticKeepAlives: true,
         itemBuilder: (context, index) {
           return widget.itemBuilder?.call(context, index) ??
               _buildSectionList(
                   context, widget.sectionListItems[index], listTheme);
         },
         separatorBuilder: widget.separatorBuilder!,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     } else if (themeRequiresDivider) {
       return ListView.separated(
-        shrinkWrap: true,
         physics: effectivePhysics,
         controller: _scrollController,
         itemCount: effectiveItemCount,
-        cacheExtent: 500,
-        addAutomaticKeepAlives: true,
         itemBuilder: (context, index) {
           return widget.itemBuilder?.call(context, index) ??
               _buildSectionList(
                   context, widget.sectionListItems[index], listTheme);
         },
         separatorBuilder: _buildDefaultSeparator,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     } else {
       return ListView.builder(
-        shrinkWrap: true,
         physics: effectivePhysics,
         controller: _scrollController,
         itemCount: effectiveItemCount,
-        cacheExtent: 500,
-        addAutomaticKeepAlives: true,
         itemBuilder: (context, index) {
           return widget.itemBuilder?.call(context, index) ??
               _buildSectionList(
                   context, widget.sectionListItems[index], listTheme);
         },
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     }
   }

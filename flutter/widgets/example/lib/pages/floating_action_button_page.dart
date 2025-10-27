@@ -13,6 +13,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
   @override
   Widget build(BuildContext context) {
     return MechanixFloatingActionBar(
+      offset: Offset(300, 300),
       menus: [
         MechanixMenu(
           items: [

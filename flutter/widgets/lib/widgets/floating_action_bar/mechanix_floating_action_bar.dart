@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
@@ -7,13 +8,6 @@ import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
 import 'package:widgets/widgets/menu/utils/menu_utils.dart';
 
 class MechanixFloatingActionBar extends StatefulWidget {
-  final List<MechanixMenu> menus;
-  final Widget? menuButton;
-  final Duration animationDuration;
-  final bool initiallyOpen;
-  final DropdownPosition dropdownPosition;
-  final MechanixFloatingActionBarThemeData? theme;
-
   const MechanixFloatingActionBar({
     super.key,
     required this.menus,
@@ -22,7 +16,48 @@ class MechanixFloatingActionBar extends StatefulWidget {
     this.initiallyOpen = false,
     this.dropdownPosition = DropdownPosition.bottomCenter,
     this.theme,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent,
+    this.controller,
+    this.padding,
+    this.primary,
+    this.restorationId,
+    this.findChildIndexCallback,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.shrinkWrap = true,
+    this.offset = Offset.zero,
   });
+
+  final List<MechanixMenu> menus;
+  final Widget? menuButton;
+  final Duration animationDuration;
+  final bool initiallyOpen;
+  final DropdownPosition dropdownPosition;
+  final MechanixFloatingActionBarThemeData? theme;
+  final bool addAutomaticKeepAlives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+  final double? cacheExtent;
+  final Clip clipBehavior;
+  final ScrollController? controller;
+  final DragStartBehavior dragStartBehavior;
+  final HitTestBehavior hitTestBehavior;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final EdgeInsetsGeometry? padding;
+  final bool? primary;
+  final String? restorationId;
+  final bool reverse;
+  final Axis scrollDirection;
+  final int? Function(Key key)? findChildIndexCallback;
+  final bool shrinkWrap;
+  final Offset offset;
 
   @override
   State<MechanixFloatingActionBar> createState() =>
@@ -49,6 +84,23 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
         menus: widget.menus,
         fabTheme: fabTheme,
         dropdownPosition: widget.dropdownPosition,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        controller: widget.controller,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        offset: widget.offset,
+        shrinkWrap: widget.shrinkWrap,
       ),
     );
 
@@ -114,6 +166,23 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
     required this.onClose,
     required this.fabTheme,
     required this.dropdownPosition,
+    required this.addAutomaticKeepAlives,
+    required this.addRepaintBoundaries,
+    required this.addSemanticIndexes,
+    required this.cacheExtent,
+    required this.clipBehavior,
+    required this.controller,
+    required this.dragStartBehavior,
+    required this.hitTestBehavior,
+    required this.keyboardDismissBehavior,
+    required this.padding,
+    required this.primary,
+    required this.restorationId,
+    required this.reverse,
+    required this.scrollDirection,
+    required this.findChildIndexCallback,
+    required this.offset,
+    required this.shrinkWrap,
   });
 
   final LayerLink layerLink;
@@ -121,7 +190,23 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
   final VoidCallback onClose;
   final MechanixFloatingActionBarThemeData fabTheme;
   final DropdownPosition dropdownPosition;
-
+  final bool addAutomaticKeepAlives;
+  final bool addRepaintBoundaries;
+  final bool addSemanticIndexes;
+  final double? cacheExtent;
+  final Clip clipBehavior;
+  final ScrollController? controller;
+  final DragStartBehavior dragStartBehavior;
+  final HitTestBehavior hitTestBehavior;
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+  final EdgeInsetsGeometry? padding;
+  final bool? primary;
+  final String? restorationId;
+  final bool reverse;
+  final Axis scrollDirection;
+  final int? Function(Key key)? findChildIndexCallback;
+  final bool shrinkWrap;
+  final Offset offset;
   @override
   State<_MechanixFloatingActionBarContainerState> createState() =>
       __MechanixFloatingActionBarContainerState();
@@ -189,6 +274,7 @@ class __MechanixFloatingActionBarContainerState
               link: widget.layerLink,
               followerAnchor: anchors.followerAnchor,
               targetAnchor: anchors.targetAnchor,
+              offset: widget.offset,
               child: buiMenuContent(
                 Container(
                   padding: widget.fabTheme.padding,
@@ -208,6 +294,25 @@ class __MechanixFloatingActionBarContainerState
                               selectionType: menu.selectionType,
                               openMenu: menu.openMenu,
                               theme: menu.theme,
+                              shrinkWrap: widget.shrinkWrap,
+                              addAutomaticKeepAlives:
+                                  widget.addAutomaticKeepAlives,
+                              addRepaintBoundaries: widget.addRepaintBoundaries,
+                              addSemanticIndexes: widget.addSemanticIndexes,
+                              cacheExtent: widget.cacheExtent,
+                              clipBehavior: widget.clipBehavior,
+                              controller: widget.controller,
+                              dragStartBehavior: widget.dragStartBehavior,
+                              hitTestBehavior: widget.hitTestBehavior,
+                              keyboardDismissBehavior:
+                                  widget.keyboardDismissBehavior,
+                              padding: widget.padding,
+                              primary: widget.primary,
+                              restorationId: widget.restorationId,
+                              reverse: widget.reverse,
+                              scrollDirection: widget.scrollDirection,
+                              findChildIndexCallback:
+                                  widget.findChildIndexCallback,
                               items: menu.items
                                   .map((item) => MechanixMenuItemsType(
                                         onTap: () {
