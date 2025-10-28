@@ -233,7 +233,10 @@ class _MechanixMenuState extends State<MechanixMenu> {
       link: _layerLink,
       child: widget.isMenuButtonRequired
           ? ((widget.menuButton != null)
-              ? widget.menuButton
+              ? GestureDetector(
+                  onTap: _toggleMenu,
+                  child: widget.menuButton,
+                )
               : IconButton(
                   onPressed: _toggleMenu,
                   isSelected: isClicked,
@@ -737,11 +740,17 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
               offset: widget.offset,
               child: _buildAnimatedMenuContent(
                 child: Container(
-                  width: menuTheme.width,
-                  constraints: menuTheme.constraints ??
-                      BoxConstraints(
-                        maxHeight: menuTheme.maxHeight ?? 400,
-                      ),
+                  width: menuTheme.dropdownWidth,
+                  height: menuTheme.dropdownHeight,
+                  constraints: menuTheme.constraints,
+                  padding: menuTheme.padding,
+                  clipBehavior: menuTheme.clipBehavior,
+                  margin: menuTheme.margin,
+                  transform: menuTheme.transform,
+                  transformAlignment: menuTheme.transformAlignment,
+                  alignment: menuTheme.alignment,
+                  foregroundDecoration: menuTheme.foregroundDecoration,
+                  decoration: menuTheme.decoration,
                   child: getMenuBUilder(menuTheme),
                 ),
                 theme: menuTheme,
@@ -807,11 +816,9 @@ class _MenuItemState extends State<_MenuItem> {
           color: _isHovered
               ? widget.theme.itemHoverColor
               : widget.theme.itemBackgroundColor,
-          borderRadius: widget.theme.itemBorderRadius,
         ),
         child: InkWell(
           onTap: widget.disabled ? null : widget.onTap,
-          borderRadius: widget.theme.itemBorderRadius,
           child: Padding(
             padding: widget.theme.itemPadding ?? EdgeInsets.all(0),
             child: Row(children: [

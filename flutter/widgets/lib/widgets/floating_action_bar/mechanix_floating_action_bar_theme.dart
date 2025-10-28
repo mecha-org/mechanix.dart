@@ -11,22 +11,52 @@ class MechanixFloatingActionBarThemeData
     this.height = 50,
     this.decoration,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.width,
+    this.constraints,
+    this.clipBehavior = Clip.none,
+    this.margin,
+    this.transform,
+    this.transformAlignment,
+    this.alignment,
+    this.foregroundDecoration,
   });
 
   final double? height;
   final Decoration? decoration;
   final EdgeInsets? padding;
+  final double? width;
+  final BoxConstraints? constraints;
+  final Clip clipBehavior;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
+  final AlignmentGeometry? alignment;
+  final Decoration? foregroundDecoration;
 
   @override
   MechanixFloatingActionBarThemeData copyWith({
     double? height,
     Decoration? decoration,
     EdgeInsets? padding,
+    double? width,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? margin,
+    Matrix4? transform,
+    AlignmentGeometry? transformAlignment,
+    AlignmentGeometry? alignment,
+    Decoration? foregroundDecoration,
   }) {
     return MechanixFloatingActionBarThemeData(
       height: height ?? this.height,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
+      width: width ?? this.width,
+      constraints: constraints ?? this.constraints,
+      margin: margin ?? this.margin,
+      transform: transform ?? this.transform,
+      transformAlignment: transformAlignment ?? this.transformAlignment,
+      alignment: alignment ?? this.alignment,
+      foregroundDecoration: foregroundDecoration ?? this.foregroundDecoration,
     );
   }
 
@@ -36,6 +66,15 @@ class MechanixFloatingActionBarThemeData
     properties.add(DoubleProperty('height', height));
     properties.add(DiagnosticsProperty('decoration', decoration));
     properties.add(DiagnosticsProperty('padding', padding));
+    properties.add(DoubleProperty('width', width));
+    properties.add(DoubleProperty('constraints', width));
+    properties.add(DiagnosticsProperty('margin', margin));
+    properties.add(DiagnosticsProperty('transform', transform));
+    properties
+        .add(DiagnosticsProperty('transformAlignment', transformAlignment));
+    properties.add(DiagnosticsProperty('alignment', alignment));
+    properties
+        .add(DiagnosticsProperty('foregroundDecoration', foregroundDecoration));
   }
 
   @override
@@ -48,6 +87,15 @@ class MechanixFloatingActionBarThemeData
       height: lerpDouble(height, o?.height, t) ?? height,
       decoration: Decoration.lerp(decoration, o?.decoration, t) ?? decoration,
       padding: EdgeInsets.lerp(padding, o?.padding, t) ?? padding,
+      width: lerpDouble(width, o?.width, t) ?? width,
+      constraints: BoxConstraints.lerp(constraints, o?.constraints, t),
+      margin: EdgeInsetsGeometry.lerp(margin, o?.margin, t),
+      transformAlignment:
+          AlignmentGeometry.lerp(transformAlignment, o?.transformAlignment, t),
+      alignment: AlignmentGeometry.lerp(alignment, o?.alignment, t),
+      foregroundDecoration:
+          Decoration.lerp(foregroundDecoration, o?.foregroundDecoration, t) ??
+              foregroundDecoration,
     );
   }
 
@@ -57,6 +105,13 @@ class MechanixFloatingActionBarThemeData
     return other is MechanixFloatingActionBarThemeData &&
         height == other.height &&
         decoration == other.decoration &&
+        width == other.width &&
+        constraints == other.constraints &&
+        margin == other.margin &&
+        transform == other.transform &&
+        transformAlignment == other.transformAlignment &&
+        alignment == other.alignment &&
+        foregroundDecoration == other.foregroundDecoration &&
         padding == other.padding;
   }
 
@@ -65,6 +120,13 @@ class MechanixFloatingActionBarThemeData
     return Object.hashAll([
       height,
       decoration,
+      width,
+      constraints,
+      margin,
+      transform,
+      transformAlignment,
+      alignment,
+      foregroundDecoration,
       padding,
     ]);
   }

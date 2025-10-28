@@ -187,8 +187,8 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
     return copyWith(
       elevation: other?.elevation ?? elevation,
       borderRadius: other?.borderRadius ?? borderRadius,
-      width: other?.width ?? width,
-      maxHeight: other?.maxHeight ?? maxHeight,
+      dropdownWidth: other?.dropdownWidth ?? dropdownWidth,
+      dropdownHeight: other?.dropdownHeight ?? dropdownHeight,
       constraints: other?.constraints ?? constraints,
       itemBackgroundColor: other?.itemBackgroundColor ??
           itemBackgroundColor ??
@@ -201,8 +201,13 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       itemHeight: other?.itemHeight ?? itemHeight,
       disabledTextStyle: other?.disabledTextStyle ?? disabledTextStyle,
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
-      iconColor: other?.iconColor ?? iconColor,
-      disabledIconColor: other?.disabledIconColor ?? disabledIconColor,
+      margin: other?.margin ?? margin,
+      transform: other?.transform ?? transform,
+      transformAlignment: other?.transformAlignment ?? transformAlignment,
+      alignment: other?.alignment ?? alignment,
+      foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
+      padding: other?.padding ?? padding,
+      decoration: other?.decoration ?? decoration,
     );
   }
 }
@@ -220,6 +225,13 @@ extension MechanixFloatingActionBarThemeDataExtensions
             borderRadius: BorderRadius.circular(8),
           ),
       padding: other?.padding ?? padding,
+      width: other?.width ?? width,
+      constraints: other?.constraints ?? constraints,
+      margin: other?.margin ?? margin,
+      transform: other?.transform ?? transform,
+      transformAlignment: other?.transformAlignment ?? transformAlignment,
+      alignment: other?.alignment ?? alignment,
+      foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
     );
   }
 }

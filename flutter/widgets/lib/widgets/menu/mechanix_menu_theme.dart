@@ -9,8 +9,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   const MechanixMenuThemeData({
     this.elevation = 4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.width = 200,
-    this.maxHeight = 400,
+    this.dropdownWidth = 200,
+    this.dropdownHeight = 400,
     this.constraints,
     this.itemBackgroundColor,
     this.itemHoverColor,
@@ -19,16 +19,20 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.itemHeight,
     this.disabledTextStyle,
     this.titleTextStyle,
-    this.iconColor,
-    this.disabledIconColor,
-    this.divider,
-    this.dropDownOffset,
+    this.padding,
+    this.clipBehavior = Clip.none,
+    this.margin,
+    this.transform,
+    this.transformAlignment,
+    this.alignment,
+    this.decoration,
+    this.foregroundDecoration,
   });
 
   final double? elevation;
   final BorderRadius? borderRadius;
-  final double? width;
-  final double? maxHeight;
+  final double? dropdownWidth;
+  final double? dropdownHeight;
   final BoxConstraints? constraints;
   final Color? itemBackgroundColor;
   final Color? itemHoverColor;
@@ -37,42 +41,44 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   final double? itemHeight;
   final TextStyle? disabledTextStyle;
   final TextStyle? titleTextStyle;
-  final Color? iconColor;
-  final Color? disabledIconColor;
-  final Divider? divider;
-  final Offset? dropDownOffset;
+  final EdgeInsets? padding;
+  final Clip clipBehavior;
+  final EdgeInsetsGeometry? margin;
+  final Matrix4? transform;
+  final AlignmentGeometry? transformAlignment;
+  final AlignmentGeometry? alignment;
+  final Decoration? decoration;
+  final Decoration? foregroundDecoration;
 
   @override
   MechanixMenuThemeData copyWith({
-    WidgetStateProperty<Color?>? backgroundColor,
     double? elevation,
     BorderRadius? borderRadius,
-    EdgeInsets? padding,
-    double? width,
-    double? maxHeight,
+    double? dropdownWidth,
+    double? dropdownHeight,
     BoxConstraints? constraints,
     Color? itemBackgroundColor,
     Color? itemHoverColor,
     EdgeInsets? itemPadding,
     BorderRadius? itemBorderRadius,
     double? itemHeight,
-    TextStyle? textStyle,
     TextStyle? disabledTextStyle,
     TextStyle? titleTextStyle,
     Color? iconColor,
     Color? disabledIconColor,
-    double? iconSize,
-    Duration? animationDuration,
-    Curve? animationCurve,
-    Color? dividerColor,
-    double? dividerHeight,
-    double? dividerThickness,
+    EdgeInsets? padding,
+    EdgeInsetsGeometry? margin,
+    Matrix4? transform,
+    AlignmentGeometry? transformAlignment,
+    AlignmentGeometry? alignment,
+    Decoration? decoration,
+    Decoration? foregroundDecoration,
   }) {
     return MechanixMenuThemeData(
       elevation: elevation ?? this.elevation,
       borderRadius: borderRadius ?? this.borderRadius,
-      width: width ?? this.width,
-      maxHeight: maxHeight ?? this.maxHeight,
+      dropdownWidth: dropdownWidth ?? this.dropdownWidth,
+      dropdownHeight: dropdownHeight ?? this.dropdownHeight,
       constraints: constraints ?? this.constraints,
       itemBackgroundColor: itemBackgroundColor ?? this.itemBackgroundColor,
       itemHoverColor: itemHoverColor ?? this.itemHoverColor,
@@ -81,8 +87,13 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       itemHeight: itemHeight ?? this.itemHeight,
       disabledTextStyle: disabledTextStyle ?? this.disabledTextStyle,
       titleTextStyle: titleTextStyle ?? this.titleTextStyle,
-      iconColor: iconColor ?? this.iconColor,
-      disabledIconColor: disabledIconColor ?? this.disabledIconColor,
+      padding: padding ?? this.padding,
+      margin: margin ?? this.margin,
+      transform: transform ?? this.transform,
+      transformAlignment: transformAlignment ?? this.transformAlignment,
+      alignment: alignment ?? this.alignment,
+      decoration: decoration ?? this.decoration,
+      foregroundDecoration: foregroundDecoration ?? this.foregroundDecoration,
     );
   }
 
@@ -95,8 +106,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     return MechanixMenuThemeData(
       elevation: lerpDouble(elevation, o?.elevation, t),
       borderRadius: BorderRadius.lerp(borderRadius, o?.borderRadius, t),
-      width: lerpDouble(width, o?.width, t),
-      maxHeight: lerpDouble(maxHeight, o?.maxHeight, t),
+      dropdownWidth: lerpDouble(dropdownWidth, o?.dropdownWidth, t),
+      dropdownHeight: lerpDouble(dropdownHeight, o?.dropdownHeight, t),
       constraints: constraints,
       itemBackgroundColor:
           Color.lerp(itemBackgroundColor, o?.itemBackgroundColor, t),
@@ -108,8 +119,15 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       itemHeight: lerpDouble(itemHeight, o?.itemHeight, t),
       disabledTextStyle:
           TextStyle.lerp(disabledTextStyle, o?.disabledTextStyle, t),
-      iconColor: Color.lerp(iconColor, o?.iconColor, t),
-      disabledIconColor: Color.lerp(disabledIconColor, o?.disabledIconColor, t),
+      padding: EdgeInsets.lerp(padding, o?.padding, t) ?? padding,
+      margin: EdgeInsetsGeometry.lerp(margin, o?.margin, t),
+      transformAlignment:
+          AlignmentGeometry.lerp(transformAlignment, o?.transformAlignment, t),
+      alignment: AlignmentGeometry.lerp(alignment, o?.alignment, t),
+      decoration: Decoration.lerp(decoration, o?.decoration, t) ?? decoration,
+      foregroundDecoration:
+          Decoration.lerp(foregroundDecoration, o?.foregroundDecoration, t) ??
+              foregroundDecoration,
     );
   }
 
@@ -118,21 +136,26 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('elevation', elevation));
     properties.add(DiagnosticsProperty('borderRadius', borderRadius));
-    properties.add(DoubleProperty('width', width));
-    properties.add(DoubleProperty('maxHeight', maxHeight));
+    properties.add(DoubleProperty('dropdownWidth', dropdownWidth));
+    properties.add(DoubleProperty('dropdownHeight', dropdownHeight));
     properties.add(DiagnosticsProperty('constraints', constraints));
-
     properties
         .add(DiagnosticsProperty('itemBackgroundColor', itemBackgroundColor));
     properties.add(DiagnosticsProperty('itemHoverColor', itemHoverColor));
     properties.add(DiagnosticsProperty('itemPadding', itemPadding));
     properties.add(DiagnosticsProperty('itemBorderRadius', itemBorderRadius));
     properties.add(DoubleProperty('itemHeight', itemHeight));
-
     properties.add(DiagnosticsProperty('disabledTextStyle', disabledTextStyle));
-
-    properties.add(DiagnosticsProperty('iconColor', iconColor));
-    properties.add(DiagnosticsProperty('disabledIconColor', disabledIconColor));
+    properties.add(DiagnosticsProperty('padding', padding));
+    properties.add(DiagnosticsProperty('margin', margin));
+    properties.add(DiagnosticsProperty('clipBehavior', clipBehavior));
+    properties.add(DiagnosticsProperty('transform', transform));
+    properties
+        .add(DiagnosticsProperty('transformAlignment', transformAlignment));
+    properties.add(DiagnosticsProperty('alignment', alignment));
+    properties.add(DiagnosticsProperty('decoration', decoration));
+    properties
+        .add(DiagnosticsProperty('foregroundDecoration', foregroundDecoration));
   }
 
   @override
@@ -141,17 +164,23 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     return other is MechanixMenuThemeData &&
         elevation == other.elevation &&
         borderRadius == other.borderRadius &&
-        width == other.width &&
-        maxHeight == other.maxHeight &&
+        dropdownWidth == other.dropdownWidth &&
+        dropdownHeight == other.dropdownHeight &&
         constraints == other.constraints &&
         itemBackgroundColor == other.itemBackgroundColor &&
         itemHoverColor == other.itemHoverColor &&
         itemPadding == other.itemPadding &&
         itemBorderRadius == other.itemBorderRadius &&
         itemHeight == other.itemHeight &&
-        disabledTextStyle == other.disabledTextStyle &&
-        iconColor == other.iconColor &&
-        disabledIconColor == other.disabledIconColor;
+        padding == other.padding &&
+        clipBehavior == other.clipBehavior &&
+        margin == other.margin &&
+        transform == other.transform &&
+        transformAlignment == other.transformAlignment &&
+        alignment == other.alignment &&
+        decoration == other.decoration &&
+        foregroundDecoration == other.foregroundDecoration &&
+        disabledTextStyle == other.disabledTextStyle;
   }
 
   @override
@@ -159,8 +188,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     return Object.hashAll([
       elevation,
       borderRadius,
-      width,
-      maxHeight,
+      dropdownWidth,
+      dropdownHeight,
       constraints,
       itemBackgroundColor,
       itemHoverColor,
@@ -168,8 +197,14 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       itemBorderRadius,
       itemHeight,
       disabledTextStyle,
-      iconColor,
-      disabledIconColor,
+      padding,
+      clipBehavior,
+      margin,
+      transform,
+      transformAlignment,
+      alignment,
+      decoration,
+      foregroundDecoration,
     ]);
   }
 }

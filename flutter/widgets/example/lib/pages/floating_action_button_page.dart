@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
+import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
 
 class FabExamplePage extends StatefulWidget {
@@ -76,6 +77,13 @@ class _FabExamplePageState extends State<FabExamplePage> {
         MechanixFloatingActionBar(
           offset: Offset(300, 300),
           buttonIcon: IconWidget.fromIconData(icon: Icon(Icons.abc)),
+          theme: MechanixFloatingActionBarThemeData(
+            height: 100,
+            width: 500,
+            decoration: BoxDecoration(
+                color: Colors.amberAccent,
+                borderRadius: BorderRadius.circular(16)),
+          ),
           menus: [
             MechanixMenu(
               menuButton:

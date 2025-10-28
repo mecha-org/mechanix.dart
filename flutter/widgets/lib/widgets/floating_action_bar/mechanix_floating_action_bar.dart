@@ -303,9 +303,16 @@ class __MechanixFloatingActionBarContainerState
                 Container(
                   padding: widget.fabTheme.padding,
                   height: widget.fabTheme.height,
+                  width: widget.fabTheme.width,
+                  constraints: widget.fabTheme.constraints,
+                  clipBehavior: widget.fabTheme.clipBehavior,
+                  margin: widget.fabTheme.margin,
+                  transform: widget.fabTheme.transform,
+                  transformAlignment: widget.fabTheme.transformAlignment,
+                  alignment: widget.fabTheme.alignment,
+                  foregroundDecoration: widget.fabTheme.foregroundDecoration,
                   decoration: widget.fabTheme.decoration,
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: widget.menus,
                   ),
