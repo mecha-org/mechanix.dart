@@ -40,6 +40,9 @@ class MechanixMenu extends StatefulWidget {
     this.findChildIndexCallback,
     this.offset = Offset.zero,
     this.shrinkWrap = true,
+    this.buttonIcon,
+    this.menuController,
+    this.isMenuButtonRequired = true,
   })  : itemCount = 0,
         itemBuilder = null,
         isCustomBuilder = false;
@@ -73,6 +76,9 @@ class MechanixMenu extends StatefulWidget {
     this.findChildIndexCallback,
     this.offset = Offset.zero,
     this.shrinkWrap = true,
+    this.buttonIcon,
+    this.menuController,
+    this.isMenuButtonRequired = true,
     required this.itemBuilder,
     required this.itemCount,
   })  : items = const [],
@@ -109,6 +115,9 @@ class MechanixMenu extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final Offset offset;
   final bool shrinkWrap;
+  final IconWidget? buttonIcon;
+  final MechanixMenuController? menuController;
+  final bool isMenuButtonRequired;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -127,6 +136,33 @@ class _MechanixMenuState extends State<MechanixMenu> {
         .where((item) => item.isSelected)
         .map((item) => item.value)
         .toList();
+
+    widget.menuController?._setCallbacks(
+      open: _openMenu,
+      close: _closeMenu,
+      toggle: _toggleMenu,
+    );
+  }
+
+  void _openMenu() {
+    if (_overlayEntry == null) {
+      setState(() {
+        isClicked = true;
+      });
+      _showOptions(context);
+    }
+  }
+
+  void _closeMenu() {
+    _hideOptions();
+  }
+
+  void _toggleMenu() {
+    if (_overlayEntry == null) {
+      _openMenu();
+    } else {
+      _closeMenu();
+    }
   }
 
   void _handleSelectionChanged(List<String> newSelectedValues) {
@@ -140,7 +176,7 @@ class _MechanixMenuState extends State<MechanixMenu> {
     _overlayEntry = OverlayEntry(
       builder: (context) => _MechanixMenuContainer(
         layerLink: _layerLink,
-        onClose: _hideOptions,
+        onClose: _closeMenu,
         items: widget.items,
         animationType: widget.animationType,
         animationDuration: widget.animationDuration,
@@ -195,33 +231,28 @@ class _MechanixMenuState extends State<MechanixMenu> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child: (widget.menuButton != null)
-          ? widget.menuButton
-          : IconButton(
-              onPressed: () {
-                if (_overlayEntry == null) {
-                  setState(() {
-                    isClicked = true;
-                  });
-                  _showOptions(context);
-                } else {
-                  _hideOptions();
-                }
-              },
-              isSelected: isClicked,
-              icon: IconWidget.fromIconData(
-                icon: Icon(Icons.more_vert),
-                boxWidth: 48,
-                boxHeight: 40,
-                iconWidth: 20,
-                iconHeight: 20,
-              ),
-            ),
+      child: widget.isMenuButtonRequired
+          ? ((widget.menuButton != null)
+              ? widget.menuButton
+              : IconButton(
+                  onPressed: _toggleMenu,
+                  isSelected: isClicked,
+                  icon: widget.buttonIcon ??
+                      IconWidget.fromIconData(
+                        icon: Icon(Icons.more_vert),
+                        boxWidth: 48,
+                        boxHeight: 40,
+                        iconWidth: 20,
+                        iconHeight: 20,
+                      ),
+                ))
+          : null,
     );
   }
 
   @override
   void dispose() {
+    widget.controller?.dispose();
     _overlayEntry?.remove();
     super.dispose();
   }
@@ -807,5 +838,33 @@ class _MenuItemState extends State<_MenuItem> {
         ),
       ),
     );
+  }
+}
+
+class MechanixMenuController {
+  VoidCallback? _open;
+  VoidCallback? _close;
+  VoidCallback? _toggle;
+
+  void open() => _open?.call();
+
+  void close() => _close?.call();
+
+  void toggle() => _toggle?.call();
+
+  void _setCallbacks({
+    required VoidCallback open,
+    required VoidCallback close,
+    required VoidCallback toggle,
+  }) {
+    _open = open;
+    _close = close;
+    _toggle = toggle;
+  }
+
+  void dispose() {
+    _open = null;
+    _close = null;
+    _toggle = null;
   }
 }

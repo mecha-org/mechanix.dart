@@ -12,6 +12,7 @@ class MechanixFloatingActionBar extends StatefulWidget {
     super.key,
     required this.menus,
     this.menuButton,
+    this.floatingActionBarController,
     this.animationDuration = const Duration(milliseconds: 300),
     this.initiallyOpen = false,
     this.dropdownPosition = DropdownPosition.bottomCenter,
@@ -33,10 +34,13 @@ class MechanixFloatingActionBar extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.shrinkWrap = true,
     this.offset = Offset.zero,
+    this.isMenuButtonRequired = true,
+    this.buttonIcon,
   });
 
   final List<MechanixMenu> menus;
   final Widget? menuButton;
+  final FloatingActionBarController? floatingActionBarController;
   final Duration animationDuration;
   final bool initiallyOpen;
   final DropdownPosition dropdownPosition;
@@ -58,6 +62,8 @@ class MechanixFloatingActionBar extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final bool shrinkWrap;
   final Offset offset;
+  final bool isMenuButtonRequired;
+  final IconWidget? buttonIcon;
 
   @override
   State<MechanixFloatingActionBar> createState() =>
@@ -73,6 +79,35 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
   void initState() {
     super.initState();
     isClicked = widget.initiallyOpen;
+
+    widget.floatingActionBarController?._setCallbacks(
+      open: _openMenu,
+      close: _closeMenu,
+      toggle: _toggleMenu,
+    );
+  }
+
+  void _openMenu() {
+    if (_overlayEntry == null) {
+      final fabTheme = MechanixFloatingActionBarTheme.of(context)
+          .merge(widget.theme, context);
+      setState(() {
+        isClicked = true;
+      });
+      _showOptions(context, fabTheme);
+    }
+  }
+
+  void _closeMenu() {
+    _hideOptions();
+  }
+
+  void _toggleMenu() {
+    if (_overlayEntry == null) {
+      _openMenu();
+    } else {
+      _closeMenu();
+    }
   }
 
   void _showOptions(
@@ -80,7 +115,7 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
     _overlayEntry = OverlayEntry(
       builder: (context) => _MechanixFloatingActionBarContainerState(
         layerLink: _layerLink,
-        onClose: _hideOptions,
+        onClose: _closeMenu,
         menus: widget.menus,
         fabTheme: fabTheme,
         dropdownPosition: widget.dropdownPosition,
@@ -115,45 +150,35 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
     _overlayEntry = null;
   }
 
-  void _toggleMenu(BuildContext context) {
-    final fabTheme =
-        MechanixFloatingActionBarTheme.of(context).merge(widget.theme, context);
-
-    if (_overlayEntry == null) {
-      setState(() {
-        isClicked = true;
-      });
-      _showOptions(context, fabTheme);
-    } else {
-      _hideOptions();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child: (widget.menuButton != null)
-          ? GestureDetector(
-              onTap: () => _toggleMenu(context),
-              child: widget.menuButton,
-            )
-          : IconButton(
-              onPressed: () => _toggleMenu(context),
-              isSelected: isClicked,
-              icon: IconWidget.fromIconData(
-                icon: Icon(Icons.more_vert),
-                boxWidth: 48,
-                boxHeight: 40,
-                iconWidth: 20,
-                iconHeight: 20,
-              ),
-            ),
+      child: widget.isMenuButtonRequired
+          ? ((widget.menuButton != null)
+              ? GestureDetector(
+                  onTap: _toggleMenu,
+                  child: widget.menuButton,
+                )
+              : IconButton(
+                  onPressed: _toggleMenu,
+                  isSelected: isClicked,
+                  icon: widget.buttonIcon ??
+                      IconWidget.fromIconData(
+                        icon: Icon(Icons.more_vert),
+                        boxWidth: 48,
+                        boxHeight: 40,
+                        iconWidth: 20,
+                        iconHeight: 20,
+                      ),
+                ))
+          : null,
     );
   }
 
   @override
   void dispose() {
+    widget.controller?.dispose();
     _overlayEntry?.remove();
     super.dispose();
   }
@@ -341,5 +366,33 @@ class __MechanixFloatingActionBarContainerState
         ],
       ),
     );
+  }
+}
+
+class FloatingActionBarController {
+  VoidCallback? _open;
+  VoidCallback? _close;
+  VoidCallback? _toggle;
+
+  void open() => _open?.call();
+
+  void close() => _close?.call();
+
+  void toggle() => _toggle?.call();
+
+  void _setCallbacks({
+    required VoidCallback open,
+    required VoidCallback close,
+    required VoidCallback toggle,
+  }) {
+    _open = open;
+    _close = close;
+    _toggle = toggle;
+  }
+
+  void dispose() {
+    _open = null;
+    _close = null;
+    _toggle = null;
   }
 }
