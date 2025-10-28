@@ -68,13 +68,13 @@ class _FabExamplePageState extends State<FabExamplePage> {
                     MechanixMenuItemsType(title: 'Menu 6', onTap: () {}),
                   ],
                 ),
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit))
               ],
             )
           ],
         ),
         MechanixFloatingActionBar(
           offset: Offset(300, 300),
-          // floatingActionBarController: _fabController,
           buttonIcon: IconWidget.fromIconData(icon: Icon(Icons.abc)),
           menus: [
             MechanixMenu(
@@ -93,6 +93,7 @@ class _FabExamplePageState extends State<FabExamplePage> {
                 MechanixMenuItemsType(title: 'Menu 6', onTap: () {}),
               ],
             ),
+            IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit))
           ],
         )
       ],

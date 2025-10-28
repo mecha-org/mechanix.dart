@@ -58,6 +58,7 @@ class _PopupMenuPageState extends State<PopupMenuPage> {
                   menuController: _menuController,
                   animationType: MenuTransitions.slideDown,
                   selectionType: MenuSelection.single,
+                  isMenuButtonRequired: false,
                   itemCount: 4,
                   itemBuilder: (context, index) {
                     return Text('Menu $index');

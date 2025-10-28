@@ -4,7 +4,6 @@ import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/menu/constants/menu_positions.dart';
-import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
 import 'package:widgets/widgets/menu/utils/menu_utils.dart';
 
 class MechanixFloatingActionBar extends StatefulWidget {
@@ -38,7 +37,7 @@ class MechanixFloatingActionBar extends StatefulWidget {
     this.buttonIcon,
   });
 
-  final List<MechanixMenu> menus;
+  final List<Widget> menus;
   final Widget? menuButton;
   final FloatingActionBarController? floatingActionBarController;
   final Duration animationDuration;
@@ -211,7 +210,7 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
   });
 
   final LayerLink layerLink;
-  final List<MechanixMenu> menus;
+  final List<Widget> menus;
   final VoidCallback onClose;
   final MechanixFloatingActionBarThemeData fabTheme;
   final DropdownPosition dropdownPosition;
@@ -308,56 +307,7 @@ class __MechanixFloatingActionBarContainerState
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: widget.menus
-                        .map((menu) => MechanixMenu(
-                              animationDuration: menu.animationDuration,
-                              animationType: menu.animationType,
-                              dropdownPosition: menu.dropdownPosition,
-                              menuButton: menu.menuButton,
-                              closeMenu: _handleClose,
-                              onSelectionChanged: menu.onSelectionChanged,
-                              selectionType: menu.selectionType,
-                              openMenu: menu.openMenu,
-                              theme: menu.theme,
-                              shrinkWrap: widget.shrinkWrap,
-                              addAutomaticKeepAlives:
-                                  widget.addAutomaticKeepAlives,
-                              addRepaintBoundaries: widget.addRepaintBoundaries,
-                              addSemanticIndexes: widget.addSemanticIndexes,
-                              cacheExtent: widget.cacheExtent,
-                              clipBehavior: widget.clipBehavior,
-                              controller: widget.controller,
-                              dragStartBehavior: widget.dragStartBehavior,
-                              hitTestBehavior: widget.hitTestBehavior,
-                              keyboardDismissBehavior:
-                                  widget.keyboardDismissBehavior,
-                              padding: widget.padding,
-                              primary: widget.primary,
-                              restorationId: widget.restorationId,
-                              reverse: widget.reverse,
-                              scrollDirection: widget.scrollDirection,
-                              findChildIndexCallback:
-                                  widget.findChildIndexCallback,
-                              items: menu.items
-                                  .map((item) => MechanixMenuItemsType(
-                                        onTap: () {
-                                          item.onTap?.call();
-                                        },
-                                        leading: item.leading,
-                                        leadingPadding: item.leadingPadding,
-                                        trailing: item.trailing,
-                                        trailingPadding: item.trailingPadding,
-                                        title: item.title,
-                                        titleTextStyle: item.titleTextStyle,
-                                        onTapUp: item.onTapUp,
-                                        onTapDown: item.onTapDown,
-                                        onDoubleTap: item.onDoubleTap,
-                                        disabled: item.disabled,
-                                        isSelected: item.isSelected,
-                                      ))
-                                  .toList(),
-                            ))
-                        .toList(),
+                    children: widget.menus,
                   ),
                 ),
               ),
