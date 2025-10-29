@@ -35,6 +35,7 @@ class MechanixFloatingActionBar extends StatefulWidget {
     this.offset = Offset.zero,
     this.isMenuButtonRequired = true,
     this.buttonIcon,
+    this.outsideClickDisabled = false,
   });
 
   final List<Widget> menus;
@@ -62,6 +63,7 @@ class MechanixFloatingActionBar extends StatefulWidget {
   final bool shrinkWrap;
   final Offset offset;
   final bool isMenuButtonRequired;
+  final bool outsideClickDisabled;
   final IconWidget? buttonIcon;
 
   @override
@@ -135,6 +137,7 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
         findChildIndexCallback: widget.findChildIndexCallback,
         offset: widget.offset,
         shrinkWrap: widget.shrinkWrap,
+        outsideClickDisabled: widget.outsideClickDisabled,
       ),
     );
 
@@ -207,6 +210,7 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
     required this.findChildIndexCallback,
     required this.offset,
     required this.shrinkWrap,
+    required this.outsideClickDisabled,
   });
 
   final LayerLink layerLink;
@@ -231,6 +235,8 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final bool shrinkWrap;
   final Offset offset;
+  final bool outsideClickDisabled;
+
   @override
   State<_MechanixFloatingActionBarContainerState> createState() =>
       __MechanixFloatingActionBarContainerState();
@@ -292,7 +298,7 @@ class __MechanixFloatingActionBarContainerState
         Positioned.fill(
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
-            onTap: _handleClose,
+            onTap: widget.outsideClickDisabled ? null : _handleClose,
           ),
         ),
         Positioned(

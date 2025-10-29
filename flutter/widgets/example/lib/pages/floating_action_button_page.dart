@@ -77,6 +77,8 @@ class _FabExamplePageState extends State<FabExamplePage> {
         MechanixFloatingActionBar(
           offset: Offset(300, 300),
           buttonIcon: IconWidget.fromIconData(icon: Icon(Icons.abc)),
+          outsideClickDisabled: true,
+          floatingActionBarController: _fabController,
           theme: MechanixFloatingActionBarThemeData(
             height: 100,
             width: 500,
@@ -86,11 +88,13 @@ class _FabExamplePageState extends State<FabExamplePage> {
           ),
           menus: [
             MechanixMenu(
-              menuButton:
-                  IconButton(onPressed: () {}, icon: Icon(Icons.download_done)),
               items: [
                 MechanixMenuItemsType(title: 'Menu 1', onTap: () {}),
-                MechanixMenuItemsType(title: 'Menu 2', onTap: () {}),
+                MechanixMenuItemsType(
+                    title: 'Menu 2',
+                    onTap: () {
+                      _fabController.close();
+                    }),
                 MechanixMenuItemsType(title: 'Menu 3', onTap: () {}),
               ],
             ),
