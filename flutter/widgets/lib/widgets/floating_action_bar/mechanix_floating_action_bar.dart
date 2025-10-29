@@ -293,6 +293,9 @@ class __MechanixFloatingActionBarContainerState
   @override
   Widget build(BuildContext context) {
     final anchors = getDropDownPosition(widget.dropdownPosition);
+    final radius = (widget.fabTheme.decoration as BoxDecoration).borderRadius ??
+        BorderRadius.zero;
+
     return Stack(
       children: [
         Positioned.fill(
@@ -307,28 +310,31 @@ class __MechanixFloatingActionBarContainerState
             followerAnchor: anchors.followerAnchor,
             targetAnchor: anchors.targetAnchor,
             offset: widget.offset,
-            child: buiMenuContent(
-              Container(
-                padding: widget.fabTheme.padding,
-                height: widget.fabTheme.height,
-                width: widget.fabTheme.width,
-                constraints: widget.fabTheme.constraints,
-                clipBehavior: widget.fabTheme.clipBehavior,
-                margin: widget.fabTheme.margin,
-                transform: widget.fabTheme.transform,
-                transformAlignment: widget.fabTheme.transformAlignment,
-                alignment: widget.fabTheme.alignment,
-                foregroundDecoration: widget.fabTheme.foregroundDecoration,
-                decoration: widget.fabTheme.decoration,
-                child: Row(
-                  mainAxisAlignment: widget.fabTheme.barMainAxisAlignment,
-                  mainAxisSize: widget.fabTheme.barMainAxisSize,
-                  crossAxisAlignment: widget.fabTheme.barCrossAxisAlignment,
-                  textDirection: widget.fabTheme.barTextDirection,
-                  verticalDirection: widget.fabTheme.barVerticalDirection,
-                  textBaseline: widget.fabTheme.barTextBaseline,
-                  spacing: widget.fabTheme.barSpacing,
-                  children: widget.menus,
+            child: ClipRRect(
+              borderRadius: radius,
+              child: buiMenuContent(
+                Container(
+                  decoration: widget.fabTheme.decoration,
+                  padding: widget.fabTheme.padding,
+                  height: widget.fabTheme.height,
+                  width: widget.fabTheme.width,
+                  constraints: widget.fabTheme.constraints,
+                  clipBehavior: widget.fabTheme.clipBehavior,
+                  margin: widget.fabTheme.margin,
+                  transform: widget.fabTheme.transform,
+                  transformAlignment: widget.fabTheme.transformAlignment,
+                  alignment: widget.fabTheme.alignment,
+                  foregroundDecoration: widget.fabTheme.foregroundDecoration,
+                  child: Row(
+                    mainAxisAlignment: widget.fabTheme.barMainAxisAlignment,
+                    mainAxisSize: widget.fabTheme.barMainAxisSize,
+                    crossAxisAlignment: widget.fabTheme.barCrossAxisAlignment,
+                    textDirection: widget.fabTheme.barTextDirection,
+                    verticalDirection: widget.fabTheme.barVerticalDirection,
+                    textBaseline: widget.fabTheme.barTextBaseline,
+                    spacing: widget.fabTheme.barSpacing,
+                    children: widget.menus,
+                  ),
                 ),
               ),
             ),

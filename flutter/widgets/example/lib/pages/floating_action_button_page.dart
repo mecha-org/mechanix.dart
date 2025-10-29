@@ -51,9 +51,16 @@ class _FabExamplePageState extends State<FabExamplePage> {
               child: Text('Toggle Floating Menu'),
             ),
             MechanixFloatingActionBar(
-              offset: Offset(300, 300),
               isMenuButtonRequired: false,
               floatingActionBarController: _fabController,
+              theme: MechanixFloatingActionBarThemeData(
+                height: 100,
+                padding: EdgeInsets.symmetric(horizontal: 100),
+                decoration: BoxDecoration(
+                  color: Colors.amberAccent,
+                  borderRadius: CircularRadius.all(25),
+                ),
+              ),
               menus: [
                 MechanixMenu(
                   items: [
@@ -69,45 +76,15 @@ class _FabExamplePageState extends State<FabExamplePage> {
                     MechanixMenuItemsType(title: 'Menu 6', onTap: () {}),
                   ],
                 ),
-                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit))
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit)),
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit)),
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit)),
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit)),
+                IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit)),
               ],
             )
           ],
         ),
-        MechanixFloatingActionBar(
-          buttonIcon: IconWidget.fromIconData(icon: Icon(Icons.abc)),
-          outsideClickDisabled: true,
-          floatingActionBarController: _fabController,
-          theme: MechanixFloatingActionBarThemeData(
-            height: 100,
-            width: 500,
-            padding: EdgeInsets.symmetric(horizontal: 100),
-            decoration: BoxDecoration(
-                color: Colors.amberAccent,
-                borderRadius: CircularRadius.all(50)),
-          ),
-          menus: [
-            MechanixMenu(
-              items: [
-                MechanixMenuItemsType(title: 'Menu 1', onTap: () {}),
-                MechanixMenuItemsType(
-                    title: 'Menu 2',
-                    onTap: () {
-                      _fabController.close();
-                    }),
-                MechanixMenuItemsType(title: 'Menu 3', onTap: () {}),
-              ],
-            ),
-            MechanixMenu(
-              items: [
-                MechanixMenuItemsType(title: 'Menu 4', onTap: () {}),
-                MechanixMenuItemsType(title: 'Menu 5', onTap: () {}),
-                MechanixMenuItemsType(title: 'Menu 6', onTap: () {}),
-              ],
-            ),
-            IconButton.filled(onPressed: () {}, icon: Icon(Icons.ac_unit))
-          ],
-        )
       ],
     );
   }
