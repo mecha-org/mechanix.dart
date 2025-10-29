@@ -229,6 +229,14 @@ extension MechanixFloatingActionBarThemeDataExtensions
       transformAlignment: other?.transformAlignment ?? transformAlignment,
       alignment: other?.alignment ?? alignment,
       foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
+      barMainAxisAlignment: other?.barMainAxisAlignment ?? barMainAxisAlignment,
+      barMainAxisSize: other?.barMainAxisSize ?? barMainAxisSize,
+      barCrossAxisAlignment:
+          other?.barCrossAxisAlignment ?? barCrossAxisAlignment,
+      barTextDirection: other?.barTextDirection ?? barTextDirection,
+      barVerticalDirection: other?.barVerticalDirection ?? barVerticalDirection,
+      barTextBaseline: other?.barTextBaseline ?? barTextBaseline,
+      barSpacing: other?.barSpacing ?? barSpacing,
     );
   }
 }
