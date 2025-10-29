@@ -75,16 +75,16 @@ class _FabExamplePageState extends State<FabExamplePage> {
           ],
         ),
         MechanixFloatingActionBar(
-          offset: Offset(300, 300),
           buttonIcon: IconWidget.fromIconData(icon: Icon(Icons.abc)),
           outsideClickDisabled: true,
           floatingActionBarController: _fabController,
           theme: MechanixFloatingActionBarThemeData(
             height: 100,
             width: 500,
+            padding: EdgeInsets.symmetric(horizontal: 100),
             decoration: BoxDecoration(
                 color: Colors.amberAccent,
-                borderRadius: BorderRadius.circular(16)),
+                borderRadius: CircularRadius.all(50)),
           ),
           menus: [
             MechanixMenu(

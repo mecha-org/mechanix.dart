@@ -19,6 +19,13 @@ class MechanixFloatingActionBarThemeData
     this.transformAlignment,
     this.alignment,
     this.foregroundDecoration,
+    this.barMainAxisAlignment = MainAxisAlignment.spaceAround,
+    this.barMainAxisSize = MainAxisSize.min,
+    this.barCrossAxisAlignment = CrossAxisAlignment.center,
+    this.barTextDirection,
+    this.barVerticalDirection = VerticalDirection.down,
+    this.barTextBaseline,
+    this.barSpacing = 0,
   });
 
   final double? height;
@@ -32,6 +39,13 @@ class MechanixFloatingActionBarThemeData
   final AlignmentGeometry? transformAlignment;
   final AlignmentGeometry? alignment;
   final Decoration? foregroundDecoration;
+  final MainAxisAlignment barMainAxisAlignment;
+  final MainAxisSize barMainAxisSize;
+  final CrossAxisAlignment barCrossAxisAlignment;
+  final TextDirection? barTextDirection;
+  final VerticalDirection barVerticalDirection;
+  final TextBaseline? barTextBaseline;
+  final double barSpacing;
 
   @override
   MechanixFloatingActionBarThemeData copyWith({
@@ -45,6 +59,13 @@ class MechanixFloatingActionBarThemeData
     AlignmentGeometry? transformAlignment,
     AlignmentGeometry? alignment,
     Decoration? foregroundDecoration,
+    MainAxisAlignment? barMainAxisAlignment,
+    MainAxisSize? barMainAxisSize,
+    CrossAxisAlignment? barCrossAxisAlignment,
+    TextDirection? barTextDirection,
+    VerticalDirection? barVerticalDirection,
+    TextBaseline? barTextBaseline,
+    double? barSpacing,
   }) {
     return MechanixFloatingActionBarThemeData(
       height: height ?? this.height,
@@ -57,6 +78,14 @@ class MechanixFloatingActionBarThemeData
       transformAlignment: transformAlignment ?? this.transformAlignment,
       alignment: alignment ?? this.alignment,
       foregroundDecoration: foregroundDecoration ?? this.foregroundDecoration,
+      barMainAxisAlignment: barMainAxisAlignment ?? this.barMainAxisAlignment,
+      barMainAxisSize: barMainAxisSize ?? this.barMainAxisSize,
+      barCrossAxisAlignment:
+          barCrossAxisAlignment ?? this.barCrossAxisAlignment,
+      barTextDirection: barTextDirection ?? this.barTextDirection,
+      barVerticalDirection: barVerticalDirection ?? this.barVerticalDirection,
+      barTextBaseline: barTextBaseline ?? this.barTextBaseline,
+      barSpacing: barSpacing ?? this.barSpacing,
     );
   }
 
@@ -75,6 +104,16 @@ class MechanixFloatingActionBarThemeData
     properties.add(DiagnosticsProperty('alignment', alignment));
     properties
         .add(DiagnosticsProperty('foregroundDecoration', foregroundDecoration));
+    properties
+        .add(DiagnosticsProperty('barMainAxisAlignment', barMainAxisAlignment));
+    properties.add(DiagnosticsProperty('barMainAxisSize', barMainAxisSize));
+    properties.add(
+        DiagnosticsProperty('barCrossAxisAlignment', barCrossAxisAlignment));
+    properties.add(DiagnosticsProperty('barTextDirection', barTextDirection));
+    properties
+        .add(DiagnosticsProperty('barVerticalDirection', barVerticalDirection));
+    properties.add(DiagnosticsProperty('barTextBaseline', barTextBaseline));
+    properties.add(DoubleProperty('barSpacing', barSpacing));
   }
 
   @override
@@ -85,6 +124,7 @@ class MechanixFloatingActionBarThemeData
     final o = other as MechanixFloatingActionBarThemeData?;
     return MechanixFloatingActionBarThemeData(
       height: lerpDouble(height, o?.height, t) ?? height,
+      barSpacing: lerpDouble(barSpacing, o?.barSpacing, t) ?? barSpacing,
       decoration: Decoration.lerp(decoration, o?.decoration, t) ?? decoration,
       padding: EdgeInsets.lerp(padding, o?.padding, t) ?? padding,
       width: lerpDouble(width, o?.width, t) ?? width,
@@ -112,6 +152,13 @@ class MechanixFloatingActionBarThemeData
         transformAlignment == other.transformAlignment &&
         alignment == other.alignment &&
         foregroundDecoration == other.foregroundDecoration &&
+        barMainAxisAlignment == other.barMainAxisAlignment &&
+        barMainAxisSize == other.barMainAxisSize &&
+        barCrossAxisAlignment == other.barCrossAxisAlignment &&
+        barTextDirection == other.barTextDirection &&
+        barVerticalDirection == other.barVerticalDirection &&
+        barTextBaseline == other.barTextBaseline &&
+        barSpacing == other.barSpacing &&
         padding == other.padding;
   }
 
@@ -127,6 +174,13 @@ class MechanixFloatingActionBarThemeData
       transformAlignment,
       alignment,
       foregroundDecoration,
+      barMainAxisAlignment,
+      barMainAxisSize,
+      barCrossAxisAlignment,
+      barTextDirection,
+      barVerticalDirection,
+      barTextBaseline,
+      barSpacing,
       padding,
     ]);
   }
