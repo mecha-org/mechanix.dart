@@ -9,15 +9,15 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   const MechanixMenuThemeData({
     this.elevation = 4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.dropdownWidth = 200,
-    this.dropdownHeight = 400,
-    this.constraints,
+    this.dropdownWidth,
+    this.dropdownHeight,
+    this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 200),
     this.itemBackgroundColor,
-    this.itemHoverColor,
     this.itemPadding = const EdgeInsets.all(12),
     this.itemBorderRadius,
     this.itemHeight,
     this.disabledTextStyle,
+    this.disabledBackgroundColor,
     this.titleTextStyle,
     this.padding,
     this.clipBehavior = Clip.none,
@@ -27,19 +27,21 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.alignment,
     this.decoration,
     this.foregroundDecoration,
+    this.disableOpacity = 0.5,
   });
 
   final double? elevation;
+  final double? disableOpacity;
   final BorderRadius? borderRadius;
   final double? dropdownWidth;
   final double? dropdownHeight;
   final BoxConstraints? constraints;
   final Color? itemBackgroundColor;
-  final Color? itemHoverColor;
   final EdgeInsets? itemPadding;
   final BorderRadius? itemBorderRadius;
   final double? itemHeight;
   final TextStyle? disabledTextStyle;
+  final Color? disabledBackgroundColor;
   final TextStyle? titleTextStyle;
   final EdgeInsets? padding;
   final Clip clipBehavior;
@@ -58,11 +60,11 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     double? dropdownHeight,
     BoxConstraints? constraints,
     Color? itemBackgroundColor,
-    Color? itemHoverColor,
     EdgeInsets? itemPadding,
     BorderRadius? itemBorderRadius,
     double? itemHeight,
     TextStyle? disabledTextStyle,
+    Color? disabledBackgroundColor,
     TextStyle? titleTextStyle,
     Color? iconColor,
     Color? disabledIconColor,
@@ -73,6 +75,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     AlignmentGeometry? alignment,
     Decoration? decoration,
     Decoration? foregroundDecoration,
+    double? disableOpacity,
   }) {
     return MechanixMenuThemeData(
       elevation: elevation ?? this.elevation,
@@ -81,11 +84,12 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       dropdownHeight: dropdownHeight ?? this.dropdownHeight,
       constraints: constraints ?? this.constraints,
       itemBackgroundColor: itemBackgroundColor ?? this.itemBackgroundColor,
-      itemHoverColor: itemHoverColor ?? this.itemHoverColor,
       itemPadding: itemPadding ?? this.itemPadding,
       itemBorderRadius: itemBorderRadius ?? this.itemBorderRadius,
       itemHeight: itemHeight ?? this.itemHeight,
       disabledTextStyle: disabledTextStyle ?? this.disabledTextStyle,
+      disabledBackgroundColor:
+          disabledBackgroundColor ?? this.disabledBackgroundColor,
       titleTextStyle: titleTextStyle ?? this.titleTextStyle,
       padding: padding ?? this.padding,
       margin: margin ?? this.margin,
@@ -94,6 +98,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       alignment: alignment ?? this.alignment,
       decoration: decoration ?? this.decoration,
       foregroundDecoration: foregroundDecoration ?? this.foregroundDecoration,
+      disableOpacity: disableOpacity ?? this.disableOpacity,
     );
   }
 
@@ -105,13 +110,13 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     final o = other as MechanixMenuThemeData?;
     return MechanixMenuThemeData(
       elevation: lerpDouble(elevation, o?.elevation, t),
+      disableOpacity: lerpDouble(disableOpacity, o?.disableOpacity, t),
       borderRadius: BorderRadius.lerp(borderRadius, o?.borderRadius, t),
       dropdownWidth: lerpDouble(dropdownWidth, o?.dropdownWidth, t),
       dropdownHeight: lerpDouble(dropdownHeight, o?.dropdownHeight, t),
       constraints: constraints,
       itemBackgroundColor:
           Color.lerp(itemBackgroundColor, o?.itemBackgroundColor, t),
-      itemHoverColor: Color.lerp(itemHoverColor, o?.itemHoverColor, t),
       itemPadding:
           EdgeInsets.lerp(itemPadding, o?.itemPadding, t) ?? itemPadding,
       itemBorderRadius:
@@ -119,6 +124,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       itemHeight: lerpDouble(itemHeight, o?.itemHeight, t),
       disabledTextStyle:
           TextStyle.lerp(disabledTextStyle, o?.disabledTextStyle, t),
+      disabledBackgroundColor:
+          Color.lerp(disabledBackgroundColor, o?.disabledBackgroundColor, t),
       padding: EdgeInsets.lerp(padding, o?.padding, t) ?? padding,
       margin: EdgeInsetsGeometry.lerp(margin, o?.margin, t),
       transformAlignment:
@@ -135,17 +142,19 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DoubleProperty('elevation', elevation));
+    properties.add(DoubleProperty('disableOpacity', disableOpacity));
     properties.add(DiagnosticsProperty('borderRadius', borderRadius));
     properties.add(DoubleProperty('dropdownWidth', dropdownWidth));
     properties.add(DoubleProperty('dropdownHeight', dropdownHeight));
     properties.add(DiagnosticsProperty('constraints', constraints));
     properties
         .add(DiagnosticsProperty('itemBackgroundColor', itemBackgroundColor));
-    properties.add(DiagnosticsProperty('itemHoverColor', itemHoverColor));
     properties.add(DiagnosticsProperty('itemPadding', itemPadding));
     properties.add(DiagnosticsProperty('itemBorderRadius', itemBorderRadius));
     properties.add(DoubleProperty('itemHeight', itemHeight));
     properties.add(DiagnosticsProperty('disabledTextStyle', disabledTextStyle));
+    properties.add(DiagnosticsProperty(
+        'disabledBackgroundColor', disabledBackgroundColor));
     properties.add(DiagnosticsProperty('padding', padding));
     properties.add(DiagnosticsProperty('margin', margin));
     properties.add(DiagnosticsProperty('clipBehavior', clipBehavior));
@@ -168,7 +177,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
         dropdownHeight == other.dropdownHeight &&
         constraints == other.constraints &&
         itemBackgroundColor == other.itemBackgroundColor &&
-        itemHoverColor == other.itemHoverColor &&
         itemPadding == other.itemPadding &&
         itemBorderRadius == other.itemBorderRadius &&
         itemHeight == other.itemHeight &&
@@ -180,6 +188,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
         alignment == other.alignment &&
         decoration == other.decoration &&
         foregroundDecoration == other.foregroundDecoration &&
+        disableOpacity == other.disableOpacity &&
+        disabledBackgroundColor == other.disabledBackgroundColor &&
         disabledTextStyle == other.disabledTextStyle;
   }
 
@@ -192,10 +202,10 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       dropdownHeight,
       constraints,
       itemBackgroundColor,
-      itemHoverColor,
       itemPadding,
       itemBorderRadius,
       itemHeight,
+      disabledBackgroundColor,
       disabledTextStyle,
       padding,
       clipBehavior,
@@ -204,6 +214,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       transformAlignment,
       alignment,
       decoration,
+      disableOpacity,
       foregroundDecoration,
     ]);
   }

@@ -287,41 +287,42 @@ class __MechanixFloatingActionBarContainerState
   @override
   Widget build(BuildContext context) {
     final anchors = getDropDownPosition(widget.dropdownPosition);
-    return GestureDetector(
-      onTap: () {
-        _handleClose();
-      },
-      child: Stack(
-        children: [
-          Positioned(
-            child: CompositedTransformFollower(
-              link: widget.layerLink,
-              followerAnchor: anchors.followerAnchor,
-              targetAnchor: anchors.targetAnchor,
-              offset: widget.offset,
-              child: buiMenuContent(
-                Container(
-                  padding: widget.fabTheme.padding,
-                  height: widget.fabTheme.height,
-                  width: widget.fabTheme.width,
-                  constraints: widget.fabTheme.constraints,
-                  clipBehavior: widget.fabTheme.clipBehavior,
-                  margin: widget.fabTheme.margin,
-                  transform: widget.fabTheme.transform,
-                  transformAlignment: widget.fabTheme.transformAlignment,
-                  alignment: widget.fabTheme.alignment,
-                  foregroundDecoration: widget.fabTheme.foregroundDecoration,
-                  decoration: widget.fabTheme.decoration,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: widget.menus,
-                  ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: _handleClose,
+          ),
+        ),
+        Positioned(
+          child: CompositedTransformFollower(
+            link: widget.layerLink,
+            followerAnchor: anchors.followerAnchor,
+            targetAnchor: anchors.targetAnchor,
+            offset: widget.offset,
+            child: buiMenuContent(
+              Container(
+                padding: widget.fabTheme.padding,
+                height: widget.fabTheme.height,
+                width: widget.fabTheme.width,
+                constraints: widget.fabTheme.constraints,
+                clipBehavior: widget.fabTheme.clipBehavior,
+                margin: widget.fabTheme.margin,
+                transform: widget.fabTheme.transform,
+                transformAlignment: widget.fabTheme.transformAlignment,
+                alignment: widget.fabTheme.alignment,
+                foregroundDecoration: widget.fabTheme.foregroundDecoration,
+                decoration: widget.fabTheme.decoration,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: widget.menus,
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

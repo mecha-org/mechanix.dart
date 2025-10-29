@@ -692,6 +692,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           selectionType: widget.selectionType,
           leadingPadding: item.leadingPadding,
           trailingPadding: item.trailingPadding,
+          handleClose: _handleClose,
         );
       },
       shrinkWrap: widget.shrinkWrap,
@@ -726,44 +727,46 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
 
     final anchors = getDropDownPosition(widget.dropdownPosition);
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: _handleClose,
-      child: Stack(
-        children: [
-          Positioned(
-            child: CompositedTransformFollower(
-              link: widget.layerLink,
-              showWhenUnlinked: false,
-              followerAnchor: anchors.followerAnchor,
-              targetAnchor: anchors.targetAnchor,
-              offset: widget.offset,
-              child: _buildAnimatedMenuContent(
-                child: Container(
-                  width: menuTheme.dropdownWidth,
-                  height: menuTheme.dropdownHeight,
-                  constraints: menuTheme.constraints,
-                  padding: menuTheme.padding,
-                  clipBehavior: menuTheme.clipBehavior,
-                  margin: menuTheme.margin,
-                  transform: menuTheme.transform,
-                  transformAlignment: menuTheme.transformAlignment,
-                  alignment: menuTheme.alignment,
-                  foregroundDecoration: menuTheme.foregroundDecoration,
-                  decoration: menuTheme.decoration,
-                  child: getMenuBUilder(menuTheme),
-                ),
-                theme: menuTheme,
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: _handleClose,
+          ),
+        ),
+        Positioned(
+          child: CompositedTransformFollower(
+            link: widget.layerLink,
+            showWhenUnlinked: false,
+            followerAnchor: anchors.followerAnchor,
+            targetAnchor: anchors.targetAnchor,
+            offset: widget.offset,
+            child: _buildAnimatedMenuContent(
+              child: Container(
+                width: menuTheme.dropdownWidth,
+                height: menuTheme.dropdownHeight,
+                constraints: menuTheme.constraints,
+                padding: menuTheme.padding,
+                clipBehavior: menuTheme.clipBehavior,
+                margin: menuTheme.margin,
+                transform: menuTheme.transform,
+                transformAlignment: menuTheme.transformAlignment,
+                alignment: menuTheme.alignment,
+                foregroundDecoration: menuTheme.foregroundDecoration,
+                decoration: menuTheme.decoration,
+                child: getMenuBUilder(menuTheme),
               ),
+              theme: menuTheme,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
-class _MenuItem extends StatefulWidget {
+class _MenuItem extends StatelessWidget {
   const _MenuItem({
     required this.index,
     required this.title,
@@ -780,6 +783,7 @@ class _MenuItem extends StatefulWidget {
     required this.leadingPadding,
     required this.trailingPadding,
     required this.selectionType,
+    required this.handleClose,
   });
 
   final Widget? leading;
@@ -797,50 +801,47 @@ class _MenuItem extends StatefulWidget {
   final EdgeInsets leadingPadding;
   final EdgeInsets trailingPadding;
   final MenuSelection selectionType;
-
-  @override
-  State<_MenuItem> createState() => _MenuItemState();
-}
-
-class _MenuItemState extends State<_MenuItem> {
-  bool _isHovered = false;
+  final VoidCallback handleClose;
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: Container(
-        height: widget.theme.itemHeight,
-        decoration: BoxDecoration(
-          color: _isHovered
-              ? widget.theme.itemHoverColor
-              : widget.theme.itemBackgroundColor,
-        ),
-        child: InkWell(
-          onTap: widget.disabled ? null : widget.onTap,
-          child: Padding(
-            padding: widget.theme.itemPadding ?? EdgeInsets.all(0),
-            child: Row(children: [
-              if (widget.leading != null)
-                Padding(
-                  padding: widget.leadingPadding,
-                  child: widget.leading,
+    return AbsorbPointer(
+      absorbing: disabled,
+      // ignoring: disabled,
+      child: Opacity(
+        opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
+        child: Container(
+          height: theme.itemHeight,
+          decoration: BoxDecoration(
+            color: disabled
+                ? theme.disabledBackgroundColor
+                : theme.itemBackgroundColor,
+          ),
+          child: InkWell(
+            onTap: disabled ? null : onTap,
+            child: Padding(
+              padding: theme.itemPadding ?? EdgeInsets.all(0),
+              child: Row(children: [
+                if (leading != null)
+                  Padding(
+                    padding: leadingPadding,
+                    child: leading,
+                  ),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: disabled
+                        ? theme.disabledTextStyle
+                        : theme.titleTextStyle,
+                  ),
                 ),
-              Expanded(
-                child: Text(
-                  widget.title,
-                  style: widget.disabled
-                      ? widget.theme.disabledTextStyle
-                      : widget.theme.titleTextStyle,
-                ),
-              ),
-              if (widget.trailing != null)
-                Padding(
-                  padding: widget.trailingPadding,
-                  child: widget.trailing,
-                ),
-            ]),
+                if (trailing != null)
+                  Padding(
+                    padding: trailingPadding,
+                    child: trailing,
+                  ),
+              ]),
+            ),
           ),
         ),
       ),

@@ -193,9 +193,6 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       itemBackgroundColor: other?.itemBackgroundColor ??
           itemBackgroundColor ??
           context.colorScheme.secondary,
-      itemHoverColor: other?.itemHoverColor ??
-          itemHoverColor ??
-          context.colorScheme.outline,
       itemPadding: other?.itemPadding ?? itemPadding,
       itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
       itemHeight: other?.itemHeight ?? itemHeight,
