@@ -38,7 +38,9 @@ class MechanixSectionList extends StatefulWidget {
   })  : itemCount = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
-        batchSize = null;
+        batchSize = null,
+        listMinHeight = 0,
+        listMaxHeight = 0;
 
   // Constructor for large lists with infinite scroll
   const MechanixSectionList.lazy({
@@ -70,6 +72,8 @@ class MechanixSectionList extends StatefulWidget {
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
+    this.listMinHeight,
+    this.listMaxHeight,
     this.shrinkWrap = true,
   })  : itemCount = null,
         enableInfiniteScroll = true;
@@ -106,7 +110,9 @@ class MechanixSectionList extends StatefulWidget {
         sectionListItems = const [],
         enableInfiniteScroll = false,
         initialItemCount = null,
-        batchSize = null;
+        batchSize = null,
+        listMinHeight = 0,
+        listMaxHeight = 0;
 
   // Builder constructor for large lists with infinite scroll
   const MechanixSectionList.lazyBuilder({
@@ -137,6 +143,8 @@ class MechanixSectionList extends StatefulWidget {
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
+    this.listMinHeight,
+    this.listMaxHeight,
     this.shrinkWrap = true,
   })  : separatorBuilder = null,
         sectionListItems = const [],
@@ -174,7 +182,9 @@ class MechanixSectionList extends StatefulWidget {
   })  : itemCount = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
-        batchSize = null;
+        batchSize = null,
+        listMinHeight = 0,
+        listMaxHeight = 0;
 
   // Separated constructor for large lists with infinite scroll
   const MechanixSectionList.lazySeparated({
@@ -207,6 +217,8 @@ class MechanixSectionList extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
     this.shrinkWrap = true,
+    this.listMinHeight,
+    this.listMaxHeight,
   })  : itemCount = null,
         enableInfiniteScroll = true;
 
@@ -269,6 +281,10 @@ class MechanixSectionList extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
 
   final bool shrinkWrap;
+
+  final double? listMinHeight;
+
+  final double? listMaxHeight;
 
   @override
   State<MechanixSectionList> createState() => _MechanixSectionListState();
@@ -549,8 +565,9 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
             ),
           ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: 100,
-              maxHeight: MediaQuery.of(context).size.height * 0.7,
+              minHeight: widget.listMinHeight ?? 100,
+              maxHeight: widget.listMaxHeight ??
+                  MediaQuery.of(context).size.height * 0.7,
             ),
             child: Container(
               decoration: BoxDecoration(
