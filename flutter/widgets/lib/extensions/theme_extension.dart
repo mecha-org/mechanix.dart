@@ -98,7 +98,6 @@ extension MechanixSectionListThemeDataExtensions
       dividerThickness: other.dividerThickness,
       dividerHeight: other.dividerHeight,
       dividerColor: other.dividerColor,
-      isDividerRequired: other.isDividerRequired,
       divider: other.divider,
       widgetPadding: other.widgetPadding,
       titlePadding: other.titlePadding,
