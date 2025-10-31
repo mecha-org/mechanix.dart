@@ -40,7 +40,7 @@ class _MenuPageState extends State<MechanixSettingsMenuPage> {
                 sectionListItems: largeItems,
                 initialItemCount: 50, // Show first 50 items
                 batchSize: 25, // Load 25 more when reaching bottom
-                listMaxHeight: 400,
+                listBoxConstraints: BoxConstraints(maxHeight: 400),
                 theme: MechanixSectionListThemeData(
                   widgetPadding: EdgeInsets
                       .zero, // Remove extra padding since parent has padding
