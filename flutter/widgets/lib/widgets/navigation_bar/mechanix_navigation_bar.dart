@@ -15,6 +15,7 @@ class MechanixNavigationBar extends StatelessWidget
   final MechanixNavigationBarThemeData? theme;
   final double height;
   final Widget? titleWidget;
+  final VoidCallback? backIconPress;
 
   const MechanixNavigationBar({
     super.key,
@@ -27,7 +28,13 @@ class MechanixNavigationBar extends StatelessWidget
     this.theme,
     this.height = 50,
     this.titleWidget,
+    this.backIconPress,
   });
+
+  void _onBackIcon(BuildContext context) {
+    Navigator.pop(context);
+    backIconPress?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,7 @@ class MechanixNavigationBar extends StatelessWidget
       leading: leadingWidget ??
           (automaticallyImplyLeading && Navigator.canPop(context)
               ? IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => _onBackIcon(context),
                   icon: SizedBox(
                       height: 16,
                       width: 8,
