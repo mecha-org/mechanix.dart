@@ -39,10 +39,9 @@ class MechanixSectionList extends StatefulWidget {
         batchSize = null,
         itemBuilder = null,
         separatorBuilder = null,
-        listMinHeight = 0,
         isBuilderList = false,
         isSeparatedBuilderList = false,
-        listMaxHeight = 0;
+        listBoxConstraints = null;
 
   // Constructor for large lists with infinite scroll
   const MechanixSectionList.lazy({
@@ -72,9 +71,8 @@ class MechanixSectionList extends StatefulWidget {
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
-    this.listMinHeight,
-    this.listMaxHeight,
     this.shrinkWrap = true,
+    this.listBoxConstraints,
   })  : itemCount = null,
         itemBuilder = null,
         separatorBuilder = null,
@@ -117,8 +115,7 @@ class MechanixSectionList extends StatefulWidget {
         batchSize = null,
         isBuilderList = true,
         isSeparatedBuilderList = false,
-        listMinHeight = 0,
-        listMaxHeight = 0;
+        listBoxConstraints = null;
 
   // Builder constructor for large lists with infinite scroll
   const MechanixSectionList.lazyBuilder({
@@ -149,9 +146,8 @@ class MechanixSectionList extends StatefulWidget {
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
-    this.listMinHeight,
-    this.listMaxHeight,
     this.shrinkWrap = true,
+    this.listBoxConstraints,
   })  : separatorBuilder = null,
         isBuilderList = true,
         isSeparatedBuilderList = false,
@@ -191,10 +187,9 @@ class MechanixSectionList extends StatefulWidget {
         enableInfiniteScroll = false,
         initialItemCount = null,
         batchSize = null,
-        listMinHeight = 0,
         isBuilderList = false,
         isSeparatedBuilderList = true,
-        listMaxHeight = 0;
+        listBoxConstraints = null;
 
   // Separated constructor for large lists with infinite scroll
   const MechanixSectionList.lazySeparated({
@@ -227,8 +222,7 @@ class MechanixSectionList extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
     this.shrinkWrap = true,
-    this.listMinHeight,
-    this.listMaxHeight,
+    this.listBoxConstraints,
   })  : itemCount = null,
         isBuilderList = false,
         isSeparatedBuilderList = true,
@@ -294,13 +288,11 @@ class MechanixSectionList extends StatefulWidget {
 
   final bool shrinkWrap;
 
-  final double? listMinHeight;
-
-  final double? listMaxHeight;
-
   final bool isBuilderList;
 
   final bool isSeparatedBuilderList;
+
+  final BoxConstraints? listBoxConstraints;
 
   @override
   State<MechanixSectionList> createState() => _MechanixSectionListState();
@@ -570,11 +562,11 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
               ),
             ),
           ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: widget.listMinHeight ?? 100,
-              maxHeight: widget.listMaxHeight ??
-                  MediaQuery.of(context).size.height * 0.7,
-            ),
+            constraints: widget.listBoxConstraints ??
+                BoxConstraints(
+                  minHeight: 100,
+                  maxHeight: MediaQuery.of(context).size.height * 0.7,
+                ),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: listTheme.widgetRadius,
