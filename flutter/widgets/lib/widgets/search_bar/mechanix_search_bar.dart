@@ -40,6 +40,7 @@ class MechanixSearchBar extends StatefulWidget {
   final double trailingHeight;
   final double trailingWidth;
   final FocusNode? focusNode;
+  final VoidCallback? onCloseIconPress;
 
   const MechanixSearchBar({
     super.key,
@@ -55,6 +56,7 @@ class MechanixSearchBar extends StatefulWidget {
     this.trailingHeight = 40,
     this.trailingWidth = 50,
     this.focusNode,
+    this.onCloseIconPress,
   });
 
   @override
@@ -102,6 +104,7 @@ class _MechanixSearchBarState extends State<MechanixSearchBar> {
   onCloseIconPress() {
     widget.onChanged('');
     textController.clear();
+    widget.onCloseIconPress?.call();
   }
 
   List<Widget> _buildDefaultTrailing(MechanixSearchBarThemeData barTheme) {
