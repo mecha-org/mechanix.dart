@@ -33,6 +33,7 @@ class MechanixSectionList extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
     this.shrinkWrap = true,
+    this.prototypeItem,
   })  : itemCount = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
@@ -73,6 +74,7 @@ class MechanixSectionList extends StatefulWidget {
     this.findChildIndexCallback,
     this.shrinkWrap = true,
     this.listBoxConstraints,
+    this.prototypeItem,
   })  : itemCount = null,
         itemBuilder = null,
         separatorBuilder = null,
@@ -108,6 +110,7 @@ class MechanixSectionList extends StatefulWidget {
     this.scrollDirection = Axis.vertical,
     this.findChildIndexCallback,
     this.shrinkWrap = true,
+    this.prototypeItem,
   })  : separatorBuilder = null,
         sectionListItems = const [],
         enableInfiniteScroll = false,
@@ -148,6 +151,7 @@ class MechanixSectionList extends StatefulWidget {
     this.findChildIndexCallback,
     this.shrinkWrap = true,
     this.listBoxConstraints,
+    this.prototypeItem,
   })  : separatorBuilder = null,
         isBuilderList = true,
         isSeparatedBuilderList = false,
@@ -184,6 +188,7 @@ class MechanixSectionList extends StatefulWidget {
     this.findChildIndexCallback,
     this.shrinkWrap = true,
   })  : itemCount = null,
+        prototypeItem = null,
         enableInfiniteScroll = false,
         initialItemCount = null,
         batchSize = null,
@@ -224,6 +229,7 @@ class MechanixSectionList extends StatefulWidget {
     this.shrinkWrap = true,
     this.listBoxConstraints,
   })  : itemCount = null,
+        prototypeItem = null,
         isBuilderList = false,
         isSeparatedBuilderList = true,
         enableInfiniteScroll = true;
@@ -293,6 +299,8 @@ class MechanixSectionList extends StatefulWidget {
   final bool isSeparatedBuilderList;
 
   final BoxConstraints? listBoxConstraints;
+
+  final Widget? prototypeItem;
 
   @override
   State<MechanixSectionList> createState() => _MechanixSectionListState();
@@ -451,6 +459,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
         physics: effectivePhysics,
         controller: _scrollController,
         itemCount: effectiveItemCount,
+        prototypeItem: widget.prototypeItem,
         itemBuilder: (context, index) {
           return widget.itemBuilder?.call(context, index) ??
               _buildSectionList(
@@ -503,6 +512,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
       return ListView(
         physics: effectivePhysics,
         controller: _scrollController,
+        prototypeItem: widget.prototypeItem,
         addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
         addRepaintBoundaries: widget.addRepaintBoundaries,
         addSemanticIndexes: widget.addSemanticIndexes,
