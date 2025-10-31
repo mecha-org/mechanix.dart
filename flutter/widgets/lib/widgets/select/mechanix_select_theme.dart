@@ -14,7 +14,7 @@ class MechanixSelectThemeData extends ThemeExtension<MechanixSelectThemeData>
     this.leadingPadding = const EdgeInsets.only(right: 8),
     this.trailingIconColor,
     this.optionPadding = const EdgeInsets.all(16),
-    this.borderRadius,
+    this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.elevation = 2,
   });
 

@@ -38,45 +38,49 @@ class MechanixSelect<T> extends StatelessWidget {
     final selectedIndex = getSelectedIndex();
     return Material(
       elevation: selectTheme.elevation,
-      borderRadius: selectTheme.borderRadius ?? BorderRadius.circular(8),
+      borderRadius: selectTheme.borderRadius,
       color: selectTheme.backgroundColor ?? context.colorScheme.secondary,
-      child: ListView.separated(
-        physics: scrollPhysics,
-        shrinkWrap: shrinkWrap,
-        primary: primary,
-        itemCount: options.length,
-        separatorBuilder: (context, index) {
-          final isBeforeSelected = index == selectedIndex - 1;
-          final isAfterSelected = index == selectedIndex;
-          final shouldHavePadding = !isBeforeSelected && !isAfterSelected;
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: ListView.separated(
+          physics: scrollPhysics,
+          shrinkWrap: shrinkWrap,
+          primary: primary,
+          itemCount: options.length,
+          separatorBuilder: (context, index) {
+            final isBeforeSelected = index == selectedIndex - 1;
+            final isAfterSelected = index == selectedIndex;
+            final shouldHavePadding = !isBeforeSelected && !isAfterSelected;
 
-          return divider ??
-              Divider(height: 1, color: context.colorScheme.outline)
-                  .padHorizontal(shouldHavePadding ? 16 : 0);
-        },
-        itemBuilder: (context, index) {
-          final option = options[index];
-          final isSelected = _isSelected(option);
+            return divider ??
+                Divider(height: 1, color: context.colorScheme.outline)
+                    .padHorizontal(shouldHavePadding ? 16 : 0);
+          },
+          itemBuilder: (context, index) {
+            final option = options[index];
+            final isSelected = _isSelected(option);
 
-          return _SelectItem(
-            index: index,
-            option: option,
-            options: options,
-            isSelected: isSelected,
-            selectionColor:
-                selectTheme.selectionColor ?? context.colorScheme.outline,
-            titleStyle: selectTheme.titleStyle ?? context.textTheme.bodyMedium,
-            selectedTitleStyle:
-                selectTheme.selectedTitleStyle ?? selectTheme.titleStyle,
-            leadingPadding: selectTheme.leadingPadding,
-            trailingIcon: trailingIcon,
-            trailingIconColor:
-                selectTheme.trailingIconColor ?? context.colorScheme.onSurface,
-            padding: selectTheme.optionPadding,
-            onTap: () => onChanged(option),
-            trailingIconSize: trailingIconSize,
-          );
-        },
+            return _SelectItem(
+              index: index,
+              option: option,
+              options: options,
+              isSelected: isSelected,
+              selectionColor:
+                  selectTheme.selectionColor ?? context.colorScheme.outline,
+              titleStyle:
+                  selectTheme.titleStyle ?? context.textTheme.bodyMedium,
+              selectedTitleStyle:
+                  selectTheme.selectedTitleStyle ?? selectTheme.titleStyle,
+              leadingPadding: selectTheme.leadingPadding,
+              trailingIcon: trailingIcon,
+              trailingIconColor: selectTheme.trailingIconColor ??
+                  context.colorScheme.onSurface,
+              padding: selectTheme.optionPadding,
+              onTap: () => onChanged(option),
+              trailingIconSize: trailingIconSize,
+            );
+          },
+        ),
       ),
     );
   }
@@ -115,16 +119,7 @@ class _SelectItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BorderRadius? borderRadius;
-    if (index == 0) {
-      borderRadius = const BorderRadius.vertical(top: Radius.circular(4));
-    } else if (index == options.length - 1) {
-      borderRadius = const BorderRadius.vertical(bottom: Radius.circular(4));
-    } else {
-      borderRadius = BorderRadius.zero;
-    }
     return Material(
-      borderRadius: borderRadius,
       color: isSelected ? selectionColor : Colors.transparent,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -140,7 +135,7 @@ class _SelectItem<T> extends StatelessWidget {
                     if (option.leading != null)
                       Padding(
                         padding: leadingPadding ?? EdgeInsets.all(0),
-                        child: option.leading!,
+                        child: option.leading,
                       ),
                     Expanded(
                       child: Text(

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
@@ -14,6 +15,20 @@ class MechanixSimpleList extends StatelessWidget {
     this.controller,
     this.theme,
     required this.listItems,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : itemBuilder = null,
         itemCount = null,
         separatorBuilder = null;
@@ -28,6 +43,20 @@ class MechanixSimpleList extends StatelessWidget {
     this.physics,
     this.theme,
     this.controller,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : listItems = const [],
         separatorBuilder = null;
 
@@ -39,6 +68,20 @@ class MechanixSimpleList extends StatelessWidget {
     this.physics,
     this.theme,
     this.controller,
+    this.addAutomaticKeepAlives = true,
+    this.addRepaintBoundaries = true,
+    this.addSemanticIndexes = true,
+    this.cacheExtent = 500,
+    this.clipBehavior = Clip.hardEdge,
+    this.dragStartBehavior = DragStartBehavior.start,
+    this.hitTestBehavior = HitTestBehavior.opaque,
+    this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
+    this.primary,
+    this.restorationId,
+    this.reverse = false,
+    this.scrollDirection = Axis.vertical,
+    this.findChildIndexCallback,
+    this.shrinkWrap = true,
   })  : isDividerRequired = false,
         divider = null,
         itemBuilder = null,
@@ -64,6 +107,34 @@ class MechanixSimpleList extends StatelessWidget {
 
   final Widget Function(BuildContext context, int index)? separatorBuilder;
 
+  final bool addAutomaticKeepAlives;
+
+  final bool addRepaintBoundaries;
+
+  final bool addSemanticIndexes;
+
+  final double? cacheExtent;
+
+  final Clip clipBehavior;
+
+  final DragStartBehavior dragStartBehavior;
+
+  final HitTestBehavior hitTestBehavior;
+
+  final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
+
+  final bool? primary;
+
+  final String? restorationId;
+
+  final bool reverse;
+
+  final Axis scrollDirection;
+
+  final int? Function(Key key)? findChildIndexCallback;
+
+  final bool shrinkWrap;
+
   Widget _buildDefaultSeparator(BuildContext context, int index) {
     final theme = MechanixSimpleListTheme.of(context);
 
@@ -85,35 +156,74 @@ class MechanixSimpleList extends StatelessWidget {
   }) {
     if (useSeparator) {
       return ListView.separated(
-        shrinkWrap: true,
         physics: physics,
-        controller: controller,
         itemCount: listItems.length,
         itemBuilder: itemBuilder ??
             (context, index) =>
                 _buildListItem(context, listItems[index], theme, index),
         separatorBuilder: separatorBuilder!,
+        addAutomaticKeepAlives: addAutomaticKeepAlives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes,
+        cacheExtent: cacheExtent,
+        clipBehavior: clipBehavior,
+        dragStartBehavior: dragStartBehavior,
+        hitTestBehavior: hitTestBehavior,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        padding: padding,
+        primary: primary,
+        restorationId: restorationId,
+        reverse: reverse,
+        scrollDirection: scrollDirection,
+        findChildIndexCallback: findChildIndexCallback,
+        shrinkWrap: shrinkWrap,
       );
     } else if (themeRequiresDivider) {
       return ListView.separated(
-        shrinkWrap: true,
         physics: physics,
-        controller: controller,
         itemCount: itemCount ?? listItems.length,
         itemBuilder: itemBuilder ??
             (context, index) =>
                 _buildListItem(context, listItems[index], theme, index),
         separatorBuilder: _buildDefaultSeparator,
+        addAutomaticKeepAlives: addAutomaticKeepAlives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes,
+        cacheExtent: cacheExtent,
+        clipBehavior: clipBehavior,
+        dragStartBehavior: dragStartBehavior,
+        hitTestBehavior: hitTestBehavior,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        padding: padding,
+        primary: primary,
+        restorationId: restorationId,
+        reverse: reverse,
+        scrollDirection: scrollDirection,
+        findChildIndexCallback: findChildIndexCallback,
+        shrinkWrap: shrinkWrap,
       );
     } else {
       return ListView.builder(
-        shrinkWrap: true,
         physics: physics,
-        controller: controller,
         itemCount: itemCount ?? listItems.length,
         itemBuilder: itemBuilder ??
             (context, index) =>
                 _buildListItem(context, listItems[index], theme, index),
+        addAutomaticKeepAlives: addAutomaticKeepAlives,
+        addRepaintBoundaries: addRepaintBoundaries,
+        addSemanticIndexes: addSemanticIndexes,
+        cacheExtent: cacheExtent,
+        clipBehavior: clipBehavior,
+        dragStartBehavior: dragStartBehavior,
+        hitTestBehavior: hitTestBehavior,
+        keyboardDismissBehavior: keyboardDismissBehavior,
+        padding: padding,
+        primary: primary,
+        restorationId: restorationId,
+        reverse: reverse,
+        scrollDirection: scrollDirection,
+        findChildIndexCallback: findChildIndexCallback,
+        shrinkWrap: shrinkWrap,
       );
     }
   }
