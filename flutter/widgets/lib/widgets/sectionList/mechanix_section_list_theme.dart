@@ -12,7 +12,6 @@ class MechanixSectionListThemeData
       this.dividerThickness = 1,
       this.dividerHeight = 1,
       this.dividerColor,
-      this.isDividerRequired = true,
       this.divider,
       this.widgetPadding = const EdgeInsets.only(bottom: 40),
       this.titlePadding = const EdgeInsets.only(bottom: 8),
@@ -33,7 +32,6 @@ class MechanixSectionListThemeData
   final double? dividerThickness;
   final double? dividerHeight;
   final EdgeInsets dividerPadding;
-  final bool isDividerRequired;
   final Widget? divider;
 
   final EdgeInsets itemPadding;
@@ -62,7 +60,6 @@ class MechanixSectionListThemeData
       dividerThickness: dividerThickness ?? this.dividerThickness,
       dividerHeight: dividerHeight ?? this.dividerHeight,
       dividerColor: dividerColor ?? this.dividerColor,
-      isDividerRequired: isDividerRequired ?? this.isDividerRequired,
       divider: divider ?? this.divider,
       widgetPadding: widgetPadding ?? this.widgetPadding,
       titlePadding: titlePadding ?? this.titlePadding,
@@ -84,7 +81,6 @@ class MechanixSectionListThemeData
       dividerThickness: lerpDouble(dividerThickness, o?.dividerThickness, t),
       dividerHeight: lerpDouble(dividerHeight, o?.dividerThickness, t),
       dividerColor: Color.lerp(dividerColor, o?.dividerColor, t),
-      isDividerRequired: isDividerRequired,
       divider: divider,
       widgetPadding:
           EdgeInsets.lerp(widgetPadding, o?.widgetPadding, t) ?? widgetPadding,
@@ -105,7 +101,6 @@ class MechanixSectionListThemeData
     properties.add(DiagnosticsProperty('dividerThickness', dividerThickness));
     properties.add(DiagnosticsProperty('dividerHeight', dividerHeight));
     properties.add(DiagnosticsProperty('dividerColor', dividerColor));
-    properties.add(DiagnosticsProperty('isDividerRequired', isDividerRequired));
     properties.add(DiagnosticsProperty('divider', divider));
     properties.add(DiagnosticsProperty('widgetPadding', widgetPadding));
     properties.add(DiagnosticsProperty('titlePadding', titlePadding));
@@ -123,7 +118,6 @@ class MechanixSectionListThemeData
         dividerThickness == other.dividerThickness &&
         dividerHeight == other.dividerHeight &&
         dividerColor == other.dividerColor &&
-        isDividerRequired == other.isDividerRequired &&
         divider == other.divider &&
         widgetPadding == other.widgetPadding &&
         titlePadding == other.titlePadding &&
@@ -139,7 +133,6 @@ class MechanixSectionListThemeData
       dividerThickness,
       dividerHeight,
       dividerColor,
-      isDividerRequired,
       divider,
       widgetPadding,
       titlePadding,

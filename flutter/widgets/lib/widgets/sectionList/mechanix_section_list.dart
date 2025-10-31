@@ -15,8 +15,6 @@ class MechanixSectionList extends StatefulWidget {
     this.onTapUp,
     this.onTapDown,
     this.onDoubleTap,
-    this.itemBuilder,
-    this.separatorBuilder,
     this.physics,
     this.controller,
     this.theme,
@@ -39,7 +37,11 @@ class MechanixSectionList extends StatefulWidget {
         enableInfiniteScroll = false,
         initialItemCount = null,
         batchSize = null,
+        itemBuilder = null,
+        separatorBuilder = null,
         listMinHeight = 0,
+        isBuilderList = false,
+        isSeparatedBuilderList = false,
         listMaxHeight = 0;
 
   // Constructor for large lists with infinite scroll
@@ -51,8 +53,6 @@ class MechanixSectionList extends StatefulWidget {
     this.onTapUp,
     this.onTapDown,
     this.onDoubleTap,
-    this.itemBuilder,
-    this.separatorBuilder,
     this.physics,
     this.controller,
     this.theme,
@@ -76,6 +76,10 @@ class MechanixSectionList extends StatefulWidget {
     this.listMaxHeight,
     this.shrinkWrap = true,
   })  : itemCount = null,
+        itemBuilder = null,
+        separatorBuilder = null,
+        isBuilderList = false,
+        isSeparatedBuilderList = false,
         enableInfiniteScroll = true;
 
   // Builder constructor for small lists
@@ -111,6 +115,8 @@ class MechanixSectionList extends StatefulWidget {
         enableInfiniteScroll = false,
         initialItemCount = null,
         batchSize = null,
+        isBuilderList = true,
+        isSeparatedBuilderList = false,
         listMinHeight = 0,
         listMaxHeight = 0;
 
@@ -147,6 +153,8 @@ class MechanixSectionList extends StatefulWidget {
     this.listMaxHeight,
     this.shrinkWrap = true,
   })  : separatorBuilder = null,
+        isBuilderList = true,
+        isSeparatedBuilderList = false,
         sectionListItems = const [],
         enableInfiniteScroll = true;
 
@@ -184,6 +192,8 @@ class MechanixSectionList extends StatefulWidget {
         initialItemCount = null,
         batchSize = null,
         listMinHeight = 0,
+        isBuilderList = false,
+        isSeparatedBuilderList = true,
         listMaxHeight = 0;
 
   // Separated constructor for large lists with infinite scroll
@@ -195,7 +205,7 @@ class MechanixSectionList extends StatefulWidget {
     this.onTapUp,
     this.onTapDown,
     this.onDoubleTap,
-    this.itemBuilder,
+    required this.itemBuilder,
     required this.separatorBuilder,
     this.physics,
     this.controller,
@@ -220,6 +230,8 @@ class MechanixSectionList extends StatefulWidget {
     this.listMinHeight,
     this.listMaxHeight,
   })  : itemCount = null,
+        isBuilderList = false,
+        isSeparatedBuilderList = true,
         enableInfiniteScroll = true;
 
   final String? title;
@@ -285,6 +297,10 @@ class MechanixSectionList extends StatefulWidget {
   final double? listMinHeight;
 
   final double? listMaxHeight;
+
+  final bool isBuilderList;
+
+  final bool isSeparatedBuilderList;
 
   @override
   State<MechanixSectionList> createState() => _MechanixSectionListState();
@@ -428,8 +444,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
 
   Widget _buildListView({
     required BuildContext context,
-    required bool useSeparator,
-    required bool themeRequiresDivider,
     required MechanixSectionListThemeData listTheme,
   }) {
     final effectiveItemCount = _visibleCount;
@@ -440,61 +454,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
         ? (widget.physics ?? const ClampingScrollPhysics())
         : const NeverScrollableScrollPhysics();
 
-    if (useSeparator) {
-      return ListView.separated(
-        physics: effectivePhysics,
-        controller: _scrollController,
-        itemCount: effectiveItemCount,
-        itemBuilder: (context, index) {
-          return widget.itemBuilder?.call(context, index) ??
-              _buildSectionList(
-                  context, widget.sectionListItems[index], listTheme);
-        },
-        separatorBuilder: widget.separatorBuilder!,
-        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
-        addRepaintBoundaries: widget.addRepaintBoundaries,
-        addSemanticIndexes: widget.addSemanticIndexes,
-        cacheExtent: widget.cacheExtent,
-        clipBehavior: widget.clipBehavior,
-        dragStartBehavior: widget.dragStartBehavior,
-        hitTestBehavior: widget.hitTestBehavior,
-        keyboardDismissBehavior: widget.keyboardDismissBehavior,
-        padding: widget.padding,
-        primary: widget.primary,
-        restorationId: widget.restorationId,
-        reverse: widget.reverse,
-        scrollDirection: widget.scrollDirection,
-        findChildIndexCallback: widget.findChildIndexCallback,
-        shrinkWrap: widget.shrinkWrap,
-      );
-    } else if (themeRequiresDivider) {
-      return ListView.separated(
-        physics: effectivePhysics,
-        controller: _scrollController,
-        itemCount: effectiveItemCount,
-        itemBuilder: (context, index) {
-          return widget.itemBuilder?.call(context, index) ??
-              _buildSectionList(
-                  context, widget.sectionListItems[index], listTheme);
-        },
-        separatorBuilder: _buildDefaultSeparator,
-        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
-        addRepaintBoundaries: widget.addRepaintBoundaries,
-        addSemanticIndexes: widget.addSemanticIndexes,
-        cacheExtent: widget.cacheExtent,
-        clipBehavior: widget.clipBehavior,
-        dragStartBehavior: widget.dragStartBehavior,
-        hitTestBehavior: widget.hitTestBehavior,
-        keyboardDismissBehavior: widget.keyboardDismissBehavior,
-        padding: widget.padding,
-        primary: widget.primary,
-        restorationId: widget.restorationId,
-        reverse: widget.reverse,
-        scrollDirection: widget.scrollDirection,
-        findChildIndexCallback: widget.findChildIndexCallback,
-        shrinkWrap: widget.shrinkWrap,
-      );
-    } else {
+    if (widget.isBuilderList) {
       return ListView.builder(
         physics: effectivePhysics,
         controller: _scrollController,
@@ -520,6 +480,55 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
         findChildIndexCallback: widget.findChildIndexCallback,
         shrinkWrap: widget.shrinkWrap,
       );
+    } else if (widget.isSeparatedBuilderList) {
+      return ListView.separated(
+        physics: effectivePhysics,
+        controller: _scrollController,
+        itemCount: effectiveItemCount,
+        itemBuilder: (context, index) {
+          return widget.itemBuilder?.call(context, index) ??
+              _buildSectionList(
+                  context, widget.sectionListItems[index], listTheme);
+        },
+        separatorBuilder: widget.separatorBuilder ?? _buildDefaultSeparator,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
+      );
+    } else {
+      return ListView(
+        physics: effectivePhysics,
+        controller: _scrollController,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        shrinkWrap: widget.shrinkWrap,
+        children: widget.sectionListItems
+            .map((item) => _buildSectionList(context, item, listTheme))
+            .toList(),
+      );
     }
   }
 
@@ -543,9 +552,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
 
   Widget _buildLazyListView(BuildContext context) {
     final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
-    final bool useSeparator = widget.separatorBuilder != null;
-    final bool themeRequiresDivider =
-        listTheme.isDividerRequired && !useSeparator;
 
     return Container(
       padding: listTheme.widgetPadding,
@@ -580,8 +586,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                   Expanded(
                     child: _buildListView(
                       context: context,
-                      useSeparator: useSeparator,
-                      themeRequiresDivider: themeRequiresDivider,
                       listTheme: listTheme,
                     ),
                   ),
@@ -596,9 +600,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
 
   Widget _buildRegularListView(BuildContext context) {
     final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
-    final bool useSeparator = widget.separatorBuilder != null;
-    final bool themeRequiresDivider =
-        listTheme.isDividerRequired && !useSeparator;
 
     return Container(
       padding: listTheme.widgetPadding,
@@ -623,8 +624,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
             ),
             child: _buildListView(
               context: context,
-              useSeparator: useSeparator,
-              themeRequiresDivider: themeRequiresDivider,
               listTheme: listTheme,
             ),
           ),
