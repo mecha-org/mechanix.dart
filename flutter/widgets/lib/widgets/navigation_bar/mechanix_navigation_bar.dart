@@ -14,6 +14,8 @@ class MechanixNavigationBar extends StatelessWidget
   final bool automaticallyImplyLeading;
   final MechanixNavigationBarThemeData? theme;
   final double height;
+  final Widget? titleWidget;
+  final VoidCallback? backIconPress;
 
   const MechanixNavigationBar({
     super.key,
@@ -25,7 +27,14 @@ class MechanixNavigationBar extends StatelessWidget
     this.actionWidgets,
     this.theme,
     this.height = 50,
+    this.titleWidget,
+    this.backIconPress,
   });
+
+  void _onBackIcon(BuildContext context) {
+    Navigator.pop(context);
+    backIconPress?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +54,7 @@ class MechanixNavigationBar extends StatelessWidget
       leading: leadingWidget ??
           (automaticallyImplyLeading && Navigator.canPop(context)
               ? IconButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => _onBackIcon(context),
                   icon: SizedBox(
                       height: 16,
                       width: 8,
@@ -57,18 +66,20 @@ class MechanixNavigationBar extends StatelessWidget
                 )
               : null),
       elevation: barTheme.elevation,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (title != null)
-            Text(
-              title ?? '',
-              style: context.textTheme.bodySmall?.merge(barTheme.titleStyle),
-            )
-        ],
-      ),
+      title: titleWidget ??
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title != null)
+                Text(
+                  title ?? '',
+                  style:
+                      context.textTheme.bodySmall?.merge(barTheme.titleStyle),
+                )
+            ],
+          ),
       actionsPadding: barTheme.actionsPadding,
       actions: actionWidgets,
     );
