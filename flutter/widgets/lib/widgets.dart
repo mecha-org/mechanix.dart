@@ -11,6 +11,7 @@ export 'src/widgets/mechanix_check_box.dart';
 export 'src/widgets/mechanix_elevated_button.dart';
 export 'src/widgets/mechanix_outline_button.dart';
 export 'src/widgets/mechanix_text_button.dart';
+export 'widgets/bottomBar/mechanix_bottom_bar.dart';
 export 'widgets/bottomSheetModals/mechanix_bottom_sheet.dart';
 export 'widgets/divider/mechanix_menu_divider.dart';
 export 'widgets/floating_action_bar/mechanix_floating_action_bar.dart';
