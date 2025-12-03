@@ -1,19 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
+import 'package:widgets/widgets/bottomBar/bottom_bar_button_type.dart';
 import 'package:widgets/widgets/bottomBar/mechanix_bottom_bar_theme.dart';
 import 'package:widgets/widgets/icon_widget.dart';
-
-class BottomSheetButton {
-  const BottomSheetButton({
-    required this.onPressed,
-    this.iconPath = '',
-    this.iconWidget,
-  });
-
-  final String iconPath;
-  final void Function() onPressed;
-  final IconWidget? iconWidget;
-}
 
 class MechanixBottomBar extends StatelessWidget {
   const MechanixBottomBar({
@@ -28,11 +17,11 @@ class MechanixBottomBar extends StatelessWidget {
     this.iconColor = const Color(0xFFD2D2D2),
   });
 
-  final List<BottomSheetButton> leadingWidget;
+  final List<BottomBarButton> leadingWidget;
   final double leadingWidgetSpacing;
-  final List<BottomSheetButton> centerWidget;
+  final List<BottomBarButton> centerWidget;
   final double centerWidgetSpacing;
-  final List<BottomSheetButton> anchorWidget;
+  final List<BottomBarButton> anchorWidget;
   final double anchorWidgetSpacing;
   final MechanixBottomBarThemeData? theme;
   final Color iconColor;
