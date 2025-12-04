@@ -249,6 +249,7 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
   final bool shrinkWrap;
   final Offset offset;
   final bool outsideClickDisabled;
+  final Duration? animationDuration;
 
   @override
   State<_MechanixFloatingActionBarContainerState> createState() =>
