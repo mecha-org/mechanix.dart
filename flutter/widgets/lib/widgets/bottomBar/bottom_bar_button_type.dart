@@ -47,7 +47,8 @@ class BottomBarButton {
         offset = Offset.zero,
         isMenuButtonRequired = true,
         buttonIcon = null,
-        outsideClickDisabled = false;
+        outsideClickDisabled = false,
+        onExtensionClose = null;
 
   const BottomBarButton.widget({
     required this.widget,
@@ -90,7 +91,8 @@ class BottomBarButton {
         offset = Offset.zero,
         isMenuButtonRequired = true,
         buttonIcon = null,
-        outsideClickDisabled = false;
+        outsideClickDisabled = false,
+        onExtensionClose = null;
 
   const BottomBarButton.extension({
     required this.extensionWidgets,
@@ -122,6 +124,7 @@ class BottomBarButton {
     this.outsideClickDisabled = false,
     this.iconTheme,
     this.onPressed,
+    this.onExtensionClose,
   })  : disabledColor = const Color(0xFF585858),
         isDisabled = false,
         isSelected = false,
@@ -137,6 +140,7 @@ class BottomBarButton {
 
   final String iconPath;
   final void Function()? onPressed;
+  final VoidCallback? onExtensionClose;
   final IconWidget? iconWidget;
   final Widget? widget;
   final bool isSelected;
@@ -202,6 +206,7 @@ class BottomBarButton {
               iconColor: theme?.iconColor ?? iconColor,
             ),
         onOpen: onPressed,
+        onClose: onExtensionClose,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
         addSemanticIndexes: addSemanticIndexes,
