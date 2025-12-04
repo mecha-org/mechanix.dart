@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
+import 'package:widgets/widgets/bottomBar/mechanix_bottom_bar_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/menu/constants/menu_positions.dart';
 
@@ -9,6 +10,18 @@ class BottomBarButton {
     required this.onPressed,
     this.iconPath = '',
     this.iconWidget,
+    this.isSelected = false,
+    this.isDisabled = false,
+    this.disabledColor = const Color(0xFF585858),
+    this.onHover,
+    this.onLongPress,
+    this.mouseCursor,
+    this.focusNode,
+    this.autofocus = false,
+    this.tooltip,
+    this.enableFeedback,
+    this.iconTheme,
+    this.selectedIcon,
   })  : widget = null,
         extensionWidgets = const [],
         menuButton = null,
@@ -16,7 +29,7 @@ class BottomBarButton {
         animationDuration = const Duration(milliseconds: 300),
         initiallyOpen = false,
         dropdownPosition = DropdownPosition.bottomCenter,
-        theme = null,
+        floatingActionBarTheme = null,
         addAutomaticKeepAlives = true,
         addRepaintBoundaries = true,
         addSemanticIndexes = true,
@@ -38,6 +51,18 @@ class BottomBarButton {
 
   const BottomBarButton.widget({
     required this.widget,
+    this.disabledColor = const Color(0xFF585858),
+    this.isSelected = false,
+    this.isDisabled = false,
+    this.onHover,
+    this.onLongPress,
+    this.mouseCursor,
+    this.focusNode,
+    this.autofocus = false,
+    this.tooltip,
+    this.enableFeedback,
+    this.iconTheme,
+    this.selectedIcon,
   })  : iconPath = '',
         iconWidget = null,
         onPressed = null,
@@ -47,7 +72,7 @@ class BottomBarButton {
         animationDuration = const Duration(milliseconds: 300),
         initiallyOpen = false,
         dropdownPosition = DropdownPosition.bottomCenter,
-        theme = null,
+        floatingActionBarTheme = null,
         addAutomaticKeepAlives = true,
         addRepaintBoundaries = true,
         addSemanticIndexes = true,
@@ -76,7 +101,7 @@ class BottomBarButton {
     this.animationDuration = const Duration(milliseconds: 300),
     this.initiallyOpen = false,
     this.dropdownPosition = DropdownPosition.topCenter,
-    this.theme,
+    this.floatingActionBarTheme,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -95,21 +120,47 @@ class BottomBarButton {
     this.isMenuButtonRequired = true,
     this.buttonIcon,
     this.outsideClickDisabled = false,
+    this.iconTheme,
   })  : onPressed = null,
-        widget = null;
+        disabledColor = const Color(0xFF585858),
+        isDisabled = false,
+        isSelected = false,
+        widget = null,
+        onHover = null,
+        onLongPress = null,
+        mouseCursor = null,
+        focusNode = null,
+        autofocus = false,
+        tooltip = null,
+        enableFeedback = null,
+        selectedIcon = null;
 
   final String iconPath;
   final void Function()? onPressed;
   final IconWidget? iconWidget;
   final Widget? widget;
-  final List<BottomBarButton> extensionWidgets;
+  final bool isSelected;
+  final bool isDisabled;
+  final Color disabledColor;
 
+  final ValueChanged<bool>? onHover;
+  final VoidCallback? onLongPress;
+  final MouseCursor? mouseCursor;
+  final FocusNode? focusNode;
+  final bool autofocus;
+  final String? tooltip;
+  final bool? enableFeedback;
+  final Widget? selectedIcon;
+
+  final MechanixBottomBarIconThemeData? iconTheme;
+
+  final List<BottomBarButton> extensionWidgets;
   final Widget? menuButton;
   final FloatingActionBarController? floatingActionBarController;
   final Duration animationDuration;
   final bool initiallyOpen;
   final DropdownPosition dropdownPosition;
-  final MechanixFloatingActionBarThemeData? theme;
+  final MechanixFloatingActionBarThemeData? floatingActionBarTheme;
   final bool addAutomaticKeepAlives;
   final bool addRepaintBoundaries;
   final bool addSemanticIndexes;
@@ -129,15 +180,18 @@ class BottomBarButton {
   final bool outsideClickDisabled;
   final IconWidget? buttonIcon;
 
-  Widget build(Color iconColor) {
+  Widget build(Color iconColor, MechanixBottomBarThemeData barTheme) {
+    final theme = iconTheme ?? barTheme.iconTheme;
+
     if (widget != null) return widget!;
 
     if (extensionWidgets.isNotEmpty) {
       return MechanixFloatingActionBar(
-        menus: extensionWidgets.map((e) => e.build(iconColor)).toList(),
+        menus:
+            extensionWidgets.map((e) => e.build(iconColor, barTheme)).toList(),
         dropdownPosition: dropdownPosition,
         offset: offset,
-        theme: theme ??
+        theme: floatingActionBarTheme ??
             MechanixFloatingActionBarThemeData(
               decoration: BoxDecoration(color: Color(0xFF222222)),
               width: double.infinity,
@@ -145,7 +199,7 @@ class BottomBarButton {
         buttonIcon: iconWidget ??
             IconWidget(
               iconPath: iconPath,
-              iconColor: iconColor,
+              iconColor: theme?.iconColor ?? iconColor,
             ),
         addAutomaticKeepAlives: addAutomaticKeepAlives,
         addRepaintBoundaries: addRepaintBoundaries,
@@ -171,11 +225,33 @@ class BottomBarButton {
     }
 
     return IconButton(
-      onPressed: onPressed,
+      isSelected: isSelected,
+      disabledColor: disabledColor,
+      iconSize: theme?.iconSize,
+      visualDensity: theme?.visualDensity,
+      padding: theme?.padding,
+      alignment: theme?.alignment,
+      splashRadius: theme?.splashRadius,
+      focusColor: theme?.focusColor,
+      hoverColor: theme?.hoverColor,
+      highlightColor: theme?.highlightColor,
+      splashColor: theme?.splashColor,
+      onHover: onHover,
+      onLongPress: onLongPress,
+      mouseCursor: mouseCursor,
+      focusNode: focusNode,
+      autofocus: autofocus,
+      tooltip: tooltip,
+      enableFeedback: enableFeedback,
+      constraints: theme?.constraints,
+      style: theme?.buttonStyle,
+      selectedIcon: selectedIcon,
+      color: theme?.iconColor ?? barTheme.iconColor,
+      onPressed: isDisabled ? null : onPressed,
       icon: iconWidget ??
           IconWidget(
             iconPath: iconPath,
-            iconColor: iconColor,
+            iconColor: theme?.iconColor ?? iconColor,
           ),
     );
   }

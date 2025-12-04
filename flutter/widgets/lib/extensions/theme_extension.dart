@@ -250,6 +250,8 @@ extension MechanixBottomBarThemeDataExtensions on MechanixBottomBarThemeData {
       decoration: other.decoration ?? decoration,
       height: other.height ?? height,
       width: other.width ?? width,
+      iconColor: other.iconColor ?? iconColor,
+      iconTheme: other.iconTheme ?? iconTheme,
     );
   }
 }
