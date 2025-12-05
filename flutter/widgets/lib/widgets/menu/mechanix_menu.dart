@@ -694,7 +694,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       );
     }
 
-    return ListView.separated(
+    return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
@@ -736,13 +736,62 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       reverse: widget.reverse,
       scrollDirection: widget.scrollDirection,
       findChildIndexCallback: widget.findChildIndexCallback,
-      separatorBuilder: widget.separatorBuilder ??
-          (context, index) => Divider(
-                color: context.outline,
-                thickness: 1,
-                height: 1,
-              ),
+      // separatorBuilder: widget.separatorBuilder ??
+      //     (context, index) => Divider(
+      //           color: context.outline,
+      //           thickness: 1,
+      //           height: 1,
+      //         ),
     );
+    // return ListView.separated(
+    //   physics: const NeverScrollableScrollPhysics(),
+    //   itemCount: widget.items.length,
+    //   itemBuilder: (context, index) {
+    //     final MechanixMenuItemsType item = widget.items[index];
+    //     final bool isSelected = _isItemSelected(index.toString());
+
+    //     return _MenuItem(
+    //       theme: menuTheme,
+    //       index: index,
+    //       title: item.title,
+    //       leading: item.leading,
+    //       trailing: _buildTrailing(index, item, isSelected, menuTheme),
+    //       onTap: () => _handleItemTap(index, item),
+    //       onTapUp: item.onTapUp,
+    //       onTapDown: item.onTapDown,
+    //       onDoubleTap: item.onDoubleTap,
+    //       titleTextStyle: item.titleTextStyle,
+    //       disabled: item.disabled,
+    //       isSelected: item.isSelected,
+    //       selectionType: widget.selectionType,
+    //       leadingPadding: item.leadingPadding,
+    //       trailingPadding: item.trailingPadding,
+    //       handleClose: _handleClose,
+    //     );
+    //   },
+    //   shrinkWrap: widget.shrinkWrap,
+    //   addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+    //   addRepaintBoundaries: widget.addRepaintBoundaries,
+    //   addSemanticIndexes: widget.addSemanticIndexes,
+    //   cacheExtent: widget.cacheExtent,
+    //   clipBehavior: widget.clipBehavior,
+    //   controller: widget.controller,
+    //   dragStartBehavior: widget.dragStartBehavior,
+    //   hitTestBehavior: widget.hitTestBehavior,
+    //   keyboardDismissBehavior: widget.keyboardDismissBehavior,
+    //   padding: widget.padding,
+    //   primary: widget.primary,
+    //   restorationId: widget.restorationId,
+    //   reverse: widget.reverse,
+    //   scrollDirection: widget.scrollDirection,
+    //   findChildIndexCallback: widget.findChildIndexCallback,
+    //   separatorBuilder: widget.separatorBuilder ??
+    //       (context, index) => Divider(
+    //             color: context.outline,
+    //             thickness: 1,
+    //             height: 1,
+    //           ),
+    // );
   }
 
   @override
@@ -834,7 +883,8 @@ class _MenuItem extends StatelessWidget {
       absorbing: disabled,
       // ignoring: disabled,
       child: Opacity(
-        opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
+        // opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
+        opacity: 1,
         child: Container(
           padding: index == 0 ? const EdgeInsets.only(top: 10) : null,
           height: theme.itemHeight,
