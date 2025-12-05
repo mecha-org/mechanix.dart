@@ -16,7 +16,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.itemPadding = const EdgeInsets.all(12),
     this.itemBorderRadius,
     this.itemHeight,
-    this.disabledTextStyle,
+    this.disabledTextStyle = const TextStyle(color: Color(0xFF585858)),
     this.disabledBackgroundColor,
     this.titleTextStyle,
     this.padding,
