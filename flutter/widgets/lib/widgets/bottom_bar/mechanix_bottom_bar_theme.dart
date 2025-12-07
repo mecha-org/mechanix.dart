@@ -117,12 +117,19 @@ class MechanixBottomBarIconThemeData
     this.hoverColor,
     this.splashColor,
     this.highlightColor,
-    this.iconSize,
+    this.iconButtonSize,
     this.visualDensity,
     this.padding,
     this.alignment,
     this.splashRadius,
     this.constraints,
+    this.buttonSize = const Size(44, 44),
+    this.iconBoxSize = const Size(28, 28),
+    this.iconSize = const Size(23, 23),
+    this.buttonDecoration = const BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      color: Color.fromRGBO(21, 21, 21, 0.5),
+    ),
   });
 
   final Color? iconColor;
@@ -131,12 +138,16 @@ class MechanixBottomBarIconThemeData
   final Color? hoverColor;
   final Color? splashColor;
   final Color? highlightColor;
-  final double? iconSize;
+  final double? iconButtonSize;
   final VisualDensity? visualDensity;
   final EdgeInsetsGeometry? padding;
   final AlignmentGeometry? alignment;
   final double? splashRadius;
   final BoxConstraints? constraints;
+  final Size buttonSize;
+  final Size iconBoxSize;
+  final Size iconSize;
+  final Decoration buttonDecoration;
 
   @override
   MechanixBottomBarIconThemeData copyWith({
@@ -146,12 +157,16 @@ class MechanixBottomBarIconThemeData
     Color? hoverColor,
     Color? splashColor,
     Color? highlightColor,
-    double? iconSize,
+    double? iconButtonSize,
     VisualDensity? visualDensity,
     EdgeInsetsGeometry? padding,
     AlignmentGeometry? alignment,
     double? splashRadius,
     BoxConstraints? constraints,
+    Size? buttonSize,
+    Size? iconBoxSize,
+    Size? iconSize,
+    Decoration? buttonDecoration,
   }) {
     return MechanixBottomBarIconThemeData(
       iconColor: iconColor ?? this.iconColor,
@@ -160,12 +175,16 @@ class MechanixBottomBarIconThemeData
       hoverColor: hoverColor ?? this.hoverColor,
       splashColor: splashColor ?? this.splashColor,
       highlightColor: highlightColor ?? this.highlightColor,
-      iconSize: iconSize ?? this.iconSize,
+      iconButtonSize: iconButtonSize ?? this.iconButtonSize,
       visualDensity: visualDensity ?? this.visualDensity,
       padding: padding ?? this.padding,
       alignment: alignment ?? this.alignment,
       splashRadius: splashRadius ?? this.splashRadius,
       constraints: constraints ?? this.constraints,
+      buttonSize: buttonSize ?? this.buttonSize,
+      iconBoxSize: iconBoxSize ?? this.iconBoxSize,
+      iconSize: iconSize ?? this.iconSize,
+      buttonDecoration: buttonDecoration ?? this.buttonDecoration,
     );
   }
 
@@ -180,12 +199,18 @@ class MechanixBottomBarIconThemeData
       hoverColor: Color.lerp(hoverColor, other.hoverColor, t),
       splashColor: Color.lerp(splashColor, other.splashColor, t),
       highlightColor: Color.lerp(highlightColor, other.highlightColor, t),
-      iconSize: lerpDouble(iconSize, other.iconSize, t),
+      iconButtonSize: lerpDouble(iconButtonSize, other.iconButtonSize, t),
       // visualDensity: VisualDensity.lerp(visualDensity!, other.visualDensity, t),
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       alignment: AlignmentGeometry.lerp(alignment, other.alignment, t),
       splashRadius: lerpDouble(splashRadius, other.splashRadius, t),
       constraints: BoxConstraints.lerp(constraints, other.constraints, t),
+      buttonSize: Size.lerp(buttonSize, other.buttonSize, t) ?? buttonSize,
+      iconBoxSize: Size.lerp(iconBoxSize, other.iconBoxSize, t) ?? iconBoxSize,
+      iconSize: Size.lerp(iconSize, other.iconSize, t) ?? iconSize,
+      buttonDecoration:
+          Decoration.lerp(buttonDecoration, other.buttonDecoration, t) ??
+              buttonDecoration,
     );
   }
 
@@ -198,12 +223,16 @@ class MechanixBottomBarIconThemeData
     properties.add(ColorProperty('hoverColor', hoverColor));
     properties.add(ColorProperty('splashColor', splashColor));
     properties.add(ColorProperty('highlightColor', highlightColor));
-    properties.add(DoubleProperty('iconSize', iconSize));
+    properties.add(DoubleProperty('iconButtonSize', iconButtonSize));
     properties.add(DiagnosticsProperty('visualDensity', visualDensity));
     properties.add(DiagnosticsProperty('padding', padding));
     properties.add(DiagnosticsProperty('alignment', alignment));
     properties.add(DoubleProperty('splashRadius', splashRadius));
     properties.add(DiagnosticsProperty('constraints', constraints));
+    properties.add(DiagnosticsProperty('buttonSize', buttonSize));
+    properties.add(DiagnosticsProperty('iconBoxSize', iconBoxSize));
+    properties.add(DiagnosticsProperty('iconSize', iconSize));
+    properties.add(DiagnosticsProperty('buttonDecoration', buttonDecoration));
   }
 
   @override
@@ -216,12 +245,16 @@ class MechanixBottomBarIconThemeData
         hoverColor == other.hoverColor &&
         splashColor == other.splashColor &&
         highlightColor == other.highlightColor &&
-        iconSize == other.iconSize &&
+        iconButtonSize == other.iconButtonSize &&
         visualDensity == other.visualDensity &&
         padding == other.padding &&
         alignment == other.alignment &&
         splashRadius == other.splashRadius &&
-        constraints == other.constraints;
+        constraints == other.constraints &&
+        buttonSize == other.buttonSize &&
+        iconBoxSize == other.iconBoxSize &&
+        iconSize == other.iconSize &&
+        buttonDecoration == other.buttonDecoration;
   }
 
   @override
@@ -233,12 +266,16 @@ class MechanixBottomBarIconThemeData
       hoverColor,
       splashColor,
       highlightColor,
-      iconSize,
+      iconButtonSize,
       visualDensity,
       padding,
       alignment,
       splashRadius,
       constraints,
+      buttonSize,
+      iconBoxSize,
+      iconSize,
+      buttonDecoration,
     );
   }
 }

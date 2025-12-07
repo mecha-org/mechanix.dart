@@ -230,35 +230,44 @@ class BottomBarButton {
       );
     }
 
-    return IconButton(
-      isSelected: isSelected,
-      disabledColor: disabledColor,
-      iconSize: theme?.iconSize,
-      visualDensity: theme?.visualDensity,
-      padding: theme?.padding,
-      alignment: theme?.alignment,
-      splashRadius: theme?.splashRadius,
-      focusColor: theme?.focusColor,
-      hoverColor: theme?.hoverColor,
-      highlightColor: theme?.highlightColor,
-      splashColor: theme?.splashColor,
-      onHover: onHover,
-      onLongPress: onLongPress,
-      mouseCursor: mouseCursor,
-      focusNode: focusNode,
-      autofocus: autofocus,
-      tooltip: tooltip,
-      enableFeedback: enableFeedback,
-      constraints: theme?.constraints,
-      style: theme?.buttonStyle,
-      selectedIcon: selectedIcon,
-      color: theme?.iconColor ?? barTheme.iconColor,
-      onPressed: isDisabled ? null : onPressed,
-      icon: iconWidget ??
-          IconWidget(
-            iconPath: iconPath,
-            iconColor: theme?.iconColor ?? iconColor,
-          ),
+    return Container(
+      width: theme?.buttonSize.width,
+      height: theme?.buttonSize.height,
+      decoration: theme?.buttonDecoration,
+      child: IconButton(
+        isSelected: isSelected,
+        disabledColor: disabledColor,
+        iconSize: theme?.iconButtonSize,
+        visualDensity: theme?.visualDensity,
+        padding: theme?.padding,
+        alignment: theme?.alignment,
+        splashRadius: theme?.splashRadius,
+        focusColor: theme?.focusColor,
+        hoverColor: theme?.hoverColor,
+        highlightColor: theme?.highlightColor,
+        splashColor: theme?.splashColor,
+        onHover: onHover,
+        onLongPress: onLongPress,
+        mouseCursor: mouseCursor,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        tooltip: tooltip,
+        enableFeedback: enableFeedback,
+        constraints: theme?.constraints,
+        style: theme?.buttonStyle,
+        selectedIcon: selectedIcon,
+        color: theme?.iconColor ?? barTheme.iconColor,
+        onPressed: isDisabled ? null : onPressed,
+        icon: iconWidget ??
+            IconWidget(
+              iconPath: iconPath,
+              iconColor: theme?.iconColor ?? iconColor,
+              boxHeight: theme?.iconBoxSize.height ?? 24,
+              boxWidth: theme?.iconBoxSize.width ?? 24,
+              iconHeight: theme?.iconSize.height ?? 24,
+              iconWidth: theme?.iconSize.width ?? 24,
+            ),
+      ),
     );
   }
 }
