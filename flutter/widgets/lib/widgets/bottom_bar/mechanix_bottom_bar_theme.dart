@@ -126,6 +126,8 @@ class MechanixBottomBarIconThemeData
     this.buttonSize = const Size(44, 44),
     this.iconBoxSize = const Size(28, 28),
     this.iconSize = const Size(23, 23),
+    this.buttonMargin = const EdgeInsets.all(0),
+    this.buttonPadding = const EdgeInsets.all(0),
     this.buttonDecoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       color: Color.fromRGBO(21, 21, 21, 0.5),
@@ -148,6 +150,8 @@ class MechanixBottomBarIconThemeData
   final Size iconBoxSize;
   final Size iconSize;
   final Decoration buttonDecoration;
+  final EdgeInsetsGeometry buttonMargin;
+  final EdgeInsetsGeometry buttonPadding;
 
   @override
   MechanixBottomBarIconThemeData copyWith({
@@ -167,6 +171,8 @@ class MechanixBottomBarIconThemeData
     Size? iconBoxSize,
     Size? iconSize,
     Decoration? buttonDecoration,
+    EdgeInsetsGeometry? buttonMargin,
+    EdgeInsetsGeometry? buttonPadding,
   }) {
     return MechanixBottomBarIconThemeData(
       iconColor: iconColor ?? this.iconColor,
@@ -185,6 +191,8 @@ class MechanixBottomBarIconThemeData
       iconBoxSize: iconBoxSize ?? this.iconBoxSize,
       iconSize: iconSize ?? this.iconSize,
       buttonDecoration: buttonDecoration ?? this.buttonDecoration,
+      buttonMargin: buttonMargin ?? this.buttonMargin,
+      buttonPadding: buttonPadding ?? this.buttonPadding,
     );
   }
 
@@ -211,6 +219,12 @@ class MechanixBottomBarIconThemeData
       buttonDecoration:
           Decoration.lerp(buttonDecoration, other.buttonDecoration, t) ??
               buttonDecoration,
+      buttonMargin:
+          EdgeInsetsGeometry.lerp(buttonMargin, other.buttonMargin, t) ??
+              buttonMargin,
+      buttonPadding:
+          EdgeInsetsGeometry.lerp(buttonPadding, other.buttonPadding, t) ??
+              buttonPadding,
     );
   }
 
@@ -233,6 +247,8 @@ class MechanixBottomBarIconThemeData
     properties.add(DiagnosticsProperty('iconBoxSize', iconBoxSize));
     properties.add(DiagnosticsProperty('iconSize', iconSize));
     properties.add(DiagnosticsProperty('buttonDecoration', buttonDecoration));
+    properties.add(DiagnosticsProperty('buttonMargin', buttonMargin));
+    properties.add(DiagnosticsProperty('buttonPadding', buttonPadding));
   }
 
   @override
@@ -254,6 +270,8 @@ class MechanixBottomBarIconThemeData
         buttonSize == other.buttonSize &&
         iconBoxSize == other.iconBoxSize &&
         iconSize == other.iconSize &&
+        buttonMargin == other.buttonMargin &&
+        buttonPadding == other.buttonPadding &&
         buttonDecoration == other.buttonDecoration;
   }
 
@@ -276,6 +294,8 @@ class MechanixBottomBarIconThemeData
       iconBoxSize,
       iconSize,
       buttonDecoration,
+      buttonMargin,
+      buttonPadding,
     );
   }
 }

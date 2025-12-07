@@ -234,6 +234,8 @@ class BottomBarButton {
       width: theme?.buttonSize.width,
       height: theme?.buttonSize.height,
       decoration: theme?.buttonDecoration,
+      margin: theme?.buttonMargin,
+      padding: theme?.buttonPadding,
       child: IconButton(
         isSelected: isSelected,
         disabledColor: disabledColor,
