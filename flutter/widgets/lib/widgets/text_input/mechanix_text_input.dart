@@ -18,7 +18,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.initialValue,
     this.errorText,
     this.prefixIcon,
-  });
+    this.suffixIcon,
+  }) : isSearchField = false;
 
   const MechanixTextInput.password({
     super.key,
@@ -34,7 +35,25 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.initialValue,
     this.errorText,
     this.prefixIcon,
-  });
+    this.suffixIcon,
+  }) : isSearchField = false;
+
+  const MechanixTextInput.search({
+    super.key,
+    this.onChanged,
+    this.hintText,
+    this.isFormField = false,
+    this.inputDecoration,
+    this.label,
+    this.onFieldSubmitted,
+    this.validator,
+    this.theme,
+    this.initialValue,
+    this.errorText,
+    this.prefixIcon,
+    this.suffixIcon,
+  })  : isSearchField = true,
+        isPasswordField = false;
 
   final String? label;
   final bool isPasswordField;
@@ -48,6 +67,8 @@ class MechanixTextInput<T> extends StatefulWidget {
   final String? initialValue;
   final String? errorText;
   final Widget? prefixIcon;
+  final bool isSearchField;
+  final Widget? suffixIcon;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -78,6 +99,27 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
   @override
   Widget build(BuildContext context) {
     final theme = MechanixTextInputTheme.of(context).merge(widget.theme);
+
+    if (widget.isSearchField) {
+      return Container(
+        color: Color.fromRGBO(58, 58, 58, 1),
+        padding: EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 4),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _controller,
+                obscureText: widget.isPasswordField ? obscureText : false,
+                style: theme.textStyle,
+                decoration: _buildInputDecoration(context, theme),
+                onChanged: widget.onChanged,
+              ),
+            ),
+            if (widget.suffixIcon != null) widget.suffixIcon!
+          ],
+        ),
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +173,9 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
               ),
               onPressed: togglePasswordVisibility,
             )
-          : null,
+          : widget.isSearchField
+              ? null
+              : widget.suffixIcon,
       prefixIcon: widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius ?? CircularRadius.sm,
