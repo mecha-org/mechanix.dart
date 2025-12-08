@@ -60,7 +60,7 @@ flutter:
         - asset: assets/fonts/Inter_18pt-Medium.ttf
         - asset: assets/fonts/Inter_18pt-Regular.ttf
           style: normal
-        - asset: assets/fonts/OverusedGrotesk-Light.ttf
+        - asset: assets/fonts/OverusedGrotesk-Roman.ttf
           style: normal
 
   # To add assets to your plugin package, add an assets section, like this:
