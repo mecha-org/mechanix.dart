@@ -53,6 +53,7 @@ flutter:
     - assets/icons/tick_icon.png
     - assets/icons/close_icon.png
     - assets/icons/backward_icon.png
+    - assets/icons/clear_icon.png
 
   fonts:
     - family: Inter
