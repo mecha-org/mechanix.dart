@@ -62,9 +62,9 @@ class BottomBarButton {
     this.autofocus = false,
     this.tooltip,
     this.enableFeedback,
-    this.iconTheme,
     this.selectedIcon,
   })  : iconPath = '',
+        iconTheme = null,
         iconWidget = null,
         onPressed = null,
         extensionWidgets = const [],
@@ -98,7 +98,6 @@ class BottomBarButton {
     required this.extensionWidgets,
     this.iconPath = '',
     this.iconWidget,
-    this.menuButton,
     this.floatingActionBarController,
     this.animationDuration = const Duration(milliseconds: 300),
     this.initiallyOpen = false,
@@ -135,6 +134,7 @@ class BottomBarButton {
         focusNode = null,
         autofocus = false,
         tooltip = null,
+        menuButton = null,
         enableFeedback = null,
         selectedIcon = null;
 
