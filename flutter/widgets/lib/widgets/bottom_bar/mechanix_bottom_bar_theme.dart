@@ -128,7 +128,7 @@ class MechanixBottomBarIconThemeData
     this.iconSize = const Size(23, 23),
     this.buttonMargin = const EdgeInsets.all(0),
     this.buttonPadding = const EdgeInsets.all(0),
-    this.buttonDecoration = const BoxDecoration(
+    this.activeButtonDecoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       color: Color.fromRGBO(21, 21, 21, 0.5),
     ),
@@ -149,7 +149,7 @@ class MechanixBottomBarIconThemeData
   final Size buttonSize;
   final Size iconBoxSize;
   final Size iconSize;
-  final Decoration buttonDecoration;
+  final Decoration activeButtonDecoration;
   final EdgeInsetsGeometry buttonMargin;
   final EdgeInsetsGeometry buttonPadding;
 
@@ -170,7 +170,7 @@ class MechanixBottomBarIconThemeData
     Size? buttonSize,
     Size? iconBoxSize,
     Size? iconSize,
-    Decoration? buttonDecoration,
+    Decoration? activeButtonDecoration,
     EdgeInsetsGeometry? buttonMargin,
     EdgeInsetsGeometry? buttonPadding,
   }) {
@@ -190,7 +190,8 @@ class MechanixBottomBarIconThemeData
       buttonSize: buttonSize ?? this.buttonSize,
       iconBoxSize: iconBoxSize ?? this.iconBoxSize,
       iconSize: iconSize ?? this.iconSize,
-      buttonDecoration: buttonDecoration ?? this.buttonDecoration,
+      activeButtonDecoration:
+          activeButtonDecoration ?? this.activeButtonDecoration,
       buttonMargin: buttonMargin ?? this.buttonMargin,
       buttonPadding: buttonPadding ?? this.buttonPadding,
     );
@@ -216,9 +217,9 @@ class MechanixBottomBarIconThemeData
       buttonSize: Size.lerp(buttonSize, other.buttonSize, t) ?? buttonSize,
       iconBoxSize: Size.lerp(iconBoxSize, other.iconBoxSize, t) ?? iconBoxSize,
       iconSize: Size.lerp(iconSize, other.iconSize, t) ?? iconSize,
-      buttonDecoration:
-          Decoration.lerp(buttonDecoration, other.buttonDecoration, t) ??
-              buttonDecoration,
+      activeButtonDecoration: Decoration.lerp(
+              activeButtonDecoration, other.activeButtonDecoration, t) ??
+          activeButtonDecoration,
       buttonMargin:
           EdgeInsetsGeometry.lerp(buttonMargin, other.buttonMargin, t) ??
               buttonMargin,
@@ -246,7 +247,8 @@ class MechanixBottomBarIconThemeData
     properties.add(DiagnosticsProperty('buttonSize', buttonSize));
     properties.add(DiagnosticsProperty('iconBoxSize', iconBoxSize));
     properties.add(DiagnosticsProperty('iconSize', iconSize));
-    properties.add(DiagnosticsProperty('buttonDecoration', buttonDecoration));
+    properties.add(
+        DiagnosticsProperty('activeButtonDecoration', activeButtonDecoration));
     properties.add(DiagnosticsProperty('buttonMargin', buttonMargin));
     properties.add(DiagnosticsProperty('buttonPadding', buttonPadding));
   }
@@ -272,7 +274,7 @@ class MechanixBottomBarIconThemeData
         iconSize == other.iconSize &&
         buttonMargin == other.buttonMargin &&
         buttonPadding == other.buttonPadding &&
-        buttonDecoration == other.buttonDecoration;
+        activeButtonDecoration == other.activeButtonDecoration;
   }
 
   @override
@@ -293,7 +295,7 @@ class MechanixBottomBarIconThemeData
       buttonSize,
       iconBoxSize,
       iconSize,
-      buttonDecoration,
+      activeButtonDecoration,
       buttonMargin,
       buttonPadding,
     );

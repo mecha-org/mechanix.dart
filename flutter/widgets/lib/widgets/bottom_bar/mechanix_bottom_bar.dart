@@ -43,30 +43,36 @@ class MechanixBottomBar extends StatelessWidget {
               spacing: leadingWidgetSpacing,
               children: leadingWidget
                   .map(
-                    (button) => button.build(iconColor, barTheme),
+                    (button) => button.build(context, iconColor, barTheme),
                   )
                   .toList(),
-            ),
+            )
+          else
+            SizedBox.shrink(),
           if (centerWidget.isNotEmpty)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: centerWidgetSpacing,
               children: centerWidget
                   .map(
-                    (button) => button.build(iconColor, barTheme),
+                    (button) => button.build(context, iconColor, barTheme),
                   )
                   .toList(),
-            ),
+            )
+          else
+            SizedBox.shrink(),
           if (anchorWidget.isNotEmpty)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               spacing: anchorWidgetSpacing,
               children: anchorWidget
                   .map(
-                    (button) => button.build(iconColor, barTheme),
+                    (button) => button.build(context, iconColor, barTheme),
                   )
                   .toList(),
-            ),
+            )
+          else
+            SizedBox.shrink(),
         ],
       ),
     );
