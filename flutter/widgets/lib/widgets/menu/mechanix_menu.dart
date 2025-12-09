@@ -44,6 +44,8 @@ class MechanixMenu extends StatefulWidget {
     this.menuController,
     this.isMenuButtonRequired = true,
     this.isDisable = false,
+    this.topTabWidth = 42,
+    this.topTabRightSideShiftLength = 80,
   })  : itemCount = 0,
         itemBuilder = null,
         isCustomBuilder = false;
@@ -82,6 +84,8 @@ class MechanixMenu extends StatefulWidget {
     this.isMenuButtonRequired = true,
     required this.itemBuilder,
     required this.itemCount,
+    this.topTabWidth = 42,
+    this.topTabRightSideShiftLength = 80,
   })  : items = const [],
         isDisable = false,
         isCustomBuilder = true;
@@ -121,6 +125,8 @@ class MechanixMenu extends StatefulWidget {
   final MechanixMenuController? menuController;
   final bool isMenuButtonRequired;
   final bool isDisable;
+  final double topTabWidth;
+  final double topTabRightSideShiftLength;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -209,6 +215,8 @@ class _MechanixMenuState extends State<MechanixMenu> {
         findChildIndexCallback: widget.findChildIndexCallback,
         offset: widget.offset,
         shrinkWrap: widget.shrinkWrap,
+        topTabWidth: widget.topTabWidth,
+        topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
       ),
     );
 
@@ -307,6 +315,8 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.findChildIndexCallback,
     required this.offset,
     required this.shrinkWrap,
+    required this.topTabWidth,
+    required this.topTabRightSideShiftLength,
   });
 
   final LayerLink layerLink;
@@ -340,6 +350,8 @@ class _MechanixMenuContainer extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final bool shrinkWrap;
   final Offset offset;
+  final double topTabWidth;
+  final double topTabRightSideShiftLength;
 
   @override
   State<_MechanixMenuContainer> createState() => _MechanixMenuContainerState();
@@ -618,7 +630,10 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     final contentChild = Material(
       type: MaterialType.transparency,
       child: ClipPath(
-        clipper: FolderTabClipper(),
+        clipper: FolderTabClipper(
+          topTabWidth: widget.topTabWidth,
+          topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
+        ),
         child: child,
         // child: Container(padding: const EdgeInsets.only(top: 20), child: child),
       ),
@@ -972,13 +987,22 @@ class MechanixMenuController {
 }
 
 class FolderTabClipper extends CustomClipper<Path> {
+  const FolderTabClipper({
+    this.topTabWidth,
+    this.topTabRightSideShiftLength,
+  });
+
+  final double? topTabWidth;
+  final double? topTabRightSideShiftLength;
+
   @override
   Path getClip(Size size) {
     const double radius = 8; // Outer rounded corners
     const double tabH = 12; // Tab height
-    const double tabW = 42; // Tab width
+    final double tabW = topTabWidth ?? 42; // Tab width
     const double tabSlope = 12; // Small sloped curve
-    const double shift = 80; // Shift tab right by this amount
+    final double shift =
+        topTabRightSideShiftLength ?? 80; // Shift tab right by this amount
 
     final Path p = Path();
 
