@@ -208,6 +208,14 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       disabledBackgroundColor: other?.disabledBackgroundColor ??
           disabledBackgroundColor ??
           context.colorScheme.secondary,
+      activeButtonDecoration:
+          other?.activeButtonDecoration ?? activeButtonDecoration,
+      buttonMargin: other?.buttonMargin ?? buttonMargin,
+      buttonPadding: other?.buttonPadding ?? buttonPadding,
+      buttonSize: other?.buttonSize ?? buttonSize,
+      disableOpacity: other?.disableOpacity ?? disableOpacity,
+      selectedBackgroundColor:
+          other?.selectedBackgroundColor ?? selectedBackgroundColor,
     );
   }
 }

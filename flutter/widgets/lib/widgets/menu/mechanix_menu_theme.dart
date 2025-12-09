@@ -20,7 +20,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.dropdownHeight,
     this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 200),
     this.itemBackgroundColor,
-    this.itemPadding = const EdgeInsets.all(16),
+    this.itemPadding = const EdgeInsets.only(top: 11, bottom: 11, left: 16),
     this.itemBorderRadius,
     this.itemHeight,
     this.disabledTextStyle = const TextStyle(color: Color(0xFF585858)),
