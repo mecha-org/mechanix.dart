@@ -25,6 +25,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.autofocus = false,
     this.canRequestFocus = true,
     this.anchorWidgetIconPath = '',
+    this.anchorWidget,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -49,6 +50,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.autofocus = false,
     this.canRequestFocus = true,
     this.anchorWidgetIconPath = '',
+    this.anchorWidget,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -74,6 +76,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.isClearButtonRequired = true,
     this.autofocus = false,
     this.canRequestFocus = true,
+    this.anchorWidget,
   })  : isSearchField = true,
         isPasswordField = false;
 
@@ -94,6 +97,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final VoidCallback? onClear;
   final bool isClearButtonRequired;
   final String anchorWidgetIconPath;
+  final Widget? anchorWidget;
   final TextEditingController? textEditingController;
   final bool autofocus;
   final bool canRequestFocus;
@@ -178,7 +182,9 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 height: 40,
                 width: 40,
                 child: IconButton(
-                  onPressed: onClear,
+                  onPressed: () {
+                    widget.onClear?.call();
+                  },
                   icon: IconWidget(
                     iconPath: widget.anchorWidgetIconPath,
                     boxHeight: 24,
@@ -189,6 +195,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   ),
                 ),
               )
+            else if (widget.anchorWidget != null)
+              widget.anchorWidget!
           ],
         ),
       );
@@ -244,7 +252,9 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   height: 40,
                   width: 40,
                   child: IconButton(
-                    onPressed: onClear,
+                    onPressed: () {
+                      widget.onClear?.call();
+                    },
                     icon: IconWidget(
                       iconPath: widget.anchorWidgetIconPath,
                       boxHeight: 24,
@@ -255,6 +265,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                     ),
                   ),
                 )
+              else if (widget.anchorWidget != null)
+                widget.anchorWidget!
             ],
           ),
         ),
