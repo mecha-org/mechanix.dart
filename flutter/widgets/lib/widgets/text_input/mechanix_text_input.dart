@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
+import 'package:widgets/images.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
@@ -21,7 +22,11 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.suffixIcon,
     this.onClear,
     this.isClearButtonRequired = false,
-  }) : isSearchField = false;
+    this.autofocus = false,
+    this.canRequestFocus = true,
+  })  : isSearchField = false,
+        anchorWidgetIconPath = '',
+        textEditingController = null;
 
   const MechanixTextInput.password({
     super.key,
@@ -40,7 +45,11 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.suffixIcon,
     this.onClear,
     this.isClearButtonRequired = false,
-  }) : isSearchField = false;
+    this.autofocus = false,
+    this.canRequestFocus = true,
+  })  : isSearchField = false,
+        anchorWidgetIconPath = '',
+        textEditingController = null;
 
   const MechanixTextInput.search({
     super.key,
@@ -57,7 +66,11 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.onClear,
+    this.anchorWidgetIconPath = '',
+    this.textEditingController,
     this.isClearButtonRequired = true,
+    this.autofocus = false,
+    this.canRequestFocus = true,
   })  : isSearchField = true,
         isPasswordField = false;
 
@@ -77,6 +90,10 @@ class MechanixTextInput<T> extends StatefulWidget {
   final Widget? suffixIcon;
   final VoidCallback? onClear;
   final bool isClearButtonRequired;
+  final String anchorWidgetIconPath;
+  final TextEditingController? textEditingController;
+  final bool autofocus;
+  final bool canRequestFocus;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -115,13 +132,18 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
 
     if (widget.isSearchField) {
       return Container(
-        color: Color.fromRGBO(58, 58, 58, 1),
-        padding: EdgeInsets.only(left: 8, top: 8, bottom: 8, right: 4),
+        padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(58, 58, 58, 1),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8), topRight: Radius.circular(8))),
         child: Row(
           children: [
             Expanded(
               child: TextField(
-                controller: _controller,
+                autofocus: widget.autofocus,
+                canRequestFocus: widget.canRequestFocus,
+                controller: widget.textEditingController ?? _controller,
                 obscureText: widget.isPasswordField ? obscureText : false,
                 style: theme.textStyle,
                 decoration: _buildInputDecoration(context, theme),
@@ -137,11 +159,28 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 child: IconButton(
                   onPressed: onClear,
                   icon: IconWidget.fromMechanix(
-                    iconPath: 'assets/icons/clear_icon.png',
+                    iconPath: Images.clearIcon,
                     boxHeight: 24,
                     boxWidth: 24,
                     iconHeight: 16,
                     iconWidth: 16,
+                    iconColor: Color.fromRGBO(210, 210, 210, 1),
+                  ),
+                ),
+              )
+            else if (widget.anchorWidgetIconPath != '')
+              SizedBox(
+                height: 40,
+                width: 40,
+                child: IconButton(
+                  onPressed: onClear,
+                  icon: IconWidget(
+                    iconPath: widget.anchorWidgetIconPath,
+                    boxHeight: 24,
+                    boxWidth: 24,
+                    iconHeight: 16,
+                    iconWidth: 16,
+                    iconColor: Color.fromRGBO(210, 210, 210, 1),
                   ),
                 ),
               )
@@ -163,6 +202,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         if (widget.isFormField)
           TextFormField(
             controller: _controller,
+            autofocus: widget.autofocus,
+            canRequestFocus: widget.canRequestFocus,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
             decoration: _buildInputDecoration(context, theme),
@@ -173,6 +214,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         else
           TextField(
             controller: _controller,
+            autofocus: widget.autofocus,
+            canRequestFocus: widget.canRequestFocus,
             obscureText: widget.isPasswordField ? obscureText : false,
             style: theme.textStyle,
             decoration: _buildInputDecoration(context, theme),
@@ -205,17 +248,26 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           : widget.isSearchField
               ? null
               : widget.suffixIcon,
-      prefixIcon: widget.prefixIcon,
+      prefixIcon: widget.isSearchField
+          ? widget.prefixIcon ??
+              IconWidget.fromMechanix(
+                iconPath: Images.searchIcon,
+                boxHeight: 24,
+                boxWidth: 24,
+                iconHeight: 20,
+                iconWidth: 20,
+              )
+          : widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
-        borderRadius: theme.borderRadius ?? CircularRadius.sm,
+        borderRadius: theme.borderRadius,
         borderSide: theme.focusedBorderSide ?? context.borderSideXs,
       ),
       border: OutlineInputBorder(
-        borderRadius: theme.borderRadius ?? CircularRadius.sm,
+        borderRadius: theme.borderRadius,
         borderSide: theme.borderSide ?? context.borderSideXs,
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: theme.borderRadius ?? CircularRadius.sm,
+        borderRadius: theme.borderRadius,
         borderSide: theme.borderSide ??
             context.borderSideXs
                 .copyWith(color: context.colorScheme.outlineVariant),
