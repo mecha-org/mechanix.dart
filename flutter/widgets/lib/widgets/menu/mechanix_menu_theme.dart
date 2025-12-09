@@ -12,6 +12,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       borderRadius: BorderRadius.all(Radius.circular(8)),
       color: Color.fromRGBO(21, 21, 21, 0.5),
     ),
+    this.buttonMargin = const EdgeInsets.all(0),
+    this.buttonPadding = const EdgeInsets.all(0),
     this.elevation = 4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.dropdownWidth,
@@ -38,6 +40,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
 
   final Size buttonSize;
   final Decoration activeButtonDecoration;
+  final EdgeInsetsGeometry buttonMargin;
+  final EdgeInsetsGeometry buttonPadding;
   final double? elevation;
   final double? disableOpacity;
   final BorderRadius? borderRadius;
@@ -65,6 +69,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   MechanixMenuThemeData copyWith({
     Size? buttonSize,
     Decoration? activeButtonDecoration,
+    EdgeInsetsGeometry? buttonMargin,
+    EdgeInsetsGeometry? buttonPadding,
     double? elevation,
     BorderRadius? borderRadius,
     double? dropdownWidth,
@@ -90,6 +96,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     double? disableOpacity,
   }) {
     return MechanixMenuThemeData(
+      buttonMargin: buttonMargin ?? this.buttonMargin,
+      buttonPadding: buttonPadding ?? this.buttonPadding,
       buttonSize: buttonSize ?? this.buttonSize,
       activeButtonDecoration:
           activeButtonDecoration ?? this.activeButtonDecoration,
@@ -126,6 +134,11 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   ) {
     final o = other as MechanixMenuThemeData?;
     return MechanixMenuThemeData(
+      buttonMargin: EdgeInsetsGeometry.lerp(buttonMargin, o?.buttonMargin, t) ??
+          buttonMargin,
+      buttonPadding:
+          EdgeInsetsGeometry.lerp(buttonPadding, o?.buttonPadding, t) ??
+              buttonPadding,
       buttonSize: Size.lerp(buttonSize, o?.buttonSize, t) ?? buttonSize,
       activeButtonDecoration: Decoration.lerp(
               activeButtonDecoration, o?.activeButtonDecoration, t) ??
@@ -164,7 +177,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-
+    properties.add(DiagnosticsProperty('buttonMargin', buttonMargin));
+    properties.add(DiagnosticsProperty('buttonPadding', buttonPadding));
     properties.add(DiagnosticsProperty('buttonSize', buttonSize));
     properties.add(
         DiagnosticsProperty('activeButtonDecoration', activeButtonDecoration));
@@ -201,6 +215,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     if (identical(this, other)) return true;
     return other is MechanixMenuThemeData &&
         buttonSize == other.buttonSize &&
+        buttonMargin == other.buttonMargin &&
+        buttonPadding == other.buttonPadding &&
         activeButtonDecoration == other.activeButtonDecoration &&
         elevation == other.elevation &&
         borderRadius == other.borderRadius &&
@@ -230,6 +246,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     return Object.hashAll([
       buttonSize,
       activeButtonDecoration,
+      buttonMargin,
+      buttonPadding,
       elevation,
       borderRadius,
       dropdownWidth,

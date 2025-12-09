@@ -239,6 +239,8 @@ class _MechanixMenuState extends State<MechanixMenu> {
               height: menuTheme.buttonSize.height,
               width: menuTheme.buttonSize.width,
               decoration: isClicked ? menuTheme.activeButtonDecoration : null,
+              margin: menuTheme.buttonMargin,
+              padding: menuTheme.buttonPadding,
               child: ((widget.menuButton != null)
                   ? GestureDetector(
                       onTap: _toggleMenu,
