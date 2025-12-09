@@ -21,6 +21,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.onClear,
+    this.focusNode,
     this.isClearButtonRequired = false,
     this.autofocus = false,
     this.canRequestFocus = true,
@@ -44,6 +45,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.onClear,
+    this.focusNode,
     this.isClearButtonRequired = false,
     this.autofocus = false,
     this.canRequestFocus = true,
@@ -66,6 +68,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.onClear,
+    this.focusNode,
     this.anchorWidgetIconPath = '',
     this.textEditingController,
     this.isClearButtonRequired = true,
@@ -94,6 +97,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final TextEditingController? textEditingController;
   final bool autofocus;
   final bool canRequestFocus;
+  final FocusNode? focusNode;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -143,6 +147,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
               child: TextField(
                 autofocus: widget.autofocus,
                 canRequestFocus: widget.canRequestFocus,
+                focusNode: widget.focusNode,
                 controller: widget.textEditingController ?? _controller,
                 obscureText: widget.isPasswordField ? obscureText : false,
                 style: theme.textStyle,
@@ -202,6 +207,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         if (widget.isFormField)
           TextFormField(
             controller: _controller,
+            focusNode: widget.focusNode,
             autofocus: widget.autofocus,
             canRequestFocus: widget.canRequestFocus,
             obscureText: widget.isPasswordField ? obscureText : false,
@@ -214,6 +220,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         else
           TextField(
             controller: _controller,
+            focusNode: widget.focusNode,
             autofocus: widget.autofocus,
             canRequestFocus: widget.canRequestFocus,
             obscureText: widget.isPasswordField ? obscureText : false,
