@@ -43,6 +43,7 @@ class MechanixMenu extends StatefulWidget {
     this.buttonIcon,
     this.menuController,
     this.isMenuButtonRequired = true,
+    this.isDisable = false,
   })  : itemCount = 0,
         itemBuilder = null,
         isCustomBuilder = false;
@@ -82,6 +83,7 @@ class MechanixMenu extends StatefulWidget {
     required this.itemBuilder,
     required this.itemCount,
   })  : items = const [],
+        isDisable = false,
         isCustomBuilder = true;
 
   final List<MechanixMenuItemsType> items;
@@ -118,6 +120,7 @@ class MechanixMenu extends StatefulWidget {
   final IconWidget? buttonIcon;
   final MechanixMenuController? menuController;
   final bool isMenuButtonRequired;
+  final bool isDisable;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -896,39 +899,42 @@ class _MenuItem extends StatelessWidget {
         // opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
         opacity: 1,
         child: Container(
-          padding: index == 0 ? const EdgeInsets.only(top: 10) : null,
-          height: theme.itemHeight,
-          decoration: BoxDecoration(
-            color: isSelected
-                ? theme.selectedBackgroundColor
-                : disabled
-                    ? theme.disabledBackgroundColor
-                    : theme.itemBackgroundColor,
-          ),
-          child: InkWell(
-            onTap: disabled ? null : onTap,
-            child: Padding(
-              padding: theme.itemPadding ?? EdgeInsets.all(0),
-              child: Row(children: [
-                if (leading != null)
-                  Padding(
-                    padding: leadingPadding,
-                    child: leading,
+          padding: index == 0 ? const EdgeInsets.only(top: 30) : null,
+          color: theme.itemBackgroundColor,
+          child: Container(
+            height: theme.itemHeight,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? theme.selectedBackgroundColor
+                  : disabled
+                      ? theme.disabledBackgroundColor
+                      : theme.itemBackgroundColor,
+            ),
+            child: InkWell(
+              onTap: disabled ? null : onTap,
+              child: Padding(
+                padding: theme.itemPadding ?? EdgeInsets.all(0),
+                child: Row(children: [
+                  if (leading != null)
+                    Padding(
+                      padding: leadingPadding,
+                      child: leading,
+                    ),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: disabled
+                          ? theme.disabledTextStyle
+                          : theme.titleTextStyle,
+                    ),
                   ),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: disabled
-                        ? theme.disabledTextStyle
-                        : theme.titleTextStyle,
-                  ),
-                ),
-                if (trailing != null)
-                  Padding(
-                    padding: trailingPadding,
-                    child: trailing,
-                  ),
-              ]),
+                  if (trailing != null)
+                    Padding(
+                      padding: trailingPadding,
+                      child: trailing,
+                    ),
+                ]),
+              ),
             ),
           ),
         ),
