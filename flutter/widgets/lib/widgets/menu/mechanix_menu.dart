@@ -229,26 +229,34 @@ class _MechanixMenuState extends State<MechanixMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final menuTheme =
+        MechanixMenuTheme.of(context).merge(widget.theme, context);
+
     return CompositedTransformTarget(
       link: _layerLink,
       child: widget.isMenuButtonRequired
-          ? ((widget.menuButton != null)
-              ? GestureDetector(
-                  onTap: _toggleMenu,
-                  child: widget.menuButton,
-                )
-              : IconButton(
-                  onPressed: _toggleMenu,
-                  isSelected: isClicked,
-                  icon: widget.buttonIcon ??
-                      IconWidget.fromIconData(
-                        icon: Icon(Icons.more_vert),
-                        boxWidth: 48,
-                        boxHeight: 40,
-                        iconWidth: 20,
-                        iconHeight: 20,
-                      ),
-                ))
+          ? Container(
+              height: menuTheme.buttonSize.height,
+              width: menuTheme.buttonSize.width,
+              decoration: isClicked ? menuTheme.activeButtonDecoration : null,
+              child: ((widget.menuButton != null)
+                  ? GestureDetector(
+                      onTap: _toggleMenu,
+                      child: widget.menuButton,
+                    )
+                  : IconButton(
+                      onPressed: _toggleMenu,
+                      isSelected: isClicked,
+                      icon: widget.buttonIcon ??
+                          IconWidget.fromIconData(
+                            icon: Icon(Icons.more_vert),
+                            boxWidth: 48,
+                            boxHeight: 40,
+                            iconWidth: 20,
+                            iconHeight: 20,
+                          ),
+                    )),
+            )
           : null,
     );
   }
@@ -889,9 +897,11 @@ class _MenuItem extends StatelessWidget {
           padding: index == 0 ? const EdgeInsets.only(top: 10) : null,
           height: theme.itemHeight,
           decoration: BoxDecoration(
-            color: disabled
-                ? theme.disabledBackgroundColor
-                : theme.itemBackgroundColor,
+            color: isSelected
+                ? theme.selectedBackgroundColor
+                : disabled
+                    ? theme.disabledBackgroundColor
+                    : theme.itemBackgroundColor,
           ),
           child: InkWell(
             onTap: disabled ? null : onTap,
