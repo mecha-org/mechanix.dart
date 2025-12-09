@@ -19,6 +19,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
+    this.onClear,
+    this.isClearButtonRequired = false,
   }) : isSearchField = false;
 
   const MechanixTextInput.password({
@@ -36,6 +38,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
+    this.onClear,
+    this.isClearButtonRequired = false,
   }) : isSearchField = false;
 
   const MechanixTextInput.search({
@@ -52,6 +56,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
+    this.onClear,
+    this.isClearButtonRequired = true,
   })  : isSearchField = true,
         isPasswordField = false;
 
@@ -69,6 +75,8 @@ class MechanixTextInput<T> extends StatefulWidget {
   final Widget? prefixIcon;
   final bool isSearchField;
   final Widget? suffixIcon;
+  final VoidCallback? onClear;
+  final bool isClearButtonRequired;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -96,6 +104,11 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
     super.dispose();
   }
 
+  void onClear() {
+    _controller.clear();
+    widget.onClear?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = MechanixTextInputTheme.of(context).merge(widget.theme);
@@ -115,7 +128,23 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 onChanged: widget.onChanged,
               ),
             ),
-            if (widget.suffixIcon != null) widget.suffixIcon!
+            if (widget.suffixIcon != null)
+              widget.suffixIcon!
+            else if (widget.isClearButtonRequired)
+              SizedBox(
+                height: 40,
+                width: 40,
+                child: IconButton(
+                  onPressed: onClear,
+                  icon: IconWidget.fromMechanix(
+                    iconPath: 'assets/icons/clear_icon.png',
+                    boxHeight: 24,
+                    boxWidth: 24,
+                    iconHeight: 16,
+                    iconWidth: 16,
+                  ),
+                ),
+              )
           ],
         ),
       );
