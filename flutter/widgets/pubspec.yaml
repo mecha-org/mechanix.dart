@@ -49,10 +49,10 @@ flutter:
     - assets/icons/right-caret.png
     - assets/icons/wifi.png
     - assets/icons/back_icon.png
-    - assets/icons/search_icon.png
     - assets/icons/tick_icon.png
     - assets/icons/close_icon.png
     - assets/icons/backward_icon.png
+    - assets/icons/search_icon.png
     - assets/icons/clear_icon.png
 
   fonts:
