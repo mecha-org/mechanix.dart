@@ -601,6 +601,8 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     required Widget child,
     required MechanixMenuThemeData theme,
   }) {
+    // TODO: Revisit this code later
+
     // Widget contentChild;
 
     // // Apply custom shape if provided, otherwise use the existing borderRadius
@@ -771,6 +773,9 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       //           height: 1,
       //         ),
     );
+
+    // TODO: Revisit this code later
+
     // return ListView.separated(
     //   physics: const NeverScrollableScrollPhysics(),
     //   itemCount: widget.items.length,
@@ -1064,6 +1069,8 @@ class FolderTabClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
+// TODO: Revisit this code later
 
 // class MenuExactSvgShape extends CustomClipper<Path> {
 //   final double offsetX;
