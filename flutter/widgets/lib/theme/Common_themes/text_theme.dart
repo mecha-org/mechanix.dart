@@ -77,7 +77,7 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     bodySmall: TextStyle(
       color: onSurface,
       fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),

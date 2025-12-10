@@ -8,8 +8,9 @@ import 'package:widgets/widgets/search_bar/mechanix_search_bar.dart';
 @widgetbook.UseCase(name: 'Search Bar', type: MechanixSearchBar)
 Widget buildMenuUseCase(BuildContext context) {
   return Center(
-    child: MechanixTextInput.search(
+    child: MechanixTextInput.password(
       onChanged: (value) {},
+      cursorColor: Colors.red,
       // theme: MechanixTextInputThemeData(
       //   fillColor: Color.fromRGBO(21, 21, 21, 1),
       // ),
@@ -19,8 +20,7 @@ Widget buildMenuUseCase(BuildContext context) {
       // prefixIcon: Container(
       //   child: IconWidget.fromIconData(icon: Icon(Icons.search)),
       // ),
-      isClearButtonRequired: false,
-      anchorWidgetIconPath: "assets/icons/tick_icon.png",
+      // anchorWidgetIconPath: "assets/icons/tick_icon.png",
       onClear: () {},
     ),
   );

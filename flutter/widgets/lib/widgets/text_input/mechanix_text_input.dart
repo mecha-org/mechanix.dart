@@ -26,6 +26,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.canRequestFocus = true,
     this.anchorWidgetIconPath = '',
     this.anchorWidget,
+    this.cursorColor,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -51,6 +52,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.canRequestFocus = true,
     this.anchorWidgetIconPath = '',
     this.anchorWidget,
+    this.cursorColor,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -77,6 +79,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.autofocus = false,
     this.canRequestFocus = true,
     this.anchorWidget,
+    this.cursorColor,
   })  : isSearchField = true,
         isPasswordField = false;
 
@@ -102,6 +105,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final bool autofocus;
   final bool canRequestFocus;
   final FocusNode? focusNode;
+  final Color? cursorColor;
 
   @override
   State<MechanixTextInput> createState() => _MechanixTextInputState();
@@ -155,6 +159,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 controller: widget.textEditingController ?? _controller,
                 obscureText: widget.isPasswordField ? obscureText : false,
                 style: theme.textStyle,
+                cursorColor: widget.cursorColor,
                 decoration: _buildInputDecoration(context, theme),
                 onChanged: widget.onChanged,
               ),
@@ -230,6 +235,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                           obscureText:
                               widget.isPasswordField ? obscureText : false,
                           style: theme.textStyle,
+                          cursorColor: widget.cursorColor,
                           decoration: _buildInputDecoration(context, theme),
                           onChanged: widget.onChanged,
                           onFieldSubmitted: widget.onFieldSubmitted,
@@ -239,6 +245,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                           controller: _controller,
                           focusNode: widget.focusNode,
                           autofocus: widget.autofocus,
+                          cursorColor: widget.cursorColor,
                           canRequestFocus: widget.canRequestFocus,
                           obscureText:
                               widget.isPasswordField ? obscureText : false,

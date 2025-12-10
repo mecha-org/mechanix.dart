@@ -5,15 +5,18 @@ import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart'
 
 // Import the widget from your app
 
-@widgetbook.UseCase(name: 'Elevated Button', type: MechanixElevatedButton)
-Widget buildMenuUseCase(BuildContext context) {
+@widgetbook.UseCase(name: 'Filled Button', type: MechanixElevatedButton)
+Widget buildFilledButtonUseCase(BuildContext context) {
   return Center(
     child: MechanixFilledButton(
       onPressed: () {
         print("Clicked");
       },
       theme: MechanixFilledButtonThemeData(
-        decoration: BoxDecoration(color: Color.fromRGBO(170, 100, 0, 1)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Color.fromRGBO(170, 100, 0, 1),
+        ),
       ),
       label: "Cancel",
     ),
