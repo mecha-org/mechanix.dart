@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/build_context.dart';
 import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
+import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
@@ -263,6 +264,24 @@ extension MechanixBottomBarThemeDataExtensions on MechanixBottomBarThemeData {
       width: other.width ?? width,
       iconColor: other.iconColor ?? iconColor,
       iconTheme: other.iconTheme ?? iconTheme,
+    );
+  }
+}
+
+extension MechanixFilledButtonThemeDataExtensions
+    on MechanixFilledButtonThemeData {
+  MechanixFilledButtonThemeData merge(
+      MechanixFilledButtonThemeData? other, BuildContext context) {
+    if (other == null) return this;
+
+    return copyWith(
+      decoration: other.decoration ?? decoration,
+      buttonSize: other.buttonSize ?? buttonSize,
+      labelText: other.labelText ?? labelText,
+      textStyle: other.textStyle ?? textStyle,
+      constraints: other.constraints ?? constraints,
+      margin: other.margin ?? margin,
+      padding: other.padding ?? padding,
     );
   }
 }

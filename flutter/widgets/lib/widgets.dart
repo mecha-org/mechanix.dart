@@ -14,6 +14,7 @@ export 'src/widgets/mechanix_text_button.dart';
 export 'widgets/bottom_bar/mechanix_bottom_bar.dart';
 export 'widgets/bottom_sheet_modals/mechanix_bottom_sheet.dart';
 export 'widgets/divider/mechanix_menu_divider.dart';
+export 'widgets/filled_button/mechanix_filled_button.dart';
 export 'widgets/floating_action_bar/mechanix_floating_action_bar.dart';
 export 'widgets/icon_widget.dart';
 export 'widgets/list_items/mechanix_simple_list.dart';
