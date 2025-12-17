@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extension.dart';
 import 'package:widgets/widgets.dart';
-import 'package:widgets/widgets/wheelScroll/mechanix_wheel_scroll_theme.dart';
-import 'package:widgets/widgets/wheelScroll/wheel_scroll_options_type.dart';
+import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
+import 'package:widgets/widgets/wheel_scroll/wheel_scroll_options_type.dart';
 
 final List<WheelScrollOption<int>> shortMonths = [
   WheelScrollOption(label: 'Jan', value: 1),

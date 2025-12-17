@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/widgets/bottomBar/bottom_bar_button_type.dart';
-import 'package:widgets/widgets/bottomBar/mechanix_bottom_bar_theme.dart';
+import 'package:widgets/widgets/bottom_bar/bottom_bar_button_type.dart';
+import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
 
 class MechanixBottomBar extends StatelessWidget {
   const MechanixBottomBar({

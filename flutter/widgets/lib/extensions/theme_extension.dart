@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/build_context.dart';
-import 'package:widgets/widgets/bottomBar/mechanix_bottom_bar_theme.dart';
+import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
-import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
+import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
-import 'package:widgets/widgets/sectionList/mechanix_section_list_theme.dart';
+import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
-import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
-import 'package:widgets/widgets/wheelScroll/mechanix_wheel_scroll_theme.dart';
+import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
+import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
 
 extension MechanixWheelScrollThemeDataExtensions
     on MechanixWheelScrollThemeData {

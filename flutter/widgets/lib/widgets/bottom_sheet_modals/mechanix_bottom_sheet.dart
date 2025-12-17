@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/widgets/bottomSheetModals/mechanix_bottom_sheet_theme.dart';
+import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
 
 class MechanixBottomSheet extends StatelessWidget {
   const MechanixBottomSheet({
