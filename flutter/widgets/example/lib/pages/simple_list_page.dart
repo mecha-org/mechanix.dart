@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/edge_insets.dart';
 import 'package:widgets/widgets.dart';
-import 'package:widgets/widgets/listItems/simple_list_items_type.dart';
+import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
 
 class MechanixSimpleListPage extends StatefulWidget {
   const MechanixSimpleListPage({super.key});

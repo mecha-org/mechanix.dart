@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
-import 'package:widgets/widgets/bottomSheetModals/mechanix_bottom_sheet_theme.dart';
-import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
-import 'package:widgets/widgets/listItems/simple_list_items_type.dart';
-import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
+import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
+import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
+import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
 class BottomSheetPage extends StatelessWidget {
   const BottomSheetPage({super.key});
@@ -11,15 +10,7 @@ class BottomSheetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(context).copyWith(
-        extensions: [
-          MechanixBottomSheetThemeData(
-            backgroundColor: WidgetStateProperty.all(Colors.grey[850]!),
-            borderRadius: 12,
-            shadowColor: WidgetStateProperty.all(Colors.black45),
-          ),
-        ],
-      ),
+      data: Theme.of(context).copyWith(),
       child: Scaffold(
         appBar: AppBar(title: const Text("Bottom Sheet Examples")),
         body: SingleChildScrollView(

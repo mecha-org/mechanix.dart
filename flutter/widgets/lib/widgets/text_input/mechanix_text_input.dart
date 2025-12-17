@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/textInput/mechanix_text_input_theme.dart';
+import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
 class MechanixTextInput<T> extends StatefulWidget {
   const MechanixTextInput.textInput({

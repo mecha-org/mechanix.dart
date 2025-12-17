@@ -36,6 +36,8 @@ class MechanixFloatingActionBar extends StatefulWidget {
     this.isMenuButtonRequired = true,
     this.buttonIcon,
     this.outsideClickDisabled = false,
+    this.onOpen,
+    this.onClose,
   });
 
   final List<Widget> menus;
@@ -65,6 +67,8 @@ class MechanixFloatingActionBar extends StatefulWidget {
   final bool isMenuButtonRequired;
   final bool outsideClickDisabled;
   final IconWidget? buttonIcon;
+  final VoidCallback? onOpen;
+  final VoidCallback? onClose;
 
   @override
   State<MechanixFloatingActionBar> createState() =>
@@ -138,13 +142,21 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
         offset: widget.offset,
         shrinkWrap: widget.shrinkWrap,
         outsideClickDisabled: widget.outsideClickDisabled,
+        animationDuration: widget.animationDuration,
       ),
     );
 
     Overlay.of(context, rootOverlay: true).insert(_overlayEntry!);
+
+    if (widget.onOpen != null) {
+      widget.onOpen?.call();
+    }
   }
 
   void _hideOptions() {
+    if (widget.onClose != null) {
+      widget.onClose?.call();
+    }
     setState(() {
       isClicked = false;
     });
@@ -211,6 +223,7 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
     required this.offset,
     required this.shrinkWrap,
     required this.outsideClickDisabled,
+    required this.animationDuration,
   });
 
   final LayerLink layerLink;
@@ -236,6 +249,7 @@ class _MechanixFloatingActionBarContainerState extends StatefulWidget {
   final bool shrinkWrap;
   final Offset offset;
   final bool outsideClickDisabled;
+  final Duration? animationDuration;
 
   @override
   State<_MechanixFloatingActionBarContainerState> createState() =>
@@ -253,7 +267,7 @@ class __MechanixFloatingActionBarContainerState
     super.initState();
 
     _animationController = AnimationController(
-      duration: Duration(milliseconds: 600),
+      duration: widget.animationDuration ?? Duration(milliseconds: 600),
       vsync: this,
     );
 

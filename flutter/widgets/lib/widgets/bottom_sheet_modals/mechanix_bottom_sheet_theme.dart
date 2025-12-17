@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -6,26 +7,30 @@ import 'package:flutter/material.dart';
 class MechanixBottomSheetThemeData
     extends ThemeExtension<MechanixBottomSheetThemeData> with Diagnosticable {
   const MechanixBottomSheetThemeData({
-    this.backgroundColor =
-        const WidgetStatePropertyAll<Color?>(Color.fromARGB(255, 70, 69, 69)),
-    this.borderRadius = 12.0,
-    this.shadowColor = const WidgetStatePropertyAll<Color?>(Colors.black45),
+    this.width = double.infinity,
+    this.decoration = const BoxDecoration(
+      color: Color(0xFF2E2E2E),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black45,
+          // blurRadius: 8,
+          // offset: Offset(0, -2),
+        ),
+      ],
+    ),
   });
 
-  final WidgetStateProperty<Color?>? backgroundColor;
-  final double? borderRadius;
-  final WidgetStateProperty<Color?>? shadowColor;
+  final double? width;
+  final BoxDecoration decoration;
 
   @override
   MechanixBottomSheetThemeData copyWith({
-    WidgetStateProperty<Color?>? backgroundColor,
-    double? borderRadius,
-    WidgetStateProperty<Color?>? shadowColor,
+    double? width,
+    BoxDecoration? decoration,
   }) {
     return MechanixBottomSheetThemeData(
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      borderRadius: borderRadius ?? this.borderRadius,
-      shadowColor: shadowColor ?? this.shadowColor,
+      decoration: decoration ?? this.decoration,
+      width: width ?? this.width,
     );
   }
 
@@ -34,34 +39,30 @@ class MechanixBottomSheetThemeData
       ThemeExtension<MechanixBottomSheetThemeData>? other, double t) {
     if (other is! MechanixBottomSheetThemeData) return this;
     return MechanixBottomSheetThemeData(
-      backgroundColor: WidgetStateProperty.lerp<Color?>(
-          backgroundColor, other.backgroundColor, t, Color.lerp),
-      borderRadius: lerpDouble(borderRadius, other.borderRadius, t),
-      shadowColor: WidgetStateProperty.lerp<Color?>(
-          shadowColor, other.shadowColor, t, Color.lerp),
+      decoration:
+          BoxDecoration.lerp(decoration, other.decoration, t) ?? decoration,
+      width: lerpDouble(width, other.width, t),
     );
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('backgroundColor', backgroundColor));
-    properties.add(DoubleProperty('borderRadius', borderRadius));
-    properties.add(DiagnosticsProperty('shadowColor', shadowColor));
+    properties.add(DiagnosticsProperty('decoration', decoration));
+    properties.add(DoubleProperty('width', width));
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is MechanixBottomSheetThemeData &&
-        backgroundColor == other.backgroundColor &&
-        borderRadius == other.borderRadius &&
-        shadowColor == other.shadowColor;
+        decoration == other.decoration &&
+        width == other.width;
   }
 
   @override
   int get hashCode {
-    return Object.hash(backgroundColor, borderRadius, shadowColor);
+    return Object.hash(decoration, width);
   }
 }
 

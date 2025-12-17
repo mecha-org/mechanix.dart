@@ -2,8 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/listItems/mechanix_simple_list_theme.dart';
-import 'package:widgets/widgets/listItems/simple_list_items_type.dart';
+import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
+import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
 
 class MechanixSimpleList extends StatelessWidget {
   const MechanixSimpleList({
