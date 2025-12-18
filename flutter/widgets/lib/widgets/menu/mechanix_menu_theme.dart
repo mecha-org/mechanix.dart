@@ -23,9 +23,9 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.itemPadding = const EdgeInsets.only(top: 11, bottom: 11, left: 16),
     this.itemBorderRadius,
     this.itemHeight,
-    this.disabledTextStyle = const TextStyle(color: Color(0xFF585858)),
+    this.disabledTextStyle = const TextStyle(),
     this.disabledBackgroundColor,
-    this.selectedBackgroundColor = const Color(0xFF222222),
+    this.selectedBackgroundColor,
     this.titleTextStyle,
     this.padding,
     this.clipBehavior = Clip.none,
@@ -33,13 +33,13 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.transform,
     this.transformAlignment,
     this.alignment,
-    this.decoration,
+    this.decoration = const BoxDecoration(),
     this.foregroundDecoration,
     this.disableOpacity = 0.5,
   });
 
   final Size buttonSize;
-  final Decoration activeButtonDecoration;
+  final BoxDecoration activeButtonDecoration;
   final EdgeInsetsGeometry buttonMargin;
   final EdgeInsetsGeometry buttonPadding;
   final double? elevation;
@@ -62,13 +62,13 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   final Matrix4? transform;
   final AlignmentGeometry? transformAlignment;
   final AlignmentGeometry? alignment;
-  final Decoration? decoration;
-  final Decoration? foregroundDecoration;
+  final BoxDecoration? decoration;
+  final BoxDecoration? foregroundDecoration;
 
   @override
   MechanixMenuThemeData copyWith({
     Size? buttonSize,
-    Decoration? activeButtonDecoration,
+    BoxDecoration? activeButtonDecoration,
     EdgeInsetsGeometry? buttonMargin,
     EdgeInsetsGeometry? buttonPadding,
     double? elevation,
@@ -91,8 +91,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     Matrix4? transform,
     AlignmentGeometry? transformAlignment,
     AlignmentGeometry? alignment,
-    Decoration? decoration,
-    Decoration? foregroundDecoration,
+    BoxDecoration? decoration,
+    BoxDecoration? foregroundDecoration,
     double? disableOpacity,
   }) {
     return MechanixMenuThemeData(
@@ -140,7 +140,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
           EdgeInsetsGeometry.lerp(buttonPadding, o?.buttonPadding, t) ??
               buttonPadding,
       buttonSize: Size.lerp(buttonSize, o?.buttonSize, t) ?? buttonSize,
-      activeButtonDecoration: Decoration.lerp(
+      activeButtonDecoration: BoxDecoration.lerp(
               activeButtonDecoration, o?.activeButtonDecoration, t) ??
           activeButtonDecoration,
       elevation: lerpDouble(elevation, o?.elevation, t),
@@ -167,10 +167,11 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       transformAlignment:
           AlignmentGeometry.lerp(transformAlignment, o?.transformAlignment, t),
       alignment: AlignmentGeometry.lerp(alignment, o?.alignment, t),
-      decoration: Decoration.lerp(decoration, o?.decoration, t) ?? decoration,
-      foregroundDecoration:
-          Decoration.lerp(foregroundDecoration, o?.foregroundDecoration, t) ??
-              foregroundDecoration,
+      decoration:
+          BoxDecoration.lerp(decoration, o?.decoration, t) ?? decoration,
+      foregroundDecoration: BoxDecoration.lerp(
+              foregroundDecoration, o?.foregroundDecoration, t) ??
+          foregroundDecoration,
     );
   }
 

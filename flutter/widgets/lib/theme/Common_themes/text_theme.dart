@@ -64,7 +64,7 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     bodyMedium: TextStyle(
       color: onSurface,
-      fontSize: 14,
+      fontSize: 18,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),

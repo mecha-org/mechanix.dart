@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/constants.dart';
 import 'package:widgets/theme/Common_themes/text_theme.dart';
+import 'package:widgets/theme/color_setting.dart';
 
 ThemeData createTheme(
     {bool useMaterial3 = true, required ColorScheme colorScheme}) {
@@ -8,9 +9,17 @@ ThemeData createTheme(
       ThemeData.from(useMaterial3: useMaterial3, colorScheme: colorScheme);
 
   return theme.copyWith(
-    textTheme: createTextTheme(
-        onSurface: colorScheme.onSurface, surfaceDim: colorScheme.surfaceDim),
-  );
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      textTheme: createTextTheme(
+        onSurface: colorScheme.onSurface,
+        surfaceDim: colorScheme.surfaceDim,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: colorScheme.primaryFixed,
+      ));
 }
 
 ThemeData createLightTheme(
