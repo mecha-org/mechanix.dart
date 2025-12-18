@@ -205,6 +205,9 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
       padding: other?.padding ?? padding,
       decoration: other?.decoration ?? decoration,
+      disabledBackgroundColor: other?.disabledBackgroundColor ??
+          disabledBackgroundColor ??
+          context.colorScheme.secondary,
     );
   }
 }

@@ -99,6 +99,12 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
       setState(() {
         isClicked = true;
       });
+
+      if (widget.floatingActionBarController == null) {
+        if (widget.onOpen != null) {
+          widget.onOpen?.call();
+        }
+      }
       _showOptions(context, fabTheme);
     }
   }

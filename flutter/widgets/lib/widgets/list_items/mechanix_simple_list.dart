@@ -30,11 +30,13 @@ class MechanixSimpleList extends StatelessWidget {
     this.findChildIndexCallback,
     this.shrinkWrap = true,
   })  : itemBuilder = null,
+        prototypeItem = null,
         itemCount = null,
         separatorBuilder = null;
 
   const MechanixSimpleList.builder({
     super.key,
+    this.prototypeItem,
     required this.itemCount,
     required this.itemBuilder,
     this.isDividerRequired = true,
@@ -83,6 +85,7 @@ class MechanixSimpleList extends StatelessWidget {
     this.findChildIndexCallback,
     this.shrinkWrap = true,
   })  : isDividerRequired = false,
+        prototypeItem = null,
         divider = null,
         itemBuilder = null,
         itemCount = null;
@@ -134,6 +137,8 @@ class MechanixSimpleList extends StatelessWidget {
   final int? Function(Key key)? findChildIndexCallback;
 
   final bool shrinkWrap;
+
+  final Widget? prototypeItem;
 
   Widget _buildDefaultSeparator(BuildContext context, int index) {
     final theme = MechanixSimpleListTheme.of(context);
@@ -224,6 +229,7 @@ class MechanixSimpleList extends StatelessWidget {
         scrollDirection: scrollDirection,
         findChildIndexCallback: findChildIndexCallback,
         shrinkWrap: shrinkWrap,
+        prototypeItem: prototypeItem,
       );
     }
   }

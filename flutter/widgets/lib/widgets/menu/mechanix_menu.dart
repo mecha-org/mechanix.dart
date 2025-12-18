@@ -576,13 +576,38 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     required Widget child,
     required MechanixMenuThemeData theme,
   }) {
-    final slideChild = Material(
-      elevation: theme.elevation ?? 4,
-      color: theme.itemBackgroundColor,
-      borderRadius: theme.borderRadius,
-      child: ClipRRect(
-        borderRadius: theme.borderRadius ?? BorderRadius.zero,
+    // Widget contentChild;
+
+    // // Apply custom shape if provided, otherwise use the existing borderRadius
+    // if (widget.customShape != null) {
+    //   contentChild = ClipPath(
+    //     clipper: widget.customShape,
+    //     // clipBehavior: Clip.none,
+    //     child: Material(
+    //       elevation: theme.elevation ?? 4,
+    //       // color: theme.itemBackgroundColor,
+    //       color: Colors.red,
+    //       child: child,
+    //     ),
+    //   );
+    // } else {
+    //   contentChild = Material(
+    //     elevation: theme.elevation ?? 4,
+    //     color: theme.itemBackgroundColor,
+    //     borderRadius: theme.borderRadius,
+    //     child: ClipRRect(
+    //       borderRadius: theme.borderRadius ?? BorderRadius.zero,
+    //       child: child,
+    //     ),
+    //   );
+    // }
+
+    final contentChild = Material(
+      type: MaterialType.transparency,
+      child: ClipPath(
+        clipper: FolderTabClipper(),
         child: child,
+        // child: Container(padding: const EdgeInsets.only(top: 20), child: child),
       ),
     );
 
@@ -590,14 +615,14 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       case MenuTransitions.fade:
         return FadeTransition(
           opacity: _opacityAnimation,
-          child: slideChild,
+          child: contentChild,
         );
       case MenuTransitions.scale:
         return FadeTransition(
           opacity: _opacityAnimation,
           child: ScaleTransition(
             scale: _scaleAnimation,
-            child: slideChild,
+            child: contentChild,
           ),
         );
       case MenuTransitions.scaleY:
@@ -612,7 +637,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
               ),
             );
           },
-          child: slideChild,
+          child: contentChild,
         );
       case MenuTransitions.scaleX:
         return AnimatedBuilder(
@@ -626,7 +651,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
               ),
             );
           },
-          child: slideChild,
+          child: contentChild,
         );
       case MenuTransitions.slideLeft:
       case MenuTransitions.slideRight:
@@ -636,7 +661,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           opacity: _opacityAnimation,
           child: SlideTransition(
             position: _slideAnimation,
-            child: slideChild,
+            child: contentChild,
           ),
         );
     }
@@ -669,7 +694,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       );
     }
 
-    return ListView.separated(
+    return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
@@ -711,13 +736,62 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       reverse: widget.reverse,
       scrollDirection: widget.scrollDirection,
       findChildIndexCallback: widget.findChildIndexCallback,
-      separatorBuilder: widget.separatorBuilder ??
-          (context, index) => Divider(
-                color: context.outline,
-                thickness: 1,
-                height: 1,
-              ),
+      // separatorBuilder: widget.separatorBuilder ??
+      //     (context, index) => Divider(
+      //           color: context.outline,
+      //           thickness: 1,
+      //           height: 1,
+      //         ),
     );
+    // return ListView.separated(
+    //   physics: const NeverScrollableScrollPhysics(),
+    //   itemCount: widget.items.length,
+    //   itemBuilder: (context, index) {
+    //     final MechanixMenuItemsType item = widget.items[index];
+    //     final bool isSelected = _isItemSelected(index.toString());
+
+    //     return _MenuItem(
+    //       theme: menuTheme,
+    //       index: index,
+    //       title: item.title,
+    //       leading: item.leading,
+    //       trailing: _buildTrailing(index, item, isSelected, menuTheme),
+    //       onTap: () => _handleItemTap(index, item),
+    //       onTapUp: item.onTapUp,
+    //       onTapDown: item.onTapDown,
+    //       onDoubleTap: item.onDoubleTap,
+    //       titleTextStyle: item.titleTextStyle,
+    //       disabled: item.disabled,
+    //       isSelected: item.isSelected,
+    //       selectionType: widget.selectionType,
+    //       leadingPadding: item.leadingPadding,
+    //       trailingPadding: item.trailingPadding,
+    //       handleClose: _handleClose,
+    //     );
+    //   },
+    //   shrinkWrap: widget.shrinkWrap,
+    //   addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+    //   addRepaintBoundaries: widget.addRepaintBoundaries,
+    //   addSemanticIndexes: widget.addSemanticIndexes,
+    //   cacheExtent: widget.cacheExtent,
+    //   clipBehavior: widget.clipBehavior,
+    //   controller: widget.controller,
+    //   dragStartBehavior: widget.dragStartBehavior,
+    //   hitTestBehavior: widget.hitTestBehavior,
+    //   keyboardDismissBehavior: widget.keyboardDismissBehavior,
+    //   padding: widget.padding,
+    //   primary: widget.primary,
+    //   restorationId: widget.restorationId,
+    //   reverse: widget.reverse,
+    //   scrollDirection: widget.scrollDirection,
+    //   findChildIndexCallback: widget.findChildIndexCallback,
+    //   separatorBuilder: widget.separatorBuilder ??
+    //       (context, index) => Divider(
+    //             color: context.outline,
+    //             thickness: 1,
+    //             height: 1,
+    //           ),
+    // );
   }
 
   @override
@@ -809,8 +883,10 @@ class _MenuItem extends StatelessWidget {
       absorbing: disabled,
       // ignoring: disabled,
       child: Opacity(
-        opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
+        // opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
+        opacity: 1,
         child: Container(
+          padding: index == 0 ? const EdgeInsets.only(top: 10) : null,
           height: theme.itemHeight,
           decoration: BoxDecoration(
             color: disabled
@@ -876,3 +952,185 @@ class MechanixMenuController {
     _toggle = null;
   }
 }
+
+class FolderTabClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    const double radius = 8; // Outer rounded corners
+    const double tabH = 12; // Tab height
+    const double tabW = 42; // Tab width
+    const double tabSlope = 12; // Small sloped curve
+    const double shift = 80; // Shift tab right by this amount
+
+    final Path p = Path();
+
+    // ----- Bottom-left corner -----
+    p.moveTo(radius, size.height);
+    p.quadraticBezierTo(0, size.height, 0, size.height - radius);
+
+    // ----- Left side up to tab start -----
+    p.lineTo(0, tabH + radius);
+
+    // ----- Slope into the tab (shift applied) -----
+    p.quadraticBezierTo(
+      0,
+      tabH,
+      tabSlope,
+      tabH,
+    );
+
+    // ----- Top of tab (shift applied) -----
+    p.lineTo(shift + tabW, tabH);
+
+    // ----- Tab end slope upward (shift applied) -----
+    p.quadraticBezierTo(
+      shift + tabW + tabSlope,
+      tabH,
+      shift + tabW + tabSlope,
+      tabH - tabSlope,
+    );
+
+    // ----- Connect into top bar (shift applied) -----
+    p.lineTo(shift + tabW + tabSlope, radius);
+    p.quadraticBezierTo(
+      shift + tabW + tabSlope,
+      0,
+      shift + tabW + tabSlope + radius,
+      0,
+    );
+
+    // ----- Top-right corner (UNCHANGED) -----
+    p.lineTo(size.width - radius, 0);
+    p.quadraticBezierTo(size.width, 0, size.width, radius);
+
+    // ----- Right side down (UNCHANGED) -----
+    p.lineTo(size.width, size.height - radius);
+    p.quadraticBezierTo(
+      size.width,
+      size.height,
+      size.width - radius,
+      size.height,
+    );
+
+    // ----- Bottom side (UNCHANGED) -----
+    p.lineTo(radius, size.height);
+
+    p.close();
+    return p;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+// class MenuExactSvgShape extends CustomClipper<Path> {
+//   final double offsetX;
+//   final double offsetY;
+
+//   MenuExactSvgShape({
+//     this.offsetX = 0.0,
+//     this.offsetY = 0.0,
+//   });
+
+//   @override
+//   Path getClip(Size size) {
+//     final path = Path();
+
+//     // Use the actual size of the container
+//     final double width = size.width;
+//     final double height = size.height;
+
+//     // Calculate coordinates based on the actual size
+//     // Original proportions from your SVG
+//     final double startX = (18 / 306) * width + offsetX;
+//     final double startY = (270 / 286) * height + offsetY;
+//     final double endX = (288 / 306) * width + offsetX;
+//     // final double endY = (18 / 286) * height + offsetY;
+//     final double controlY1 = (38.0463 / 286) * height + offsetY;
+//     final double controlY2 = (33.6281 / 286) * height + offsetY;
+//     final double controlY3 = (30.0463 / 286) * height + offsetY;
+//     final double cornerX = (26 / 306) * width + offsetX;
+//     final double lineBreakX = (167.847 / 306) * width + offsetX;
+//     final double controlX1 = (170.505 / 306) * width + offsetX;
+//     final double controlX2 = (173.055 / 306) * width + offsetX;
+//     final double pointX1 = (174.931 / 306) * width + offsetX;
+//     final double pointY1 = (27.1038 / 286) * height + offsetY;
+//     final double pointX2 = (181.069 / 306) * width + offsetX;
+//     final double pointY2 = (20.9426 / 286) * height + offsetY;
+//     final double pointX3 = (182.945 / 306) * width + offsetX;
+//     final double pointY3 = (19.0589 / 286) * height + offsetY;
+//     final double pointX4 = (185.495 / 306) * width + offsetX;
+//     final double pointY4 = (18 / 286) * height + offsetY;
+//     final double pointX5 = (188.153 / 306) * width + offsetX;
+//     final double topX = (280 / 306) * width + offsetX;
+//     final double cornerRadiusX = (284.418 / 306) * width + offsetX;
+//     final double cornerY = (26 / 286) * height + offsetY;
+//     final double bottomRightY = (270 / 286) * height + offsetY;
+//     final double bottomY = (278 / 286) * height + offsetY;
+
+//     path.moveTo(startX, startY);
+//     path.lineTo(startX, controlY1);
+//     path.cubicTo(
+//       startX,
+//       controlY2,
+//       cornerX,
+//       controlY3,
+//       cornerX,
+//       controlY3,
+//     );
+//     path.lineTo(lineBreakX, controlY3);
+//     path.cubicTo(
+//       controlX1,
+//       controlY3,
+//       controlX2,
+//       pointY1,
+//       pointX1,
+//       pointY1,
+//     );
+//     path.lineTo(pointX2, pointY2);
+//     path.cubicTo(
+//       pointX3,
+//       pointY3,
+//       pointX4,
+//       pointY4,
+//       pointX5,
+//       pointY4,
+//     );
+//     path.lineTo(topX, pointY4);
+//     path.cubicTo(
+//       cornerRadiusX,
+//       pointY4,
+//       endX,
+//       cornerY,
+//       endX,
+//       cornerY,
+//     );
+//     path.lineTo(endX, bottomRightY);
+//     path.cubicTo(
+//       endX,
+//       bottomY,
+//       cornerRadiusX,
+//       bottomY,
+//       topX,
+//       bottomY,
+//     );
+//     path.lineTo(cornerX, bottomY);
+//     path.cubicTo(
+//       startX,
+//       bottomY,
+//       startX,
+//       bottomY,
+//       startX,
+//       startY,
+//     );
+//     path.close();
+
+//     return path;
+//   }
+
+//   @override
+//   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+//     return oldClipper is MenuExactSvgShape &&
+//         (oldClipper.offsetX != offsetX || oldClipper.offsetY != offsetY);
+//   }
+// }

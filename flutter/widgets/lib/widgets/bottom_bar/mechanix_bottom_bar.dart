@@ -39,6 +39,8 @@ class MechanixBottomBar extends StatelessWidget {
         children: [
           if (leadingWidget.isNotEmpty)
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              spacing: leadingWidgetSpacing,
               children: leadingWidget
                   .map(
                     (button) => button.build(iconColor, barTheme),
@@ -47,6 +49,7 @@ class MechanixBottomBar extends StatelessWidget {
             ),
           if (centerWidget.isNotEmpty)
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               spacing: centerWidgetSpacing,
               children: centerWidget
                   .map(
@@ -56,6 +59,7 @@ class MechanixBottomBar extends StatelessWidget {
             ),
           if (anchorWidget.isNotEmpty)
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               spacing: anchorWidgetSpacing,
               children: anchorWidget
                   .map(
