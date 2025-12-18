@@ -62,9 +62,9 @@ class BottomBarButton {
     this.autofocus = false,
     this.tooltip,
     this.enableFeedback,
-    this.iconTheme,
     this.selectedIcon,
   })  : iconPath = '',
+        iconTheme = null,
         iconWidget = null,
         onPressed = null,
         extensionWidgets = const [],
@@ -98,7 +98,6 @@ class BottomBarButton {
     required this.extensionWidgets,
     this.iconPath = '',
     this.iconWidget,
-    this.menuButton,
     this.floatingActionBarController,
     this.animationDuration = const Duration(milliseconds: 300),
     this.initiallyOpen = false,
@@ -125,9 +124,9 @@ class BottomBarButton {
     this.iconTheme,
     this.onPressed,
     this.onExtensionClose,
+    this.isSelected = false,
+    this.isDisabled = false,
   })  : disabledColor = const Color(0xFF585858),
-        isDisabled = false,
-        isSelected = false,
         widget = null,
         onHover = null,
         onLongPress = null,
@@ -135,6 +134,7 @@ class BottomBarButton {
         focusNode = null,
         autofocus = false,
         tooltip = null,
+        menuButton = null,
         enableFeedback = null,
         selectedIcon = null;
 
@@ -184,15 +184,17 @@ class BottomBarButton {
   final bool outsideClickDisabled;
   final IconWidget? buttonIcon;
 
-  Widget build(Color iconColor, MechanixBottomBarThemeData barTheme) {
+  Widget build(BuildContext context, Color iconColor,
+      MechanixBottomBarThemeData barTheme) {
     final theme = iconTheme ?? barTheme.iconTheme;
 
     if (widget != null) return widget!;
 
     if (extensionWidgets.isNotEmpty) {
       return MechanixFloatingActionBar(
-        menus:
-            extensionWidgets.map((e) => e.build(iconColor, barTheme)).toList(),
+        menus: extensionWidgets
+            .map((e) => e.build(context, iconColor, barTheme))
+            .toList(),
         dropdownPosition: dropdownPosition,
         offset: offset,
         theme: floatingActionBarTheme ??
@@ -200,11 +202,11 @@ class BottomBarButton {
               decoration: BoxDecoration(color: Color(0xFF222222)),
               width: double.infinity,
             ),
-        buttonIcon: iconWidget ??
-            IconWidget(
-              iconPath: iconPath,
-              iconColor: theme?.iconColor ?? iconColor,
-            ),
+        // buttonIcon: iconWidget ??
+        //     IconWidget(
+        //       iconPath: iconPath,
+        //       iconColor: theme?.iconColor ?? iconColor,
+        //     ),
         onOpen: onPressed,
         onClose: onExtensionClose,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
@@ -221,7 +223,20 @@ class BottomBarButton {
         initiallyOpen: initiallyOpen,
         isMenuButtonRequired: isMenuButtonRequired,
         keyboardDismissBehavior: keyboardDismissBehavior,
-        menuButton: menuButton,
+        menuButton: Container(
+          width: theme?.buttonSize.width,
+          height: theme?.buttonSize.height,
+          decoration: isSelected ? theme?.activeButtonDecoration : null,
+          margin: theme?.buttonMargin,
+          padding: theme?.buttonPadding,
+          child: iconWidget ??
+              IconWidget(
+                iconPath: iconPath,
+                isActive: isSelected,
+                activeIconColor: context.colorScheme.primary,
+                iconColor: isDisabled ? disabledColor : iconColor,
+              ),
+        ),
         outsideClickDisabled: outsideClickDisabled,
         restorationId: restorationId,
         reverse: reverse,
@@ -233,7 +248,7 @@ class BottomBarButton {
     return Container(
       width: theme?.buttonSize.width,
       height: theme?.buttonSize.height,
-      decoration: theme?.buttonDecoration,
+      decoration: isSelected ? theme?.activeButtonDecoration : null,
       margin: theme?.buttonMargin,
       padding: theme?.buttonPadding,
       child: IconButton(

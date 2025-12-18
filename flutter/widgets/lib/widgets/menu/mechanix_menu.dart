@@ -43,6 +43,9 @@ class MechanixMenu extends StatefulWidget {
     this.buttonIcon,
     this.menuController,
     this.isMenuButtonRequired = true,
+    this.isDisable = false,
+    this.topTabWidth = 42,
+    this.topTabRightSideShiftLength = 80,
   })  : itemCount = 0,
         itemBuilder = null,
         isCustomBuilder = false;
@@ -81,7 +84,10 @@ class MechanixMenu extends StatefulWidget {
     this.isMenuButtonRequired = true,
     required this.itemBuilder,
     required this.itemCount,
+    this.topTabWidth = 42,
+    this.topTabRightSideShiftLength = 80,
   })  : items = const [],
+        isDisable = false,
         isCustomBuilder = true;
 
   final List<MechanixMenuItemsType> items;
@@ -118,6 +124,9 @@ class MechanixMenu extends StatefulWidget {
   final IconWidget? buttonIcon;
   final MechanixMenuController? menuController;
   final bool isMenuButtonRequired;
+  final bool isDisable;
+  final double topTabWidth;
+  final double topTabRightSideShiftLength;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -206,6 +215,8 @@ class _MechanixMenuState extends State<MechanixMenu> {
         findChildIndexCallback: widget.findChildIndexCallback,
         offset: widget.offset,
         shrinkWrap: widget.shrinkWrap,
+        topTabWidth: widget.topTabWidth,
+        topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
       ),
     );
 
@@ -229,26 +240,36 @@ class _MechanixMenuState extends State<MechanixMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final menuTheme =
+        MechanixMenuTheme.of(context).merge(widget.theme, context);
+
     return CompositedTransformTarget(
       link: _layerLink,
       child: widget.isMenuButtonRequired
-          ? ((widget.menuButton != null)
-              ? GestureDetector(
-                  onTap: _toggleMenu,
-                  child: widget.menuButton,
-                )
-              : IconButton(
-                  onPressed: _toggleMenu,
-                  isSelected: isClicked,
-                  icon: widget.buttonIcon ??
-                      IconWidget.fromIconData(
-                        icon: Icon(Icons.more_vert),
-                        boxWidth: 48,
-                        boxHeight: 40,
-                        iconWidth: 20,
-                        iconHeight: 20,
-                      ),
-                ))
+          ? Container(
+              height: menuTheme.buttonSize.height,
+              width: menuTheme.buttonSize.width,
+              decoration: isClicked ? menuTheme.activeButtonDecoration : null,
+              margin: menuTheme.buttonMargin,
+              padding: menuTheme.buttonPadding,
+              child: ((widget.menuButton != null)
+                  ? GestureDetector(
+                      onTap: _toggleMenu,
+                      child: widget.menuButton,
+                    )
+                  : IconButton(
+                      onPressed: _toggleMenu,
+                      isSelected: isClicked,
+                      icon: widget.buttonIcon ??
+                          IconWidget.fromIconData(
+                            icon: Icon(Icons.more_vert),
+                            boxWidth: 48,
+                            boxHeight: 40,
+                            iconWidth: 20,
+                            iconHeight: 20,
+                          ),
+                    )),
+            )
           : null,
     );
   }
@@ -294,6 +315,8 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.findChildIndexCallback,
     required this.offset,
     required this.shrinkWrap,
+    required this.topTabWidth,
+    required this.topTabRightSideShiftLength,
   });
 
   final LayerLink layerLink;
@@ -327,6 +350,8 @@ class _MechanixMenuContainer extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final bool shrinkWrap;
   final Offset offset;
+  final double topTabWidth;
+  final double topTabRightSideShiftLength;
 
   @override
   State<_MechanixMenuContainer> createState() => _MechanixMenuContainerState();
@@ -576,6 +601,8 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     required Widget child,
     required MechanixMenuThemeData theme,
   }) {
+    // TODO: Revisit this code later
+
     // Widget contentChild;
 
     // // Apply custom shape if provided, otherwise use the existing borderRadius
@@ -605,7 +632,10 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     final contentChild = Material(
       type: MaterialType.transparency,
       child: ClipPath(
-        clipper: FolderTabClipper(),
+        clipper: FolderTabClipper(
+          topTabWidth: widget.topTabWidth,
+          topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
+        ),
         child: child,
         // child: Container(padding: const EdgeInsets.only(top: 20), child: child),
       ),
@@ -743,6 +773,9 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       //           height: 1,
       //         ),
     );
+
+    // TODO: Revisit this code later
+
     // return ListView.separated(
     //   physics: const NeverScrollableScrollPhysics(),
     //   itemCount: widget.items.length,
@@ -886,37 +919,42 @@ class _MenuItem extends StatelessWidget {
         // opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
         opacity: 1,
         child: Container(
-          padding: index == 0 ? const EdgeInsets.only(top: 10) : null,
-          height: theme.itemHeight,
-          decoration: BoxDecoration(
-            color: disabled
-                ? theme.disabledBackgroundColor
-                : theme.itemBackgroundColor,
-          ),
-          child: InkWell(
-            onTap: disabled ? null : onTap,
-            child: Padding(
-              padding: theme.itemPadding ?? EdgeInsets.all(0),
-              child: Row(children: [
-                if (leading != null)
-                  Padding(
-                    padding: leadingPadding,
-                    child: leading,
+          padding: index == 0 ? const EdgeInsets.only(top: 30) : null,
+          color: theme.itemBackgroundColor,
+          child: Container(
+            height: theme.itemHeight,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? theme.selectedBackgroundColor
+                  : disabled
+                      ? theme.disabledBackgroundColor
+                      : theme.itemBackgroundColor,
+            ),
+            child: InkWell(
+              onTap: disabled ? null : onTap,
+              child: Padding(
+                padding: theme.itemPadding ?? EdgeInsets.all(0),
+                child: Row(children: [
+                  if (leading != null)
+                    Padding(
+                      padding: leadingPadding,
+                      child: leading,
+                    ),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: disabled
+                          ? theme.disabledTextStyle
+                          : theme.titleTextStyle,
+                    ),
                   ),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: disabled
-                        ? theme.disabledTextStyle
-                        : theme.titleTextStyle,
-                  ),
-                ),
-                if (trailing != null)
-                  Padding(
-                    padding: trailingPadding,
-                    child: trailing,
-                  ),
-              ]),
+                  if (trailing != null)
+                    Padding(
+                      padding: trailingPadding,
+                      child: trailing,
+                    ),
+                ]),
+              ),
             ),
           ),
         ),
@@ -954,13 +992,22 @@ class MechanixMenuController {
 }
 
 class FolderTabClipper extends CustomClipper<Path> {
+  const FolderTabClipper({
+    this.topTabWidth,
+    this.topTabRightSideShiftLength,
+  });
+
+  final double? topTabWidth;
+  final double? topTabRightSideShiftLength;
+
   @override
   Path getClip(Size size) {
     const double radius = 8; // Outer rounded corners
     const double tabH = 12; // Tab height
-    const double tabW = 42; // Tab width
+    final double tabW = topTabWidth ?? 42; // Tab width
     const double tabSlope = 12; // Small sloped curve
-    const double shift = 80; // Shift tab right by this amount
+    final double shift =
+        topTabRightSideShiftLength ?? 80; // Shift tab right by this amount
 
     final Path p = Path();
 
@@ -1022,6 +1069,8 @@ class FolderTabClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
+// TODO: Revisit this code later
 
 // class MenuExactSvgShape extends CustomClipper<Path> {
 //   final double offsetX;

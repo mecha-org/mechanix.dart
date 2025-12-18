@@ -23,42 +23,36 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     headlineLarge: TextStyle(
       color: onSurface,
       fontSize: 32,
-      fontWeight: FontWeight.bold,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     headlineMedium: TextStyle(
       color: onSurface,
       fontSize: 28,
-      fontWeight: FontWeight.bold,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     headlineSmall: TextStyle(
       color: onSurface,
       fontSize: 24,
-      fontWeight: FontWeight.bold,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     titleLarge: TextStyle(
       color: onSurface,
       fontSize: 22,
-      fontWeight: FontWeight.w500,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     titleMedium: TextStyle(
       color: onSurface,
       fontSize: 18,
-      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     titleSmall: TextStyle(
       color: onSurface,
       fontSize: 18,
-      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
@@ -77,25 +71,21 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     bodySmall: TextStyle(
       color: onSurface,
       fontSize: 18,
-      fontWeight: FontWeight.w500,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     labelLarge: TextStyle(
       color: surfaceDim,
       fontSize: 16,
-      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
     labelMedium: TextStyle(
       fontSize: 16,
-      fontWeight: FontWeight.w500,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
     labelSmall: TextStyle(
-      fontWeight: FontWeight.w400,
       fontSize: 16,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',

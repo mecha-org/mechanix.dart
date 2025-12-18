@@ -178,7 +178,9 @@ class _MechanixFloatingActionBarState extends State<MechanixFloatingActionBar> {
           ? ((widget.menuButton != null)
               ? GestureDetector(
                   onTap: _toggleMenu,
-                  child: widget.menuButton,
+                  child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: widget.menuButton),
                 )
               : IconButton(
                   onPressed: _toggleMenu,

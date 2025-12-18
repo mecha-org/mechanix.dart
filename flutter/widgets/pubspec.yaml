@@ -49,19 +49,27 @@ flutter:
     - assets/icons/right-caret.png
     - assets/icons/wifi.png
     - assets/icons/back_icon.png
-    - assets/icons/search_icon.png
     - assets/icons/tick_icon.png
     - assets/icons/close_icon.png
     - assets/icons/backward_icon.png
+    - assets/icons/search_icon.png
+    - assets/icons/clear_icon.png
 
   fonts:
-    - family: Inter
+    - family: Overused Grotesk
       fonts:
-        - asset: assets/fonts/Inter_18pt-Medium.ttf
-        - asset: assets/fonts/Inter_18pt-Regular.ttf
-          style: normal
         - asset: assets/fonts/OverusedGrotesk-Roman.ttf
-          style: normal
+          weight: 400
+        - asset: assets/fonts/OverusedGrotesk-Italic.ttf
+          style: italic
+        - asset: assets/fonts/OverusedGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/OverusedGrotesk-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/OverusedGrotesk-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/OverusedGrotesk-Light.ttf
+          weight: 300
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

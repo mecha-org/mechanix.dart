@@ -7,17 +7,25 @@ import 'package:flutter/material.dart';
 class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     with Diagnosticable {
   const MechanixMenuThemeData({
+    this.buttonSize = const Size(44, 44),
+    this.activeButtonDecoration = const BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      color: Color.fromRGBO(21, 21, 21, 0.5),
+    ),
+    this.buttonMargin = const EdgeInsets.all(0),
+    this.buttonPadding = const EdgeInsets.all(0),
     this.elevation = 4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.dropdownWidth,
     this.dropdownHeight,
     this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 200),
     this.itemBackgroundColor,
-    this.itemPadding = const EdgeInsets.all(12),
+    this.itemPadding = const EdgeInsets.only(top: 11, bottom: 11, left: 16),
     this.itemBorderRadius,
     this.itemHeight,
     this.disabledTextStyle = const TextStyle(color: Color(0xFF585858)),
     this.disabledBackgroundColor,
+    this.selectedBackgroundColor = const Color(0xFF222222),
     this.titleTextStyle,
     this.padding,
     this.clipBehavior = Clip.none,
@@ -30,6 +38,10 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.disableOpacity = 0.5,
   });
 
+  final Size buttonSize;
+  final Decoration activeButtonDecoration;
+  final EdgeInsetsGeometry buttonMargin;
+  final EdgeInsetsGeometry buttonPadding;
   final double? elevation;
   final double? disableOpacity;
   final BorderRadius? borderRadius;
@@ -42,6 +54,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   final double? itemHeight;
   final TextStyle? disabledTextStyle;
   final Color? disabledBackgroundColor;
+  final Color? selectedBackgroundColor;
   final TextStyle? titleTextStyle;
   final EdgeInsets? padding;
   final Clip clipBehavior;
@@ -54,6 +67,10 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
 
   @override
   MechanixMenuThemeData copyWith({
+    Size? buttonSize,
+    Decoration? activeButtonDecoration,
+    EdgeInsetsGeometry? buttonMargin,
+    EdgeInsetsGeometry? buttonPadding,
     double? elevation,
     BorderRadius? borderRadius,
     double? dropdownWidth,
@@ -65,6 +82,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     double? itemHeight,
     TextStyle? disabledTextStyle,
     Color? disabledBackgroundColor,
+    Color? selectedBackgroundColor,
     TextStyle? titleTextStyle,
     Color? iconColor,
     Color? disabledIconColor,
@@ -78,6 +96,11 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     double? disableOpacity,
   }) {
     return MechanixMenuThemeData(
+      buttonMargin: buttonMargin ?? this.buttonMargin,
+      buttonPadding: buttonPadding ?? this.buttonPadding,
+      buttonSize: buttonSize ?? this.buttonSize,
+      activeButtonDecoration:
+          activeButtonDecoration ?? this.activeButtonDecoration,
       elevation: elevation ?? this.elevation,
       borderRadius: borderRadius ?? this.borderRadius,
       dropdownWidth: dropdownWidth ?? this.dropdownWidth,
@@ -90,6 +113,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       disabledTextStyle: disabledTextStyle ?? this.disabledTextStyle,
       disabledBackgroundColor:
           disabledBackgroundColor ?? this.disabledBackgroundColor,
+      selectedBackgroundColor:
+          selectedBackgroundColor ?? this.selectedBackgroundColor,
       titleTextStyle: titleTextStyle ?? this.titleTextStyle,
       padding: padding ?? this.padding,
       margin: margin ?? this.margin,
@@ -109,6 +134,15 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   ) {
     final o = other as MechanixMenuThemeData?;
     return MechanixMenuThemeData(
+      buttonMargin: EdgeInsetsGeometry.lerp(buttonMargin, o?.buttonMargin, t) ??
+          buttonMargin,
+      buttonPadding:
+          EdgeInsetsGeometry.lerp(buttonPadding, o?.buttonPadding, t) ??
+              buttonPadding,
+      buttonSize: Size.lerp(buttonSize, o?.buttonSize, t) ?? buttonSize,
+      activeButtonDecoration: Decoration.lerp(
+              activeButtonDecoration, o?.activeButtonDecoration, t) ??
+          activeButtonDecoration,
       elevation: lerpDouble(elevation, o?.elevation, t),
       disableOpacity: lerpDouble(disableOpacity, o?.disableOpacity, t),
       borderRadius: BorderRadius.lerp(borderRadius, o?.borderRadius, t),
@@ -126,6 +160,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
           TextStyle.lerp(disabledTextStyle, o?.disabledTextStyle, t),
       disabledBackgroundColor:
           Color.lerp(disabledBackgroundColor, o?.disabledBackgroundColor, t),
+      selectedBackgroundColor:
+          Color.lerp(selectedBackgroundColor, o?.selectedBackgroundColor, t),
       padding: EdgeInsets.lerp(padding, o?.padding, t) ?? padding,
       margin: EdgeInsetsGeometry.lerp(margin, o?.margin, t),
       transformAlignment:
@@ -141,6 +177,11 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('buttonMargin', buttonMargin));
+    properties.add(DiagnosticsProperty('buttonPadding', buttonPadding));
+    properties.add(DiagnosticsProperty('buttonSize', buttonSize));
+    properties.add(
+        DiagnosticsProperty('activeButtonDecoration', activeButtonDecoration));
     properties.add(DoubleProperty('elevation', elevation));
     properties.add(DoubleProperty('disableOpacity', disableOpacity));
     properties.add(DiagnosticsProperty('borderRadius', borderRadius));
@@ -155,6 +196,8 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     properties.add(DiagnosticsProperty('disabledTextStyle', disabledTextStyle));
     properties.add(DiagnosticsProperty(
         'disabledBackgroundColor', disabledBackgroundColor));
+    properties.add(DiagnosticsProperty(
+        'selectedBackgroundColor', selectedBackgroundColor));
     properties.add(DiagnosticsProperty('padding', padding));
     properties.add(DiagnosticsProperty('margin', margin));
     properties.add(DiagnosticsProperty('clipBehavior', clipBehavior));
@@ -171,6 +214,10 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is MechanixMenuThemeData &&
+        buttonSize == other.buttonSize &&
+        buttonMargin == other.buttonMargin &&
+        buttonPadding == other.buttonPadding &&
+        activeButtonDecoration == other.activeButtonDecoration &&
         elevation == other.elevation &&
         borderRadius == other.borderRadius &&
         dropdownWidth == other.dropdownWidth &&
@@ -188,6 +235,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
         alignment == other.alignment &&
         decoration == other.decoration &&
         foregroundDecoration == other.foregroundDecoration &&
+        selectedBackgroundColor == other.selectedBackgroundColor &&
         disableOpacity == other.disableOpacity &&
         disabledBackgroundColor == other.disabledBackgroundColor &&
         disabledTextStyle == other.disabledTextStyle;
@@ -196,6 +244,10 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   @override
   int get hashCode {
     return Object.hashAll([
+      buttonSize,
+      activeButtonDecoration,
+      buttonMargin,
+      buttonPadding,
       elevation,
       borderRadius,
       dropdownWidth,
@@ -206,6 +258,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       itemBorderRadius,
       itemHeight,
       disabledBackgroundColor,
+      selectedBackgroundColor,
       disabledTextStyle,
       padding,
       clipBehavior,

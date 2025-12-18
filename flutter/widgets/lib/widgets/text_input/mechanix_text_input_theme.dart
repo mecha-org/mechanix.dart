@@ -8,9 +8,9 @@ class MechanixTextInputThemeData
     this.labelTextStyle,
     this.textStyle = const TextStyle(fontSize: 16),
     this.hintTextStyle,
-    this.fillColor = const Color(0xFF2B2B2B),
+    this.fillColor = const Color.fromRGBO(21, 21, 21, 1),
     this.contentPadding = const EdgeInsets.all(16),
-    this.borderRadius,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.borderSide,
     this.focusedBorderSide,
     this.obscureTextIcon = Icons.visibility_off,
@@ -24,7 +24,7 @@ class MechanixTextInputThemeData
   final TextStyle? hintTextStyle;
   final Color? fillColor;
   final EdgeInsets? contentPadding;
-  final BorderRadius? borderRadius;
+  final BorderRadius borderRadius;
   final BorderSide? borderSide;
   final BorderSide? focusedBorderSide;
   final BorderSide? enabledBorderSide;
@@ -73,7 +73,8 @@ class MechanixTextInputThemeData
       hintTextStyle: TextStyle.lerp(hintTextStyle, o?.hintTextStyle, t),
       fillColor: Color.lerp(fillColor, o?.fillColor, t),
       contentPadding: EdgeInsets.lerp(contentPadding, o?.contentPadding, t),
-      borderRadius: BorderRadius.lerp(borderRadius, o?.borderRadius, t),
+      borderRadius:
+          BorderRadius.lerp(borderRadius, o?.borderRadius, t) ?? borderRadius,
       borderSide: BorderSide.lerp(
           borderSide ?? BorderSide.none, o?.borderSide ?? BorderSide.none, t),
       focusedBorderSide: BorderSide.lerp(focusedBorderSide ?? BorderSide.none,

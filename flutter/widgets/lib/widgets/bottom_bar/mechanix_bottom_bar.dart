@@ -25,6 +25,19 @@ class MechanixBottomBar extends StatelessWidget {
   final MechanixBottomBarThemeData? theme;
   final Color iconColor;
 
+  Widget buildButtons(
+      BuildContext context, List<BottomBarButton> buttons, double spacing) {
+    final barTheme = MechanixBottomBarTheme.of(context).merge(theme, context);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: spacing,
+      children: buttons
+          .map((button) => button.build(context, iconColor, barTheme))
+          .toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final barTheme = MechanixBottomBarTheme.of(context).merge(theme, context);
@@ -33,40 +46,26 @@ class MechanixBottomBar extends StatelessWidget {
       height: barTheme.height,
       width: barTheme.width,
       decoration: barTheme.decoration,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        spacing: leadingWidgetSpacing,
+      child: Stack(
         children: [
-          if (leadingWidget.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              spacing: leadingWidgetSpacing,
-              children: leadingWidget
-                  .map(
-                    (button) => button.build(iconColor, barTheme),
-                  )
-                  .toList(),
-            ),
-          if (centerWidget.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: centerWidgetSpacing,
-              children: centerWidget
-                  .map(
-                    (button) => button.build(iconColor, barTheme),
-                  )
-                  .toList(),
-            ),
-          if (anchorWidget.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: anchorWidgetSpacing,
-              children: anchorWidget
-                  .map(
-                    (button) => button.build(iconColor, barTheme),
-                  )
-                  .toList(),
-            ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: leadingWidget.isNotEmpty
+                ? buildButtons(context, leadingWidget, leadingWidgetSpacing)
+                : const SizedBox.shrink(),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: centerWidget.isNotEmpty
+                ? buildButtons(context, centerWidget, centerWidgetSpacing)
+                : const SizedBox.shrink(),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: anchorWidget.isNotEmpty
+                ? buildButtons(context, anchorWidget, anchorWidgetSpacing)
+                : const SizedBox.shrink(),
+          ),
         ],
       ),
     );
