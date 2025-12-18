@@ -25,15 +25,22 @@ ThemeData createLightTheme(
 
 ThemeData createDarkTheme(
     {bool useMaterial3 = true, required Color primaryColor}) {
-  final colorScheme = ColorScheme.fromSeed(
-    seedColor: primaryColor,
+  final colorSetting = ColorSetting(accentColor: primaryColor);
+
+  final themeColors = colorSetting.getThemeColor();
+
+  final colorScheme = ColorScheme.dark(
     brightness: Brightness.dark,
-    primary: Color(0xFF2D8AFF),
-    secondary: Color(0xFF2B2B2B),
-    outline: Color(0xFF464646),
-    outlineVariant: Color(0xFF575757),
-    onSurface: Color(0xFFF0F0F0),
-    surfaceDim: Color(0xFF989898),
+    //
+    primary: themeColors.accent_600,
+    onPrimary: themeColors.foreground_1200,
+    primaryFixed: themeColors.accent_700,
+    secondary: themeColors.background_400,
+    tertiary: themeColors.background_500,
+    surface: themeColors.background_1200,
+    onSurface: themeColors.foreground_600,
+    surfaceDim: themeColors.foreground_800,
+    surfaceContainerLowest: themeColors.foreground_0,
   );
 
   return createTheme(colorScheme: colorScheme);
