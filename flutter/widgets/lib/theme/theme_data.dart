@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/constants.dart';
 import 'package:widgets/theme/Common_themes/text_theme.dart';
+import 'package:widgets/theme/color_setting.dart';
 
 ThemeData createTheme(
     {bool useMaterial3 = true, required ColorScheme colorScheme}) {
