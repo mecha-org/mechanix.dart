@@ -14,6 +14,7 @@ import 'package:widgets_example/pages/select_page.dart';
 import 'package:widgets_example/pages/simple_list_page.dart';
 import 'package:widgets_example/pages/slider_widget_page.dart';
 import 'package:widgets_example/pages/text_input_page.dart';
+import 'package:widgets_example/pages/theme_colors_page.dart';
 import 'package:widgets_example/pages/wheel_scroll_page.dart';
 
 import 'pages/checkbox_page.dart';
@@ -45,6 +46,13 @@ final examplePageItems = <PageItem>[
     iconBuilder: (context, selected) => selected
         ? const Icon(Icons.check_box)
         : const Icon(Icons.check_box_outline_blank),
+  ),
+  PageItem(
+    title: 'MechanixThemeColors',
+    pageBuilder: (context) => const MechanixThemeColorsPage(),
+    iconBuilder: (context, selected) => selected
+        ? const Icon(Icons.colorize)
+        : const Icon(Icons.color_lens_outlined),
   ),
   PageItem(
       title: 'MechanixButton',

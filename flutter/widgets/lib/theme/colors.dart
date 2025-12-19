@@ -41,5 +41,5 @@ class MechanixColors {
   static const Color blue = Color(0xFF0073E5);
   static const Color magenta = Color(0xFFB34CB3);
   static const Color green = Color(0xFF3a944a);
-
+  static const Color amber = Color.fromRGBO(198, 118, 0, 1);
 }
