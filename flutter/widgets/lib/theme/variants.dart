@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import './theme_data.dart';
+
 import './colors.dart';
+import './theme_data.dart';
 
 enum MechanixVariant implements Comparable<MechanixVariant> {
   viridian(MechanixColors.viridian),
@@ -9,7 +10,8 @@ enum MechanixVariant implements Comparable<MechanixVariant> {
   olive(MechanixColors.olive),
   blue(MechanixColors.blue),
   magenta(MechanixColors.magenta),
-  green(MechanixColors.green);
+  green(MechanixColors.green),
+  amber(MechanixColors.amber);
 
   const MechanixVariant(this.color);
 

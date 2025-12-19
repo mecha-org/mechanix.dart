@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   watch_it: ^1.7.0
+  oklch: ^0.0.3
 
 dev_dependencies:
   integration_test:
