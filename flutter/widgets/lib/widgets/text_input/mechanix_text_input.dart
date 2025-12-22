@@ -215,7 +215,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             widget.label ?? '',
             style: theme.labelTextStyle ??
                 context.textTheme.labelMedium
-                    ?.copyWith(color: const Color(0xFF898A8D)),
+                    ?.copyWith(color: context.surfaceDim),
           ).padBottom(8),
         Container(
           padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
@@ -289,8 +289,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
       hintStyle: theme.hintTextStyle ??
-          context.textTheme.labelSmall
-              ?.copyWith(color: const Color(0xFF898A8D)),
+          context.textTheme.labelSmall?.copyWith(color: context.surfaceDim),
       errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? widget.suffixIcon ??

@@ -427,7 +427,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
   }
 
   Widget _buildDefaultSeparator(BuildContext context, int index) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
+    final listTheme =
+        MechanixSectionListTheme.of(context).merge(widget.theme, context);
     if (listTheme.divider != null) {
       return listTheme.divider!;
     } else {
@@ -553,7 +554,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
   }
 
   Widget _buildLazyListView(BuildContext context) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
+    final listTheme =
+        MechanixSectionListTheme.of(context).merge(widget.theme, context);
 
     return Container(
       padding: listTheme.widgetPadding,
@@ -566,9 +568,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
               padding: listTheme.titlePadding,
               child: Text(
                 widget.title!,
-                style: context.textTheme.labelMedium
-                    ?.copyWith(color: context.colorScheme.surfaceDim)
-                    .merge(listTheme.titleTextStyle),
+                style: listTheme.titleTextStyle,
               ),
             ),
           ConstrainedBox(
@@ -580,8 +580,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: listTheme.widgetRadius,
-                color: listTheme.backgroundColor?.resolve({}) ??
-                    context.colorScheme.secondary,
+                color: listTheme.backgroundColor?.resolve({}),
               ),
               child: Column(
                 children: [
@@ -601,7 +600,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
   }
 
   Widget _buildRegularListView(BuildContext context) {
-    final listTheme = MechanixSectionListTheme.of(context).merge(widget.theme);
+    final listTheme =
+        MechanixSectionListTheme.of(context).merge(widget.theme, context);
 
     return Container(
       padding: listTheme.widgetPadding,
@@ -613,16 +613,13 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
               padding: listTheme.titlePadding,
               child: Text(
                 widget.title!,
-                style: context.textTheme.labelMedium
-                    ?.copyWith(color: context.colorScheme.surfaceDim)
-                    .merge(listTheme.titleTextStyle),
+                style: listTheme.titleTextStyle,
               ),
             ),
           Container(
             decoration: BoxDecoration(
               borderRadius: listTheme.widgetRadius,
-              color: listTheme.backgroundColor?.resolve({}) ??
-                  context.colorScheme.secondary,
+              color: listTheme.backgroundColor?.resolve({}),
             ),
             child: _buildListView(
               context: context,
