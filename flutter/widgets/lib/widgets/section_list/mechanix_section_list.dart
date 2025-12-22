@@ -639,7 +639,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
     if (item.iconPath != '') {
       return item.buildLeadingIcon(context);
     } else if (item.leading != null) {
-      return item.leading!;
+      return item.leading!.padRight();
     }
 
     return null;
