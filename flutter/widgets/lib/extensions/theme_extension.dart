@@ -29,17 +29,17 @@ extension MechanixWheelScrollThemeDataExtensions
 }
 
 extension MechanixSimpleListThemeDataExtensions on MechanixSimpleListThemeData {
-  MechanixSimpleListThemeData merge(MechanixSimpleListThemeData? other) {
-    if (other == null) return this;
-
+  MechanixSimpleListThemeData merge(
+      BuildContext context, MechanixSimpleListThemeData? other) {
     return copyWith(
-      backgroundColor: other.backgroundColor,
-      dividerColor: other.dividerColor,
-      widgetRadius: other.widgetRadius,
-      dividerThickness: other.dividerThickness,
-      dividerHeight: other.dividerHeight,
-      itemPadding: other.itemPadding,
-      widgetMargin: other.widgetMargin,
+      backgroundColor:
+          other?.backgroundColor ?? backgroundColor ?? context.tertiary,
+      dividerColor: other?.dividerColor ?? dividerColor,
+      widgetRadius: other?.widgetRadius ?? widgetRadius,
+      dividerThickness: other?.dividerThickness ?? dividerThickness,
+      dividerHeight: other?.dividerHeight ?? dividerHeight,
+      itemPadding: other?.itemPadding ?? itemPadding,
+      widgetMargin: other?.widgetMargin ?? widgetMargin,
     );
   }
 }
@@ -96,8 +96,9 @@ extension MechanixSectionListThemeDataExtensions
     return copyWith(
       backgroundColor: other?.backgroundColor ??
           backgroundColor ??
-          WidgetStateProperty.all(context.secondary),
-      titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
+          WidgetStateProperty.all(context.tertiary),
+      titleTextStyle: other?.titleTextStyle ??
+          titleTextStyle?.copyWith(color: context.surfaceDim),
       dividerThickness: other?.dividerThickness ?? dividerThickness,
       dividerHeight: other?.dividerHeight ?? dividerHeight,
       dividerColor: other?.dividerColor ?? dividerColor ?? context.outline,

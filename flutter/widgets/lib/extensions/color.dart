@@ -33,6 +33,8 @@ extension ColorExtension on BuildContext {
 
   Color get tertiary => Theme.of(this).colorScheme.tertiary;
 
+  Color get tertiaryFixedDim => Theme.of(this).colorScheme.tertiaryFixedDim;
+
   Color get outline => Theme.of(this).colorScheme.outline;
 
   Color get surface => Theme.of(this).colorScheme.surface;

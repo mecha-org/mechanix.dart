@@ -387,28 +387,32 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (item.leading != null) item.leading!.padRight(),
+                      // if (item.leading != null) item.leading!.padRight(),
+                      _buildLeadingWidget(context, item)!,
                       Text(
                         item.title,
-                        style: context.textTheme.labelMedium
-                            ?.merge(item.titleTextStyle),
+                        style: context.textTheme.labelMedium ??
+                            item.titleTextStyle,
                       )
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (item.trailing != null) item.trailing!,
                       if (item.defaultTrailingIcon)
                         SizedBox(
-                          height: 24,
-                          width: 24,
+                          height: 20,
+                          width: 20,
                           child: FittedBox(
                             fit: BoxFit.none,
                             child: SizedBox(
-                              width: 10,
-                              height: 17,
+                              width: 9,
+                              height: 15,
                               child: Image.asset(
+                                color: context.surfaceDim,
                                 MechanixIconImages.rightCaret,
                                 package: 'widgets',
                               ),
@@ -629,5 +633,15 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
         ],
       ),
     );
+  }
+
+  Widget? _buildLeadingWidget(BuildContext context, SectionListItems item) {
+    if (item.iconPath != '') {
+      return item.buildLeadingIcon(context);
+    } else if (item.leading != null) {
+      return item.leading!;
+    }
+
+    return null;
   }
 }

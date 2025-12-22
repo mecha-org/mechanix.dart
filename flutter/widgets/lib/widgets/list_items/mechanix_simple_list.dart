@@ -266,9 +266,10 @@ class MechanixSimpleList extends StatelessWidget {
                   Row(
                     children: [
                       if (item.leading != null) item.leading!.padRight(),
-                      Text(item.title, style: context.textTheme.labelMedium
-                          // ?.merge(item.titleTextStyle),
-                          )
+                      Text(
+                        item.title,
+                        style: item.titleTextStyle,
+                      )
                     ],
                   ),
                   if (item.trailing != null) item.trailing!,
@@ -286,7 +287,7 @@ class MechanixSimpleList extends StatelessWidget {
     BuildContext context,
   ) {
     // final itemTheme = MechanixSimpleListTheme.of(context);
-    final itemTheme = MechanixSimpleListTheme.of(context).merge(theme);
+    final itemTheme = MechanixSimpleListTheme.of(context).merge(context, theme);
     final bool useSeparator = separatorBuilder != null;
     final bool themeRequiresDivider = isDividerRequired && !useSeparator;
 

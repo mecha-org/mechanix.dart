@@ -71,7 +71,8 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     bodySmall: TextStyle(
       color: onSurface,
-      fontSize: 18,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
@@ -82,7 +83,9 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
       package: 'widgets',
     ), // settings section list menu label
     labelMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: onSurface,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
