@@ -54,4 +54,7 @@ extension ColorExtension on BuildContext {
   Color get scrim => Theme.of(this).colorScheme.scrim;
 
   Color get shadow => Theme.of(this).colorScheme.shadow;
+
+  Color get surfaceContainerHigh =>
+      Theme.of(this).colorScheme.surfaceContainerHigh;
 }

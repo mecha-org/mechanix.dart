@@ -54,6 +54,7 @@ ThemeData createDarkTheme(
     surface: themeColors.background_1200,
     onSurface: themeColors.foreground_600,
     surfaceDim: themeColors.foreground_800,
+    surfaceContainerHigh: themeColors.foreground_900,
     surfaceContainerLowest: themeColors.foreground_0,
   );
 
