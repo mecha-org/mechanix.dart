@@ -46,21 +46,19 @@ extension MechanixSimpleListThemeDataExtensions on MechanixSimpleListThemeData {
 
 extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
   MechanixTextInputThemeData merge(MechanixTextInputThemeData? other) {
-    if (other == null) return this;
-
     return copyWith(
-      labelTextStyle: other.labelTextStyle,
-      textStyle: other.textStyle,
-      hintTextStyle: other.hintTextStyle,
-      fillColor: other.fillColor,
-      contentPadding: other.contentPadding,
-      borderRadius: other.borderRadius,
-      borderSide: other.borderSide,
-      focusedBorderSide: other.focusedBorderSide,
-      obscureTextIcon: other.obscureTextIcon,
-      visibleTextIcon: other.visibleTextIcon,
-      iconColor: other.iconColor,
-      enabledBorderSide: other.enabledBorderSide,
+      labelTextStyle: other?.labelTextStyle ?? labelTextStyle,
+      textStyle: other?.textStyle ?? textStyle,
+      hintTextStyle: other?.hintTextStyle ?? hintTextStyle,
+      fillColor: other?.fillColor ?? fillColor,
+      contentPadding: other?.contentPadding ?? contentPadding,
+      borderRadius: other?.borderRadius ?? borderRadius,
+      borderSide: other?.borderSide ?? borderSide,
+      focusedBorderSide: other?.focusedBorderSide ?? focusedBorderSide,
+      obscureTextIcon: other?.obscureTextIcon ?? obscureTextIcon,
+      visibleTextIcon: other?.visibleTextIcon ?? visibleTextIcon,
+      iconColor: other?.iconColor ?? iconColor,
+      enabledBorderSide: other?.enabledBorderSide ?? enabledBorderSide,
     );
   }
 }

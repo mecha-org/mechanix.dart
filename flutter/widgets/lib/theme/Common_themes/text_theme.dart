@@ -40,7 +40,8 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     titleLarge: TextStyle(
       color: onSurface,
-      fontSize: 22,
+      fontSize: 24,
+      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),

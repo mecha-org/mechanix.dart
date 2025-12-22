@@ -53,31 +53,26 @@ extension BorderExtension on BuildContext {
 extension BorderSideExtension on BuildContext {
   BorderSide get borderSideXs => BorderSide(
         width: mechanixBorderWidthXs,
-        color: Theme.of(this).colorScheme.outline,
         style: BorderStyle.solid,
       );
 
   BorderSide get borderSideSm => BorderSide(
         width: mechanixBorderWidthSm,
-        color: Theme.of(this).colorScheme.outline,
         style: BorderStyle.solid,
       );
 
   BorderSide get borderSideMd => BorderSide(
         width: mechanixBorderWidthMd,
-        color: Theme.of(this).colorScheme.outline,
         style: BorderStyle.solid,
       );
 
   BorderSide get borderSideLg => BorderSide(
         width: mechanixBorderWidthLg,
-        color: Theme.of(this).colorScheme.outline,
         style: BorderStyle.solid,
       );
 
   BorderSide get borderSideXl => BorderSide(
         width: mechanixBorderWidthXl,
-        color: Theme.of(this).colorScheme.outline,
         style: BorderStyle.solid,
       );
 
