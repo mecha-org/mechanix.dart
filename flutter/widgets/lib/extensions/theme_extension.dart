@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extensions/build_context.dart';
+import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
 import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
@@ -91,22 +91,23 @@ extension MechanixSliderThemeDataExtensions on MechanixSliderThemeData {
 
 extension MechanixSectionListThemeDataExtensions
     on MechanixSectionListThemeData {
-  MechanixSectionListThemeData merge(MechanixSectionListThemeData? other) {
-    if (other == null) return this;
-
+  MechanixSectionListThemeData merge(
+      MechanixSectionListThemeData? other, BuildContext context) {
     return copyWith(
-      backgroundColor: other.backgroundColor,
-      titleTextStyle: other.titleTextStyle,
-      dividerThickness: other.dividerThickness,
-      dividerHeight: other.dividerHeight,
-      dividerColor: other.dividerColor,
-      divider: other.divider,
-      widgetPadding: other.widgetPadding,
-      titlePadding: other.titlePadding,
-      itemPadding: other.itemPadding,
-      dividerPadding: other.dividerPadding,
-      widgetRadius: other.widgetRadius,
-      itemBorderRadius: other.itemBorderRadius,
+      backgroundColor: other?.backgroundColor ??
+          backgroundColor ??
+          WidgetStateProperty.all(context.secondary),
+      titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
+      dividerThickness: other?.dividerThickness ?? dividerThickness,
+      dividerHeight: other?.dividerHeight ?? dividerHeight,
+      dividerColor: other?.dividerColor ?? dividerColor ?? context.outline,
+      divider: other?.divider ?? divider,
+      widgetPadding: other?.widgetPadding ?? widgetPadding,
+      titlePadding: other?.titlePadding ?? titlePadding,
+      itemPadding: other?.itemPadding ?? itemPadding,
+      dividerPadding: other?.dividerPadding ?? dividerPadding,
+      widgetRadius: other?.widgetRadius ?? widgetRadius,
+      itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
     );
   }
 }
@@ -136,22 +137,20 @@ extension MechanixNavigationBarThemeDataExtensions
     on MechanixNavigationBarThemeData {
   MechanixNavigationBarThemeData merge(
       MechanixNavigationBarThemeData? other, BuildContext context) {
-    if (other == null) return this;
-
     return copyWith(
       backgroundColor:
-          other.backgroundColor ?? backgroundColor ?? Colors.transparent,
-      leadingWidth: other.leadingWidth ?? leadingWidth,
-      titleStyle: titleStyle?.merge(other.titleStyle),
-      foregroundColor: other.foregroundColor ??
+          other?.backgroundColor ?? backgroundColor ?? Colors.transparent,
+      leadingWidth: other?.leadingWidth ?? leadingWidth,
+      titleStyle: titleStyle?.merge(other?.titleStyle),
+      foregroundColor: other?.foregroundColor ??
           foregroundColor ??
           context.colorScheme.surfaceContainer,
-      elevation: other.elevation ?? elevation,
-      actionsIconTheme: other.actionsIconTheme ?? actionsIconTheme,
-      titleSpacing: other.titleSpacing ?? titleSpacing,
+      elevation: other?.elevation ?? elevation,
+      actionsIconTheme: other?.actionsIconTheme ?? actionsIconTheme,
+      titleSpacing: other?.titleSpacing ?? titleSpacing,
       scrolledUnderElevation:
-          other.scrolledUnderElevation ?? scrolledUnderElevation,
-      actionsPadding: other.actionsPadding ?? actionsPadding,
+          other?.scrolledUnderElevation ?? scrolledUnderElevation,
+      actionsPadding: other?.actionsPadding ?? actionsPadding,
     );
   }
 }
@@ -191,13 +190,12 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       dropdownWidth: other?.dropdownWidth ?? dropdownWidth,
       dropdownHeight: other?.dropdownHeight ?? dropdownHeight,
       constraints: other?.constraints ?? constraints,
-      itemBackgroundColor: other?.itemBackgroundColor ??
-          itemBackgroundColor ??
-          context.colorScheme.secondary,
+      itemBackgroundColor: other?.itemBackgroundColor ?? itemBackgroundColor,
       itemPadding: other?.itemPadding ?? itemPadding,
       itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
       itemHeight: other?.itemHeight ?? itemHeight,
-      disabledTextStyle: other?.disabledTextStyle ?? disabledTextStyle,
+      disabledTextStyle: other?.disabledTextStyle ??
+          disabledTextStyle?.copyWith(color: context.surfaceDim),
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
       margin: other?.margin ?? margin,
       transform: other?.transform ?? transform,
@@ -205,18 +203,19 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       alignment: other?.alignment ?? alignment,
       foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
       padding: other?.padding ?? padding,
-      decoration: other?.decoration ?? decoration,
-      disabledBackgroundColor: other?.disabledBackgroundColor ??
-          disabledBackgroundColor ??
-          context.colorScheme.secondary,
-      activeButtonDecoration:
-          other?.activeButtonDecoration ?? activeButtonDecoration,
+      decoration:
+          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      disabledBackgroundColor:
+          other?.disabledBackgroundColor ?? disabledBackgroundColor,
+      activeButtonDecoration: other?.activeButtonDecoration ??
+          activeButtonDecoration.copyWith(color: context.tertiary),
       buttonMargin: other?.buttonMargin ?? buttonMargin,
       buttonPadding: other?.buttonPadding ?? buttonPadding,
       buttonSize: other?.buttonSize ?? buttonSize,
       disableOpacity: other?.disableOpacity ?? disableOpacity,
-      selectedBackgroundColor:
-          other?.selectedBackgroundColor ?? selectedBackgroundColor,
+      selectedBackgroundColor: other?.selectedBackgroundColor ??
+          selectedBackgroundColor ??
+          context.tertiary,
     );
   }
 }
@@ -230,7 +229,7 @@ extension MechanixFloatingActionBarThemeDataExtensions
       decoration: other?.decoration ??
           decoration ??
           BoxDecoration(
-            color: context.colorScheme.secondary,
+            color: context.secondary,
             borderRadius: BorderRadius.circular(8),
           ),
       padding: other?.padding ?? padding,
@@ -256,14 +255,13 @@ extension MechanixFloatingActionBarThemeDataExtensions
 extension MechanixBottomBarThemeDataExtensions on MechanixBottomBarThemeData {
   MechanixBottomBarThemeData merge(
       MechanixBottomBarThemeData? other, BuildContext context) {
-    if (other == null) return this;
-
     return copyWith(
-      decoration: other.decoration ?? decoration,
-      height: other.height ?? height,
-      width: other.width ?? width,
-      iconColor: other.iconColor ?? iconColor,
-      iconTheme: other.iconTheme ?? iconTheme,
+      decoration:
+          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      height: other?.height ?? height,
+      width: other?.width ?? width,
+      iconColor: other?.iconColor ?? context.colorScheme.primaryFixed,
+      iconTheme: other?.iconTheme ?? iconTheme,
     );
   }
 }
@@ -272,16 +270,15 @@ extension MechanixFilledButtonThemeDataExtensions
     on MechanixFilledButtonThemeData {
   MechanixFilledButtonThemeData merge(
       MechanixFilledButtonThemeData? other, BuildContext context) {
-    if (other == null) return this;
-
     return copyWith(
-      decoration: other.decoration ?? decoration,
-      buttonSize: other.buttonSize ?? buttonSize,
-      labelText: other.labelText ?? labelText,
-      textStyle: other.textStyle ?? textStyle,
-      constraints: other.constraints ?? constraints,
-      margin: other.margin ?? margin,
-      padding: other.padding ?? padding,
+      decoration:
+          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      buttonSize: other?.buttonSize ?? buttonSize,
+      labelText: other?.labelText ?? labelText,
+      textStyle: other?.textStyle ?? textStyle,
+      constraints: other?.constraints ?? constraints,
+      margin: other?.margin ?? margin,
+      padding: other?.padding ?? padding,
     );
   }
 }

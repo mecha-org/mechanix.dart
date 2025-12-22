@@ -9,9 +9,17 @@ ThemeData createTheme(
       ThemeData.from(useMaterial3: useMaterial3, colorScheme: colorScheme);
 
   return theme.copyWith(
-    textTheme: createTextTheme(
-        onSurface: colorScheme.onSurface, surfaceDim: colorScheme.surfaceDim),
-  );
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      textTheme: createTextTheme(
+        onSurface: colorScheme.onSurface,
+        surfaceDim: colorScheme.surfaceDim,
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: colorScheme.primaryFixed,
+      ));
 }
 
 ThemeData createLightTheme(

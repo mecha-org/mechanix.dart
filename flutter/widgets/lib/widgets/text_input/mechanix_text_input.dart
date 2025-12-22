@@ -146,7 +146,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       return Container(
         padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
         decoration: BoxDecoration(
-            color: Color.fromRGBO(58, 58, 58, 1),
+            color: context.secondary,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8), topRight: Radius.circular(8))),
         child: Row(
@@ -178,7 +178,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                     boxWidth: 24,
                     iconHeight: 16,
                     iconWidth: 16,
-                    iconColor: Color.fromRGBO(210, 210, 210, 1),
+                    iconColor: context.onSurface,
                   ),
                 ),
               )
@@ -196,7 +196,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                     boxWidth: 24,
                     iconHeight: 16,
                     iconWidth: 16,
-                    iconColor: Color.fromRGBO(210, 210, 210, 1),
+                    iconColor: context.onSurface,
                   ),
                 ),
               )
@@ -215,12 +215,12 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             widget.label ?? '',
             style: theme.labelTextStyle ??
                 context.textTheme.labelMedium
-                    ?.copyWith(color: const Color(0xFF898A8D)),
+                    ?.copyWith(color: context.surfaceDim),
           ).padBottom(8),
         Container(
           padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
           decoration: BoxDecoration(
-              color: Color.fromRGBO(58, 58, 58, 1),
+              color: context.secondary,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8), topRight: Radius.circular(8))),
           child: Row(
@@ -268,7 +268,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                       boxWidth: 24,
                       iconHeight: 16,
                       iconWidth: 16,
-                      iconColor: Color.fromRGBO(210, 210, 210, 1),
+                      iconColor: context.onSurface,
                     ),
                   ),
                 )
@@ -284,13 +284,12 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
   InputDecoration _buildInputDecoration(
       BuildContext context, MechanixTextInputThemeData theme) {
     final baseDecoration = InputDecoration(
-      fillColor: theme.fillColor,
+      fillColor: theme.fillColor ?? context.tertiary,
       filled: true,
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
       hintStyle: theme.hintTextStyle ??
-          context.textTheme.labelSmall
-              ?.copyWith(color: const Color(0xFF898A8D)),
+          context.textTheme.labelSmall?.copyWith(color: context.surfaceDim),
       errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? widget.suffixIcon ??
@@ -298,7 +297,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 iconSize: 20,
                 icon: Icon(
                   obscureText ? theme.obscureTextIcon : theme.visibleTextIcon,
-                  color: theme.iconColor,
+                  color: context.onSurface,
                 ),
                 onPressed: togglePasswordVisibility,
               )

@@ -13,7 +13,6 @@ class MechanixBottomBar extends StatelessWidget {
     this.anchorWidget = const [],
     this.anchorWidgetSpacing = 16,
     this.theme,
-    this.iconColor = const Color(0xFFD2D2D2),
   });
 
   final List<BottomBarButton> leadingWidget;
@@ -23,7 +22,6 @@ class MechanixBottomBar extends StatelessWidget {
   final List<BottomBarButton> anchorWidget;
   final double anchorWidgetSpacing;
   final MechanixBottomBarThemeData? theme;
-  final Color iconColor;
 
   Widget buildButtons(
       BuildContext context, List<BottomBarButton> buttons, double spacing) {
@@ -32,9 +30,8 @@ class MechanixBottomBar extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       spacing: spacing,
-      children: buttons
-          .map((button) => button.build(context, iconColor, barTheme))
-          .toList(),
+      children:
+          buttons.map((button) => button.build(context, barTheme)).toList(),
     );
   }
 

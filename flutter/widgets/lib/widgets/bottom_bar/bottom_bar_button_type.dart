@@ -53,7 +53,6 @@ class BottomBarButton {
   const BottomBarButton.widget({
     required this.widget,
     this.disabledColor = const Color(0xFF585858),
-    this.isSelected = false,
     this.isDisabled = false,
     this.onHover,
     this.onLongPress,
@@ -64,6 +63,7 @@ class BottomBarButton {
     this.enableFeedback,
     this.selectedIcon,
   })  : iconPath = '',
+        isSelected = false,
         iconTheme = null,
         iconWidget = null,
         onPressed = null,
@@ -184,29 +184,21 @@ class BottomBarButton {
   final bool outsideClickDisabled;
   final IconWidget? buttonIcon;
 
-  Widget build(BuildContext context, Color iconColor,
-      MechanixBottomBarThemeData barTheme) {
+  Widget build(BuildContext context, MechanixBottomBarThemeData barTheme) {
     final theme = iconTheme ?? barTheme.iconTheme;
 
     if (widget != null) return widget!;
 
     if (extensionWidgets.isNotEmpty) {
       return MechanixFloatingActionBar(
-        menus: extensionWidgets
-            .map((e) => e.build(context, iconColor, barTheme))
-            .toList(),
+        menus: extensionWidgets.map((e) => e.build(context, barTheme)).toList(),
         dropdownPosition: dropdownPosition,
         offset: offset,
         theme: floatingActionBarTheme ??
             MechanixFloatingActionBarThemeData(
-              decoration: BoxDecoration(color: Color(0xFF222222)),
+              decoration: BoxDecoration(color: context.tertiary),
               width: double.infinity,
             ),
-        // buttonIcon: iconWidget ??
-        //     IconWidget(
-        //       iconPath: iconPath,
-        //       iconColor: theme?.iconColor ?? iconColor,
-        //     ),
         onOpen: onPressed,
         onClose: onExtensionClose,
         addAutomaticKeepAlives: addAutomaticKeepAlives,
@@ -229,12 +221,11 @@ class BottomBarButton {
           decoration: isSelected ? theme?.activeButtonDecoration : null,
           margin: theme?.buttonMargin,
           padding: theme?.buttonPadding,
-          child: iconWidget ??
+          child: iconWidget?.copyWith(isActive: isSelected) ??
               IconWidget(
                 iconPath: iconPath,
                 isActive: isSelected,
-                activeIconColor: context.colorScheme.primary,
-                iconColor: isDisabled ? disabledColor : iconColor,
+                iconColor: isDisabled ? disabledColor : context.onSurface,
               ),
         ),
         outsideClickDisabled: outsideClickDisabled,
@@ -258,11 +249,6 @@ class BottomBarButton {
         visualDensity: theme?.visualDensity,
         padding: theme?.padding,
         alignment: theme?.alignment,
-        splashRadius: theme?.splashRadius,
-        focusColor: theme?.focusColor,
-        hoverColor: theme?.hoverColor,
-        highlightColor: theme?.highlightColor,
-        splashColor: theme?.splashColor,
         onHover: onHover,
         onLongPress: onLongPress,
         mouseCursor: mouseCursor,
@@ -275,10 +261,11 @@ class BottomBarButton {
         selectedIcon: selectedIcon,
         color: theme?.iconColor ?? barTheme.iconColor,
         onPressed: isDisabled ? null : onPressed,
-        icon: iconWidget ??
+        icon: iconWidget?.copyWith(isActive: isSelected) ??
             IconWidget(
               iconPath: iconPath,
-              iconColor: theme?.iconColor ?? iconColor,
+              isActive: isSelected,
+              iconColor: theme?.iconColor ?? context.onSurface,
               boxHeight: theme?.iconBoxSize.height ?? 24,
               boxWidth: theme?.iconBoxSize.width ?? 24,
               iconHeight: theme?.iconSize.height ?? 24,

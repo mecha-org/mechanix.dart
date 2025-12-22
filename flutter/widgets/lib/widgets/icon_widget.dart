@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widgets/mechanix.dart';
 
 class IconWidget extends StatelessWidget {
   const IconWidget({
@@ -7,8 +8,8 @@ class IconWidget extends StatelessWidget {
     this.boxWidth = 24,
     this.iconHeight = 24,
     this.iconWidth = 24,
-    this.iconColor = const Color(0xFF989898),
-    this.activeIconColor = const Color(0xFF2D8AFF),
+    this.iconColor,
+    this.activeIconColor,
     this.isActive = false,
     required this.iconPath,
   })  : icon = null,
@@ -20,8 +21,8 @@ class IconWidget extends StatelessWidget {
     this.boxWidth = 24,
     this.iconHeight = 24,
     this.iconWidth = 24,
-    this.iconColor = const Color(0xFF989898),
-    this.activeIconColor = const Color(0xFF2D8AFF),
+    this.iconColor,
+    this.activeIconColor,
     this.isActive = false,
     this.package = 'widgets',
     required this.iconPath,
@@ -33,8 +34,8 @@ class IconWidget extends StatelessWidget {
     this.boxWidth = 24,
     this.iconHeight = 24,
     this.iconWidth = 24,
-    this.iconColor = const Color(0xFF989898),
-    this.activeIconColor = const Color(0xFF2D8AFF),
+    this.iconColor,
+    this.activeIconColor,
     this.isActive = false,
     required this.icon,
   })  : iconPath = '',
@@ -45,11 +46,64 @@ class IconWidget extends StatelessWidget {
   final double iconHeight;
   final double iconWidth;
   final String iconPath;
-  final Color iconColor;
   final bool isActive;
   final Icon? icon;
   final String? package;
-  final Color activeIconColor;
+  final Color? iconColor;
+  final Color? activeIconColor;
+
+  IconWidget copyWith({
+    double? boxHeight,
+    double? boxWidth,
+    double? iconHeight,
+    double? iconWidth,
+    String? iconPath,
+    bool? isActive,
+    Icon? icon,
+    String? package,
+    Color? iconColor,
+    Color? activeIconColor,
+  }) {
+    if (this.icon != null) {
+      return IconWidget.fromIconData(
+        boxHeight: boxHeight ?? this.boxHeight,
+        boxWidth: boxWidth ?? this.boxWidth,
+        iconHeight: iconHeight ?? this.iconHeight,
+        iconWidth: iconWidth ?? this.iconWidth,
+        icon: icon ?? this.icon,
+        isActive: isActive ?? this.isActive,
+        iconColor: iconColor ?? this.iconColor,
+        activeIconColor: activeIconColor ?? this.activeIconColor,
+      );
+    }
+
+    // Case 2: Mechanix asset widget
+    if (this.package != null) {
+      return IconWidget.fromMechanix(
+        boxHeight: boxHeight ?? this.boxHeight,
+        boxWidth: boxWidth ?? this.boxWidth,
+        iconHeight: iconHeight ?? this.iconHeight,
+        iconWidth: iconWidth ?? this.iconWidth,
+        iconPath: iconPath ?? this.iconPath,
+        package: package ?? this.package,
+        isActive: isActive ?? this.isActive,
+        iconColor: iconColor ?? this.iconColor,
+        activeIconColor: activeIconColor ?? this.activeIconColor,
+      );
+    }
+
+    // Case 3: Normal asset widget
+    return IconWidget(
+      boxHeight: boxHeight ?? this.boxHeight,
+      boxWidth: boxWidth ?? this.boxWidth,
+      iconHeight: iconHeight ?? this.iconHeight,
+      iconWidth: iconWidth ?? this.iconWidth,
+      iconPath: iconPath ?? this.iconPath,
+      isActive: isActive ?? this.isActive,
+      iconColor: iconColor ?? this.iconColor,
+      activeIconColor: activeIconColor ?? this.activeIconColor,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +116,12 @@ class IconWidget extends StatelessWidget {
           child: SizedBox(
             height: iconHeight,
             width: iconWidth,
-            child: icon,
+            child: Icon(
+              icon?.icon,
+              color: isActive
+                  ? activeIconColor ?? context.primary
+                  : iconColor ?? context.onSurface,
+            ),
           ),
         ),
       );
@@ -79,12 +138,16 @@ class IconWidget extends StatelessWidget {
           child: package != null
               ? Image.asset(
                   iconPath,
-                  color: isActive ? activeIconColor : iconColor,
+                  color: isActive
+                      ? activeIconColor ?? context.primary
+                      : iconColor ?? context.onSurface,
                   package: package,
                 )
               : Image.asset(
                   iconPath,
-                  color: isActive ? activeIconColor : iconColor,
+                  color: isActive
+                      ? activeIconColor ?? context.primary
+                      : iconColor ?? context.onSurface,
                 ),
         ),
       ),

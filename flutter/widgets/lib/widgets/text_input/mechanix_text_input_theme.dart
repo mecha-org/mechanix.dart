@@ -8,7 +8,7 @@ class MechanixTextInputThemeData
     this.labelTextStyle,
     this.textStyle = const TextStyle(fontSize: 16),
     this.hintTextStyle,
-    this.fillColor = const Color.fromRGBO(21, 21, 21, 1),
+    this.fillColor,
     this.contentPadding = const EdgeInsets.all(16),
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.borderSide,

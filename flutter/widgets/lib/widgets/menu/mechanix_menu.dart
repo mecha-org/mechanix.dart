@@ -920,7 +920,6 @@ class _MenuItem extends StatelessWidget {
         opacity: 1,
         child: Container(
           padding: index == 0 ? const EdgeInsets.only(top: 30) : null,
-          color: theme.itemBackgroundColor,
           child: Container(
             height: theme.itemHeight,
             decoration: BoxDecoration(

@@ -35,7 +35,7 @@ class MechanixColors {
   static const Color yellow_9 = Color(0xFFe67700);
 
   static const Color olive = Color(0xFF4B8501);
-  static const Color purple = Color(0xFF7764D8);
+  static const Color purple = Color.fromRGBO(133, 112, 255, 1);
   static const Color red = Color(0xFFDA3450);
   static const Color viridian = Color(0xFF03875B);
   static const Color blue = Color(0xFF0073E5);

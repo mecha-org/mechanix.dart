@@ -6,7 +6,6 @@ import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart'
 class MechanixFilledButton extends StatelessWidget {
   const MechanixFilledButton({
     super.key,
-    this.backgroundColor,
     this.mouseCursor,
     this.backgroundBuilder,
     this.foregroundBuilder,
@@ -25,7 +24,6 @@ class MechanixFilledButton extends StatelessWidget {
 
   const MechanixFilledButton.textWidget({
     super.key,
-    this.backgroundColor,
     this.mouseCursor,
     this.backgroundBuilder,
     this.foregroundBuilder,
@@ -42,7 +40,6 @@ class MechanixFilledButton extends StatelessWidget {
     required this.labelText,
   }) : label = '';
 
-  final Color? backgroundColor;
   final WidgetStateProperty<MouseCursor?>? mouseCursor;
   final ButtonLayerBuilder? backgroundBuilder;
   final ButtonLayerBuilder? foregroundBuilder;
