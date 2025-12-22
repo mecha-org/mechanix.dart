@@ -27,6 +27,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidgetIconPath = '',
     this.anchorWidget,
     this.cursorColor,
+    this.getCurrentValue,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -54,6 +55,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidget,
     this.cursorColor,
   })  : isSearchField = false,
+        getCurrentValue = null,
         isClearButtonRequired = false,
         textEditingController = null;
 
@@ -81,7 +83,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidget,
     this.cursorColor,
   })  : isSearchField = true,
-        isPasswordField = false;
+        isPasswordField = false,
+        getCurrentValue = null;
 
   final String? label;
   final bool isPasswordField;
@@ -90,6 +93,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final InputDecoration? inputDecoration;
   final String? hintText;
   final void Function(String)? onFieldSubmitted;
+  final void Function(String value)? getCurrentValue;
   final String? Function(String?)? validator;
   final MechanixTextInputThemeData? theme;
   final String? initialValue;
@@ -261,6 +265,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   child: IconButton(
                     onPressed: () {
                       widget.onClear?.call();
+                      widget.getCurrentValue?.call(_controller.text);
                     },
                     icon: IconWidget(
                       iconPath: widget.anchorWidgetIconPath,
@@ -273,7 +278,12 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   ),
                 )
               else if (widget.anchorWidget != null)
-                widget.anchorWidget!
+                GestureDetector(
+                  onTap: () {
+                    widget.getCurrentValue?.call(_controller.text);
+                  },
+                  child: widget.anchorWidget!,
+                )
             ],
           ),
         ),
