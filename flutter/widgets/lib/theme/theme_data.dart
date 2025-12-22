@@ -17,6 +17,11 @@ ThemeData createTheme(
         onSurface: colorScheme.onSurface,
         surfaceDim: colorScheme.surfaceDim,
       ),
+      scrollbarTheme: ScrollbarThemeData(
+        radius: const Radius.circular(4),
+        thickness: const WidgetStatePropertyAll(6),
+        thumbColor: WidgetStatePropertyAll(colorScheme.onSurface),
+      ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colorScheme.primaryFixed,
       ));
