@@ -326,15 +326,18 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           : widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.focusedBorderSide ?? context.borderSideXs,
+        borderSide: theme.focusedBorderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       border: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.borderSide ?? context.borderSideXs,
+        borderSide: theme.borderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.borderSide ?? context.borderSideXs,
+        borderSide: theme.enabledBorderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
     );
 
