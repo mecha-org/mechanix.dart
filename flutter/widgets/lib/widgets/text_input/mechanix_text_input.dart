@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/images.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
@@ -177,7 +176,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 child: IconButton(
                   onPressed: onClear,
                   icon: IconWidget.fromMechanix(
-                    iconPath: Images.clearIcon,
+                    iconPath: MechanixIconImages.clearIcon,
                     boxHeight: 24,
                     boxWidth: 24,
                     iconHeight: 16,
@@ -317,7 +316,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       prefixIcon: widget.isSearchField
           ? widget.prefixIcon ??
               IconWidget.fromMechanix(
-                iconPath: Images.searchIcon,
+                iconPath: MechanixIconImages.searchIcon,
                 boxHeight: 24,
                 boxWidth: 24,
                 iconHeight: 20,
