@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
+TextTheme createTextTheme(
+    {required onSurface, required Color onSurfaceVariant}) {
   return TextTheme(
     displayLarge: TextStyle(
       color: onSurface,
@@ -78,7 +79,7 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
       package: 'widgets',
     ),
     labelLarge: TextStyle(
-      color: surfaceDim,
+      color: onSurfaceVariant,
       fontSize: 16,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',

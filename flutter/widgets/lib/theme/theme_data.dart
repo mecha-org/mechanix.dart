@@ -15,7 +15,7 @@ ThemeData createTheme(
       splashFactory: NoSplash.splashFactory,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
-        surfaceDim: colorScheme.surfaceDim,
+        onSurfaceVariant: colorScheme.onSurfaceVariant,
       ),
       scrollbarTheme: ScrollbarThemeData(
         radius: const Radius.circular(4),
@@ -53,8 +53,10 @@ ThemeData createDarkTheme(
     tertiaryFixedDim: themeColors.background_600,
     surface: themeColors.background_1200,
     onSurface: themeColors.foreground_600,
-    surfaceDim: themeColors.foreground_800,
+    onSurfaceVariant: themeColors.foreground_800,
+    // surfaceDim: themeColors.foreground_800,
     surfaceContainerHigh: themeColors.foreground_900,
+    surfaceContainerLow: themeColors.background_300,
     surfaceContainerLowest: themeColors.foreground_0,
   );
 

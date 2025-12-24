@@ -412,7 +412,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                               width: 9,
                               height: 15,
                               child: Image.asset(
-                                color: context.surfaceDim,
+                                color: context.onSurfaceVariant,
                                 MechanixIconImages.rightCaret,
                                 package: 'widgets',
                               ),
@@ -572,7 +572,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
               padding: listTheme.titlePadding,
               child: Text(
                 widget.title!,
-                style: listTheme.titleTextStyle,
+                style: context.textTheme.labelMedium
+                    ?.copyWith(color: context.onSurfaceVariant),
               ),
             ),
           ConstrainedBox(
@@ -617,7 +618,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
               padding: listTheme.titlePadding,
               child: Text(
                 widget.title!,
-                style: listTheme.titleTextStyle,
+                style: context.textTheme.labelMedium
+                    ?.copyWith(color: context.onSurfaceVariant),
               ),
             ),
           Container(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/images.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
@@ -177,7 +176,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 child: IconButton(
                   onPressed: onClear,
                   icon: IconWidget.fromMechanix(
-                    iconPath: Images.clearIcon,
+                    iconPath: MechanixIconImages.clearIcon,
                     boxHeight: 24,
                     boxWidth: 24,
                     iconHeight: 16,
@@ -219,7 +218,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             widget.label ?? '',
             style: theme.labelTextStyle ??
                 context.textTheme.labelMedium
-                    ?.copyWith(color: context.surfaceDim),
+                    ?.copyWith(color: context.onSurfaceVariant),
           ).padBottom(8),
         Container(
           padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
@@ -299,7 +298,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
       hintStyle: theme.hintTextStyle ??
-          context.textTheme.labelSmall?.copyWith(color: context.surfaceDim),
+          context.textTheme.labelSmall?.copyWith(color: context.onSurfaceVariant),
       errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? widget.suffixIcon ??
@@ -317,7 +316,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       prefixIcon: widget.isSearchField
           ? widget.prefixIcon ??
               IconWidget.fromMechanix(
-                iconPath: Images.searchIcon,
+                iconPath: MechanixIconImages.searchIcon,
                 boxHeight: 24,
                 boxWidth: 24,
                 iconHeight: 20,

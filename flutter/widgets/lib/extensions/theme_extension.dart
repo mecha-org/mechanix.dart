@@ -96,7 +96,7 @@ extension MechanixSectionListThemeDataExtensions
           backgroundColor ??
           WidgetStateProperty.all(context.tertiary),
       titleTextStyle: other?.titleTextStyle ??
-          titleTextStyle?.copyWith(color: context.surfaceDim),
+          titleTextStyle?.copyWith(color: context.onSurfaceVariant),
       dividerThickness: other?.dividerThickness ?? dividerThickness,
       dividerHeight: other?.dividerHeight ?? dividerHeight,
       dividerColor: other?.dividerColor ?? dividerColor ?? context.outline,
