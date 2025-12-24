@@ -55,6 +55,7 @@ flutter:
     - assets/icons/backward_icon.png
     - assets/icons/search_icon.png
     - assets/icons/clear_icon.png
+    - assets/icons/circular_check.png
 
   fonts:
     - family: Overused Grotesk

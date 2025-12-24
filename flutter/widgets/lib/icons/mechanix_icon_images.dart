@@ -6,4 +6,6 @@ class MechanixIconImages {
   static const String tickIcon = 'assets/icons/tick_icon.png';
   static const String closeIcon = 'assets/icons/close_icon.png';
   static const String backwardIcon = 'assets/icons/backward_icon.png';
+  static const String clearIcon = "assets/icons/clear_icon.png";
+  static const String circularCheck = "assets/icons/circular_check.png";
 }

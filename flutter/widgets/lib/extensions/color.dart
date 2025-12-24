@@ -33,6 +33,8 @@ extension ColorExtension on BuildContext {
 
   Color get tertiary => Theme.of(this).colorScheme.tertiary;
 
+  Color get tertiaryFixedDim => Theme.of(this).colorScheme.tertiaryFixedDim;
+
   Color get outline => Theme.of(this).colorScheme.outline;
 
   Color get surface => Theme.of(this).colorScheme.surface;
@@ -52,4 +54,7 @@ extension ColorExtension on BuildContext {
   Color get scrim => Theme.of(this).colorScheme.scrim;
 
   Color get shadow => Theme.of(this).colorScheme.shadow;
+
+  Color get surfaceContainerHigh =>
+      Theme.of(this).colorScheme.surfaceContainerHigh;
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/images.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 
@@ -27,6 +26,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidgetIconPath = '',
     this.anchorWidget,
     this.cursorColor,
+    this.getCurrentValue,
   })  : isSearchField = false,
         isClearButtonRequired = false,
         textEditingController = null;
@@ -54,6 +54,7 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidget,
     this.cursorColor,
   })  : isSearchField = false,
+        getCurrentValue = null,
         isClearButtonRequired = false,
         textEditingController = null;
 
@@ -81,7 +82,8 @@ class MechanixTextInput<T> extends StatefulWidget {
     this.anchorWidget,
     this.cursorColor,
   })  : isSearchField = true,
-        isPasswordField = false;
+        isPasswordField = false,
+        getCurrentValue = null;
 
   final String? label;
   final bool isPasswordField;
@@ -90,6 +92,7 @@ class MechanixTextInput<T> extends StatefulWidget {
   final InputDecoration? inputDecoration;
   final String? hintText;
   final void Function(String)? onFieldSubmitted;
+  final void Function(String value)? getCurrentValue;
   final String? Function(String?)? validator;
   final MechanixTextInputThemeData? theme;
   final String? initialValue;
@@ -173,7 +176,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 child: IconButton(
                   onPressed: onClear,
                   icon: IconWidget.fromMechanix(
-                    iconPath: Images.clearIcon,
+                    iconPath: MechanixIconImages.clearIcon,
                     boxHeight: 24,
                     boxWidth: 24,
                     iconHeight: 16,
@@ -215,7 +218,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             widget.label ?? '',
             style: theme.labelTextStyle ??
                 context.textTheme.labelMedium
-                    ?.copyWith(color: context.surfaceDim),
+                    ?.copyWith(color: context.onSurfaceVariant),
           ).padBottom(8),
         Container(
           padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
@@ -261,6 +264,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   child: IconButton(
                     onPressed: () {
                       widget.onClear?.call();
+                      widget.getCurrentValue?.call(_controller.text);
                     },
                     icon: IconWidget(
                       iconPath: widget.anchorWidgetIconPath,
@@ -273,7 +277,12 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   ),
                 )
               else if (widget.anchorWidget != null)
-                widget.anchorWidget!
+                GestureDetector(
+                  onTap: () {
+                    widget.getCurrentValue?.call(_controller.text);
+                  },
+                  child: widget.anchorWidget!,
+                )
             ],
           ),
         ),
@@ -289,7 +298,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
       hintStyle: theme.hintTextStyle ??
-          context.textTheme.labelSmall?.copyWith(color: context.surfaceDim),
+          context.textTheme.labelSmall?.copyWith(color: context.onSurfaceVariant),
       errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? widget.suffixIcon ??
@@ -307,7 +316,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       prefixIcon: widget.isSearchField
           ? widget.prefixIcon ??
               IconWidget.fromMechanix(
-                iconPath: Images.searchIcon,
+                iconPath: MechanixIconImages.searchIcon,
                 boxHeight: 24,
                 boxWidth: 24,
                 iconHeight: 20,
@@ -316,17 +325,18 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           : widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.focusedBorderSide ?? context.borderSideXs,
+        borderSide: theme.focusedBorderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       border: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.borderSide ?? context.borderSideXs,
+        borderSide: theme.borderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
-        borderSide: theme.borderSide ??
-            context.borderSideXs
-                .copyWith(color: context.colorScheme.outlineVariant),
+        borderSide: theme.enabledBorderSide ??
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
     );
 

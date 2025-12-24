@@ -15,7 +15,12 @@ ThemeData createTheme(
       splashFactory: NoSplash.splashFactory,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
-        surfaceDim: colorScheme.surfaceDim,
+        onSurfaceVariant: colorScheme.onSurfaceVariant,
+      ),
+      scrollbarTheme: ScrollbarThemeData(
+        radius: const Radius.circular(4),
+        thickness: const WidgetStatePropertyAll(6),
+        thumbColor: WidgetStatePropertyAll(colorScheme.onSurface),
       ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colorScheme.primaryFixed,
@@ -40,15 +45,18 @@ ThemeData createDarkTheme(
 
   final colorScheme = ColorScheme.dark(
     brightness: Brightness.dark,
-    //
     primary: themeColors.accent_600,
     onPrimary: themeColors.foreground_1200,
     primaryFixed: themeColors.accent_700,
     secondary: themeColors.background_400,
     tertiary: themeColors.background_500,
+    tertiaryFixedDim: themeColors.background_600,
     surface: themeColors.background_1200,
     onSurface: themeColors.foreground_600,
-    surfaceDim: themeColors.foreground_800,
+    onSurfaceVariant: themeColors.foreground_800,
+    // surfaceDim: themeColors.foreground_800,
+    surfaceContainerHigh: themeColors.foreground_900,
+    surfaceContainerLow: themeColors.background_300,
     surfaceContainerLowest: themeColors.foreground_0,
   );
 

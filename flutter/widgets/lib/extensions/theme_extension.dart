@@ -29,38 +29,36 @@ extension MechanixWheelScrollThemeDataExtensions
 }
 
 extension MechanixSimpleListThemeDataExtensions on MechanixSimpleListThemeData {
-  MechanixSimpleListThemeData merge(MechanixSimpleListThemeData? other) {
-    if (other == null) return this;
-
+  MechanixSimpleListThemeData merge(
+      BuildContext context, MechanixSimpleListThemeData? other) {
     return copyWith(
-      backgroundColor: other.backgroundColor,
-      dividerColor: other.dividerColor,
-      widgetRadius: other.widgetRadius,
-      dividerThickness: other.dividerThickness,
-      dividerHeight: other.dividerHeight,
-      itemPadding: other.itemPadding,
-      widgetMargin: other.widgetMargin,
+      backgroundColor:
+          other?.backgroundColor ?? backgroundColor ?? context.tertiary,
+      dividerColor: other?.dividerColor ?? dividerColor,
+      widgetRadius: other?.widgetRadius ?? widgetRadius,
+      dividerThickness: other?.dividerThickness ?? dividerThickness,
+      dividerHeight: other?.dividerHeight ?? dividerHeight,
+      itemPadding: other?.itemPadding ?? itemPadding,
+      widgetMargin: other?.widgetMargin ?? widgetMargin,
     );
   }
 }
 
 extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
   MechanixTextInputThemeData merge(MechanixTextInputThemeData? other) {
-    if (other == null) return this;
-
     return copyWith(
-      labelTextStyle: other.labelTextStyle,
-      textStyle: other.textStyle,
-      hintTextStyle: other.hintTextStyle,
-      fillColor: other.fillColor,
-      contentPadding: other.contentPadding,
-      borderRadius: other.borderRadius,
-      borderSide: other.borderSide,
-      focusedBorderSide: other.focusedBorderSide,
-      obscureTextIcon: other.obscureTextIcon,
-      visibleTextIcon: other.visibleTextIcon,
-      iconColor: other.iconColor,
-      enabledBorderSide: other.enabledBorderSide,
+      labelTextStyle: other?.labelTextStyle ?? labelTextStyle,
+      textStyle: other?.textStyle ?? textStyle,
+      hintTextStyle: other?.hintTextStyle ?? hintTextStyle,
+      fillColor: other?.fillColor ?? fillColor,
+      contentPadding: other?.contentPadding ?? contentPadding,
+      borderRadius: other?.borderRadius ?? borderRadius,
+      borderSide: other?.borderSide ?? borderSide,
+      focusedBorderSide: other?.focusedBorderSide ?? focusedBorderSide,
+      obscureTextIcon: other?.obscureTextIcon ?? obscureTextIcon,
+      visibleTextIcon: other?.visibleTextIcon ?? visibleTextIcon,
+      iconColor: other?.iconColor ?? iconColor,
+      enabledBorderSide: other?.enabledBorderSide ?? enabledBorderSide,
     );
   }
 }
@@ -96,8 +94,9 @@ extension MechanixSectionListThemeDataExtensions
     return copyWith(
       backgroundColor: other?.backgroundColor ??
           backgroundColor ??
-          WidgetStateProperty.all(context.secondary),
-      titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
+          WidgetStateProperty.all(context.tertiary),
+      titleTextStyle: other?.titleTextStyle ??
+          titleTextStyle?.copyWith(color: context.onSurfaceVariant),
       dividerThickness: other?.dividerThickness ?? dividerThickness,
       dividerHeight: other?.dividerHeight ?? dividerHeight,
       dividerColor: other?.dividerColor ?? dividerColor ?? context.outline,
@@ -195,7 +194,7 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
       itemHeight: other?.itemHeight ?? itemHeight,
       disabledTextStyle: other?.disabledTextStyle ??
-          disabledTextStyle?.copyWith(color: context.surfaceDim),
+          disabledTextStyle?.copyWith(color: context.surfaceContainerHigh),
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
       margin: other?.margin ?? margin,
       transform: other?.transform ?? transform,

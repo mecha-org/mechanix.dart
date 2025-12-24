@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
+TextTheme createTextTheme(
+    {required onSurface, required Color onSurfaceVariant}) {
   return TextTheme(
     displayLarge: TextStyle(
       color: onSurface,
@@ -40,7 +41,8 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     titleLarge: TextStyle(
       color: onSurface,
-      fontSize: 22,
+      fontSize: 24,
+      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
@@ -71,18 +73,21 @@ TextTheme createTextTheme({required onSurface, required Color surfaceDim}) {
     ),
     bodySmall: TextStyle(
       color: onSurface,
-      fontSize: 18,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
     labelLarge: TextStyle(
-      color: surfaceDim,
+      color: onSurfaceVariant,
       fontSize: 16,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
     labelMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 18,
+      fontWeight: FontWeight.w500,
+      color: onSurface,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
