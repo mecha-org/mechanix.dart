@@ -6,6 +6,7 @@ import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar
 import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
+import 'package:widgets/widgets/notification/mechanix_notification_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
 import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
@@ -278,6 +279,17 @@ extension MechanixFilledButtonThemeDataExtensions
       constraints: other?.constraints ?? constraints,
       margin: other?.margin ?? margin,
       padding: other?.padding ?? padding,
+    );
+  }
+}
+
+extension MechanixNotificationThemeDataExtensions
+    on MechanixNotificationThemeData {
+  MechanixNotificationThemeData merge(
+      MechanixNotificationThemeData? other, BuildContext context) {
+    return copyWith(
+      margin: other?.margin ?? margin,
+      backgroundColor: other?.backgroundColor ?? backgroundColor,
     );
   }
 }

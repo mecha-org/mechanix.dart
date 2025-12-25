@@ -20,6 +20,7 @@ export 'widgets/icon_widget.dart';
 export 'widgets/list_items/mechanix_simple_list.dart';
 export 'widgets/menu/mechanix_menu.dart';
 export 'widgets/navigation_bar/mechanix_navigation_bar.dart';
+export 'widgets/notification/mechanix_notification.dart';
 export 'widgets/pressable_list/mechanix_pressable_list.dart';
 export 'widgets/section_list/mechanix_section_list.dart';
 export 'widgets/select/select.dart';

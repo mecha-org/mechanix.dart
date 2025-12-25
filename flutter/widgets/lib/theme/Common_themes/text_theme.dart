@@ -93,6 +93,8 @@ TextTheme createTextTheme(
     ), // settings section list menu label
     labelSmall: TextStyle(
       fontSize: 16,
+      color: onSurface,
+      fontWeight: FontWeight.w400,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),
