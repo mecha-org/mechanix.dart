@@ -243,6 +243,7 @@ class BottomBarButton {
       margin: theme?.buttonMargin,
       padding: theme?.buttonPadding,
       child: IconButton(
+        style: Theme.of(context).iconButtonTheme.style,
         isSelected: isSelected,
         disabledColor: disabledColor,
         iconSize: theme?.iconButtonSize,
@@ -257,7 +258,6 @@ class BottomBarButton {
         tooltip: tooltip,
         enableFeedback: enableFeedback,
         constraints: theme?.constraints,
-        style: theme?.buttonStyle,
         selectedIcon: selectedIcon,
         color: theme?.iconColor ?? barTheme.iconColor,
         onPressed: isDisabled ? null : onPressed,
