@@ -276,9 +276,9 @@ extension MechanixFilledButtonThemeDataExtensions
       buttonSize: other?.buttonSize ?? buttonSize,
       labelText: other?.labelText ?? labelText,
       textStyle: other?.textStyle ?? textStyle,
-      constraints: other?.constraints ?? constraints,
-      margin: other?.margin ?? margin,
       padding: other?.padding ?? padding,
+      buttonColor: other?.buttonColor ?? buttonColor,
+      pressedButtonColor: other?.pressedButtonColor ?? pressedButtonColor,
     );
   }
 }
