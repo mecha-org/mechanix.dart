@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
+import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
 import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
@@ -290,6 +291,18 @@ extension MechanixNotificationThemeDataExtensions
     return copyWith(
       margin: other?.margin ?? margin,
       backgroundColor: other?.backgroundColor ?? backgroundColor,
+    );
+  }
+}
+
+extension MechanixBottomSheetThemeDataExtensions
+    on MechanixBottomSheetThemeData {
+  MechanixBottomSheetThemeData merge(
+      MechanixBottomSheetThemeData? other, BuildContext context) {
+    return copyWith(
+      decoration:
+          other?.decoration ?? decoration?.copyWith(color: context.tertiary),
+      width: other?.width ?? width,
     );
   }
 }

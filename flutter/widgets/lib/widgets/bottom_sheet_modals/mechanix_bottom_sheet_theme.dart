@@ -8,16 +8,7 @@ class MechanixBottomSheetThemeData
     extends ThemeExtension<MechanixBottomSheetThemeData> with Diagnosticable {
   const MechanixBottomSheetThemeData({
     this.width = double.infinity,
-    this.decoration = const BoxDecoration(
-      color: Color(0xFF2E2E2E),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black45,
-          // blurRadius: 8,
-          // offset: Offset(0, -2),
-        ),
-      ],
-    ),
+    this.decoration = const BoxDecoration(),
   });
 
   final double? width;

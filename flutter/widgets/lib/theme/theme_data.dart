@@ -92,19 +92,6 @@ ThemeData createTheme(
           ),
           foregroundColor: WidgetStateProperty.resolveWith(
             (states) {
-              if (states.contains(WidgetState.pressed)) {
-                return colorScheme.primary;
-              }
-
-              return colorScheme.onSurface;
-            },
-          ),
-          iconColor: WidgetStateProperty.resolveWith(
-            (states) {
-              if (states.contains(WidgetState.pressed)) {
-                return colorScheme.primary;
-              }
-
               return colorScheme.onSurface;
             },
           ),
