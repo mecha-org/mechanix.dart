@@ -170,7 +170,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
             if (widget.suffixIcon != null)
               widget.suffixIcon!
             else if (widget.isClearButtonRequired)
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.only(left: 5),
                 height: 40,
                 width: 40,
                 child: IconButton(
@@ -298,7 +299,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
       hintStyle: theme.hintTextStyle ??
-          context.textTheme.labelSmall?.copyWith(color: context.onSurfaceVariant),
+          context.textTheme.labelSmall
+              ?.copyWith(color: context.onSurfaceVariant),
       errorText: widget.errorText,
       suffixIcon: widget.isPasswordField
           ? widget.suffixIcon ??

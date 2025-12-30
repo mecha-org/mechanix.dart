@@ -8,4 +8,6 @@ class MechanixIconImages {
   static const String backwardIcon = 'assets/icons/backward_icon.png';
   static const String clearIcon = "assets/icons/clear_icon.png";
   static const String circularCheck = "assets/icons/circular_check.png";
+  static const String successIcon = "assets/icons/success_icon.png";
+  static const String errorIcon = "assets/icons/error_icon.png";
 }

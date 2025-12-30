@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/switch/mechanix_switch_theme.dart';
 
 class MechanixSwitch extends StatefulWidget {
@@ -230,7 +230,7 @@ class _MechanixSwitchState extends State<MechanixSwitch>
   Color _getTrackColor() {
     if (_effectiveStyle.activeTrackGradient != null ||
         _effectiveStyle.inactiveTrackGradient != null) {
-      return Colors.transparent;
+      return context.secondary;
     }
     return Color.lerp(
       widget.enabled
@@ -319,7 +319,7 @@ class _MechanixSwitchState extends State<MechanixSwitch>
               child: _buildTextWidget(
                 inactiveText,
                 _effectiveStyle.inactiveTextStyle ??
-                    const TextStyle(fontSize: 10, color: Colors.white70),
+                    context.textTheme.bodySmall!,
                 Alignment.centerLeft,
               ),
             ),
@@ -327,8 +327,7 @@ class _MechanixSwitchState extends State<MechanixSwitch>
             Expanded(
               child: _buildTextWidget(
                 activeText,
-                _effectiveStyle.activeTextStyle ??
-                    const TextStyle(fontSize: 10, color: Colors.white70),
+                _effectiveStyle.activeTextStyle ?? context.textTheme.bodySmall!,
                 Alignment.centerRight,
               ),
             ),

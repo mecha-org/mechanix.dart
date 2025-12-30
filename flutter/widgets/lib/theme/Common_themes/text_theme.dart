@@ -86,13 +86,15 @@ TextTheme createTextTheme(
     ), // settings section list menu label
     labelMedium: TextStyle(
       fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       color: onSurface,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ), // settings section list menu label
     labelSmall: TextStyle(
       fontSize: 16,
+      color: onSurface,
+      fontWeight: FontWeight.w400,
       fontFamily: 'Overused Grotesk',
       package: 'widgets',
     ),

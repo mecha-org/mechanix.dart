@@ -268,7 +268,8 @@ class MechanixSimpleList extends StatelessWidget {
                       if (item.leading != null) item.leading!.padRight(),
                       Text(
                         item.title,
-                        style: item.titleTextStyle,
+                        style: item.titleTextStyle ??
+                            context.textTheme.labelMedium,
                       )
                     ],
                   ),

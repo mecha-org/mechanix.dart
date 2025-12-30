@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/bottom_bar/mechanix_bottom_bar_theme.dart';
+import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
 import 'package:widgets/widgets/filled_button/mechanix_filled_button_theme.dart';
 import 'package:widgets/widgets/floating_action_bar/mechanix_floating_action_bar_theme.dart';
 import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/navigation_bar/mechanix_navigation_bar_theme.dart';
+import 'package:widgets/widgets/notification/mechanix_notification_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
 import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
@@ -270,14 +272,36 @@ extension MechanixFilledButtonThemeDataExtensions
   MechanixFilledButtonThemeData merge(
       MechanixFilledButtonThemeData? other, BuildContext context) {
     return copyWith(
-      decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.secondary),
       buttonSize: other?.buttonSize ?? buttonSize,
       labelText: other?.labelText ?? labelText,
       textStyle: other?.textStyle ?? textStyle,
-      constraints: other?.constraints ?? constraints,
-      margin: other?.margin ?? margin,
       padding: other?.padding ?? padding,
+      buttonColor: other?.buttonColor ?? buttonColor ?? context.secondary,
+      pressedButtonColor:
+          other?.pressedButtonColor ?? pressedButtonColor ?? context.tertiary,
+    );
+  }
+}
+
+extension MechanixNotificationThemeDataExtensions
+    on MechanixNotificationThemeData {
+  MechanixNotificationThemeData merge(
+      MechanixNotificationThemeData? other, BuildContext context) {
+    return copyWith(
+      margin: other?.margin ?? margin,
+      backgroundColor: other?.backgroundColor ?? backgroundColor,
+    );
+  }
+}
+
+extension MechanixBottomSheetThemeDataExtensions
+    on MechanixBottomSheetThemeData {
+  MechanixBottomSheetThemeData merge(
+      MechanixBottomSheetThemeData? other, BuildContext context) {
+    return copyWith(
+      decoration:
+          other?.decoration ?? decoration.copyWith(color: context.tertiary),
+      width: other?.width ?? width,
     );
   }
 }

@@ -13,9 +13,118 @@ ThemeData createTheme(
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
+      focusColor: Colors.transparent,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
         onSurfaceVariant: colorScheme.onSurfaceVariant,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.tertiary;
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Colors.transparent;
+            }
+            return Colors.transparent;
+          }),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          iconColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.primary;
+            }
+
+            return colorScheme.onSurface;
+          }),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.tertiary;
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Colors.transparent;
+            }
+            return Colors.transparent;
+          }),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          iconColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.primary;
+            }
+
+            return colorScheme.onSurface;
+          }),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.tertiary;
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Colors.transparent;
+            }
+            return Colors.transparent;
+          }),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) {
+              return colorScheme.onSurface;
+            },
+          ),
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colorScheme.tertiary;
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return Colors.transparent;
+            }
+            return Colors.transparent;
+          }),
+          splashFactory: NoSplash.splashFactory,
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          iconColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.pressed)) {
+                return colorScheme.primary;
+              }
+
+              return colorScheme.onSurface;
+            },
+          ),
+        ),
       ),
       scrollbarTheme: ScrollbarThemeData(
         radius: const Radius.circular(4),

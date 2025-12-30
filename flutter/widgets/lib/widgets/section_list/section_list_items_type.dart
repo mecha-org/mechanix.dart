@@ -3,7 +3,7 @@ import 'package:widgets/mechanix.dart';
 
 class SectionListItems {
   SectionListItems({
-    required this.title,
+    this.title = '',
     this.leading,
     this.trailing,
     this.titleTextStyle,
@@ -14,12 +14,16 @@ class SectionListItems {
     this.defaultTrailingIcon = true,
     this.backgroundColor,
     this.disabled = false,
+    this.titleWidget,
   })  : iconContainerSize = const Size(24, 24),
         iconSize = const Size(18, 18),
-        iconPath = '';
+        activeIconColor = null,
+        isActive = false,
+        iconPath = '',
+        iconColor = null;
 
   SectionListItems.leadingIcon({
-    required this.title,
+    this.title = '',
     this.trailing,
     this.titleTextStyle,
     this.onTap,
@@ -31,6 +35,10 @@ class SectionListItems {
     this.disabled = false,
     this.iconContainerSize = const Size(24, 24),
     this.iconSize = const Size(18, 18),
+    this.activeIconColor,
+    this.isActive = false,
+    this.iconColor,
+    this.titleWidget,
     required this.iconPath,
   }) : leading = null;
 
@@ -39,6 +47,7 @@ class SectionListItems {
   final bool defaultTrailingIcon;
   final String title;
   final TextStyle? titleTextStyle;
+  final Widget? titleWidget;
   final GestureTapCallback? onTap;
   final GestureTapUpCallback? onTapUp;
   final GestureTapDownCallback? onTapDown;
@@ -48,15 +57,20 @@ class SectionListItems {
   final Size iconContainerSize;
   final Size iconSize;
   final String iconPath;
+  final Color? activeIconColor;
+  final Color? iconColor;
+  final bool isActive;
 
   Widget? buildLeadingIcon(BuildContext context) {
     if (iconPath != '') {
       return IconWidget(
+        activeIconColor: activeIconColor,
+        isActive: isActive,
         boxHeight: iconContainerSize.height,
         boxWidth: iconContainerSize.width,
         iconHeight: iconSize.height,
         iconWidth: iconSize.width,
-        iconColor: context.primary,
+        iconColor: iconColor ?? context.onSurfaceVariant,
         iconPath: iconPath,
       ).padRight();
     }
