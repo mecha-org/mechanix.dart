@@ -6,10 +6,6 @@ class MechanixFilledButtonThemeData
     extends ThemeExtension<MechanixFilledButtonThemeData> with Diagnosticable {
   const MechanixFilledButtonThemeData({
     this.buttonSize = const Size(246, 40),
-    this.decoration = const BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      color: Color.fromRGBO(70, 70, 70, 1),
-    ),
     this.labelText,
     this.textStyle,
     this.padding,
@@ -20,7 +16,6 @@ class MechanixFilledButtonThemeData
   });
 
   final Size? buttonSize;
-  final BoxDecoration? decoration;
   final Text? labelText;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
@@ -39,7 +34,6 @@ class MechanixFilledButtonThemeData
   }) {
     return MechanixFilledButtonThemeData(
       buttonSize: buttonSize ?? this.buttonSize,
-      decoration: decoration ?? this.decoration,
       labelText: labelText ?? this.labelText,
       textStyle: textStyle ?? this.textStyle,
       padding: padding ?? this.padding,
@@ -54,8 +48,6 @@ class MechanixFilledButtonThemeData
     if (other is! MechanixFilledButtonThemeData) return this;
     return MechanixFilledButtonThemeData(
       buttonSize: Size.lerp(buttonSize, other.buttonSize, t),
-      decoration:
-          BoxDecoration.lerp(decoration, other.decoration, t) ?? decoration,
       textStyle: TextStyle.lerp(textStyle, other.textStyle, t),
       padding: EdgeInsetsGeometry.lerp(padding, other.padding, t),
       buttonColor: Color.lerp(buttonColor, other.buttonColor, t),
@@ -68,7 +60,6 @@ class MechanixFilledButtonThemeData
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty('buttonSize', buttonSize));
-    properties.add(DiagnosticsProperty('decoration', decoration));
     properties.add(DiagnosticsProperty('labelText', labelText));
     properties.add(DiagnosticsProperty('textStyle', textStyle));
     properties.add(DiagnosticsProperty('padding', padding));
@@ -82,7 +73,6 @@ class MechanixFilledButtonThemeData
     if (identical(this, other)) return true;
     return other is MechanixFilledButtonThemeData &&
         buttonSize == other.buttonSize &&
-        decoration == other.decoration &&
         labelText == other.labelText &&
         padding == other.padding &&
         buttonColor == other.buttonColor &&
@@ -94,7 +84,6 @@ class MechanixFilledButtonThemeData
   int get hashCode {
     return Object.hash(
       buttonSize,
-      decoration,
       labelText,
       textStyle,
       padding,

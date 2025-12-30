@@ -272,14 +272,13 @@ extension MechanixFilledButtonThemeDataExtensions
   MechanixFilledButtonThemeData merge(
       MechanixFilledButtonThemeData? other, BuildContext context) {
     return copyWith(
-      decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.secondary),
       buttonSize: other?.buttonSize ?? buttonSize,
       labelText: other?.labelText ?? labelText,
       textStyle: other?.textStyle ?? textStyle,
       padding: other?.padding ?? padding,
-      buttonColor: other?.buttonColor ?? buttonColor,
-      pressedButtonColor: other?.pressedButtonColor ?? pressedButtonColor,
+      buttonColor: other?.buttonColor ?? buttonColor ?? context.secondary,
+      pressedButtonColor:
+          other?.pressedButtonColor ?? pressedButtonColor ?? context.tertiary,
     );
   }
 }
@@ -301,7 +300,7 @@ extension MechanixBottomSheetThemeDataExtensions
       MechanixBottomSheetThemeData? other, BuildContext context) {
     return copyWith(
       decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.tertiary),
+          other?.decoration ?? decoration.copyWith(color: context.tertiary),
       width: other?.width ?? width,
     );
   }

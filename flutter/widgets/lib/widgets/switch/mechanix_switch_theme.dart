@@ -20,13 +20,13 @@ class MechanixSwitchStyle with Diagnosticable {
     this.activeThumbIcon,
     this.inactiveThumbIcon,
     // Dimensions
-    this.width = 75.0,
-    this.height = 30.0,
-    this.trackPadding = 5.0,
+    this.width = 76.0,
+    this.height = 36.0,
+    this.trackPadding = 6.0,
     this.thumbSize = const Size(24, 24),
     // Border radius
-    this.trackBorderRadius = const BorderRadius.all(Radius.circular(4.0)),
-    this.thumbBorderRadius = const BorderRadius.all(Radius.circular(2.0)),
+    this.trackBorderRadius = const BorderRadius.all(Radius.circular(6.0)),
+    this.thumbBorderRadius = const BorderRadius.all(Radius.circular(4.0)),
     // Animation
     this.animationDuration = const Duration(milliseconds: 200),
     this.animationCurve = Curves.easeInOut,

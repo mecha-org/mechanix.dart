@@ -79,13 +79,11 @@ class MechanixFilledButton extends StatelessWidget {
                 if (states.contains(WidgetState.pressed)) {
                   return buttonTheme.pressedButtonColor ?? context.tertiary;
                 }
-                if (states.contains(WidgetState.hovered)) {
-                  return Colors.transparent;
-                }
-                return buttonTheme.decoration?.color ?? context.secondary;
+
+                return buttonTheme.buttonColor ?? context.secondary;
               },
             ),
-            fixedSize: WidgetStateProperty.all(buttonTheme.buttonSize),
+            minimumSize: WidgetStateProperty.all(buttonTheme.buttonSize),
             padding: WidgetStateProperty.all(buttonTheme.padding),
             splashFactory: NoSplash.splashFactory,
             textStyle: WidgetStateProperty.all(buttonTheme.textStyle),
@@ -99,7 +97,7 @@ class MechanixFilledButton extends StatelessWidget {
           Text(
             label,
             style: context.textTheme.bodySmall,
-          ),
+          ).padOnly(top: 9, bottom: 9),
     );
   }
 }

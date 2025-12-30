@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:widgets/extension.dart';
+import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/select/mechanix_select_theme.dart';
 import 'package:widgets/widgets/select/select_type.dart';
 
@@ -28,34 +28,22 @@ class MechanixSelect<T> extends StatelessWidget {
   final double trailingIconSize;
 
   bool _isSelected(SelectOption<T> option) => option.value == value;
-  int getSelectedIndex() {
-    return options.indexWhere((option) => option.value == value);
-  }
 
   @override
   Widget build(BuildContext context) {
     final selectTheme = MechanixSelectTheme.of(context);
-    final selectedIndex = getSelectedIndex();
+
     return Material(
       elevation: selectTheme.elevation,
       borderRadius: selectTheme.borderRadius,
-      color: selectTheme.backgroundColor ?? context.colorScheme.secondary,
+      color: selectTheme.backgroundColor ?? context.colorScheme.tertiary,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: ListView.separated(
+        child: ListView.builder(
           physics: scrollPhysics,
           shrinkWrap: shrinkWrap,
           primary: primary,
           itemCount: options.length,
-          separatorBuilder: (context, index) {
-            final isBeforeSelected = index == selectedIndex - 1;
-            final isAfterSelected = index == selectedIndex;
-            final shouldHavePadding = !isBeforeSelected && !isAfterSelected;
-
-            return divider ??
-                Divider(height: 1, color: context.colorScheme.outline)
-                    .padHorizontal(shouldHavePadding ? 16 : 0);
-          },
           itemBuilder: (context, index) {
             final option = options[index];
             final isSelected = _isSelected(option);
@@ -65,8 +53,7 @@ class MechanixSelect<T> extends StatelessWidget {
               option: option,
               options: options,
               isSelected: isSelected,
-              selectionColor:
-                  selectTheme.selectionColor ?? context.colorScheme.outline,
+              selectionColor: selectTheme.selectionColor ?? context.secondary,
               titleStyle:
                   selectTheme.titleStyle ?? context.textTheme.bodyMedium,
               selectedTitleStyle:
@@ -150,11 +137,10 @@ class _SelectItem<T> extends StatelessWidget {
               ),
               if (option.trailing != null) option.trailing!,
               if (isSelected && option.trailing == null)
-                Icon(
-                  trailingIcon,
-                  color: trailingIconColor,
-                  size: trailingIconSize,
-                ),
+                IconWidget.fromMechanix(
+                  iconPath: MechanixIconImages.circularCheck,
+                  iconColor: context.primary,
+                )
             ],
           ),
         ),

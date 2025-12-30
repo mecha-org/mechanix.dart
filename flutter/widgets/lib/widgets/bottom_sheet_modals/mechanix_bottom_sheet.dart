@@ -27,9 +27,6 @@ class MechanixBottomSheet extends StatelessWidget {
     final sheetTheme =
         MechanixBottomSheetTheme.of(context).merge(theme, context);
 
-    print('sheetTheme');
-    print(sheetTheme);
-
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -75,7 +72,7 @@ class _FolderTabClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     const double radius = 8; // Outer rounded corners
     const double tabH = 12; // Tab height
-    final double tabW = topTabWidth ?? 42; // Tab width
+    final double tabW = topTabWidth ?? 10; // Tab width
     const double tabSlope = 12; // Small sloped curve
     final double shift =
         topTabRightSideShiftLength ?? 450; // Shift tab right by this amount

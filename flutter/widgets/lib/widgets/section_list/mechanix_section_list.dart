@@ -11,10 +11,6 @@ class MechanixSectionList extends StatefulWidget {
     super.key,
     this.title,
     required this.sectionListItems,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     this.physics,
     this.controller,
     this.theme,
@@ -49,10 +45,6 @@ class MechanixSectionList extends StatefulWidget {
     super.key,
     this.title,
     required this.sectionListItems,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     this.physics,
     this.controller,
     this.theme,
@@ -86,10 +78,6 @@ class MechanixSectionList extends StatefulWidget {
   const MechanixSectionList.builder({
     super.key,
     this.title,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     required this.itemCount,
     required this.itemBuilder,
     this.physics,
@@ -124,10 +112,6 @@ class MechanixSectionList extends StatefulWidget {
   const MechanixSectionList.lazyBuilder({
     super.key,
     this.title,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     required this.itemCount,
     required this.itemBuilder,
     this.physics,
@@ -163,10 +147,6 @@ class MechanixSectionList extends StatefulWidget {
     super.key,
     this.title,
     required this.sectionListItems,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     this.itemBuilder,
     required this.separatorBuilder,
     this.physics,
@@ -201,10 +181,6 @@ class MechanixSectionList extends StatefulWidget {
     super.key,
     this.title,
     required this.sectionListItems,
-    this.onTap,
-    this.onTapUp,
-    this.onTapDown,
-    this.onDoubleTap,
     required this.itemBuilder,
     required this.separatorBuilder,
     this.physics,
@@ -239,14 +215,6 @@ class MechanixSectionList extends StatefulWidget {
   final int? itemCount;
 
   final List<SectionListItems> sectionListItems;
-
-  final GestureTapCallback? onTap;
-
-  final GestureTapUpCallback? onTapUp;
-
-  final GestureTapDownCallback? onTapDown;
-
-  final GestureTapCallback? onDoubleTap;
 
   final Widget? Function(BuildContext context, int index)? itemBuilder;
 
@@ -391,11 +359,14 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                     children: [
                       // if (item.leading != null) item.leading!.padRight(),
                       _buildLeadingWidget(context, item)!,
-                      Text(
-                        item.title,
-                        style: context.textTheme.labelMedium ??
-                            item.titleTextStyle,
-                      )
+
+                      item.titleWidget != null
+                          ? item.titleWidget!
+                          : Text(
+                              item.title,
+                              style: item.titleTextStyle ??
+                                  context.textTheme.labelMedium,
+                            ),
                     ],
                   ),
                   Row(
@@ -404,8 +375,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                       if (item.trailing != null) item.trailing!,
                       if (item.defaultTrailingIcon)
                         SizedBox(
-                          height: 20,
-                          width: 20,
+                          height: 24,
+                          width: 24,
                           child: FittedBox(
                             fit: BoxFit.none,
                             child: SizedBox(
