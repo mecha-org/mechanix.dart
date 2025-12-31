@@ -8,7 +8,7 @@ import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
 class MechanixSimpleList extends StatelessWidget {
   const MechanixSimpleList({
     super.key,
-    this.isDividerRequired = true,
+    this.isDividerRequired = false,
     this.divider,
     this.padding,
     this.physics,
@@ -39,7 +39,7 @@ class MechanixSimpleList extends StatelessWidget {
     this.prototypeItem,
     required this.itemCount,
     required this.itemBuilder,
-    this.isDividerRequired = true,
+    this.isDividerRequired = false,
     this.divider,
     this.padding,
     this.physics,

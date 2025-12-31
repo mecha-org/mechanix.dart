@@ -358,7 +358,8 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // if (item.leading != null) item.leading!.padRight(),
-                      _buildLeadingWidget(context, item)!,
+                      if (_buildLeadingWidget(context, item) != null)
+                        _buildLeadingWidget(context, item)!,
 
                       item.titleWidget != null
                           ? item.titleWidget!
