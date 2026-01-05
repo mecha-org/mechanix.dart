@@ -301,7 +301,7 @@ extension MechanixBottomSheetThemeDataExtensions
     return copyWith(
       decoration:
           other?.decoration ?? decoration.copyWith(color: context.tertiary),
-      width: other?.width ?? width,
+      padding: other?.padding ?? padding,
     );
   }
 }

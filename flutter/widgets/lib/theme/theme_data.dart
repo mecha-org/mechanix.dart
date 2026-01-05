@@ -75,23 +75,44 @@ ThemeData createTheme(
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.pressed)) {
-              return colorScheme.tertiary;
-            }
-            if (states.contains(WidgetState.hovered)) {
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.pressed)) {
+                return colorScheme.tertiary;
+              }
+              if (states.contains(WidgetState.hovered)) {
+                return Colors.transparent;
+              }
               return Colors.transparent;
-            }
-            return Colors.transparent;
-          }),
+            },
+          ),
           splashFactory: NoSplash.splashFactory,
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
+          padding: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.pressed)) {
+                return EdgeInsets.symmetric(vertical: 8, horizontal: 16);
+              }
+              return EdgeInsets.symmetric(vertical: 8, horizontal: 16);
+            },
+          ),
           foregroundColor: WidgetStateProperty.resolveWith(
             (states) {
+              if (states.contains(WidgetState.pressed)) {
+                return colorScheme.primary;
+              }
+              return colorScheme.onSurface;
+            },
+          ),
+          iconColor: WidgetStateProperty.resolveWith(
+            (states) {
+              if (states.contains(WidgetState.pressed)) {
+                return colorScheme.primary;
+              }
               return colorScheme.onSurface;
             },
           ),
