@@ -143,129 +143,55 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = MechanixTextInputTheme.of(context).merge(widget.theme);
+    final theme =
+        MechanixTextInputTheme.of(context).merge(context, widget.theme);
 
     if (widget.isSearchField) {
-      return Container(
-        padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
-        decoration: BoxDecoration(
-            color: context.secondary,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8), topRight: Radius.circular(8))),
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                autofocus: widget.autofocus,
-                canRequestFocus: widget.canRequestFocus,
-                focusNode: widget.focusNode,
-                controller: widget.textEditingController ?? _controller,
-                obscureText: widget.isPasswordField ? obscureText : false,
-                style: theme.textStyle,
-                cursorColor: widget.cursorColor,
-                decoration: _buildInputDecoration(context, theme),
-                onChanged: widget.onChanged,
-              ),
-            ),
-            if (widget.suffixIcon != null)
-              widget.suffixIcon!
-            else if (widget.isClearButtonRequired)
-              Container(
-                margin: const EdgeInsets.only(left: 5),
-                height: 40,
-                width: 40,
-                child: IconButton(
-                  onPressed: onClear,
-                  icon: IconWidget.fromMechanix(
-                    iconPath: MechanixIconImages.clearIcon,
-                    boxHeight: 24,
-                    boxWidth: 24,
-                    iconHeight: 16,
-                    iconWidth: 16,
-                    iconColor: context.onSurface,
-                  ),
-                ),
-              )
-            else if (widget.anchorWidgetIconPath != '')
-              SizedBox(
-                height: 40,
-                width: 40,
-                child: IconButton(
-                  onPressed: () {
-                    widget.onClear?.call();
-                  },
-                  icon: IconWidget(
-                    iconPath: widget.anchorWidgetIconPath,
-                    boxHeight: 24,
-                    boxWidth: 24,
-                    iconHeight: 16,
-                    iconWidth: 16,
-                    iconColor: context.onSurface,
-                  ),
-                ),
-              )
-            else if (widget.anchorWidget != null)
-              widget.anchorWidget!
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.label != null)
-          Text(
-            widget.label ?? '',
-            style: theme.labelTextStyle ??
-                context.textTheme.labelMedium
-                    ?.copyWith(color: context.onSurfaceVariant),
-          ).padBottom(8),
-        Container(
-          padding: EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
-          decoration: BoxDecoration(
-              color: context.secondary,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+      return Material(
+        child: Container(
+          padding: theme.widgetPadding,
+          decoration: theme.widgetDecoration,
           child: Row(
             children: [
               Expanded(
-                  child: widget.isFormField
-                      ? TextFormField(
-                          controller: _controller,
-                          focusNode: widget.focusNode,
-                          autofocus: widget.autofocus,
-                          canRequestFocus: widget.canRequestFocus,
-                          obscureText:
-                              widget.isPasswordField ? obscureText : false,
-                          style: theme.textStyle,
-                          cursorColor: widget.cursorColor,
-                          decoration: _buildInputDecoration(context, theme),
-                          onChanged: widget.onChanged,
-                          onFieldSubmitted: widget.onFieldSubmitted,
-                          validator: widget.validator,
-                        )
-                      : TextField(
-                          controller: _controller,
-                          focusNode: widget.focusNode,
-                          autofocus: widget.autofocus,
-                          cursorColor: widget.cursorColor,
-                          canRequestFocus: widget.canRequestFocus,
-                          obscureText:
-                              widget.isPasswordField ? obscureText : false,
-                          style: theme.textStyle,
-                          decoration: _buildInputDecoration(context, theme),
-                          onChanged: widget.onChanged,
-                        )),
-              // if (widget.suffixIcon != null) widget.suffixIcon!
-              if (widget.anchorWidgetIconPath != '')
+                child: TextField(
+                  autofocus: widget.autofocus,
+                  canRequestFocus: widget.canRequestFocus,
+                  focusNode: widget.focusNode,
+                  controller: widget.textEditingController ?? _controller,
+                  obscureText: widget.isPasswordField ? obscureText : false,
+                  style: theme.textStyle,
+                  cursorColor: widget.cursorColor,
+                  decoration: _buildInputDecoration(context, theme),
+                  onChanged: widget.onChanged,
+                ),
+              ),
+              if (widget.suffixIcon != null)
+                widget.suffixIcon!
+              else if (widget.isClearButtonRequired)
+                Container(
+                  margin: const EdgeInsets.only(left: 5),
+                  height: 40,
+                  width: 40,
+                  child: IconButton(
+                    onPressed: onClear,
+                    icon: IconWidget.fromMechanix(
+                      iconPath: MechanixIconImages.clearIcon,
+                      boxHeight: 24,
+                      boxWidth: 24,
+                      iconHeight: 16,
+                      iconWidth: 16,
+                      iconColor: context.onSurface,
+                    ),
+                  ),
+                )
+              else if (widget.anchorWidgetIconPath != '')
                 SizedBox(
                   height: 40,
                   width: 40,
                   child: IconButton(
                     onPressed: () {
                       widget.onClear?.call();
-                      widget.getCurrentValue?.call(_controller.text);
                     },
                     icon: IconWidget(
                       iconPath: widget.anchorWidgetIconPath,
@@ -278,23 +204,95 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   ),
                 )
               else if (widget.anchorWidget != null)
-                GestureDetector(
-                  onTap: () {
-                    widget.getCurrentValue?.call(_controller.text);
-                  },
-                  child: widget.anchorWidget!,
-                )
+                widget.anchorWidget!
             ],
           ),
         ),
-      ],
+      );
+    }
+
+    return Material(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.label != null)
+            Text(
+              widget.label ?? '',
+              style: theme.labelTextStyle ??
+                  context.textTheme.labelMedium
+                      ?.copyWith(color: context.onSurfaceVariant),
+            ).padBottom(8),
+          Container(
+            padding: theme.widgetPadding,
+            decoration: theme.widgetDecoration,
+            child: Row(
+              children: [
+                Expanded(
+                    child: widget.isFormField
+                        ? TextFormField(
+                            controller: _controller,
+                            focusNode: widget.focusNode,
+                            autofocus: widget.autofocus,
+                            canRequestFocus: widget.canRequestFocus,
+                            obscureText:
+                                widget.isPasswordField ? obscureText : false,
+                            style: theme.textStyle,
+                            cursorColor: widget.cursorColor,
+                            decoration: _buildInputDecoration(context, theme),
+                            onChanged: widget.onChanged,
+                            onFieldSubmitted: widget.onFieldSubmitted,
+                            validator: widget.validator,
+                          )
+                        : TextField(
+                            controller: _controller,
+                            focusNode: widget.focusNode,
+                            autofocus: widget.autofocus,
+                            cursorColor: widget.cursorColor,
+                            canRequestFocus: widget.canRequestFocus,
+                            obscureText:
+                                widget.isPasswordField ? obscureText : false,
+                            style: theme.textStyle,
+                            decoration: _buildInputDecoration(context, theme),
+                            onChanged: widget.onChanged,
+                          )),
+                if (widget.anchorWidgetIconPath != '')
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: IconButton(
+                      onPressed: () {
+                        widget.onClear?.call();
+                        widget.getCurrentValue?.call(_controller.text);
+                      },
+                      icon: IconWidget(
+                        iconPath: widget.anchorWidgetIconPath,
+                        boxHeight: 24,
+                        boxWidth: 24,
+                        iconHeight: 16,
+                        iconWidth: 16,
+                        iconColor: context.onSurface,
+                      ),
+                    ),
+                  )
+                else if (widget.anchorWidget != null)
+                  GestureDetector(
+                    onTap: () {
+                      widget.getCurrentValue?.call(_controller.text);
+                    },
+                    child: widget.anchorWidget!,
+                  )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   InputDecoration _buildInputDecoration(
       BuildContext context, MechanixTextInputThemeData theme) {
     final baseDecoration = InputDecoration(
-      fillColor: theme.fillColor ?? context.tertiary,
+      fillColor: theme.fillColor,
       filled: true,
       contentPadding: theme.contentPadding,
       hintText: widget.hintText,
@@ -311,7 +309,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                   color: context.onSurface,
                 ),
                 onPressed: togglePasswordVisibility,
-              )
+              ).padOnly(right: 16)
           : widget.isSearchField
               ? null
               : widget.suffixIcon,

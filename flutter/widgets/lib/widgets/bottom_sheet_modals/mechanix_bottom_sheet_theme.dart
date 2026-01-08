@@ -6,7 +6,7 @@ class MechanixBottomSheetThemeData
     extends ThemeExtension<MechanixBottomSheetThemeData> with Diagnosticable {
   const MechanixBottomSheetThemeData({
     this.decoration = const BoxDecoration(),
-    this.padding = const EdgeInsets.only(top: 30, left: 16, right: 18),
+    this.padding = EdgeInsets.zero,
   });
 
   final BoxDecoration decoration;

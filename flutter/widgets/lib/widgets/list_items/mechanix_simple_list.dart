@@ -5,7 +5,7 @@ import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/list_items/mechanix_simple_list_theme.dart';
 import 'package:widgets/widgets/list_items/simple_list_items_type.dart';
 
-class MechanixSimpleList extends StatelessWidget {
+class MechanixSimpleList extends StatefulWidget {
   const MechanixSimpleList({
     super.key,
     this.isDividerRequired = false,
@@ -140,11 +140,16 @@ class MechanixSimpleList extends StatelessWidget {
 
   final Widget? prototypeItem;
 
+  @override
+  State<MechanixSimpleList> createState() => _MechanixSimpleListState();
+}
+
+class _MechanixSimpleListState extends State<MechanixSimpleList> {
   Widget _buildDefaultSeparator(BuildContext context, int index) {
     final theme = MechanixSimpleListTheme.of(context);
 
-    if (divider != null) {
-      return divider!;
+    if (widget.divider != null) {
+      return widget.divider!;
     }
     return Divider(
       thickness: theme.dividerThickness,
@@ -161,75 +166,75 @@ class MechanixSimpleList extends StatelessWidget {
   }) {
     if (useSeparator) {
       return ListView.separated(
-        physics: physics,
-        itemCount: listItems.length,
-        itemBuilder: itemBuilder ??
+        physics: widget.physics,
+        itemCount: widget.listItems.length,
+        itemBuilder: widget.itemBuilder ??
             (context, index) =>
-                _buildListItem(context, listItems[index], theme, index),
-        separatorBuilder: separatorBuilder!,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-        cacheExtent: cacheExtent,
-        clipBehavior: clipBehavior,
-        dragStartBehavior: dragStartBehavior,
-        hitTestBehavior: hitTestBehavior,
-        keyboardDismissBehavior: keyboardDismissBehavior,
-        padding: padding,
-        primary: primary,
-        restorationId: restorationId,
-        reverse: reverse,
-        scrollDirection: scrollDirection,
-        findChildIndexCallback: findChildIndexCallback,
-        shrinkWrap: shrinkWrap,
+                _buildListItem(context, widget.listItems[index], theme, index),
+        separatorBuilder: widget.separatorBuilder!,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     } else if (themeRequiresDivider) {
       return ListView.separated(
-        physics: physics,
-        itemCount: itemCount ?? listItems.length,
-        itemBuilder: itemBuilder ??
+        physics: widget.physics,
+        itemCount: widget.itemCount ?? widget.listItems.length,
+        itemBuilder: widget.itemBuilder ??
             (context, index) =>
-                _buildListItem(context, listItems[index], theme, index),
+                _buildListItem(context, widget.listItems[index], theme, index),
         separatorBuilder: _buildDefaultSeparator,
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-        cacheExtent: cacheExtent,
-        clipBehavior: clipBehavior,
-        dragStartBehavior: dragStartBehavior,
-        hitTestBehavior: hitTestBehavior,
-        keyboardDismissBehavior: keyboardDismissBehavior,
-        padding: padding,
-        primary: primary,
-        restorationId: restorationId,
-        reverse: reverse,
-        scrollDirection: scrollDirection,
-        findChildIndexCallback: findChildIndexCallback,
-        shrinkWrap: shrinkWrap,
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
       );
     } else {
       return ListView.builder(
-        physics: physics,
-        itemCount: itemCount ?? listItems.length,
-        itemBuilder: itemBuilder ??
+        physics: widget.physics,
+        itemCount: widget.itemCount ?? widget.listItems.length,
+        itemBuilder: widget.itemBuilder ??
             (context, index) =>
-                _buildListItem(context, listItems[index], theme, index),
-        addAutomaticKeepAlives: addAutomaticKeepAlives,
-        addRepaintBoundaries: addRepaintBoundaries,
-        addSemanticIndexes: addSemanticIndexes,
-        cacheExtent: cacheExtent,
-        clipBehavior: clipBehavior,
-        dragStartBehavior: dragStartBehavior,
-        hitTestBehavior: hitTestBehavior,
-        keyboardDismissBehavior: keyboardDismissBehavior,
-        padding: padding,
-        primary: primary,
-        restorationId: restorationId,
-        reverse: reverse,
-        scrollDirection: scrollDirection,
-        findChildIndexCallback: findChildIndexCallback,
-        shrinkWrap: shrinkWrap,
-        prototypeItem: prototypeItem,
+                _buildListItem(context, widget.listItems[index], theme, index),
+        addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
+        addRepaintBoundaries: widget.addRepaintBoundaries,
+        addSemanticIndexes: widget.addSemanticIndexes,
+        cacheExtent: widget.cacheExtent,
+        clipBehavior: widget.clipBehavior,
+        dragStartBehavior: widget.dragStartBehavior,
+        hitTestBehavior: widget.hitTestBehavior,
+        keyboardDismissBehavior: widget.keyboardDismissBehavior,
+        padding: widget.padding,
+        primary: widget.primary,
+        restorationId: widget.restorationId,
+        reverse: widget.reverse,
+        scrollDirection: widget.scrollDirection,
+        findChildIndexCallback: widget.findChildIndexCallback,
+        shrinkWrap: widget.shrinkWrap,
+        prototypeItem: widget.prototypeItem,
       );
     }
   }
@@ -256,7 +261,7 @@ class MechanixSimpleList extends StatelessWidget {
                 borderRadius: itemTheme.itemRadius ??
                     (index == 0
                         ? CircularRadius.topAll(4)
-                        : index == (listItems.length - 1)
+                        : index == (widget.listItems.length - 1)
                             ? CircularRadius.bottomAll(4)
                             : BorderRadius.zero)),
             child: Center(
@@ -288,12 +293,13 @@ class MechanixSimpleList extends StatelessWidget {
     BuildContext context,
   ) {
     // final itemTheme = MechanixSimpleListTheme.of(context);
-    final itemTheme = MechanixSimpleListTheme.of(context).merge(context, theme);
-    final bool useSeparator = separatorBuilder != null;
-    final bool themeRequiresDivider = isDividerRequired && !useSeparator;
+    final itemTheme =
+        MechanixSimpleListTheme.of(context).merge(context, widget.theme);
+    final bool useSeparator = widget.separatorBuilder != null;
+    final bool themeRequiresDivider = widget.isDividerRequired && !useSeparator;
 
     return Padding(
-      padding: padding ?? EdgeInsets.zero,
+      padding: widget.padding ?? EdgeInsets.zero,
       child: Container(
         margin: itemTheme.widgetMargin,
         decoration: BoxDecoration(

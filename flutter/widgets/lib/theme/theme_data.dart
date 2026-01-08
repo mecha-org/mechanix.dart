@@ -23,7 +23,7 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.tertiary;
+              return colorScheme.surfaceContainerHigh;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
@@ -50,7 +50,7 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.tertiary;
+              return colorScheme.surfaceContainerHigh;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
@@ -78,12 +78,12 @@ ThemeData createTheme(
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) {
               if (states.contains(WidgetState.pressed)) {
-                return colorScheme.tertiary;
+                return colorScheme.surfaceContainerHigh;
               }
               if (states.contains(WidgetState.hovered)) {
-                return Colors.transparent;
+                return colorScheme.surfaceContainerHighest;
               }
-              return Colors.transparent;
+              return colorScheme.surfaceContainerHighest;
             },
           ),
           splashFactory: NoSplash.splashFactory,
@@ -123,7 +123,7 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.tertiary;
+              return colorScheme.surfaceContainerHigh;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
@@ -164,6 +164,10 @@ ThemeData createLightTheme(
     brightness: Brightness.light,
   );
 
+  final colorSetting = ColorSetting(accentColor: primaryColor);
+
+  final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.light);
+
   return createTheme(colorScheme: colorScheme);
 }
 
@@ -171,23 +175,20 @@ ThemeData createDarkTheme(
     {bool useMaterial3 = true, required Color primaryColor}) {
   final colorSetting = ColorSetting(accentColor: primaryColor);
 
-  final themeColors = colorSetting.getThemeColor();
+  final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.dark);
 
   final colorScheme = ColorScheme.dark(
     brightness: Brightness.dark,
-    primary: themeColors.accent_600,
-    onPrimary: themeColors.foreground_1200,
-    primaryFixed: themeColors.accent_700,
-    secondary: themeColors.background_400,
-    tertiary: themeColors.background_500,
-    tertiaryFixedDim: themeColors.background_600,
-    surface: themeColors.background_1200,
-    onSurface: themeColors.foreground_600,
-    onSurfaceVariant: themeColors.foreground_800,
-    // surfaceDim: themeColors.foreground_800,
-    surfaceContainerHigh: themeColors.foreground_900,
-    surfaceContainerLow: themeColors.background_300,
-    surfaceContainerLowest: themeColors.foreground_0,
+    primary: themeColors.accent_300,
+    secondary: themeColors.background_800,
+    secondaryContainer: themeColors.background_700,
+    surfaceContainerHighest: themeColors.background_500,
+    surfaceContainerHigh: themeColors.background_600,
+    surface: themeColors.background_1000,
+    onSurface: themeColors.foreground_200,
+    onSurfaceVariant: themeColors.foreground_1000,
+    outlineVariant: themeColors.background_0,
+    onInverseSurface: themeColors.foreground_600,
   );
 
   return createTheme(colorScheme: colorScheme);

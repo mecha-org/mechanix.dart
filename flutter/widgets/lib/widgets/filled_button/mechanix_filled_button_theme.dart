@@ -25,7 +25,6 @@ class MechanixFilledButtonThemeData
   @override
   MechanixFilledButtonThemeData copyWith({
     Size? buttonSize,
-    BoxDecoration? decoration,
     Text? labelText,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
