@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
-import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/bottom_sheet_modals/mechanix_bottom_sheet_theme.dart';
 
 class MechanixBottomSheet extends StatelessWidget {
@@ -41,9 +40,8 @@ class MechanixBottomSheet extends StatelessWidget {
                 topTabRightSideShiftLength: topTabRightSideShiftLength,
               ),
               child: Container(
-                // decoration: sheetTheme.decoration,
-                decoration: BoxDecoration(color: context.tertiary),
-                padding: EdgeInsets.only(top: 30, left: 16, right: 18),
+                decoration: sheetTheme.decoration,
+                padding: sheetTheme.padding,
                 child: child,
               ),
             ),

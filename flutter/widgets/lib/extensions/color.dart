@@ -45,6 +45,9 @@ extension ColorExtension on BuildContext {
 
   Color get surfaceContainer => Theme.of(this).colorScheme.surfaceContainer;
 
+  Color get surfaceContainerHighest =>
+      Theme.of(this).colorScheme.surfaceContainerHighest;
+
   Color get onSurfaceVariant => Theme.of(this).colorScheme.onSurfaceVariant;
 
   Color get error => Theme.of(this).colorScheme.error;
@@ -55,6 +58,15 @@ extension ColorExtension on BuildContext {
 
   Color get shadow => Theme.of(this).colorScheme.shadow;
 
+  Color get tertiaryContainer => Theme.of(this).colorScheme.tertiaryContainer;
+
+  Color get outlineVariant => Theme.of(this).colorScheme.outlineVariant;
+
+  Color get onInverseSurface => Theme.of(this).colorScheme.onInverseSurface;
+
   Color get surfaceContainerHigh =>
       Theme.of(this).colorScheme.surfaceContainerHigh;
+
+  Color get surfaceContainerLow =>
+      Theme.of(this).colorScheme.surfaceContainerLow;
 }

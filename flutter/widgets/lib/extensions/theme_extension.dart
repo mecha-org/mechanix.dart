@@ -35,7 +35,7 @@ extension MechanixSimpleListThemeDataExtensions on MechanixSimpleListThemeData {
       BuildContext context, MechanixSimpleListThemeData? other) {
     return copyWith(
       backgroundColor:
-          other?.backgroundColor ?? backgroundColor ?? context.tertiary,
+          other?.backgroundColor ?? backgroundColor ?? context.secondary,
       dividerColor: other?.dividerColor ?? dividerColor,
       widgetRadius: other?.widgetRadius ?? widgetRadius,
       dividerThickness: other?.dividerThickness ?? dividerThickness,
@@ -47,12 +47,13 @@ extension MechanixSimpleListThemeDataExtensions on MechanixSimpleListThemeData {
 }
 
 extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
-  MechanixTextInputThemeData merge(MechanixTextInputThemeData? other) {
+  MechanixTextInputThemeData merge(
+      BuildContext context, MechanixTextInputThemeData? other) {
     return copyWith(
       labelTextStyle: other?.labelTextStyle ?? labelTextStyle,
       textStyle: other?.textStyle ?? textStyle,
       hintTextStyle: other?.hintTextStyle ?? hintTextStyle,
-      fillColor: other?.fillColor ?? fillColor,
+      fillColor: other?.fillColor ?? fillColor ?? context.secondary,
       contentPadding: other?.contentPadding ?? contentPadding,
       borderRadius: other?.borderRadius ?? borderRadius,
       borderSide: other?.borderSide ?? borderSide,
@@ -61,6 +62,9 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       visibleTextIcon: other?.visibleTextIcon ?? visibleTextIcon,
       iconColor: other?.iconColor ?? iconColor,
       enabledBorderSide: other?.enabledBorderSide ?? enabledBorderSide,
+      widgetPadding: other?.widgetPadding ?? widgetPadding,
+      widgetDecoration: other?.widgetDecoration ??
+          widgetDecoration?.copyWith(color: context.surfaceContainerHighest),
     );
   }
 }
@@ -96,7 +100,7 @@ extension MechanixSectionListThemeDataExtensions
     return copyWith(
       backgroundColor: other?.backgroundColor ??
           backgroundColor ??
-          WidgetStateProperty.all(context.tertiary),
+          WidgetStateProperty.all(context.secondary),
       titleTextStyle: other?.titleTextStyle ??
           titleTextStyle?.copyWith(color: context.onSurfaceVariant),
       dividerThickness: other?.dividerThickness ?? dividerThickness,
@@ -257,8 +261,8 @@ extension MechanixBottomBarThemeDataExtensions on MechanixBottomBarThemeData {
   MechanixBottomBarThemeData merge(
       MechanixBottomBarThemeData? other, BuildContext context) {
     return copyWith(
-      decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      decoration: other?.decoration ??
+          decoration?.copyWith(color: context.secondaryContainer),
       height: other?.height ?? height,
       width: other?.width ?? width,
       iconColor: other?.iconColor ?? context.colorScheme.primaryFixed,
@@ -299,9 +303,9 @@ extension MechanixBottomSheetThemeDataExtensions
   MechanixBottomSheetThemeData merge(
       MechanixBottomSheetThemeData? other, BuildContext context) {
     return copyWith(
-      decoration:
-          other?.decoration ?? decoration.copyWith(color: context.tertiary),
-      width: other?.width ?? width,
+      decoration: other?.decoration ??
+          decoration.copyWith(color: context.surfaceContainerHigh),
+      padding: other?.padding ?? padding,
     );
   }
 }

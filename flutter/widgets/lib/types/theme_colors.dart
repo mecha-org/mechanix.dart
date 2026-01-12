@@ -13,8 +13,6 @@ class ThemeColors {
     required this.accent_800,
     required this.accent_900,
     required this.accent_1000,
-    required this.accent_1100,
-    required this.accent_1200,
     required this.background_0,
     required this.background_100,
     required this.background_200,
@@ -26,8 +24,6 @@ class ThemeColors {
     required this.background_800,
     required this.background_900,
     required this.background_1000,
-    required this.background_1100,
-    required this.background_1200,
     required this.foreground_0,
     required this.foreground_100,
     required this.foreground_200,
@@ -39,8 +35,6 @@ class ThemeColors {
     required this.foreground_800,
     required this.foreground_900,
     required this.foreground_1000,
-    required this.foreground_1100,
-    required this.foreground_1200,
   });
 
   final Color accent_0;
@@ -54,8 +48,6 @@ class ThemeColors {
   final Color accent_800;
   final Color accent_900;
   final Color accent_1000;
-  final Color accent_1100;
-  final Color accent_1200;
 
   final Color background_0;
   final Color background_100;
@@ -68,8 +60,6 @@ class ThemeColors {
   final Color background_800;
   final Color background_900;
   final Color background_1000;
-  final Color background_1100;
-  final Color background_1200;
 
   final Color foreground_0;
   final Color foreground_100;
@@ -82,6 +72,4 @@ class ThemeColors {
   final Color foreground_800;
   final Color foreground_900;
   final Color foreground_1000;
-  final Color foreground_1100;
-  final Color foreground_1200;
 }

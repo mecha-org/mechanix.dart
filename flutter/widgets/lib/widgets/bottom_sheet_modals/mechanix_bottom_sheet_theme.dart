@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,21 +5,21 @@ import 'package:flutter/material.dart';
 class MechanixBottomSheetThemeData
     extends ThemeExtension<MechanixBottomSheetThemeData> with Diagnosticable {
   const MechanixBottomSheetThemeData({
-    this.width = double.infinity,
     this.decoration = const BoxDecoration(),
+    this.padding = EdgeInsets.zero,
   });
 
-  final double? width;
   final BoxDecoration decoration;
+  final EdgeInsetsGeometry padding;
 
   @override
   MechanixBottomSheetThemeData copyWith({
-    double? width,
+    EdgeInsetsGeometry? padding,
     BoxDecoration? decoration,
   }) {
     return MechanixBottomSheetThemeData(
       decoration: decoration ?? this.decoration,
-      width: width ?? this.width,
+      padding: padding ?? this.padding,
     );
   }
 
@@ -32,7 +30,7 @@ class MechanixBottomSheetThemeData
     return MechanixBottomSheetThemeData(
       decoration:
           BoxDecoration.lerp(decoration, other.decoration, t) ?? decoration,
-      width: lerpDouble(width, other.width, t),
+      padding: EdgeInsetsGeometry.lerp(padding, other.padding, t) ?? padding,
     );
   }
 
@@ -40,7 +38,7 @@ class MechanixBottomSheetThemeData
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty('decoration', decoration));
-    properties.add(DoubleProperty('width', width));
+    properties.add(DiagnosticsProperty('padding', padding));
   }
 
   @override
@@ -48,12 +46,12 @@ class MechanixBottomSheetThemeData
     if (identical(this, other)) return true;
     return other is MechanixBottomSheetThemeData &&
         decoration == other.decoration &&
-        width == other.width;
+        padding == other.padding;
   }
 
   @override
   int get hashCode {
-    return Object.hash(decoration, width);
+    return Object.hash(decoration, padding);
   }
 }
 

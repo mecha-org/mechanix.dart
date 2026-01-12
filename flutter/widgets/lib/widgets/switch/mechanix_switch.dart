@@ -317,29 +317,32 @@ class _MechanixSwitchState extends State<MechanixSwitch>
           if (inactiveText != null && widget.value)
             Expanded(
               child: _buildTextWidget(
-                inactiveText,
-                _effectiveStyle.inactiveTextStyle ??
-                    context.textTheme.bodySmall!,
-                Alignment.centerLeft,
-              ),
+                  inactiveText,
+                  _effectiveStyle.inactiveTextStyle ??
+                      context.textTheme.bodySmall!,
+                  Alignment.centerLeft,
+                  EdgeInsets.only(left: 7)),
             ),
           if (activeText != null && !widget.value)
             Expanded(
               child: _buildTextWidget(
-                activeText,
-                _effectiveStyle.activeTextStyle ?? context.textTheme.bodySmall!,
-                Alignment.centerRight,
-              ),
+                  activeText,
+                  _effectiveStyle.activeTextStyle ??
+                      context.textTheme.bodySmall!,
+                  Alignment.centerRight,
+                  EdgeInsets.symmetric(horizontal: 11)),
             ),
         ],
       ),
     );
   }
 
-  Widget _buildTextWidget(String text, TextStyle style, Alignment alignment) {
+  Widget _buildTextWidget(String text, TextStyle style, Alignment alignment,
+      EdgeInsetsGeometry? padding) {
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: _effectiveStyle.trackPadding! * 2),
+      padding: _effectiveStyle.trackPadding != null
+          ? EdgeInsets.symmetric(horizontal: _effectiveStyle.trackPadding! * 2)
+          : padding,
       alignment: alignment,
       child: Text(
         text,
