@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oklch/oklch.dart';
 
 extension ColorExtension on BuildContext {
   Color get primary => Theme.of(this).colorScheme.primary;
@@ -69,4 +70,22 @@ extension ColorExtension on BuildContext {
 
   Color get surfaceContainerLow =>
       Theme.of(this).colorScheme.surfaceContainerLow;
+}
+
+extension OKLCHStringToColor on String {
+  Color toOKLCHStringToColor() {
+    // Remove "oklch(" and ")"
+    final content = substring(6, length - 1);
+
+    // Split by space and slash
+    final parts = content.split(' ');
+
+    // Extract values
+    final double l = double.parse(parts[0]) * 100;
+    final double c = double.parse(parts[1]);
+    final double h = double.parse(parts[2]);
+    final double a = double.parse(parts[4]) / 100;
+    print("${l} ${c} ${h} ${a}");
+    return OKLCHColor.fromOKLCH(l, c, h, a).color;
+  }
 }

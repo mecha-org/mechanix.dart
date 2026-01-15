@@ -1,8 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:widgets/constants.dart';
 import 'package:widgets/mechanix.dart';
-import 'package:widgets/theme/theme_data.dart';
-import 'package:collection/collection.dart';
 
 class MechanixTheme extends StatefulWidget {
   const MechanixTheme(
@@ -67,7 +67,8 @@ class _MechanixThemeState extends State<MechanixTheme> {
   ThemeData resolveTheme(MechanixThemeData data) {
     final dark = data.themeMode == ThemeMode.dark;
     final variant = data.mechanixVariant ?? MechanixVariant.blue;
-    return (dark ? variant.darkTheme : variant.theme).overrideWith(data);
+    return (dark ? variant.darkThemeFrom(data) : variant.themeFrom(data))
+        .overrideWith(data);
   }
 
   @override
@@ -89,12 +90,16 @@ class _MechanixThemeState extends State<MechanixTheme> {
 class MechanixThemeData with Diagnosticable {
   const MechanixThemeData({
     this.mechanixVariant,
-    this.themeMode=ThemeMode.dark,
+    this.mechanixBackgroundVariant,
+    this.mechanixForegroundVariant,
+    this.themeMode = ThemeMode.dark,
     this.extensions,
     this.useMaterial3,
   });
 
   final MechanixVariant? mechanixVariant;
+  final MechanixVariant? mechanixBackgroundVariant;
+  final MechanixVariant? mechanixForegroundVariant;
 
   final ThemeMode? themeMode;
 
@@ -102,20 +107,38 @@ class MechanixThemeData with Diagnosticable {
 
   final bool? useMaterial3;
 
-  ThemeData get lightTheme =>
-      (mechanixVariant?.theme ?? mechanixLightTheme).overrideWith(this);
+  Color get backgroundColor {
+    return mechanixBackgroundVariant?.color ?? defaultBackgroundColor;
+  }
 
-  ThemeData get darkTheme =>
-      (mechanixVariant?.darkTheme ?? mechanixDarkTheme).overrideWith(this);
+  Color get foregroundColor {
+    return mechanixForegroundVariant?.color ?? defaultForegroundColor;
+  }
+
+  ThemeData get lightTheme {
+    final variant = mechanixVariant ?? MechanixVariant.blue;
+    return variant.themeFrom(this).overrideWith(this);
+  }
+
+  ThemeData get darkTheme {
+    final variant = mechanixVariant ?? MechanixVariant.blue;
+    return variant.darkThemeFrom(this).overrideWith(this);
+  }
 
   MechanixThemeData copyWith({
     MechanixVariant? mechanixVariant,
+    MechanixVariant? mechanixBackgroundVariant,
+    MechanixVariant? mechanixForegroundVariant,
     ThemeMode? themeMode,
     Iterable<ThemeExtension<dynamic>>? extensions,
     bool? useMaterial3,
   }) {
     return MechanixThemeData(
       mechanixVariant: mechanixVariant ?? this.mechanixVariant,
+      mechanixBackgroundVariant:
+          mechanixBackgroundVariant ?? this.mechanixBackgroundVariant,
+      mechanixForegroundVariant:
+          mechanixForegroundVariant ?? this.mechanixForegroundVariant,
       themeMode: themeMode ?? this.themeMode,
       extensions: extensions ?? this.extensions,
       useMaterial3: useMaterial3 ?? this.useMaterial3,
@@ -128,6 +151,10 @@ class MechanixThemeData with Diagnosticable {
     properties.add(DiagnosticsProperty<MechanixVariant>(
         'mechanixVariant', mechanixVariant));
     properties.add(DiagnosticsProperty<ThemeMode>('themeMode', themeMode));
+    properties.add(DiagnosticsProperty<MechanixVariant>(
+        'mechanixBackgroundVariant', mechanixBackgroundVariant));
+    properties.add(DiagnosticsProperty<MechanixVariant>(
+        'mechanixForegroundVariant', mechanixForegroundVariant));
     properties.add(IterableProperty('extensions', extensions));
     properties.add(DiagnosticsProperty('useMaterial3', useMaterial3));
   }
@@ -138,6 +165,8 @@ class MechanixThemeData with Diagnosticable {
     final iterableEquals = const IterableEquality().equals;
     return other is MechanixThemeData &&
         other.mechanixVariant == mechanixVariant &&
+        other.mechanixBackgroundVariant == mechanixBackgroundVariant &&
+        other.mechanixForegroundVariant == mechanixForegroundVariant &&
         other.themeMode == themeMode &&
         iterableEquals(other.extensions, extensions) &&
         other.useMaterial3 == useMaterial3;
@@ -147,6 +176,8 @@ class MechanixThemeData with Diagnosticable {
   int get hashCode {
     return Object.hash(
       mechanixVariant,
+      mechanixBackgroundVariant,
+      mechanixForegroundVariant,
       themeMode,
       extensions,
       useMaterial3,

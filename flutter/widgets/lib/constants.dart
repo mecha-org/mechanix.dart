@@ -29,3 +29,7 @@ const mechanixBorderWidthXl = 5.0;
 const mechanixPrimaryColor = Colors.blue;
 
 const mechanixIconSize = 20.0;
+
+const defaultBackgroundColor = Color.fromRGBO(0, 0, 0, 1);
+
+const defaultForegroundColor = Color.fromRGBO(255, 255, 255, 1);
