@@ -157,37 +157,55 @@ ThemeData createTheme(
       ));
 }
 
-ThemeData createLightTheme(
-    {bool useMaterial3 = true, required Color primaryColor}) {
+ThemeData createLightTheme({
+  bool useMaterial3 = true,
+  required Color primaryColor,
+  Color? backgroundColor,
+  Color? foregroundColor,
+}) {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: primaryColor,
     brightness: Brightness.light,
   );
 
-  final colorSetting = ColorSetting(accentColor: primaryColor);
+  final colorSetting = ColorSetting(
+    accentColor: primaryColor,
+    background: backgroundColor ?? defaultBackgroundColor,
+    foreground: foregroundColor ?? defaultForegroundColor,
+  );
 
   final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.light);
 
   return createTheme(colorScheme: colorScheme);
 }
 
-ThemeData createDarkTheme(
-    {bool useMaterial3 = true, required Color primaryColor}) {
-  final colorSetting = ColorSetting(accentColor: primaryColor);
+ThemeData createDarkTheme({
+  bool useMaterial3 = true,
+  required Color primaryColor,
+  Color? backgroundColor,
+  Color? foregroundColor,
+}) {
+  final colorSetting = ColorSetting(
+    accentColor: primaryColor,
+    background: backgroundColor ?? defaultBackgroundColor,
+    foreground: foregroundColor ?? defaultForegroundColor,
+  );
 
   final themeColors = colorSetting.getThemeColor(themeMode: ThemeMode.dark);
 
   final colorScheme = ColorScheme.dark(
     brightness: Brightness.dark,
     primary: themeColors.accent_300,
+    primaryContainer: themeColors.accent_200,
     secondary: themeColors.background_800,
     secondaryContainer: themeColors.background_700,
     surfaceContainerHighest: themeColors.background_500,
     surfaceContainerHigh: themeColors.background_600,
     surface: themeColors.background_1000,
+    surfaceContainer: themeColors.background_400,
+    outlineVariant: themeColors.background_0,
     onSurface: themeColors.foreground_200,
     onSurfaceVariant: themeColors.foreground_1000,
-    outlineVariant: themeColors.background_0,
     onInverseSurface: themeColors.foreground_600,
   );
 
