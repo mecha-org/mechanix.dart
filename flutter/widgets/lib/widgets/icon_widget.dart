@@ -51,11 +51,15 @@ class IconWidget extends StatelessWidget {
     this.iconHeight = 24,
     this.iconWidth = 24,
     this.iconColor,
+    this.iconPath = '',
     this.activeIconColor,
     this.isActive = false,
-    required this.icon,
-  })  : iconPath = '',
-        isDefaultAccentColor = true,
+    this.icon,
+  })  : isDefaultAccentColor = true,
+        assert(
+          (icon != null && iconPath == '') || (icon == null && iconPath != ''),
+          'Exactly one of icon or iconPath must be provided, and both cannot be empty',
+        ),
         package = null;
 
   final double boxHeight;
