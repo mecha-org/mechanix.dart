@@ -13,6 +13,7 @@ class IconWidget extends StatelessWidget {
     this.isActive = false,
     required this.iconPath,
   })  : icon = null,
+        isDefaultAccentColor = false,
         package = null;
 
   const IconWidget.fromMechanix({
@@ -26,7 +27,8 @@ class IconWidget extends StatelessWidget {
     this.isActive = false,
     this.package = 'widgets',
     required this.iconPath,
-  }) : icon = null;
+  })  : isDefaultAccentColor = false,
+        icon = null;
 
   const IconWidget.fromIconData({
     super.key,
@@ -39,6 +41,21 @@ class IconWidget extends StatelessWidget {
     this.isActive = false,
     required this.icon,
   })  : iconPath = '',
+        isDefaultAccentColor = false,
+        package = null;
+
+  const IconWidget.withDefaultAccentColor({
+    super.key,
+    this.boxHeight = 24,
+    this.boxWidth = 24,
+    this.iconHeight = 24,
+    this.iconWidth = 24,
+    this.iconColor,
+    this.activeIconColor,
+    this.isActive = false,
+    required this.icon,
+  })  : iconPath = '',
+        isDefaultAccentColor = true,
         package = null;
 
   final double boxHeight;
@@ -51,6 +68,7 @@ class IconWidget extends StatelessWidget {
   final String? package;
   final Color? iconColor;
   final Color? activeIconColor;
+  final bool isDefaultAccentColor;
 
   IconWidget copyWith({
     double? boxHeight,
@@ -107,6 +125,9 @@ class IconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color =
+        isDefaultAccentColor ? iconColor ?? context.primary : context.onSurface;
+
     if (icon != null) {
       return SizedBox(
         height: boxHeight,
@@ -120,7 +141,9 @@ class IconWidget extends StatelessWidget {
               icon?.icon,
               color: isActive
                   ? activeIconColor ?? context.primary
-                  : iconColor ?? context.onSurface,
+                  : isDefaultAccentColor
+                      ? color
+                      : iconColor ?? context.onSurface,
             ),
           ),
         ),
@@ -140,14 +163,18 @@ class IconWidget extends StatelessWidget {
                   iconPath,
                   color: isActive
                       ? activeIconColor ?? context.primary
-                      : iconColor ?? context.onSurface,
+                      : isDefaultAccentColor
+                          ? color
+                          : iconColor ?? context.onSurface,
                   package: package,
                 )
               : Image.asset(
                   iconPath,
                   color: isActive
                       ? activeIconColor ?? context.primary
-                      : iconColor ?? context.onSurface,
+                      : isDefaultAccentColor
+                          ? color
+                          : iconColor ?? context.onSurface,
                 ),
         ),
       ),
