@@ -207,6 +207,8 @@ ThemeData createDarkTheme({
     outlineVariant: themeColors.background_0,
     onSurface: themeColors.foreground_200,
     onSurfaceVariant: themeColors.foreground_1000,
+    onSecondary: themeColors.foreground_500,
+    onSecondaryFixedVariant: themeColors.foreground_0,
     onInverseSurface: themeColors.foreground_600,
   );
 
