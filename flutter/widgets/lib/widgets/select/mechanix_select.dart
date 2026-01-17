@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/select/mechanix_select_theme.dart';
 import 'package:widgets/widgets/select/select_type.dart';
@@ -15,6 +16,7 @@ class MechanixSelect<T> extends StatelessWidget {
     this.shrinkWrap = true,
     this.primary = false,
     this.trailingIconSize = 20,
+    this.theme,
   });
 
   final List<SelectOption<T>> options;
@@ -26,12 +28,13 @@ class MechanixSelect<T> extends StatelessWidget {
   final bool shrinkWrap;
   final bool? primary;
   final double trailingIconSize;
+  final MechanixSelectThemeData? theme;
 
   bool _isSelected(SelectOption<T> option) => option.value == value;
 
   @override
   Widget build(BuildContext context) {
-    final selectTheme = MechanixSelectTheme.of(context);
+    final selectTheme = MechanixSelectTheme.of(context).merge(theme, context);
 
     return Material(
       elevation: selectTheme.elevation,

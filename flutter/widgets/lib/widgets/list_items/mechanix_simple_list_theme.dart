@@ -8,7 +8,7 @@ class MechanixSimpleListThemeData
     extends ThemeExtension<MechanixSimpleListThemeData> with Diagnosticable {
   const MechanixSimpleListThemeData({
     this.backgroundColor,
-    this.widgetRadius = const BorderRadius.all(Radius.circular(4)),
+    this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
     this.widgetMargin = const EdgeInsets.only(bottom: 40),
     this.itemRadius,
     this.dividerThickness = 1,

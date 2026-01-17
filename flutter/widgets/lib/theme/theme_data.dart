@@ -203,6 +203,7 @@ ThemeData createDarkTheme({
     surfaceContainerHigh: themeColors.background_600,
     surface: themeColors.background_1000,
     surfaceContainer: themeColors.background_400,
+    outline: themeColors.background_300,
     outlineVariant: themeColors.background_0,
     onSurface: themeColors.foreground_200,
     onSurfaceVariant: themeColors.foreground_1000,

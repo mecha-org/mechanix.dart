@@ -17,7 +17,7 @@ class MechanixSectionListThemeData
       this.titlePadding = const EdgeInsets.only(bottom: 8),
       this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
       this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
-      this.widgetRadius = const BorderRadius.all(Radius.circular(4)),
+      this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
       this.itemBorderRadius = BorderRadius.zero,
       this.height = 56});
 
