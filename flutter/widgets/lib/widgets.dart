@@ -23,7 +23,7 @@ export 'widgets/navigation_bar/mechanix_navigation_bar.dart';
 export 'widgets/notification/mechanix_notification.dart';
 export 'widgets/pressable_list/mechanix_pressable_list.dart';
 export 'widgets/section_list/mechanix_section_list.dart';
-export 'widgets/select/select.dart';
+export 'widgets/select/mechanix_select.dart';
 export 'widgets/slider/mechanix_slider.dart';
 export 'widgets/text_input/mechanix_text_input.dart';
 export 'widgets/theme/theme_toggle.dart';

@@ -11,6 +11,7 @@ import 'package:widgets/widgets/notification/mechanix_notification_theme.dart';
 import 'package:widgets/widgets/pressable_list/mechanix_pressable_list_theme.dart';
 import 'package:widgets/widgets/search_bar/mechanix_search_bar_theme.dart';
 import 'package:widgets/widgets/section_list/mechanix_section_list_theme.dart';
+import 'package:widgets/widgets/select/mechanix_select_theme.dart';
 import 'package:widgets/widgets/slider/mechanix_slider_theme.dart';
 import 'package:widgets/widgets/text_input/mechanix_text_input_theme.dart';
 import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
@@ -70,25 +71,28 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
 }
 
 extension MechanixSliderThemeDataExtensions on MechanixSliderThemeData {
-  MechanixSliderThemeData merge(MechanixSliderThemeData? other) {
-    if (other == null) return this;
-
+  MechanixSliderThemeData merge(
+      BuildContext context, MechanixSliderThemeData? other) {
     return copyWith(
-      height: other.height,
-      horizontalPadding: other.horizontalPadding,
-      activeColor: other.activeColor,
-      inactiveColor: other.inactiveColor,
-      barHeight: other.barHeight,
-      widgetRadius: other.widgetRadius,
-      iconColor: other.iconColor,
-      iconSize: other.iconSize,
-      boxWidth: other.boxWidth,
-      boxHeight: other.boxHeight,
-      iconLeftPadding: other.iconLeftPadding,
-      iconRightPadding: other.iconRightPadding,
-      dotColor: other.dotColor,
-      barBackgroundColor: other.barBackgroundColor,
-      containerColor: other.containerColor,
+      height: other?.height ?? height,
+      horizontalPadding: other?.horizontalPadding ?? horizontalPadding,
+      activeColor: other?.activeColor ?? activeColor ?? context.primary,
+      inactiveColor: other?.inactiveColor ??
+          inactiveColor ??
+          context.surfaceContainerHighest,
+      barHeight: other?.barHeight ?? barHeight,
+      widgetRadius: other?.widgetRadius ?? widgetRadius,
+      iconColor: other?.iconColor ?? iconColor,
+      iconSize: other?.iconSize ?? iconSize,
+      boxWidth: other?.boxWidth ?? boxWidth,
+      boxHeight: other?.boxHeight ?? boxHeight,
+      iconLeftPadding: other?.iconLeftPadding ?? iconLeftPadding,
+      iconRightPadding: other?.iconRightPadding ?? iconRightPadding,
+      dotColor: other?.dotColor ?? dotColor ?? context.primaryContainer,
+      barBackgroundColor:
+          other?.barBackgroundColor ?? barBackgroundColor ?? context.secondary,
+      widgetHeight: other?.widgetHeight ?? widgetHeight,
+      containerColor: other?.containerColor ?? containerColor,
     );
   }
 }
@@ -306,6 +310,24 @@ extension MechanixBottomSheetThemeDataExtensions
       decoration: other?.decoration ??
           decoration.copyWith(color: context.surfaceContainerHigh),
       padding: other?.padding ?? padding,
+    );
+  }
+}
+
+extension MechanixSelectThemeDataExtensions on MechanixSelectThemeData {
+  MechanixSelectThemeData merge(
+      MechanixSelectThemeData? other, BuildContext context) {
+    return copyWith(
+      backgroundColor: other?.backgroundColor ?? backgroundColor,
+      selectionColor:
+          other?.selectionColor ?? selectionColor ?? context.secondaryContainer,
+      titleStyle: other?.titleStyle ?? titleStyle,
+      selectedTitleStyle: other?.selectedTitleStyle ?? selectedTitleStyle,
+      leadingPadding: other?.leadingPadding ?? leadingPadding,
+      trailingIconColor: other?.trailingIconColor ?? trailingIconColor,
+      optionPadding: other?.optionPadding ?? optionPadding,
+      borderRadius: other?.borderRadius ?? borderRadius,
+      elevation: other?.elevation ?? elevation,
     );
   }
 }

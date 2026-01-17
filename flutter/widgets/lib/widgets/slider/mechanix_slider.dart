@@ -77,12 +77,13 @@ class _MechanixSliderState extends State<MechanixSlider> {
     final RenderBox box = context.findRenderObject() as RenderBox;
     final localPosition = box.globalToLocal(details.globalPosition);
 
-    // Adjust for icon width if present
-    final iconOffset = widget.leftIcon != null
-        ? theme.iconLeftPadding + theme.iconRightPadding + theme.boxWidth
-        : 0.0;
+    // Adjust for left padding and icon width if present
+    final leftOffset = 16.0 +
+        (widget.leftIcon != null
+            ? theme.iconLeftPadding + theme.iconRightPadding + theme.boxWidth
+            : 0.0);
 
-    _updateValue(localPosition.dx - iconOffset, containerWidth);
+    _updateValue(localPosition.dx - leftOffset, containerWidth);
   }
 
   void _handleDragEnd(DragEndDetails details) {
@@ -94,94 +95,93 @@ class _MechanixSliderState extends State<MechanixSlider> {
     required double containerWidth,
     required MechanixSliderThemeData theme,
   }) {
-    // Adjust for icon width if present
-    final iconOffset = widget.leftIcon != null
-        ? theme.iconLeftPadding + theme.iconRightPadding + theme.boxWidth
-        : 0.0;
+    // Adjust for left padding and icon width if present
+    final leftOffset = 16.0 +
+        (widget.leftIcon != null
+            ? theme.iconLeftPadding + theme.iconRightPadding + theme.boxWidth
+            : 0.0);
 
-    _updateValue(details.localPosition.dx - iconOffset, containerWidth);
+    _updateValue(details.localPosition.dx - leftOffset, containerWidth);
     widget.onChangeEnd?.call(_currentValue);
   }
 
-  // DOT PATTERN SLIDER
+  // DOT PATTERN SLIDER - Activates whole columns
   Widget _buildDotPatternSlider({
     required double containerWidth,
     required MechanixSliderThemeData theme,
   }) {
-    return SizedBox(
-      height: theme.height,
-      width: containerWidth,
-      child: Stack(
-        children: [
-          // Background track
-          Container(
-            decoration: BoxDecoration(
-              // color: theme.inactiveColor,
-              borderRadius: theme.widgetRadius,
-            ),
-          ),
-
-          // Dot pattern
-          _buildDotPattern(containerWidth),
-
-          // Active track
-          Container(
-            width: containerWidth * _currentValue,
-            decoration: BoxDecoration(
-              color: theme.activeColor,
-              borderRadius: theme.widgetRadius,
-            ),
-          ),
-        ],
-      ).padVertical(6),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        borderRadius: theme.widgetRadius,
+      ),
+      child: _buildDotColumns(containerWidth: containerWidth, theme: theme),
     );
   }
 
-  Widget _buildDotPattern(double containerWidth) {
-    const double dotRadius = 1.0;
-    const double dotSpacing = 12.0;
+  Widget _buildDotColumns({
+    required double containerWidth,
+    required MechanixSliderThemeData theme,
+  }) {
+    if (!widget.showBars) return const SizedBox.shrink();
+
+    const double dotRadius = 1.5;
+    const double dotSpacing = 6.0;
+    const int rows = 8;
 
     final dotDiameter = dotRadius * 2;
-    final dotsPerRow =
+    final columns =
         ((containerWidth - dotSpacing) / (dotDiameter + dotSpacing)).floor();
-    final rows = 4;
 
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: dotsPerRow,
-        mainAxisSpacing: dotSpacing,
-        crossAxisSpacing: dotSpacing,
-        childAspectRatio: 1.0,
-      ),
-      itemCount: dotsPerRow * rows,
-      itemBuilder: (context, index) {
-        return Container(
-          width: dotDiameter,
-          height: dotDiameter,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFF5A5A5A),
+    // Calculate active columns based on current value
+    final activeColumns = (_currentValue * columns).round();
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(columns, (colIndex) {
+        final isActiveColumn = colIndex < activeColumns;
+
+        return Padding(
+          padding:
+              EdgeInsets.only(right: colIndex < columns - 1 ? dotSpacing : 0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(rows, (rowIndex) {
+              return Container(
+                width: dotDiameter,
+                height: dotDiameter,
+                margin: EdgeInsets.only(
+                    bottom: rowIndex < rows - 1 ? dotSpacing : 0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:
+                      isActiveColumn ? theme.activeColor : theme.inactiveColor,
+                ),
+              );
+            }),
           ),
         );
-      },
+      }),
     );
   }
 
   // BAR SLIDER
-  Widget _buildBarSlider(
-      {required double containerWidth,
-      required MechanixSliderThemeData theme}) {
+  Widget _buildBarSlider({
+    required double containerWidth,
+    required MechanixSliderThemeData theme,
+  }) {
     if (!widget.showBars) return const SizedBox.shrink();
 
-    const double barWidth = 4.0;
-    const double barSpacing = 3.0;
+    const double barWidth = 2.0;
+    const double barSpacing = 5.0;
 
     final totalBars = ((containerWidth) / (barWidth + barSpacing)).floor();
     final activeBars = (_currentValue * totalBars).round();
 
-    return SizedBox(
-      width: containerWidth,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: theme.widgetRadius,
+      ),
       child: Wrap(
         spacing: barSpacing,
         children: List.generate(totalBars, (index) {
@@ -191,6 +191,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
             height: theme.barHeight,
             decoration: BoxDecoration(
               color: isActive ? theme.activeColor : theme.inactiveColor,
+              borderRadius: BorderRadius.circular(2),
             ),
           );
         }),
@@ -216,30 +217,13 @@ class _MechanixSliderState extends State<MechanixSlider> {
                 left: theme.iconLeftPadding, right: theme.iconRightPadding),
             child: widget.leftIcon,
           ),
-        // SizedBox(
-        //   height: theme.boxHeight,
-        //   width: theme.boxWidth,
-        //   child: Icon(
-        //     widget.leftIcon,
-        //     size: theme.iconSize,
-        //     color: theme.iconColor ?? theme.activeColor,
-        //   ),
-        // ).padOnly(left: theme.iconLeftPadding, right: theme.iconRightPadding),
 
         // Slider
         Expanded(
           child: widget.isDotSlider
               ? _buildDotPatternSlider(
                   containerWidth: sliderWidth, theme: theme)
-              : Container(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2B2B2B),
-                    borderRadius: theme.widgetRadius,
-                  ),
-                  child: _buildBarSlider(
-                      containerWidth: sliderWidth, theme: theme),
-                ),
+              : _buildBarSlider(containerWidth: sliderWidth, theme: theme),
         ),
       ],
     );
@@ -247,12 +231,11 @@ class _MechanixSliderState extends State<MechanixSlider> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = MechanixSliderTheme.of(context).merge(widget.theme);
+    final theme = MechanixSliderTheme.of(context).merge(context, widget.theme);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final availableWidth =
-            constraints.maxWidth - (theme.horizontalPadding * 2);
+        final availableWidth = constraints.maxWidth - 24.0;
 
         return GestureDetector(
           onPanUpdate: (details) {
@@ -277,8 +260,13 @@ class _MechanixSliderState extends State<MechanixSlider> {
                 details: details, containerWidth: sliderWidth, theme: theme);
           },
           child: Container(
-            color: context.colorScheme.secondary,
-            padding: EdgeInsets.symmetric(horizontal: theme.horizontalPadding),
+            height: theme.widgetHeight,
+            decoration: BoxDecoration(
+              color: context.colorScheme.secondary,
+              borderRadius: theme.widgetRadius,
+            ),
+            padding:
+                const EdgeInsets.only(left: 16, top: 11, right: 8, bottom: 11),
             child: _buildSliderWithIcon(
                 availableWidth: availableWidth, theme: theme),
           ),

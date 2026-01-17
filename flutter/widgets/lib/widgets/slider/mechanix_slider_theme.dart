@@ -9,35 +9,39 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
   const MechanixSliderThemeData({
     this.height = 60.0,
     this.horizontalPadding = 16.0,
-    this.activeColor = const Color(0xFF3283E8),
-    this.inactiveColor = const Color(0xFF404040),
-    this.barHeight = 56.0,
-    this.widgetRadius = const BorderRadius.all(Radius.circular(0)),
+    this.activeColor,
+    this.inactiveColor,
+    this.barHeight = 66.0,
+    this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
+    this.widgetHeight = 88,
     this.iconColor,
     this.iconSize = 24.0,
     this.boxWidth = 30.0,
     this.boxHeight = 30.0,
+    this.iconPadding = const EdgeInsets.only(top: 13, right: 15, bottom: 13),
     this.iconLeftPadding = 4.0,
     this.iconRightPadding = 20.0,
-    this.dotColor = const Color(0xFF5A5A5A),
-    this.barBackgroundColor = const Color(0xFF2B2B2B),
+    this.dotColor,
+    this.barBackgroundColor,
     this.containerColor,
   });
 
   final double height;
   final double horizontalPadding;
-  final Color activeColor;
-  final Color inactiveColor;
+  final Color? activeColor;
+  final Color? inactiveColor;
   final double barHeight;
   final BorderRadius widgetRadius;
   final Color? iconColor;
   final double iconSize;
   final double boxWidth;
   final double boxHeight;
+  final double widgetHeight;
+  final EdgeInsets iconPadding;
   final double iconLeftPadding;
   final double iconRightPadding;
-  final Color dotColor;
-  final Color barBackgroundColor;
+  final Color? dotColor;
+  final Color? barBackgroundColor;
   final Color? containerColor;
 
   @override
@@ -53,6 +57,8 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
     double? iconSize,
     double? boxWidth,
     double? boxHeight,
+    double? widgetHeight,
+    EdgeInsets? iconPadding,
     double? iconLeftPadding,
     double? iconRightPadding,
     Color? dotColor,
@@ -70,8 +76,10 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
       iconSize: iconSize ?? this.iconSize,
       boxWidth: boxWidth ?? this.boxWidth,
       boxHeight: boxHeight ?? this.boxHeight,
+      iconPadding: iconPadding ?? this.iconPadding,
       iconLeftPadding: iconLeftPadding ?? this.iconLeftPadding,
       iconRightPadding: iconRightPadding ?? this.iconRightPadding,
+      widgetHeight: widgetHeight ?? this.widgetHeight,
       dotColor: dotColor ?? this.dotColor,
       barBackgroundColor: barBackgroundColor ?? this.barBackgroundColor,
       containerColor: containerColor ?? this.containerColor,
@@ -97,11 +105,15 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
       iconSize: lerpDouble(iconSize, o?.iconSize, t) ?? iconSize,
       boxWidth: lerpDouble(boxWidth, o?.boxWidth, t) ?? boxWidth,
       boxHeight: lerpDouble(boxHeight, o?.boxHeight, t) ?? boxHeight,
+      iconPadding:
+          EdgeInsets.lerp(iconPadding, o?.iconPadding, t) ?? iconPadding,
       iconLeftPadding:
           lerpDouble(iconLeftPadding, o?.iconLeftPadding, t) ?? iconLeftPadding,
       iconRightPadding: lerpDouble(iconRightPadding, o?.iconRightPadding, t) ??
           iconRightPadding,
       dotColor: Color.lerp(dotColor, o?.dotColor, t) ?? dotColor,
+      widgetHeight:
+          lerpDouble(widgetHeight, o?.widgetHeight, t) ?? widgetHeight,
       barBackgroundColor:
           Color.lerp(barBackgroundColor, o?.barBackgroundColor, t) ??
               barBackgroundColor,
@@ -123,11 +135,13 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
     properties.add(DiagnosticsProperty('iconSize', iconSize));
     properties.add(DiagnosticsProperty('boxWidth', boxWidth));
     properties.add(DiagnosticsProperty('boxHeight', boxHeight));
+    properties.add(DiagnosticsProperty('iconPadding', iconPadding));
     properties.add(DiagnosticsProperty('iconLeftPadding', iconLeftPadding));
     properties.add(DiagnosticsProperty('iconRightPadding', iconRightPadding));
     properties.add(DiagnosticsProperty('dotColor', dotColor));
     properties
         .add(DiagnosticsProperty('barBackgroundColor', barBackgroundColor));
+    properties.add(DiagnosticsProperty('widgetHeight', widgetHeight));
     properties.add(DiagnosticsProperty('containerColor', containerColor));
   }
 
@@ -145,9 +159,11 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
         iconSize == other.iconSize &&
         boxWidth == other.boxWidth &&
         boxHeight == other.boxHeight &&
+        iconPadding == other.iconPadding &&
         iconLeftPadding == other.iconLeftPadding &&
         iconRightPadding == other.iconRightPadding &&
         dotColor == other.dotColor &&
+        widgetHeight == other.widgetHeight &&
         barBackgroundColor == other.barBackgroundColor &&
         containerColor == other.containerColor;
   }
@@ -165,9 +181,11 @@ class MechanixSliderThemeData extends ThemeExtension<MechanixSliderThemeData>
       iconSize,
       boxWidth,
       boxHeight,
+      iconPadding,
       iconLeftPadding,
       iconRightPadding,
       dotColor,
+      widgetHeight,
       barBackgroundColor,
       containerColor,
     );
