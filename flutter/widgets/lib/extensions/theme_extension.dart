@@ -204,7 +204,7 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
       itemHeight: other?.itemHeight ?? itemHeight,
       disabledTextStyle: other?.disabledTextStyle ??
-          disabledTextStyle?.copyWith(color: context.surfaceContainerHigh),
+          disabledTextStyle?.copyWith(color: context.onSurfaceVariant),
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
       margin: other?.margin ?? margin,
       transform: other?.transform ?? transform,
