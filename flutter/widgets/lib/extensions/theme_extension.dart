@@ -212,8 +212,8 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       alignment: other?.alignment ?? alignment,
       foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
       padding: other?.padding ?? padding,
-      decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      decoration: other?.decoration ??
+          decoration?.copyWith(color: context.surfaceContainerHigh),
       disabledBackgroundColor:
           other?.disabledBackgroundColor ?? disabledBackgroundColor,
       activeButtonDecoration: other?.activeButtonDecoration ??
@@ -284,7 +284,8 @@ extension MechanixFilledButtonThemeDataExtensions
       labelText: other?.labelText ?? labelText,
       textStyle: other?.textStyle ?? textStyle,
       padding: other?.padding ?? padding,
-      buttonColor: other?.buttonColor ?? buttonColor ?? context.secondary,
+      buttonColor:
+          other?.buttonColor ?? buttonColor ?? context.surfaceContainer,
       pressedButtonColor:
           other?.pressedButtonColor ?? pressedButtonColor ?? context.tertiary,
     );
@@ -308,7 +309,7 @@ extension MechanixBottomSheetThemeDataExtensions
       MechanixBottomSheetThemeData? other, BuildContext context) {
     return copyWith(
       decoration: other?.decoration ??
-          decoration.copyWith(color: context.surfaceContainerHigh),
+          decoration?.copyWith(color: context.surfaceContainerHigh),
       padding: other?.padding ?? padding,
     );
   }
