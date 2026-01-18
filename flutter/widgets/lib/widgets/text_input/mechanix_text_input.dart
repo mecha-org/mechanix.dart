@@ -326,17 +326,17 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
         borderSide: theme.focusedBorderSide ??
-            context.borderSideXs.copyWith(color: context.outlineVariant),
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       border: OutlineInputBorder(
         borderRadius: theme.borderRadius,
         borderSide: theme.borderSide ??
-            context.borderSideXs.copyWith(color: context.outline),
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
         borderSide: theme.enabledBorderSide ??
-            context.borderSideXs.copyWith(color: context.outline),
+            context.borderSideXs.copyWith(color: Colors.transparent),
       ),
     );
 

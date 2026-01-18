@@ -54,7 +54,7 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       labelTextStyle: other?.labelTextStyle ?? labelTextStyle,
       textStyle: other?.textStyle ?? textStyle,
       hintTextStyle: other?.hintTextStyle ?? hintTextStyle,
-      fillColor: other?.fillColor ?? fillColor ?? context.secondary,
+      fillColor: other?.fillColor ?? fillColor ?? context.secondaryContainer,
       contentPadding: other?.contentPadding ?? contentPadding,
       borderRadius: other?.borderRadius ?? borderRadius,
       borderSide: other?.borderSide ?? borderSide,
@@ -65,7 +65,7 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       enabledBorderSide: other?.enabledBorderSide ?? enabledBorderSide,
       widgetPadding: other?.widgetPadding ?? widgetPadding,
       widgetDecoration: other?.widgetDecoration ??
-          widgetDecoration?.copyWith(color: context.surfaceContainerHighest),
+          widgetDecoration?.copyWith(color: context.surfaceContainerHigh),
     );
   }
 }
