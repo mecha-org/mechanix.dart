@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 class MechanixBottomSheetThemeData
     extends ThemeExtension<MechanixBottomSheetThemeData> with Diagnosticable {
   const MechanixBottomSheetThemeData({
-    this.decoration = const BoxDecoration(),
+    this.decoration,
     this.padding = EdgeInsets.zero,
   });
 
-  final BoxDecoration decoration;
+  final BoxDecoration? decoration;
   final EdgeInsetsGeometry padding;
 
   @override

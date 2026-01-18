@@ -80,7 +80,7 @@ class MechanixFilledButton extends StatelessWidget {
                   return buttonTheme.pressedButtonColor ?? context.tertiary;
                 }
 
-                return buttonTheme.buttonColor ?? context.secondary;
+                return buttonTheme.buttonColor ?? context.surfaceContainer;
               },
             ),
             minimumSize: WidgetStateProperty.all(buttonTheme.buttonSize),
