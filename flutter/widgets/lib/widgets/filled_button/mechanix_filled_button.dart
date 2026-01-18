@@ -96,7 +96,7 @@ class MechanixFilledButton extends StatelessWidget {
       child: labelText ??
           Text(
             label,
-            style: context.textTheme.bodySmall,
+            style: buttonTheme.textStyle ?? context.textTheme.bodySmall,
           ).padOnly(top: 9, bottom: 9),
     );
   }
