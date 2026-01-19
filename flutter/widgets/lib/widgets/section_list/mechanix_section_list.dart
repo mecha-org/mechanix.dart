@@ -361,14 +361,13 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
                       if (_buildLeadingWidget(context, item) != null)
                         _buildLeadingWidget(context, item)!,
 
-                      item.titleText ??
-                          (item.titleWidget != null
-                              ? item.titleWidget!
-                              : Text(
-                                  item.title,
-                                  style: item.titleTextStyle ??
-                                      context.textTheme.labelMedium,
-                                )),
+                      item.titleWidget != null
+                          ? item.titleWidget!
+                          : Text(
+                              item.title,
+                              style: item.titleTextStyle ??
+                                  context.textTheme.labelMedium,
+                            ),
                     ],
                   ),
                   Row(

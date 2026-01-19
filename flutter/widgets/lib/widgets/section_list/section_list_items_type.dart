@@ -15,6 +15,7 @@ class SectionListItems {
     this.backgroundColor,
     this.disabled = false,
     this.titleWidget,
+    this.height,
   })  : iconContainerSize = const Size(24, 24),
         iconSize = const Size(18, 18),
         activeIconColor = null,
@@ -39,6 +40,7 @@ class SectionListItems {
     this.isActive = false,
     this.iconColor,
     this.titleWidget,
+    this.height,
     required this.iconPath,
   }) : leading = null;
 
@@ -60,9 +62,10 @@ class SectionListItems {
   final Color? activeIconColor;
   final Color? iconColor;
   final bool isActive;
+  final double? height;
 
   Widget? buildLeadingIcon(BuildContext context) {
-    if (iconPath != '') {
+    if (iconPath.isNotEmpty) {
       return IconWidget(
         activeIconColor: activeIconColor,
         isActive: isActive,
@@ -74,7 +77,6 @@ class SectionListItems {
         iconPath: iconPath,
       ).padRight();
     }
-
     return null;
   }
 }
