@@ -18,15 +18,18 @@ import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
 
 extension MechanixWheelScrollThemeDataExtensions
     on MechanixWheelScrollThemeData {
-  MechanixWheelScrollThemeData merge(MechanixWheelScrollThemeData? other) {
-    if (other == null) return this;
-
+  MechanixWheelScrollThemeData merge(
+      BuildContext context, MechanixWheelScrollThemeData? other) {
     return copyWith(
-      selectionPadding: other.selectionPadding,
-      selectedTextStyle: other.selectedTextStyle,
-      notSelectedTextStyle: other.notSelectedTextStyle,
-      selectionColor: other.selectionColor,
-      selectionBorderRadius: other.selectionBorderRadius,
+      selectionTextColor:
+          other?.selectionTextColor ?? selectionTextColor ?? context.onSurface,
+      selectionPadding: other?.selectionPadding ?? selectionPadding,
+      selectedTextStyle: other?.selectedTextStyle ?? selectedTextStyle,
+      notSelectedTextStyle: other?.notSelectedTextStyle ??
+          notSelectedTextStyle?.copyWith(color: context.onSurfaceVariant),
+      selectionColor: other?.selectionColor ?? selectionColor,
+      selectionBorderRadius:
+          other?.selectionBorderRadius ?? selectionBorderRadius,
     );
   }
 }
@@ -309,7 +312,7 @@ extension MechanixBottomSheetThemeDataExtensions
       MechanixBottomSheetThemeData? other, BuildContext context) {
     return copyWith(
       decoration: other?.decoration ??
-          decoration?.copyWith(color: context.surfaceContainerHigh),
+          decoration.copyWith(color: context.surfaceContainerHigh),
       padding: other?.padding ?? padding,
     );
   }

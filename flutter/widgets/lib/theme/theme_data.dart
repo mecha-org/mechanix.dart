@@ -198,6 +198,7 @@ ThemeData createDarkTheme({
     // ACCENT
     primary: themeColors.accent_300,
     primaryContainer: themeColors.accent_200,
+    primaryFixed: themeColors.accent_500,
     // BACKGROUND
     secondary: themeColors.background_800,
     secondaryContainer: themeColors.background_700,
@@ -214,6 +215,7 @@ ThemeData createDarkTheme({
     onSecondaryFixedVariant: themeColors.foreground_0,
     onSecondaryFixed: themeColors.foreground_800,
     onTertiaryFixedVariant: themeColors.foreground_100,
+    onSecondaryContainer: themeColors.foreground_300,
     onInverseSurface: themeColors.foreground_600,
   );
 
