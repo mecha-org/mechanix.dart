@@ -18,15 +18,18 @@ import 'package:widgets/widgets/wheel_scroll/mechanix_wheel_scroll_theme.dart';
 
 extension MechanixWheelScrollThemeDataExtensions
     on MechanixWheelScrollThemeData {
-  MechanixWheelScrollThemeData merge(MechanixWheelScrollThemeData? other) {
-    if (other == null) return this;
-
+  MechanixWheelScrollThemeData merge(
+      BuildContext context, MechanixWheelScrollThemeData? other) {
     return copyWith(
-      selectionPadding: other.selectionPadding,
-      selectedTextStyle: other.selectedTextStyle,
-      notSelectedTextStyle: other.notSelectedTextStyle,
-      selectionColor: other.selectionColor,
-      selectionBorderRadius: other.selectionBorderRadius,
+      selectionTextColor:
+          other?.selectionTextColor ?? selectionTextColor ?? context.onSurface,
+      selectionPadding: other?.selectionPadding ?? selectionPadding,
+      selectedTextStyle: other?.selectedTextStyle ?? selectedTextStyle,
+      notSelectedTextStyle: other?.notSelectedTextStyle ??
+          notSelectedTextStyle?.copyWith(color: context.onSurfaceVariant),
+      selectionColor: other?.selectionColor ?? selectionColor,
+      selectionBorderRadius:
+          other?.selectionBorderRadius ?? selectionBorderRadius,
     );
   }
 }
@@ -54,7 +57,7 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       labelTextStyle: other?.labelTextStyle ?? labelTextStyle,
       textStyle: other?.textStyle ?? textStyle,
       hintTextStyle: other?.hintTextStyle ?? hintTextStyle,
-      fillColor: other?.fillColor ?? fillColor ?? context.secondary,
+      fillColor: other?.fillColor ?? fillColor ?? context.secondaryContainer,
       contentPadding: other?.contentPadding ?? contentPadding,
       borderRadius: other?.borderRadius ?? borderRadius,
       borderSide: other?.borderSide ?? borderSide,
@@ -65,7 +68,7 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       enabledBorderSide: other?.enabledBorderSide ?? enabledBorderSide,
       widgetPadding: other?.widgetPadding ?? widgetPadding,
       widgetDecoration: other?.widgetDecoration ??
-          widgetDecoration?.copyWith(color: context.surfaceContainerHighest),
+          widgetDecoration?.copyWith(color: context.surfaceContainerHigh),
     );
   }
 }
@@ -204,7 +207,7 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       itemBorderRadius: other?.itemBorderRadius ?? itemBorderRadius,
       itemHeight: other?.itemHeight ?? itemHeight,
       disabledTextStyle: other?.disabledTextStyle ??
-          disabledTextStyle?.copyWith(color: context.surfaceContainerHigh),
+          disabledTextStyle?.copyWith(color: context.onSurfaceVariant),
       titleTextStyle: other?.titleTextStyle ?? titleTextStyle,
       margin: other?.margin ?? margin,
       transform: other?.transform ?? transform,
@@ -212,8 +215,8 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
       alignment: other?.alignment ?? alignment,
       foregroundDecoration: other?.foregroundDecoration ?? foregroundDecoration,
       padding: other?.padding ?? padding,
-      decoration:
-          other?.decoration ?? decoration?.copyWith(color: context.secondary),
+      decoration: other?.decoration ??
+          decoration?.copyWith(color: context.surfaceContainerHigh),
       disabledBackgroundColor:
           other?.disabledBackgroundColor ?? disabledBackgroundColor,
       activeButtonDecoration: other?.activeButtonDecoration ??
@@ -284,7 +287,8 @@ extension MechanixFilledButtonThemeDataExtensions
       labelText: other?.labelText ?? labelText,
       textStyle: other?.textStyle ?? textStyle,
       padding: other?.padding ?? padding,
-      buttonColor: other?.buttonColor ?? buttonColor ?? context.secondary,
+      buttonColor:
+          other?.buttonColor ?? buttonColor ?? context.surfaceContainer,
       pressedButtonColor:
           other?.pressedButtonColor ?? pressedButtonColor ?? context.tertiary,
     );

@@ -348,7 +348,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
           onTapDown: isDisabled ? null : item.onTapDown,
           onDoubleTap: isDisabled ? null : item.onDoubleTap,
           child: Container(
-            height: listTheme.height,
+            height: item.height ?? listTheme.height,
             padding: listTheme.itemPadding,
             child: Center(
               child: Row(

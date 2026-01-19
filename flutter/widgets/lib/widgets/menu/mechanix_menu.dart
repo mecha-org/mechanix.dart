@@ -861,7 +861,9 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
                 transformAlignment: menuTheme.transformAlignment,
                 alignment: menuTheme.alignment,
                 foregroundDecoration: menuTheme.foregroundDecoration,
-                decoration: menuTheme.decoration,
+                decoration: menuTheme.decoration?.copyWith(
+                    color: menuTheme?.decoration?.color ??
+                        context.surfaceContainerHigh),
                 child: getMenuBUilder(menuTheme),
               ),
               theme: menuTheme,

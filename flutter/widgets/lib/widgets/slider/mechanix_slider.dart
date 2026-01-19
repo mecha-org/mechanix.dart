@@ -111,7 +111,6 @@ class _MechanixSliderState extends State<MechanixSlider> {
     required MechanixSliderThemeData theme,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         borderRadius: theme.widgetRadius,
       ),

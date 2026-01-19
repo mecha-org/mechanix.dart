@@ -183,12 +183,15 @@ class _MechanixSwitchState extends State<MechanixSwitch>
     final double threshold = _maxThumbPosition * _effectiveStyle.dragThreshold!;
     bool shouldBeActive = _thumbPosition > threshold;
 
-    // _triggerHapticFeedback();
-
     if (shouldBeActive != _isActive) {
-      widget.onChanged(shouldBeActive);
+      // Add safety check before callback
+      try {
+        widget.onChanged(shouldBeActive);
+      } catch (e) {
+        // Silently handle upstream errors
+        _animateToCurrentState();
+      }
     } else {
-      // Animate back to current state if no change
       _animateToCurrentState();
     }
   }

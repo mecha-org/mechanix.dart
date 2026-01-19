@@ -6,10 +6,8 @@ class MechanixWheelScrollThemeData
     extends ThemeExtension<MechanixWheelScrollThemeData> with Diagnosticable {
   const MechanixWheelScrollThemeData({
     this.selectionPadding = const EdgeInsets.symmetric(vertical: 14),
-    this.selectedTextStyle = const TextStyle(fontSize: 24, color: Colors.white),
-    this.notSelectedTextStyle = const TextStyle(
-      fontSize: 20,
-    ),
+    this.selectedTextStyle = const TextStyle(fontSize: 28),
+    this.notSelectedTextStyle = const TextStyle(fontSize: 20),
     this.selectionColor,
     this.selectionTextColor = Colors.white,
     this.selectionBorderRadius = const BorderRadius.all(Radius.circular(8)),

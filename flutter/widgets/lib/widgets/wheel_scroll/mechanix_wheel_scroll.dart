@@ -87,7 +87,8 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
 
   Widget _buildItem(
       BuildContext context, WheelScrollOption<T> option, bool isSelected) {
-    final itemTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
+    final itemTheme =
+        MechanixWheelScrollTheme.of(context).merge(context, widget.theme);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -102,7 +103,7 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
                   ? itemTheme.selectedTextStyle
                       ?.copyWith(color: itemTheme.selectionTextColor)
                   : itemTheme.notSelectedTextStyle
-                      ?.copyWith(color: context.colorScheme.secondary),
+                      ?.copyWith(color: context.onSurfaceVariant),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -122,7 +123,8 @@ class _MechanixWheelScrollState<T> extends State<MechanixWheelScroll<T>> {
 
   @override
   Widget build(BuildContext context) {
-    var wheelTheme = MechanixWheelScrollTheme.of(context).merge(widget.theme);
+    var wheelTheme =
+        MechanixWheelScrollTheme.of(context).merge(context, widget.theme);
 
     return SizedBox(
       width: widget.width,

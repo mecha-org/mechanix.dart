@@ -78,12 +78,12 @@ ThemeData createTheme(
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) {
               if (states.contains(WidgetState.pressed)) {
-                return colorScheme.surfaceContainerHigh;
+                return colorScheme.outline;
               }
               if (states.contains(WidgetState.hovered)) {
-                return colorScheme.surfaceContainerHighest;
+                return colorScheme.surfaceContainer;
               }
-              return colorScheme.surfaceContainerHighest;
+              return colorScheme.surfaceContainer;
             },
           ),
           splashFactory: NoSplash.splashFactory,
@@ -195,8 +195,11 @@ ThemeData createDarkTheme({
 
   final colorScheme = ColorScheme.dark(
     brightness: Brightness.dark,
+    // ACCENT
     primary: themeColors.accent_300,
     primaryContainer: themeColors.accent_200,
+    primaryFixed: themeColors.accent_500,
+    // BACKGROUND
     secondary: themeColors.background_800,
     secondaryContainer: themeColors.background_700,
     surfaceContainerHighest: themeColors.background_500,
@@ -205,8 +208,14 @@ ThemeData createDarkTheme({
     surfaceContainer: themeColors.background_400,
     outline: themeColors.background_300,
     outlineVariant: themeColors.background_0,
+    // FOREGROUND
     onSurface: themeColors.foreground_200,
     onSurfaceVariant: themeColors.foreground_1000,
+    onSecondary: themeColors.foreground_500,
+    onSecondaryFixedVariant: themeColors.foreground_0,
+    onSecondaryFixed: themeColors.foreground_800,
+    onTertiaryFixedVariant: themeColors.foreground_100,
+    onSecondaryContainer: themeColors.foreground_300,
     onInverseSurface: themeColors.foreground_600,
   );
 
