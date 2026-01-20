@@ -151,60 +151,66 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         child: Container(
           padding: theme.widgetPadding,
           decoration: theme.widgetDecoration,
-          child: Row(
+          height: theme.widgetHeight,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: TextField(
-                  autofocus: widget.autofocus,
-                  canRequestFocus: widget.canRequestFocus,
-                  focusNode: widget.focusNode,
-                  controller: widget.textEditingController ?? _controller,
-                  obscureText: widget.isPasswordField ? obscureText : false,
-                  style: theme.textStyle,
-                  cursorColor: widget.cursorColor,
-                  decoration: _buildInputDecoration(context, theme),
-                  onChanged: widget.onChanged,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      autofocus: widget.autofocus,
+                      canRequestFocus: widget.canRequestFocus,
+                      focusNode: widget.focusNode,
+                      controller: widget.textEditingController ?? _controller,
+                      obscureText: widget.isPasswordField ? obscureText : false,
+                      style: theme.textStyle,
+                      cursorColor: widget.cursorColor,
+                      decoration: _buildInputDecoration(context, theme),
+                      onChanged: widget.onChanged,
+                    ),
+                  ),
+                  if (widget.suffixIcon != null)
+                    widget.suffixIcon!
+                  else if (widget.isClearButtonRequired)
+                    Container(
+                      margin: const EdgeInsets.only(left: 5),
+                      height: 40,
+                      width: 40,
+                      child: IconButton(
+                        onPressed: onClear,
+                        icon: IconWidget.fromMechanix(
+                          iconPath: MechanixIconImages.clearIcon,
+                          boxHeight: 24,
+                          boxWidth: 24,
+                          iconHeight: 16,
+                          iconWidth: 16,
+                          iconColor: context.onSurface,
+                        ),
+                      ),
+                    )
+                  else if (widget.anchorWidgetIconPath != '')
+                    SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: IconButton(
+                        onPressed: () {
+                          widget.onClear?.call();
+                        },
+                        icon: IconWidget(
+                          iconPath: widget.anchorWidgetIconPath,
+                          boxHeight: 24,
+                          boxWidth: 24,
+                          iconHeight: 16,
+                          iconWidth: 16,
+                          iconColor: context.onSurface,
+                        ),
+                      ),
+                    )
+                  else if (widget.anchorWidget != null)
+                    widget.anchorWidget!
+                ],
               ),
-              if (widget.suffixIcon != null)
-                widget.suffixIcon!
-              else if (widget.isClearButtonRequired)
-                Container(
-                  margin: const EdgeInsets.only(left: 5),
-                  height: 40,
-                  width: 40,
-                  child: IconButton(
-                    onPressed: onClear,
-                    icon: IconWidget.fromMechanix(
-                      iconPath: MechanixIconImages.clearIcon,
-                      boxHeight: 24,
-                      boxWidth: 24,
-                      iconHeight: 16,
-                      iconWidth: 16,
-                      iconColor: context.onSurface,
-                    ),
-                  ),
-                )
-              else if (widget.anchorWidgetIconPath != '')
-                SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: IconButton(
-                    onPressed: () {
-                      widget.onClear?.call();
-                    },
-                    icon: IconWidget(
-                      iconPath: widget.anchorWidgetIconPath,
-                      boxHeight: 24,
-                      boxWidth: 24,
-                      iconHeight: 16,
-                      iconWidth: 16,
-                      iconColor: context.onSurface,
-                    ),
-                  ),
-                )
-              else if (widget.anchorWidget != null)
-                widget.anchorWidget!
             ],
           ),
         ),

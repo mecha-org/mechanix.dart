@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +19,9 @@ class MechanixTextInputThemeData
     this.visibleTextIcon = Icons.visibility,
     this.iconColor,
     this.enabledBorderSide,
+    this.widgetHeight = 90,
     this.widgetPadding =
-        const EdgeInsets.only(left: 8, top: 6, bottom: 6, right: 4),
+        const EdgeInsets.only(left: 8, top: 10, bottom: 6, right: 4),
     this.widgetDecoration = const BoxDecoration(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(8),
@@ -41,6 +44,7 @@ class MechanixTextInputThemeData
   final IconData? obscureTextIcon;
   final IconData? visibleTextIcon;
   final Color? iconColor;
+  final double widgetHeight;
 
   @override
   MechanixTextInputThemeData copyWith({
@@ -58,6 +62,7 @@ class MechanixTextInputThemeData
     BorderSide? enabledBorderSide,
     EdgeInsets? widgetPadding,
     BoxDecoration? widgetDecoration,
+    double? widgetHeight,
   }) {
     return MechanixTextInputThemeData(
       labelTextStyle: labelTextStyle ?? this.labelTextStyle,
@@ -74,6 +79,7 @@ class MechanixTextInputThemeData
       enabledBorderSide: enabledBorderSide ?? this.enabledBorderSide,
       widgetPadding: widgetPadding ?? this.widgetPadding,
       widgetDecoration: widgetDecoration ?? this.widgetDecoration,
+      widgetHeight: widgetHeight ?? this.widgetHeight,
     );
   }
 
@@ -82,25 +88,28 @@ class MechanixTextInputThemeData
       ThemeExtension<MechanixTextInputThemeData>? other, double t) {
     final o = other as MechanixTextInputThemeData?;
     return MechanixTextInputThemeData(
-        labelTextStyle: TextStyle.lerp(labelTextStyle, o?.labelTextStyle, t),
-        textStyle: TextStyle.lerp(textStyle, o?.textStyle, t),
-        hintTextStyle: TextStyle.lerp(hintTextStyle, o?.hintTextStyle, t),
-        fillColor: Color.lerp(fillColor, o?.fillColor, t),
-        contentPadding: EdgeInsets.lerp(contentPadding, o?.contentPadding, t),
-        borderRadius:
-            BorderRadius.lerp(borderRadius, o?.borderRadius, t) ?? borderRadius,
-        borderSide: BorderSide.lerp(
-            borderSide ?? BorderSide.none, o?.borderSide ?? BorderSide.none, t),
-        focusedBorderSide: BorderSide.lerp(focusedBorderSide ?? BorderSide.none,
-            o?.focusedBorderSide ?? BorderSide.none, t),
-        obscureTextIcon: t < 0.5 ? obscureTextIcon : o?.obscureTextIcon,
-        visibleTextIcon: t < 0.5 ? visibleTextIcon : o?.visibleTextIcon,
-        iconColor: Color.lerp(iconColor, o?.iconColor, t),
-        enabledBorderSide: BorderSide.lerp(enabledBorderSide ?? BorderSide.none,
-            o?.enabledBorderSide ?? BorderSide.none, t),
-        widgetPadding: EdgeInsets.lerp(widgetPadding, o?.widgetPadding, t),
-        widgetDecoration:
-            BoxDecoration.lerp(widgetDecoration, o?.widgetDecoration, t));
+      labelTextStyle: TextStyle.lerp(labelTextStyle, o?.labelTextStyle, t),
+      textStyle: TextStyle.lerp(textStyle, o?.textStyle, t),
+      hintTextStyle: TextStyle.lerp(hintTextStyle, o?.hintTextStyle, t),
+      fillColor: Color.lerp(fillColor, o?.fillColor, t),
+      contentPadding: EdgeInsets.lerp(contentPadding, o?.contentPadding, t),
+      borderRadius:
+          BorderRadius.lerp(borderRadius, o?.borderRadius, t) ?? borderRadius,
+      borderSide: BorderSide.lerp(
+          borderSide ?? BorderSide.none, o?.borderSide ?? BorderSide.none, t),
+      focusedBorderSide: BorderSide.lerp(focusedBorderSide ?? BorderSide.none,
+          o?.focusedBorderSide ?? BorderSide.none, t),
+      obscureTextIcon: t < 0.5 ? obscureTextIcon : o?.obscureTextIcon,
+      visibleTextIcon: t < 0.5 ? visibleTextIcon : o?.visibleTextIcon,
+      iconColor: Color.lerp(iconColor, o?.iconColor, t),
+      enabledBorderSide: BorderSide.lerp(enabledBorderSide ?? BorderSide.none,
+          o?.enabledBorderSide ?? BorderSide.none, t),
+      widgetPadding: EdgeInsets.lerp(widgetPadding, o?.widgetPadding, t),
+      widgetDecoration:
+          BoxDecoration.lerp(widgetDecoration, o?.widgetDecoration, t),
+      widgetHeight:
+          lerpDouble(widgetHeight, other?.widgetHeight, t) ?? widgetHeight,
+    );
   }
 
   @override
@@ -120,6 +129,7 @@ class MechanixTextInputThemeData
     properties.add(DiagnosticsProperty('enabledBorderSide', enabledBorderSide));
     properties.add(DiagnosticsProperty('widgetPadding', widgetPadding));
     properties.add(DiagnosticsProperty('widgetDecoration', widgetDecoration));
+    properties.add(DiagnosticsProperty('widgetHeight', widgetHeight));
   }
 
   @override
@@ -139,6 +149,7 @@ class MechanixTextInputThemeData
         enabledBorderSide == other.enabledBorderSide &&
         widgetPadding == other.widgetPadding &&
         widgetDecoration == other.widgetDecoration &&
+        widgetHeight == other.widgetHeight &&
         iconColor == other.iconColor;
   }
 
