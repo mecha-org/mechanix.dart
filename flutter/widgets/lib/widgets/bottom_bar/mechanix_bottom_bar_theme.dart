@@ -6,21 +6,24 @@ import 'package:flutter/material.dart';
 @immutable
 class MechanixBottomBarThemeData
     extends ThemeExtension<MechanixBottomBarThemeData> with Diagnosticable {
-  const MechanixBottomBarThemeData(
-      {this.height = 60,
-      this.width = double.infinity,
-      this.decoration = const BoxDecoration(
-          color: Color(0xFF2E2E2E),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(8), topRight: Radius.circular(8))),
-      this.iconColor,
-      this.iconTheme});
+  const MechanixBottomBarThemeData({
+    this.height = 90,
+    this.width = double.infinity,
+    this.decoration = const BoxDecoration(
+        color: Color(0xFF2E2E2E),
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+    this.iconColor,
+    this.iconTheme,
+    this.widgetPadding = const EdgeInsets.only(top: 10),
+  });
 
   final double? height;
   final double? width;
   final BoxDecoration? decoration;
   final Color? iconColor;
   final MechanixBottomBarIconThemeData? iconTheme;
+  final EdgeInsets widgetPadding;
 
   @override
   MechanixBottomBarThemeData copyWith({
@@ -29,6 +32,7 @@ class MechanixBottomBarThemeData
     BoxDecoration? decoration,
     Color? iconColor,
     MechanixBottomBarIconThemeData? iconTheme,
+    EdgeInsets? widgetPadding,
   }) {
     return MechanixBottomBarThemeData(
       height: height ?? this.height,
@@ -36,6 +40,7 @@ class MechanixBottomBarThemeData
       decoration: decoration ?? this.decoration,
       iconColor: iconColor ?? this.iconColor,
       iconTheme: iconTheme ?? this.iconTheme,
+      widgetPadding: widgetPadding ?? this.widgetPadding,
     );
   }
 
@@ -49,6 +54,8 @@ class MechanixBottomBarThemeData
       iconColor: Color.lerp(iconColor, other.iconColor, t),
       decoration:
           BoxDecoration.lerp(decoration, other.decoration, t) ?? decoration,
+      widgetPadding: EdgeInsets.lerp(widgetPadding, other.widgetPadding, t) ??
+          widgetPadding,
     );
   }
 
@@ -60,6 +67,7 @@ class MechanixBottomBarThemeData
     properties.add(DoubleProperty('width', width));
     properties.add(ColorProperty('iconColor', iconColor));
     properties.add(DiagnosticsProperty('iconTheme', iconTheme));
+    properties.add(DiagnosticsProperty('widgetPadding', widgetPadding));
   }
 
   @override
@@ -70,6 +78,7 @@ class MechanixBottomBarThemeData
         decoration == other.decoration &&
         iconColor == other.iconColor &&
         iconTheme == other.iconTheme &&
+        widgetPadding == other.widgetPadding &&
         width == other.width;
   }
 

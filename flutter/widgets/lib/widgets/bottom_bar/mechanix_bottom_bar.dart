@@ -43,22 +43,23 @@ class MechanixBottomBar extends StatelessWidget {
       height: barTheme.height,
       width: barTheme.width,
       decoration: barTheme.decoration,
+      padding: barTheme.widgetPadding,
       child: Stack(
         children: [
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.topLeft,
             child: leadingWidget.isNotEmpty
                 ? buildButtons(context, leadingWidget, leadingWidgetSpacing)
                 : const SizedBox.shrink(),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: Alignment.topCenter,
             child: centerWidget.isNotEmpty
                 ? buildButtons(context, centerWidget, centerWidgetSpacing)
                 : const SizedBox.shrink(),
           ),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.topRight,
             child: anchorWidget.isNotEmpty
                 ? buildButtons(context, anchorWidget, anchorWidgetSpacing)
                 : const SizedBox.shrink(),
