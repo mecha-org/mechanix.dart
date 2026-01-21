@@ -123,7 +123,7 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.surfaceContainerHigh;
+              return colorScheme.secondary;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;

@@ -69,6 +69,7 @@ extension MechanixTextInputThemeDataExtensions on MechanixTextInputThemeData {
       widgetPadding: other?.widgetPadding ?? widgetPadding,
       widgetDecoration: other?.widgetDecoration ??
           widgetDecoration?.copyWith(color: context.surfaceContainerHigh),
+      widgetHeight: other?.widgetHeight ?? widgetHeight,
     );
   }
 }
@@ -274,6 +275,7 @@ extension MechanixBottomBarThemeDataExtensions on MechanixBottomBarThemeData {
       width: other?.width ?? width,
       iconColor: other?.iconColor ?? context.colorScheme.primaryFixed,
       iconTheme: other?.iconTheme ?? iconTheme,
+      widgetPadding: other?.widgetPadding ?? widgetPadding,
     );
   }
 }
