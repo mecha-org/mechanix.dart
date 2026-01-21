@@ -10,4 +10,5 @@ class MechanixIconImages {
   static const String circularCheck = "assets/icons/circular_check.png";
   static const String successIcon = "assets/icons/success_icon.png";
   static const String errorIcon = "assets/icons/error_icon.png";
+  static const String moreVertIcon = "assets/icons/three_dot_icon.png";
 }

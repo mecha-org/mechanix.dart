@@ -261,12 +261,13 @@ class _MechanixMenuState extends State<MechanixMenu> {
                       onPressed: _toggleMenu,
                       isSelected: isClicked,
                       icon: widget.buttonIcon ??
-                          IconWidget.fromIconData(
-                            icon: Icon(Icons.more_vert),
-                            boxWidth: 48,
-                            boxHeight: 40,
-                            iconWidth: 20,
-                            iconHeight: 20,
+                          IconWidget.fromMechanix(
+                            iconPath: MechanixIconImages.moreVertIcon,
+                            boxWidth: 44,
+                            boxHeight: 44,
+                            iconWidth: 28,
+                            iconHeight: 28,
+                            isActive: isClicked,
                           ),
                     )),
             )

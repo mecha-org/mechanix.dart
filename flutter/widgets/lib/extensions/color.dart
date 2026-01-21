@@ -89,3 +89,17 @@ extension OKLCHStringToColor on String {
     return OKLCHColor.fromOKLCH(l, c, h, a).color;
   }
 }
+
+extension ColorToOklchString on Color {
+  String toOklchString() {
+    // Convert Flutter Color (0-255) to 0.0-1.0 range
+    OKLCHColor oKLCHColor = OKLCHColor.fromColor(this);
+    final String lightness = (oKLCHColor.lightness / 100).toStringAsFixed(4);
+    final String chroma = oKLCHColor.chroma.toStringAsFixed(4);
+    final String hue = oKLCHColor.hue.toStringAsFixed(2);
+    final String alpha = (oKLCHColor.alpha * 100).toStringAsFixed(4);
+
+    // "oklch(0.875 0.1435 22.24 / 98.0)"
+    return 'oklch($lightness $chroma $hue / $alpha)';
+  }
+}
