@@ -291,8 +291,9 @@ extension MechanixFilledButtonThemeDataExtensions
       padding: other?.padding ?? padding,
       buttonColor:
           other?.buttonColor ?? buttonColor ?? context.surfaceContainer,
-      pressedButtonColor:
-          other?.pressedButtonColor ?? pressedButtonColor ?? context.tertiary,
+      pressedButtonColor: other?.pressedButtonColor ??
+          pressedButtonColor ??
+          context.secondaryFixed,
     );
   }
 }

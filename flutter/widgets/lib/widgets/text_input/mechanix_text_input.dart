@@ -214,7 +214,6 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                           boxWidth: 24,
                           iconHeight: 16,
                           iconWidth: 16,
-                          iconColor: context.onSurface,
                         ),
                       ),
                     )
@@ -232,7 +231,6 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                           boxWidth: 24,
                           iconHeight: 16,
                           iconWidth: 16,
-                          iconColor: context.onSurface,
                         ),
                       ),
                     )
@@ -315,7 +313,6 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                             boxWidth: 24,
                             iconHeight: 16,
                             iconWidth: 16,
-                            iconColor: context.onSurface,
                           ),
                         ),
                       )

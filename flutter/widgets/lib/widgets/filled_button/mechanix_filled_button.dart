@@ -77,7 +77,8 @@ class MechanixFilledButton extends StatelessWidget {
             backgroundColor: WidgetStateProperty.resolveWith(
               (states) {
                 if (states.contains(WidgetState.pressed)) {
-                  return buttonTheme.pressedButtonColor ?? context.tertiary;
+                  return buttonTheme.pressedButtonColor ??
+                      context.secondaryFixed;
                 }
 
                 return buttonTheme.buttonColor ?? context.surfaceContainer;

@@ -9,8 +9,8 @@ ThemeData createTheme(
       ThemeData.from(useMaterial3: useMaterial3, colorScheme: colorScheme);
 
   return theme.copyWith(
+      highlightColor: colorScheme.outlineVariant,
       splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       focusColor: Colors.transparent,
@@ -30,7 +30,7 @@ ThemeData createTheme(
             }
             return Colors.transparent;
           }),
-          splashFactory: NoSplash.splashFactory,
+          animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -50,14 +50,17 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.surfaceContainerHigh;
+              return colorScheme.secondaryFixed;
+            }
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.outline;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
             }
             return Colors.transparent;
           }),
-          splashFactory: NoSplash.splashFactory,
+          animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -78,15 +81,18 @@ ThemeData createTheme(
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) {
               if (states.contains(WidgetState.pressed)) {
+                return colorScheme.surfaceContainerHigh;
+              }
+              if (states.contains(WidgetState.disabled)) {
                 return colorScheme.outline;
               }
               if (states.contains(WidgetState.hovered)) {
-                return colorScheme.surfaceContainer;
+                return colorScheme.surfaceContainerHighest;
               }
-              return colorScheme.surfaceContainer;
+              return colorScheme.surfaceContainerHighest;
             },
           ),
-          splashFactory: NoSplash.splashFactory,
+          animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -123,14 +129,15 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.secondary;
+              return colorScheme.secondaryContainer;
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
             }
             return Colors.transparent;
           }),
-          splashFactory: NoSplash.splashFactory,
+          animationDuration: const Duration(milliseconds: 300),
+          tapTargetSize: MaterialTapTargetSize.padded,
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -208,6 +215,7 @@ ThemeData createDarkTheme({
     surfaceContainer: themeColors.background_400,
     outline: themeColors.background_300,
     outlineVariant: themeColors.background_0,
+    secondaryFixed: themeColors.background_100,
     // FOREGROUND
     onSurface: themeColors.foreground_200,
     onSurfaceVariant: themeColors.foreground_1000,
@@ -219,6 +227,20 @@ ThemeData createDarkTheme({
     onInverseSurface: themeColors.foreground_600,
   );
 
+  // primary: themeColors.accent_300, // rgb(181,103,0)
+  // primaryContainer: themeColors.accent_200, // rgb(198, 118, 0)
+  // secondary: themeColors.background_800, // rgb(22,22,22)
+  // secondaryContainer: themeColors.background_700, // rgb(34,34,34)
+  // surfaceContainerHighest: themeColors.background_500, // rgb(58,58,58)
+  // surfaceContainerHigh: themeColors.background_600, // rgb(45,45,45)
+  // surface: themeColors.background_1000, // rgb(0,0,0)
+  // surfaceContainer: themeColors.background_400, //rgb(71,71,71)
+  // outlineVariant: themeColors.background_0, // rgb(128,128,128)
+  // onSurface: themeColors.foreground_200, // rgb(222,222,222)
+  // onSurfaceVariant: themeColors.foreground_1000, // rgb(99,99,99)
+  // onInverseSurface: themeColors.foreground_600, // rgb(158,158,158)
+  // onSecondary: themeColors.foreground_500, // rgb(174,174,174)
+  //
   return createTheme(colorScheme: colorScheme);
 }
 

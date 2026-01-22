@@ -248,38 +248,41 @@ class _MechanixSimpleListState extends State<MechanixSimpleList> {
       ignoring: isDisabled,
       child: Opacity(
         opacity: isDisabled ? 0.5 : 1.0,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: isDisabled ? null : item.onTap,
-          onTapUp: isDisabled ? null : item.onTapUp,
-          onTapDown: isDisabled ? null : item.onTapDown,
-          onDoubleTap: isDisabled ? null : item.onDoubleTap,
-          child: Container(
-            height: theme.height,
-            padding: theme.itemPadding,
-            decoration: BoxDecoration(
-                borderRadius: itemTheme.itemRadius ??
-                    (index == 0
-                        ? CircularRadius.topAll(4)
-                        : index == (widget.listItems.length - 1)
-                            ? CircularRadius.bottomAll(4)
-                            : BorderRadius.zero)),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      if (item.leading != null) item.leading!.padRight(),
-                      Text(
-                        item.title,
-                        style: item.titleTextStyle ??
-                            context.textTheme.labelMedium,
-                      )
-                    ],
-                  ),
-                  if (item.trailing != null) item.trailing!,
-                ],
+        child: Material(
+          color: itemTheme.backgroundColor ?? context.colorScheme.secondary,
+          child: InkWell(
+            // behavior: HitTestBehavior.translucent,
+            onTap: isDisabled ? null : item.onTap,
+            onTapUp: isDisabled ? null : item.onTapUp,
+            onTapDown: isDisabled ? null : item.onTapDown,
+            onDoubleTap: isDisabled ? null : item.onDoubleTap,
+            child: Container(
+              height: theme.height,
+              padding: theme.itemPadding,
+              decoration: BoxDecoration(
+                  borderRadius: itemTheme.itemRadius ??
+                      (index == 0
+                          ? CircularRadius.topAll(4)
+                          : index == (widget.listItems.length - 1)
+                              ? CircularRadius.bottomAll(4)
+                              : BorderRadius.zero)),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        if (item.leading != null) item.leading!.padRight(),
+                        Text(
+                          item.title,
+                          style: item.titleTextStyle ??
+                              context.textTheme.labelMedium,
+                        )
+                      ],
+                    ),
+                    if (item.trailing != null) item.trailing!,
+                  ],
+                ),
               ),
             ),
           ),
@@ -304,7 +307,6 @@ class _MechanixSimpleListState extends State<MechanixSimpleList> {
         margin: itemTheme.widgetMargin,
         decoration: BoxDecoration(
           borderRadius: itemTheme.widgetRadius,
-          color: itemTheme.backgroundColor ?? context.colorScheme.secondary,
         ),
         child: _buildListView(
             theme: itemTheme,
