@@ -117,6 +117,8 @@ class MechanixTextInput<T> extends StatefulWidget {
 class _MechanixTextInputState extends State<MechanixTextInput> {
   bool obscureText = true;
   late TextEditingController _controller;
+  late FocusNode _focusNode;
+  bool isFocused = false;
 
   void togglePasswordVisibility() {
     setState(() {
@@ -128,10 +130,32 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue ?? '');
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode();
+      _focusNode.addListener(_onFocusChange);
+    } else {
+      _focusNode = widget.focusNode!;
+      _focusNode.addListener(_onFocusChange);
+    }
+  }
+
+  Future<void> _onFocusChange() async {
+    if (!_focusNode.hasFocus) {
+      await Future.delayed(Duration(milliseconds: 500));
+    }
+    if (!mounted) return;
+    setState(() {
+      isFocused = !isFocused;
+    });
   }
 
   @override
   void dispose() {
+    if (widget.focusNode == null) {
+      _focusNode.removeListener(_onFocusChange);
+      _focusNode.dispose();
+    }
+
     _controller.dispose();
     super.dispose();
   }
@@ -151,23 +175,28 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
         child: Container(
           padding: theme.widgetPadding,
           decoration: theme.widgetDecoration,
-          height: theme.widgetHeight,
+          height: isFocused ? 64 : theme.widgetHeight,
+          // height: theme.widgetHeight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      autofocus: widget.autofocus,
-                      canRequestFocus: widget.canRequestFocus,
-                      focusNode: widget.focusNode,
-                      controller: widget.textEditingController ?? _controller,
-                      obscureText: widget.isPasswordField ? obscureText : false,
-                      style: theme.textStyle,
-                      cursorColor: widget.cursorColor,
-                      decoration: _buildInputDecoration(context, theme),
-                      onChanged: widget.onChanged,
+                    child: SizedBox(
+                      height: 44,
+                      child: TextField(
+                        autofocus: widget.autofocus,
+                        canRequestFocus: widget.canRequestFocus,
+                        focusNode: _focusNode,
+                        controller: widget.textEditingController ?? _controller,
+                        obscureText:
+                            widget.isPasswordField ? obscureText : false,
+                        style: theme.textStyle,
+                        cursorColor: widget.cursorColor,
+                        decoration: _buildInputDecoration(context, theme),
+                        onChanged: widget.onChanged,
+                      ),
                     ),
                   ),
                   if (widget.suffixIcon != null)
@@ -231,62 +260,74 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           Container(
             padding: theme.widgetPadding,
             decoration: theme.widgetDecoration,
-            child: Row(
+            height: isFocused ? 64 : theme.widgetHeight,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                    child: widget.isFormField
-                        ? TextFormField(
-                            controller: _controller,
-                            focusNode: widget.focusNode,
-                            autofocus: widget.autofocus,
-                            canRequestFocus: widget.canRequestFocus,
-                            obscureText:
-                                widget.isPasswordField ? obscureText : false,
-                            style: theme.textStyle,
-                            cursorColor: widget.cursorColor,
-                            decoration: _buildInputDecoration(context, theme),
-                            onChanged: widget.onChanged,
-                            onFieldSubmitted: widget.onFieldSubmitted,
-                            validator: widget.validator,
-                          )
-                        : TextField(
-                            controller: _controller,
-                            focusNode: widget.focusNode,
-                            autofocus: widget.autofocus,
-                            cursorColor: widget.cursorColor,
-                            canRequestFocus: widget.canRequestFocus,
-                            obscureText:
-                                widget.isPasswordField ? obscureText : false,
-                            style: theme.textStyle,
-                            decoration: _buildInputDecoration(context, theme),
-                            onChanged: widget.onChanged,
-                          )),
-                if (widget.anchorWidgetIconPath != '')
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: IconButton(
-                      onPressed: () {
-                        widget.onClear?.call();
-                        widget.getCurrentValue?.call(_controller.text);
-                      },
-                      icon: IconWidget(
-                        iconPath: widget.anchorWidgetIconPath,
-                        boxHeight: 24,
-                        boxWidth: 24,
-                        iconHeight: 16,
-                        iconWidth: 16,
-                        iconColor: context.onSurface,
-                      ),
-                    ),
-                  )
-                else if (widget.anchorWidget != null)
-                  GestureDetector(
-                    onTap: () {
-                      widget.getCurrentValue?.call(_controller.text);
-                    },
-                    child: widget.anchorWidget!,
-                  )
+                Row(
+                  children: [
+                    Expanded(
+                        child: widget.isFormField
+                            ? TextFormField(
+                                controller: _controller,
+                                // focusNode: widget.focusNode,
+                                focusNode: _focusNode,
+                                autofocus: widget.autofocus,
+                                canRequestFocus: widget.canRequestFocus,
+                                obscureText: widget.isPasswordField
+                                    ? obscureText
+                                    : false,
+                                style: theme.textStyle,
+                                cursorColor: widget.cursorColor,
+                                decoration:
+                                    _buildInputDecoration(context, theme),
+                                onChanged: widget.onChanged,
+                                onFieldSubmitted: widget.onFieldSubmitted,
+                                validator: widget.validator,
+                              )
+                            : TextField(
+                                controller: _controller,
+                                // focusNode: widget.focusNode,
+                                focusNode: _focusNode,
+                                autofocus: widget.autofocus,
+                                cursorColor: widget.cursorColor,
+                                canRequestFocus: widget.canRequestFocus,
+                                obscureText: widget.isPasswordField
+                                    ? obscureText
+                                    : false,
+                                style: theme.textStyle,
+                                decoration:
+                                    _buildInputDecoration(context, theme),
+                                onChanged: widget.onChanged,
+                              )),
+                    if (widget.anchorWidgetIconPath != '')
+                      SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: IconButton(
+                          onPressed: () {
+                            widget.onClear?.call();
+                            widget.getCurrentValue?.call(_controller.text);
+                          },
+                          icon: IconWidget(
+                            iconPath: widget.anchorWidgetIconPath,
+                            boxHeight: 24,
+                            boxWidth: 24,
+                            iconHeight: 16,
+                            iconWidth: 16,
+                            iconColor: context.onSurface,
+                          ),
+                        ),
+                      )
+                    else if (widget.anchorWidget != null)
+                      GestureDetector(
+                        onTap: () {
+                          widget.getCurrentValue?.call(_controller.text);
+                        },
+                        child: widget.anchorWidget!,
+                      )
+                  ],
+                ),
               ],
             ),
           ),

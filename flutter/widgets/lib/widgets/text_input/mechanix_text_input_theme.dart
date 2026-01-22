@@ -21,7 +21,7 @@ class MechanixTextInputThemeData
     this.enabledBorderSide,
     this.widgetHeight = 90,
     this.widgetPadding =
-        const EdgeInsets.only(left: 8, top: 10, bottom: 6, right: 4),
+        const EdgeInsets.only(left: 8, top: 10, bottom: 6, right: 8),
     this.widgetDecoration = const BoxDecoration(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(8),
