@@ -107,6 +107,14 @@ class IconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = IconTheme.of(context).color ??
+        Theme.of(context).iconTheme.color ??
+        Theme.of(context).colorScheme.onSurface;
+
+    final Color color = isActive
+        ? (activeIconColor ?? context.primary)
+        : iconColor ?? themeColor;
+
     if (icon != null) {
       return SizedBox(
         height: boxHeight,
@@ -118,9 +126,7 @@ class IconWidget extends StatelessWidget {
             width: iconWidth,
             child: Icon(
               icon?.icon,
-              color: isActive
-                  ? activeIconColor ?? context.primary
-                  : iconColor ?? context.onSurface,
+              color: color,
             ),
           ),
         ),
@@ -138,16 +144,12 @@ class IconWidget extends StatelessWidget {
           child: package != null
               ? Image.asset(
                   iconPath,
-                  color: isActive
-                      ? activeIconColor ?? context.primary
-                      : iconColor ?? context.onSurface,
+                  color: color,
                   package: package,
                 )
               : Image.asset(
                   iconPath,
-                  color: isActive
-                      ? activeIconColor ?? context.primary
-                      : iconColor ?? context.onSurface,
+                  color: color,
                 ),
         ),
       ),

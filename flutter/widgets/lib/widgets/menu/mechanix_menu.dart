@@ -637,7 +637,9 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           topTabWidth: widget.topTabWidth,
           topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
         ),
-        child: child,
+        child: Material(
+            color: theme.decoration?.color ?? context.surfaceContainerHigh,
+            child: InkWell(child: child)),
         // child: Container(padding: const EdgeInsets.only(top: 20), child: child),
       ),
     );
@@ -862,9 +864,8 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
                 transformAlignment: menuTheme.transformAlignment,
                 alignment: menuTheme.alignment,
                 foregroundDecoration: menuTheme.foregroundDecoration,
-                decoration: menuTheme.decoration?.copyWith(
-                    color: menuTheme?.decoration?.color ??
-                        context.surfaceContainerHigh),
+                decoration:
+                    menuTheme.decoration?.copyWith(color: Colors.transparent),
                 child: getMenuBUilder(menuTheme),
               ),
               theme: menuTheme,

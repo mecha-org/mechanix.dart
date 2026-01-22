@@ -341,59 +341,61 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
       ignoring: isDisabled,
       child: Opacity(
         opacity: isDisabled ? 0.5 : 1.0,
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: isDisabled ? null : item.onTap,
-          onTapUp: isDisabled ? null : item.onTapUp,
-          onTapDown: isDisabled ? null : item.onTapDown,
-          onDoubleTap: isDisabled ? null : item.onDoubleTap,
-          child: Container(
-            height: item.height ?? listTheme.height,
-            padding: listTheme.itemPadding,
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // if (item.leading != null) item.leading!.padRight(),
-                      if (_buildLeadingWidget(context, item) != null)
-                        _buildLeadingWidget(context, item)!,
+        child: Material(
+          color: listTheme.backgroundColor?.resolve({}),
+          child: InkWell(
+            onTap: isDisabled ? null : item.onTap,
+            onTapUp: isDisabled ? null : item.onTapUp,
+            onTapDown: isDisabled ? null : item.onTapDown,
+            onDoubleTap: isDisabled ? null : item.onDoubleTap,
+            child: Container(
+              height: item.height ?? listTheme.height,
+              padding: listTheme.itemPadding,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // if (item.leading != null) item.leading!.padRight(),
+                        if (_buildLeadingWidget(context, item) != null)
+                          _buildLeadingWidget(context, item)!,
 
-                      item.titleWidget != null
-                          ? item.titleWidget!
-                          : Text(
-                              item.title,
-                              style: item.titleTextStyle ??
-                                  context.textTheme.labelMedium,
-                            ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (item.trailing != null) item.trailing!,
-                      if (item.defaultTrailingIcon)
-                        SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: FittedBox(
-                            fit: BoxFit.none,
-                            child: SizedBox(
-                              width: 9,
-                              height: 15,
-                              child: Image.asset(
-                                color: context.onSurfaceVariant,
-                                MechanixIconImages.rightCaret,
-                                package: 'widgets',
+                        item.titleWidget != null
+                            ? item.titleWidget!
+                            : Text(
+                                item.title,
+                                style: item.titleTextStyle ??
+                                    context.textTheme.labelMedium,
+                              ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (item.trailing != null) item.trailing!,
+                        if (item.defaultTrailingIcon)
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: FittedBox(
+                              fit: BoxFit.none,
+                              child: SizedBox(
+                                width: 9,
+                                height: 15,
+                                child: Image.asset(
+                                  color: context.onSurfaceVariant,
+                                  MechanixIconImages.rightCaret,
+                                  package: 'widgets',
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -557,7 +559,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: listTheme.widgetRadius,
-                color: listTheme.backgroundColor?.resolve({}),
               ),
               child: Column(
                 children: [
@@ -597,7 +598,6 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
           Container(
             decoration: BoxDecoration(
               borderRadius: listTheme.widgetRadius,
-              color: listTheme.backgroundColor?.resolve({}),
             ),
             child: _buildListView(
               context: context,
