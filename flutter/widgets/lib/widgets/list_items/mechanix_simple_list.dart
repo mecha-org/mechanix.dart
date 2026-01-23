@@ -247,9 +247,10 @@ class _MechanixSimpleListState extends State<MechanixSimpleList> {
     return IgnorePointer(
       ignoring: isDisabled,
       child: Opacity(
-        opacity: isDisabled ? 0.5 : 1.0,
+        opacity: isDisabled ? 0.7 : 1.0,
         child: Material(
           color: itemTheme.backgroundColor ?? context.colorScheme.secondary,
+          borderRadius: theme.widgetRadius,
           child: InkWell(
             // behavior: HitTestBehavior.translucent,
             onTap: isDisabled ? null : item.onTap,
@@ -306,6 +307,7 @@ class _MechanixSimpleListState extends State<MechanixSimpleList> {
       child: Container(
         margin: itemTheme.widgetMargin,
         decoration: BoxDecoration(
+          color: itemTheme.backgroundColor ?? context.colorScheme.secondary,
           borderRadius: itemTheme.widgetRadius,
         ),
         child: _buildListView(

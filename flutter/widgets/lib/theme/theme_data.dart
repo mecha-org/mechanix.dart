@@ -9,7 +9,7 @@ ThemeData createTheme(
       ThemeData.from(useMaterial3: useMaterial3, colorScheme: colorScheme);
 
   return theme.copyWith(
-      highlightColor: colorScheme.outlineVariant,
+      highlightColor: colorScheme.surfaceContainerHigh,
       splashColor: Colors.transparent,
       hoverColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
@@ -156,8 +156,8 @@ ThemeData createTheme(
       ),
       scrollbarTheme: ScrollbarThemeData(
         radius: const Radius.circular(4),
-        thickness: const WidgetStatePropertyAll(6),
-        thumbColor: WidgetStatePropertyAll(colorScheme.onSurface),
+        thickness: const WidgetStatePropertyAll(4),
+        thumbColor: WidgetStatePropertyAll(colorScheme.surfaceContainerHighest),
       ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colorScheme.primaryFixed,

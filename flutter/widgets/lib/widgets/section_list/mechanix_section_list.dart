@@ -340,9 +340,10 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
     return IgnorePointer(
       ignoring: isDisabled,
       child: Opacity(
-        opacity: isDisabled ? 0.5 : 1.0,
+        opacity: isDisabled ? 0.7 : 1.0,
         child: Material(
           color: listTheme.backgroundColor?.resolve({}),
+          borderRadius: listTheme.widgetRadius,
           child: InkWell(
             onTap: isDisabled ? null : item.onTap,
             onTapUp: isDisabled ? null : item.onTapUp,
@@ -559,6 +560,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: listTheme.widgetRadius,
+                color: listTheme.backgroundColor?.resolve({}),
               ),
               child: Column(
                 children: [
@@ -598,6 +600,7 @@ class _MechanixSectionListState extends State<MechanixSectionList> {
           Container(
             decoration: BoxDecoration(
               borderRadius: listTheme.widgetRadius,
+              color: listTheme.backgroundColor?.resolve({}),
             ),
             child: _buildListView(
               context: context,
