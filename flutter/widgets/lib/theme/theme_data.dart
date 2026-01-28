@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:widgets/constants.dart';
 import 'package:widgets/theme/Common_themes/text_theme.dart';
 import 'package:widgets/theme/color_setting.dart';
+import 'package:widgets/theme/touch_splash_factory.dart';
 
 ThemeData createTheme(
     {bool useMaterial3 = true, required ColorScheme colorScheme}) {
@@ -9,11 +10,10 @@ ThemeData createTheme(
       ThemeData.from(useMaterial3: useMaterial3, colorScheme: colorScheme);
 
   return theme.copyWith(
+      splashFactory: const TouchOptimizedSplashFactory(),
       highlightColor: colorScheme.surfaceContainerHigh,
-      splashColor: Colors.transparent,
+      splashColor: colorScheme.surfaceContainerHigh,
       hoverColor: Colors.transparent,
-      splashFactory: NoSplash.splashFactory,
-      focusColor: Colors.transparent,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
         onSurfaceVariant: colorScheme.onSurfaceVariant,
@@ -30,6 +30,7 @@ ThemeData createTheme(
             }
             return Colors.transparent;
           }),
+          splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
@@ -60,6 +61,7 @@ ThemeData createTheme(
             }
             return Colors.transparent;
           }),
+          splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
@@ -92,6 +94,7 @@ ThemeData createTheme(
               return colorScheme.surfaceContainerHighest;
             },
           ),
+          splashFactory: const TouchOptimizedSplashFactory(),
           animationDuration: const Duration(milliseconds: 300),
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
@@ -136,9 +139,9 @@ ThemeData createTheme(
             }
             return Colors.transparent;
           }),
+          splashFactory: const TouchOptimizedSplashFactory(),
           fixedSize: WidgetStateProperty.all(Size(48, 48)),
           iconSize: WidgetStateProperty.all(24),
-          animationDuration: const Duration(milliseconds: 300),
           tapTargetSize: MaterialTapTargetSize.padded,
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
