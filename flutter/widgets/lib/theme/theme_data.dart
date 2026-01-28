@@ -11,8 +11,8 @@ ThemeData createTheme(
 
   return theme.copyWith(
       splashFactory: const TouchOptimizedSplashFactory(),
-      highlightColor: colorScheme.surfaceContainerHigh,
-      splashColor: colorScheme.surfaceContainerHigh,
+      highlightColor: colorScheme.surfaceContainerHigh.withAlpha(100),
+      splashColor: colorScheme.surfaceContainerHigh.withAlpha(100),
       hoverColor: Colors.transparent,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
@@ -132,7 +132,7 @@ ThemeData createTheme(
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
-              return colorScheme.secondaryContainer;
+              return colorScheme.surfaceContainerHigh.withAlpha(100);
             }
             if (states.contains(WidgetState.hovered)) {
               return Colors.transparent;
