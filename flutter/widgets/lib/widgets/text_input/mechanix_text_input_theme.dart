@@ -19,7 +19,7 @@ class MechanixTextInputThemeData
     this.visibleTextIcon = Icons.visibility,
     this.iconColor,
     this.enabledBorderSide,
-    this.widgetHeight = 90,
+    this.widgetHeight,
     this.widgetPadding =
         const EdgeInsets.only(left: 8, top: 10, bottom: 6, right: 8),
     this.widgetDecoration = const BoxDecoration(
@@ -44,7 +44,7 @@ class MechanixTextInputThemeData
   final IconData? obscureTextIcon;
   final IconData? visibleTextIcon;
   final Color? iconColor;
-  final double widgetHeight;
+  final double? widgetHeight;
 
   @override
   MechanixTextInputThemeData copyWith({

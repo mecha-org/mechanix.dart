@@ -136,6 +136,8 @@ ThemeData createTheme(
             }
             return Colors.transparent;
           }),
+          fixedSize: WidgetStateProperty.all(Size(48, 48)),
+          iconSize: WidgetStateProperty.all(24),
           animationDuration: const Duration(milliseconds: 300),
           tapTargetSize: MaterialTapTargetSize.padded,
           shape: WidgetStateProperty.all(
