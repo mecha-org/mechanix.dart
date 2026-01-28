@@ -6,20 +6,21 @@ import 'package:flutter/material.dart';
 @immutable
 class MechanixSectionListThemeData
     extends ThemeExtension<MechanixSectionListThemeData> with Diagnosticable {
-  const MechanixSectionListThemeData(
-      {this.backgroundColor,
-      this.titleTextStyle,
-      this.dividerThickness = 1,
-      this.dividerHeight = 1,
-      this.dividerColor,
-      this.divider,
-      this.widgetPadding = const EdgeInsets.only(bottom: 40),
-      this.titlePadding = const EdgeInsets.only(bottom: 8),
-      this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
-      this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
-      this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
-      this.itemBorderRadius = BorderRadius.zero,
-      this.height = 56});
+  const MechanixSectionListThemeData({
+    this.backgroundColor,
+    this.titleTextStyle,
+    this.dividerThickness = 1,
+    this.dividerHeight = 1,
+    this.dividerColor,
+    this.divider,
+    this.widgetPadding = const EdgeInsets.only(bottom: 40),
+    this.titlePadding = const EdgeInsets.only(bottom: 8),
+    this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
+    this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
+    this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
+    this.itemBorderRadius = BorderRadius.zero,
+    this.height = 58,
+  });
 
   final WidgetStateProperty<Color?>? backgroundColor;
   final EdgeInsets widgetPadding;

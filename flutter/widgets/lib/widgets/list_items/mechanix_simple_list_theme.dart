@@ -15,7 +15,7 @@ class MechanixSimpleListThemeData
     this.dividerHeight = 1,
     this.dividerColor,
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
-    this.height = 56,
+    this.height = 58,
   });
 
   final Color? backgroundColor;

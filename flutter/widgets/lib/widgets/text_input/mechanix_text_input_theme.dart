@@ -44,7 +44,7 @@ class MechanixTextInputThemeData
   final IconData? obscureTextIcon;
   final IconData? visibleTextIcon;
   final Color? iconColor;
-  final double widgetHeight;
+  final double? widgetHeight;
 
   @override
   MechanixTextInputThemeData copyWith({
