@@ -18,7 +18,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
     this.dropdownWidth,
     this.dropdownHeight,
-    this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 200),
+    this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 225),
     this.itemBackgroundColor,
     this.itemPadding = const EdgeInsets.only(top: 11, bottom: 11, left: 16),
     this.itemBorderRadius,
