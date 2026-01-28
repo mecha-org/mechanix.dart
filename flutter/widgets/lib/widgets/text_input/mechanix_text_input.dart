@@ -259,7 +259,8 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           Container(
             padding: theme.widgetPadding,
             decoration: theme.widgetDecoration,
-            height: isFocused ? 66 : theme.widgetHeight,
+            height:
+                isFocused ? theme.widgetHeight ?? 66 : theme.widgetHeight ?? 90,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
