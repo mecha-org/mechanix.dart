@@ -11,8 +11,8 @@ ThemeData createTheme(
 
   return theme.copyWith(
       splashFactory: const TouchOptimizedSplashFactory(),
-      highlightColor: colorScheme.surfaceContainerHigh.withAlpha(100),
-      splashColor: colorScheme.surfaceContainerHigh.withAlpha(100),
+      highlightColor: colorScheme.onSecondaryFixedVariant.withAlpha(10),
+      splashColor: colorScheme.onSecondaryFixedVariant.withAlpha(10),
       hoverColor: Colors.transparent,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,

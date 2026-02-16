@@ -8,7 +8,7 @@ class MechanixTextInputThemeData
     extends ThemeExtension<MechanixTextInputThemeData> with Diagnosticable {
   const MechanixTextInputThemeData({
     this.labelTextStyle,
-    this.textStyle = const TextStyle(fontSize: 16),
+    this.textStyle = const TextStyle(fontSize: 18),
     this.hintTextStyle,
     this.fillColor,
     this.contentPadding = const EdgeInsets.all(16),
