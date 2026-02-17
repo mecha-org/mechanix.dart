@@ -136,15 +136,10 @@ class _MechanixMenuState extends State<MechanixMenu> {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   bool isClicked = false;
-  List<String> _selectedValues = [];
 
   @override
   void initState() {
     super.initState();
-    _selectedValues = widget.items
-        .where((item) => item.isSelected)
-        .map((item) => item.value)
-        .toList();
 
     widget.menuController?._setCallbacks(
       open: _openMenu,
@@ -175,9 +170,6 @@ class _MechanixMenuState extends State<MechanixMenu> {
   }
 
   void _handleSelectionChanged(List<String> newSelectedValues) {
-    setState(() {
-      _selectedValues = newSelectedValues;
-    });
     widget.onSelectionChanged?.call(newSelectedValues);
   }
 
@@ -191,7 +183,6 @@ class _MechanixMenuState extends State<MechanixMenu> {
         animationDuration: widget.animationDuration,
         dropdownPosition: widget.dropdownPosition,
         theme: widget.theme,
-        selectedValues: _selectedValues,
         onSelectionChanged: _handleSelectionChanged,
         separatorBuilder: widget.separatorBuilder,
         itemBuilder: widget.itemBuilder,
@@ -290,7 +281,6 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.animationDuration,
     required this.dropdownPosition,
     required this.theme,
-    required this.selectedValues,
     required this.onSelectionChanged,
     required this.separatorBuilder,
     required this.itemBuilder,
@@ -323,7 +313,6 @@ class _MechanixMenuContainer extends StatefulWidget {
   final Duration animationDuration;
   final DropdownPosition dropdownPosition;
   final MechanixMenuThemeData? theme;
-  final List<String> selectedValues;
   final bool isCustomBuilder;
   final int itemCount;
   final Function(List<String> selectedValues) onSelectionChanged;
@@ -732,48 +721,43 @@ class _MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return AbsorbPointer(
       absorbing: disabled,
-      child: Opacity(
-        opacity: 1,
-        child: Container(
-          child: Container(
-            height: theme.itemHeight,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? theme.selectedBackgroundColor
-                  : disabled
-                      ? theme.disabledBackgroundColor
-                      : theme.itemBackgroundColor,
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onTap,
-                child: Padding(
-                  padding: theme.itemPadding ?? EdgeInsets.all(0),
-                  child: Row(children: [
-                    if (leading != null)
-                      Padding(
-                        padding: leadingPadding,
-                        child: leading,
-                      ),
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: disabled
-                            ? theme.disabledTextStyle
-                                ?.copyWith(color: context.onSurfaceVariant)
-                            : theme.titleTextStyle
-                                ?.copyWith(color: context.onSurface),
-                      ),
-                    ),
-                    if (trailing != null)
-                      Padding(
-                        padding: trailingPadding,
-                        child: trailing,
-                      ),
-                  ]),
+      child: Container(
+        height: theme.itemHeight,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.selectedBackgroundColor
+              : disabled
+                  ? theme.disabledBackgroundColor
+                  : theme.itemBackgroundColor,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: theme.itemPadding ?? EdgeInsets.all(0),
+              child: Row(children: [
+                if (leading != null)
+                  Padding(
+                    padding: leadingPadding,
+                    child: leading,
+                  ),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: disabled
+                        ? theme.disabledTextStyle
+                            ?.copyWith(color: context.onSurfaceVariant)
+                        : theme.titleTextStyle
+                            ?.copyWith(color: context.onSurface),
+                  ),
                 ),
-              ),
+                if (trailing != null)
+                  Padding(
+                    padding: trailingPadding,
+                    child: trailing,
+                  ),
+              ]),
             ),
           ),
         ),
