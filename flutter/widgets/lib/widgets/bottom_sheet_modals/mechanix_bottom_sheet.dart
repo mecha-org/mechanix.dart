@@ -34,22 +34,23 @@ class MechanixBottomSheet extends StatelessWidget {
               padding: sheetTheme.padding,
               child: Stack(
                 children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                            context.surfaceContainerHigh),
-                        padding: WidgetStatePropertyAll(EdgeInsets.symmetric(
-                          vertical: 8,
-                        )),
-                      ),
-                      child: const Text("Close"),
-                    ).padRight(16),
-                  ),
+                  if (withCloseButton)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                              context.surfaceContainerHigh),
+                          padding: WidgetStatePropertyAll(EdgeInsets.symmetric(
+                            vertical: 8,
+                          )),
+                        ),
+                        child: const Text("Close"),
+                      ).padRight(16),
+                    ),
                   child.padTop(20),
                 ],
               ),
