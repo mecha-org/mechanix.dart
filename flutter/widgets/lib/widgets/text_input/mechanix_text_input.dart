@@ -277,6 +277,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                                 obscureText: widget.isPasswordField
                                     ? obscureText
                                     : false,
+                                obscuringCharacter: '*',
                                 style: theme.textStyle,
                                 cursorColor: widget.cursorColor,
                                 decoration:
@@ -295,6 +296,7 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                                 obscureText: widget.isPasswordField
                                     ? obscureText
                                     : false,
+                                obscuringCharacter: '*',
                                 style: theme.textStyle,
                                 decoration:
                                     _buildInputDecoration(context, theme),
@@ -350,10 +352,11 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
           ? widget.suffixIcon ??
               IconButton(
                 iconSize: 20,
-                icon: Icon(
-                  obscureText ? theme.obscureTextIcon : theme.visibleTextIcon,
-                  color: context.onSurface,
-                ),
+                icon: obscureText
+                    ? IconWidget.fromMechanix(
+                        iconPath: MechanixIconImages.eyeSlashIcon)
+                    : IconWidget.fromMechanix(
+                        iconPath: MechanixIconImages.eyeIcon),
                 onPressed: togglePasswordVisibility,
               ).padOnly(right: 16)
           : widget.isSearchField
@@ -368,7 +371,16 @@ class _MechanixTextInputState extends State<MechanixTextInput> {
                 iconHeight: 20,
                 iconWidth: 20,
               )
-          : widget.prefixIcon,
+          : widget.isPasswordField
+              ? widget.prefixIcon ??
+                  IconWidget.fromMechanix(
+                    iconPath: MechanixIconImages.backIcon,
+                    boxHeight: 24,
+                    boxWidth: 24,
+                    iconHeight: 20,
+                    iconWidth: 20,
+                  )
+              : widget.prefixIcon,
       focusedBorder: OutlineInputBorder(
         borderRadius: theme.borderRadius,
         borderSide: theme.focusedBorderSide ??

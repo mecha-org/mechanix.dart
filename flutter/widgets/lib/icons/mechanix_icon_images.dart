@@ -11,4 +11,7 @@ class MechanixIconImages {
   static const String successIcon = "assets/icons/success_icon.png";
   static const String errorIcon = "assets/icons/error_icon.png";
   static const String moreVertIcon = "assets/icons/three_dot_icon.png";
+  static const String eyeSlashIcon = "assets/icons/eye_slash.png";
+  static const String eyeIcon = "assets/icons/eye.png";
+  static const String lockIcon = "assets/icons/lock_icon.png";
 }

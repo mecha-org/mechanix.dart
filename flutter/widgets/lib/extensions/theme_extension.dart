@@ -200,8 +200,6 @@ extension MechanixMenuThemeDataExtensions on MechanixMenuThemeData {
     return copyWith(
       elevation: other?.elevation ?? elevation,
       borderRadius: other?.borderRadius ?? borderRadius,
-      dropdownWidth: other?.dropdownWidth ?? dropdownWidth,
-      dropdownHeight: other?.dropdownHeight ?? dropdownHeight,
       constraints: other?.constraints ?? constraints,
       itemBackgroundColor: other?.itemBackgroundColor ?? itemBackgroundColor,
       itemPadding: other?.itemPadding ?? itemPadding,

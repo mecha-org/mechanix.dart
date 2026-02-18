@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:widgets/extensions/theme_extension.dart';
 import 'package:widgets/mechanix.dart';
 import 'package:widgets/widgets/menu/constants/menu_positions.dart';
-import 'package:widgets/widgets/menu/constants/menu_selection_type.dart';
 import 'package:widgets/widgets/menu/constants/menu_transitions.dart';
 import 'package:widgets/widgets/menu/mechanix_menu_theme.dart';
 import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
 import 'package:widgets/widgets/menu/utils/menu_utils.dart';
+import 'package:widgets/widgets/wing/mechanix_wing.dart';
 
 class MechanixMenu extends StatefulWidget {
   const MechanixMenu({
@@ -21,7 +21,6 @@ class MechanixMenu extends StatefulWidget {
     this.openMenu,
     this.closeMenu,
     this.onSelectionChanged,
-    this.selectionType = MenuSelection.none,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
     this.addSemanticIndexes = true,
@@ -32,7 +31,6 @@ class MechanixMenu extends StatefulWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     this.hitTestBehavior = HitTestBehavior.opaque,
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
-    this.padding,
     this.primary,
     this.restorationId,
     this.reverse = false,
@@ -45,6 +43,8 @@ class MechanixMenu extends StatefulWidget {
     this.isMenuButtonRequired = true,
     this.isDisable = false,
     this.topTabWidth = 42,
+    this.dropdownSize = const Size(250, 300),
+    this.wingSize = 75,
     this.topTabRightSideShiftLength = 80,
   })  : itemCount = 0,
         itemBuilder = null,
@@ -60,7 +60,6 @@ class MechanixMenu extends StatefulWidget {
     this.openMenu,
     this.closeMenu,
     this.onSelectionChanged,
-    this.selectionType = MenuSelection.none,
     this.separatorBuilder,
     this.addAutomaticKeepAlives = true,
     this.addRepaintBoundaries = true,
@@ -73,7 +72,6 @@ class MechanixMenu extends StatefulWidget {
     this.keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual,
     this.reverse = false,
     this.scrollDirection = Axis.vertical,
-    this.padding,
     this.primary,
     this.restorationId,
     this.findChildIndexCallback,
@@ -86,6 +84,8 @@ class MechanixMenu extends StatefulWidget {
     required this.itemCount,
     this.topTabWidth = 42,
     this.topTabRightSideShiftLength = 80,
+    this.dropdownSize = const Size(250, 300),
+    this.wingSize = 75,
   })  : items = const [],
         isDisable = false,
         isCustomBuilder = true;
@@ -99,7 +99,6 @@ class MechanixMenu extends StatefulWidget {
   final VoidCallback? openMenu;
   final VoidCallback? closeMenu;
   final Function(List<String> selectedValues)? onSelectionChanged;
-  final MenuSelection selectionType;
   final bool isCustomBuilder;
   final int itemCount;
   final Widget? Function(BuildContext context, int index)? itemBuilder;
@@ -113,7 +112,6 @@ class MechanixMenu extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final HitTestBehavior hitTestBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  final EdgeInsetsGeometry? padding;
   final bool? primary;
   final String? restorationId;
   final bool reverse;
@@ -127,6 +125,8 @@ class MechanixMenu extends StatefulWidget {
   final bool isDisable;
   final double topTabWidth;
   final double topTabRightSideShiftLength;
+  final double wingSize;
+  final Size dropdownSize;
 
   @override
   State<MechanixMenu> createState() => _MechanixMenuState();
@@ -136,15 +136,10 @@ class _MechanixMenuState extends State<MechanixMenu> {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   bool isClicked = false;
-  List<String> _selectedValues = [];
 
   @override
   void initState() {
     super.initState();
-    _selectedValues = widget.items
-        .where((item) => item.isSelected)
-        .map((item) => item.value)
-        .toList();
 
     widget.menuController?._setCallbacks(
       open: _openMenu,
@@ -175,9 +170,6 @@ class _MechanixMenuState extends State<MechanixMenu> {
   }
 
   void _handleSelectionChanged(List<String> newSelectedValues) {
-    setState(() {
-      _selectedValues = newSelectedValues;
-    });
     widget.onSelectionChanged?.call(newSelectedValues);
   }
 
@@ -191,8 +183,6 @@ class _MechanixMenuState extends State<MechanixMenu> {
         animationDuration: widget.animationDuration,
         dropdownPosition: widget.dropdownPosition,
         theme: widget.theme,
-        selectionType: widget.selectionType,
-        selectedValues: _selectedValues,
         onSelectionChanged: _handleSelectionChanged,
         separatorBuilder: widget.separatorBuilder,
         itemBuilder: widget.itemBuilder,
@@ -207,7 +197,6 @@ class _MechanixMenuState extends State<MechanixMenu> {
         dragStartBehavior: widget.dragStartBehavior,
         hitTestBehavior: widget.hitTestBehavior,
         keyboardDismissBehavior: widget.keyboardDismissBehavior,
-        padding: widget.padding,
         primary: widget.primary,
         restorationId: widget.restorationId,
         reverse: widget.reverse,
@@ -215,8 +204,8 @@ class _MechanixMenuState extends State<MechanixMenu> {
         findChildIndexCallback: widget.findChildIndexCallback,
         offset: widget.offset,
         shrinkWrap: widget.shrinkWrap,
-        topTabWidth: widget.topTabWidth,
-        topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
+        wingSize: widget.wingSize,
+        dropdownSize: widget.dropdownSize,
       ),
     );
 
@@ -292,8 +281,6 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.animationDuration,
     required this.dropdownPosition,
     required this.theme,
-    required this.selectionType,
-    required this.selectedValues,
     required this.onSelectionChanged,
     required this.separatorBuilder,
     required this.itemBuilder,
@@ -308,7 +295,6 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.dragStartBehavior,
     required this.hitTestBehavior,
     required this.keyboardDismissBehavior,
-    required this.padding,
     required this.primary,
     required this.restorationId,
     required this.reverse,
@@ -316,8 +302,8 @@ class _MechanixMenuContainer extends StatefulWidget {
     required this.findChildIndexCallback,
     required this.offset,
     required this.shrinkWrap,
-    required this.topTabWidth,
-    required this.topTabRightSideShiftLength,
+    required this.wingSize,
+    required this.dropdownSize,
   });
 
   final LayerLink layerLink;
@@ -327,8 +313,6 @@ class _MechanixMenuContainer extends StatefulWidget {
   final Duration animationDuration;
   final DropdownPosition dropdownPosition;
   final MechanixMenuThemeData? theme;
-  final MenuSelection selectionType;
-  final List<String> selectedValues;
   final bool isCustomBuilder;
   final int itemCount;
   final Function(List<String> selectedValues) onSelectionChanged;
@@ -343,7 +327,6 @@ class _MechanixMenuContainer extends StatefulWidget {
   final DragStartBehavior dragStartBehavior;
   final HitTestBehavior hitTestBehavior;
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
-  final EdgeInsetsGeometry? padding;
   final bool? primary;
   final String? restorationId;
   final bool reverse;
@@ -351,8 +334,8 @@ class _MechanixMenuContainer extends StatefulWidget {
   final int? Function(Key key)? findChildIndexCallback;
   final bool shrinkWrap;
   final Offset offset;
-  final double topTabWidth;
-  final double topTabRightSideShiftLength;
+  final double wingSize;
+  final Size dropdownSize;
 
   @override
   State<_MechanixMenuContainer> createState() => _MechanixMenuContainerState();
@@ -385,12 +368,9 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     MenuTransitions.slideUp
   ];
 
-  List<String> _currentSelectedValues = [];
-
   @override
   void initState() {
     super.initState();
-    _currentSelectedValues = List.from(widget.selectedValues);
 
     _animationController = AnimationController(
       duration: widget.animationDuration,
@@ -443,88 +423,8 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
   void _handleItemTap(int index, MechanixMenuItemsType item) {
     if (item.disabled) return;
 
-    switch (widget.selectionType) {
-      case MenuSelection.single:
-        _handleSingleSelection(index.toString());
-        break;
-      case MenuSelection.multiple:
-        _handleMultiSelection(index.toString());
-        break;
-      case MenuSelection.none:
-        item.onTap?.call();
-        break;
-    }
-
-    if (widget.selectionType == MenuSelection.none) {
-      _handleClose();
-    } else {
-      item.onTap?.call();
-    }
-  }
-
-  void _handleSingleSelection(String value) {
-    setState(() {
-      if (_currentSelectedValues.contains(value)) {
-        _currentSelectedValues.remove(value);
-      } else {
-        _currentSelectedValues = [value];
-      }
-    });
-    widget.onSelectionChanged(_currentSelectedValues);
-  }
-
-  void _handleMultiSelection(String value) {
-    setState(() {
-      if (_currentSelectedValues.contains(value)) {
-        _currentSelectedValues.remove(value);
-      } else {
-        _currentSelectedValues.add(value);
-      }
-    });
-    widget.onSelectionChanged(_currentSelectedValues);
-  }
-
-  bool _isItemSelected(String item) {
-    return _currentSelectedValues.contains(item);
-  }
-
-  Widget? _buildTrailing(int index, MechanixMenuItemsType item, bool isSelected,
-      MechanixMenuThemeData theme) {
-    if (item.trailing != null) return item.trailing;
-
-    switch (widget.selectionType) {
-      case MenuSelection.single:
-        return Radio<bool>(
-          value: isSelected,
-          groupValue: true,
-          onChanged: item.disabled
-              ? null
-              : (value) {
-                  if (value != null) {
-                    _handleSingleSelection(index.toString());
-                  }
-                },
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-        );
-
-      case MenuSelection.multiple:
-        return Checkbox(
-          value: isSelected,
-          onChanged: item.disabled
-              ? null
-              : (value) {
-                  if (value != null) {
-                    _handleMultiSelection(index.toString());
-                  }
-                },
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: VisualDensity.compact,
-        );
-
-      case MenuSelection.none:
-        return null;
-    }
+    _handleClose();
+    item.onTap?.call();
   }
 
   Animation<Offset> _getSlideAnimation() {
@@ -602,45 +502,15 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     required Widget child,
     required MechanixMenuThemeData theme,
   }) {
-    // TODO: Revisit this code later
-
-    // Widget contentChild;
-
-    // // Apply custom shape if provided, otherwise use the existing borderRadius
-    // if (widget.customShape != null) {
-    //   contentChild = ClipPath(
-    //     clipper: widget.customShape,
-    //     // clipBehavior: Clip.none,
-    //     child: Material(
-    //       elevation: theme.elevation ?? 4,
-    //       // color: theme.itemBackgroundColor,
-    //       color: Colors.red,
-    //       child: child,
-    //     ),
-    //   );
-    // } else {
-    //   contentChild = Material(
-    //     elevation: theme.elevation ?? 4,
-    //     color: theme.itemBackgroundColor,
-    //     borderRadius: theme.borderRadius,
-    //     child: ClipRRect(
-    //       borderRadius: theme.borderRadius ?? BorderRadius.zero,
-    //       child: child,
-    //     ),
-    //   );
-    // }
-
     final contentChild = Material(
       type: MaterialType.transparency,
-      child: ClipPath(
-        clipper: FolderTabClipper(
-          topTabWidth: widget.topTabWidth,
-          topTabRightSideShiftLength: widget.topTabRightSideShiftLength,
+      child: InkWell(
+        child: MechanixWing(
+          wingWidth: widget.wingSize,
+          size: Size(widget.dropdownSize.width, widget.dropdownSize.height),
+          color: theme.decoration?.color ?? context.surfaceContainerHigh,
+          child: child,
         ),
-        child: Material(
-            color: theme.decoration?.color ?? context.surfaceContainerHigh,
-            child: InkWell(child: child)),
-        // child: Container(padding: const EdgeInsets.only(top: 20), child: child),
       ),
     );
 
@@ -717,7 +587,6 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
         dragStartBehavior: widget.dragStartBehavior,
         hitTestBehavior: widget.hitTestBehavior,
         keyboardDismissBehavior: widget.keyboardDismissBehavior,
-        padding: widget.padding,
         primary: widget.primary,
         restorationId: widget.restorationId,
         reverse: widget.reverse,
@@ -732,14 +601,13 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       itemCount: widget.items.length,
       itemBuilder: (context, index) {
         final MechanixMenuItemsType item = widget.items[index];
-        final bool isSelected = _isItemSelected(index.toString());
 
         return _MenuItem(
           theme: menuTheme,
           index: index,
           title: item.title,
           leading: item.leading,
-          trailing: _buildTrailing(index, item, isSelected, menuTheme),
+          trailing: item.trailing,
           onTap: () => _handleItemTap(index, item),
           onTapUp: item.onTapUp,
           onTapDown: item.onTapDown,
@@ -747,7 +615,6 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           titleTextStyle: item.titleTextStyle,
           disabled: item.disabled,
           isSelected: item.isSelected,
-          selectionType: widget.selectionType,
           leadingPadding: item.leadingPadding,
           trailingPadding: item.trailingPadding,
           handleClose: _handleClose,
@@ -763,71 +630,12 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
       dragStartBehavior: widget.dragStartBehavior,
       hitTestBehavior: widget.hitTestBehavior,
       keyboardDismissBehavior: widget.keyboardDismissBehavior,
-      padding: widget.padding,
       primary: widget.primary,
       restorationId: widget.restorationId,
       reverse: widget.reverse,
       scrollDirection: widget.scrollDirection,
       findChildIndexCallback: widget.findChildIndexCallback,
-      // separatorBuilder: widget.separatorBuilder ??
-      //     (context, index) => Divider(
-      //           color: context.outline,
-      //           thickness: 1,
-      //           height: 1,
-      //         ),
     );
-
-    // TODO: Revisit this code later
-
-    // return ListView.separated(
-    //   physics: const NeverScrollableScrollPhysics(),
-    //   itemCount: widget.items.length,
-    //   itemBuilder: (context, index) {
-    //     final MechanixMenuItemsType item = widget.items[index];
-    //     final bool isSelected = _isItemSelected(index.toString());
-
-    //     return _MenuItem(
-    //       theme: menuTheme,
-    //       index: index,
-    //       title: item.title,
-    //       leading: item.leading,
-    //       trailing: _buildTrailing(index, item, isSelected, menuTheme),
-    //       onTap: () => _handleItemTap(index, item),
-    //       onTapUp: item.onTapUp,
-    //       onTapDown: item.onTapDown,
-    //       onDoubleTap: item.onDoubleTap,
-    //       titleTextStyle: item.titleTextStyle,
-    //       disabled: item.disabled,
-    //       isSelected: item.isSelected,
-    //       selectionType: widget.selectionType,
-    //       leadingPadding: item.leadingPadding,
-    //       trailingPadding: item.trailingPadding,
-    //       handleClose: _handleClose,
-    //     );
-    //   },
-    //   shrinkWrap: widget.shrinkWrap,
-    //   addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
-    //   addRepaintBoundaries: widget.addRepaintBoundaries,
-    //   addSemanticIndexes: widget.addSemanticIndexes,
-    //   cacheExtent: widget.cacheExtent,
-    //   clipBehavior: widget.clipBehavior,
-    //   controller: widget.controller,
-    //   dragStartBehavior: widget.dragStartBehavior,
-    //   hitTestBehavior: widget.hitTestBehavior,
-    //   keyboardDismissBehavior: widget.keyboardDismissBehavior,
-    //   padding: widget.padding,
-    //   primary: widget.primary,
-    //   restorationId: widget.restorationId,
-    //   reverse: widget.reverse,
-    //   scrollDirection: widget.scrollDirection,
-    //   findChildIndexCallback: widget.findChildIndexCallback,
-    //   separatorBuilder: widget.separatorBuilder ??
-    //       (context, index) => Divider(
-    //             color: context.outline,
-    //             thickness: 1,
-    //             height: 1,
-    //           ),
-    // );
   }
 
   @override
@@ -854,8 +662,6 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
             offset: widget.offset,
             child: _buildAnimatedMenuContent(
               child: Container(
-                width: menuTheme.dropdownWidth,
-                height: menuTheme.dropdownHeight,
                 constraints: menuTheme.constraints,
                 padding: menuTheme.padding,
                 clipBehavior: menuTheme.clipBehavior,
@@ -864,8 +670,7 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
                 transformAlignment: menuTheme.transformAlignment,
                 alignment: menuTheme.alignment,
                 foregroundDecoration: menuTheme.foregroundDecoration,
-                decoration:
-                    menuTheme.decoration?.copyWith(color: Colors.transparent),
+                decoration: menuTheme.decoration,
                 child: getMenuBUilder(menuTheme),
               ),
               theme: menuTheme,
@@ -893,7 +698,6 @@ class _MenuItem extends StatelessWidget {
     required this.theme,
     required this.leadingPadding,
     required this.trailingPadding,
-    required this.selectionType,
     required this.handleClose,
   });
 
@@ -911,53 +715,49 @@ class _MenuItem extends StatelessWidget {
   final MechanixMenuThemeData theme;
   final EdgeInsets leadingPadding;
   final EdgeInsets trailingPadding;
-  final MenuSelection selectionType;
   final VoidCallback handleClose;
 
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
       absorbing: disabled,
-      // ignoring: disabled,
-      child: Opacity(
-        // opacity: disabled ? theme.disableOpacity ?? 0.5 : 1,
-        opacity: 1,
-        child: Container(
-          padding: index == 0 ? const EdgeInsets.only(top: 30) : null,
-          child: Container(
-            height: theme.itemHeight,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? theme.selectedBackgroundColor
-                  : disabled
-                      ? theme.disabledBackgroundColor
-                      : theme.itemBackgroundColor,
-            ),
-            child: InkWell(
-              onTap: disabled ? null : onTap,
-              child: Padding(
-                padding: theme.itemPadding ?? EdgeInsets.all(0),
-                child: Row(children: [
-                  if (leading != null)
-                    Padding(
-                      padding: leadingPadding,
-                      child: leading,
-                    ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: disabled
-                          ? theme.disabledTextStyle
-                          : theme.titleTextStyle,
-                    ),
+      child: Container(
+        height: theme.itemHeight,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? theme.selectedBackgroundColor
+              : disabled
+                  ? theme.disabledBackgroundColor
+                  : theme.itemBackgroundColor,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: theme.itemPadding ?? EdgeInsets.all(0),
+              child: Row(children: [
+                if (leading != null)
+                  Padding(
+                    padding: leadingPadding,
+                    child: leading,
                   ),
-                  if (trailing != null)
-                    Padding(
-                      padding: trailingPadding,
-                      child: trailing,
-                    ),
-                ]),
-              ),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: disabled
+                        ? theme.disabledTextStyle
+                            ?.copyWith(color: context.onSurfaceVariant)
+                        : theme.titleTextStyle
+                            ?.copyWith(color: context.onSurface),
+                  ),
+                ),
+                if (trailing != null)
+                  Padding(
+                    padding: trailingPadding,
+                    child: trailing,
+                  ),
+              ]),
             ),
           ),
         ),
@@ -993,196 +793,3 @@ class MechanixMenuController {
     _toggle = null;
   }
 }
-
-class FolderTabClipper extends CustomClipper<Path> {
-  const FolderTabClipper({
-    this.topTabWidth,
-    this.topTabRightSideShiftLength,
-  });
-
-  final double? topTabWidth;
-  final double? topTabRightSideShiftLength;
-
-  @override
-  Path getClip(Size size) {
-    const double radius = 8; // Outer rounded corners
-    const double tabH = 12; // Tab height
-    final double tabW = topTabWidth ?? 42; // Tab width
-    const double tabSlope = 12; // Small sloped curve
-    final double shift =
-        topTabRightSideShiftLength ?? 80; // Shift tab right by this amount
-
-    final Path p = Path();
-
-    // ----- Bottom-left corner -----
-    p.moveTo(radius, size.height);
-    p.quadraticBezierTo(0, size.height, 0, size.height - radius);
-
-    // ----- Left side up to tab start -----
-    p.lineTo(0, tabH + radius);
-
-    // ----- Slope into the tab (shift applied) -----
-    p.quadraticBezierTo(
-      0,
-      tabH,
-      tabSlope,
-      tabH,
-    );
-
-    // ----- Top of tab (shift applied) -----
-    p.lineTo(shift + tabW, tabH);
-
-    // ----- Tab end slope upward (shift applied) -----
-    p.quadraticBezierTo(
-      shift + tabW + tabSlope,
-      tabH,
-      shift + tabW + tabSlope,
-      tabH - tabSlope,
-    );
-
-    // ----- Connect into top bar (shift applied) -----
-    p.lineTo(shift + tabW + tabSlope, radius);
-    p.quadraticBezierTo(
-      shift + tabW + tabSlope,
-      0,
-      shift + tabW + tabSlope + radius,
-      0,
-    );
-
-    // ----- Top-right corner (UNCHANGED) -----
-    p.lineTo(size.width - radius, 0);
-    p.quadraticBezierTo(size.width, 0, size.width, radius);
-
-    // ----- Right side down (UNCHANGED) -----
-    p.lineTo(size.width, size.height - radius);
-    p.quadraticBezierTo(
-      size.width,
-      size.height,
-      size.width - radius,
-      size.height,
-    );
-
-    // ----- Bottom side (UNCHANGED) -----
-    p.lineTo(radius, size.height);
-
-    p.close();
-    return p;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
-// TODO: Revisit this code later
-
-// class MenuExactSvgShape extends CustomClipper<Path> {
-//   final double offsetX;
-//   final double offsetY;
-
-//   MenuExactSvgShape({
-//     this.offsetX = 0.0,
-//     this.offsetY = 0.0,
-//   });
-
-//   @override
-//   Path getClip(Size size) {
-//     final path = Path();
-
-//     // Use the actual size of the container
-//     final double width = size.width;
-//     final double height = size.height;
-
-//     // Calculate coordinates based on the actual size
-//     // Original proportions from your SVG
-//     final double startX = (18 / 306) * width + offsetX;
-//     final double startY = (270 / 286) * height + offsetY;
-//     final double endX = (288 / 306) * width + offsetX;
-//     // final double endY = (18 / 286) * height + offsetY;
-//     final double controlY1 = (38.0463 / 286) * height + offsetY;
-//     final double controlY2 = (33.6281 / 286) * height + offsetY;
-//     final double controlY3 = (30.0463 / 286) * height + offsetY;
-//     final double cornerX = (26 / 306) * width + offsetX;
-//     final double lineBreakX = (167.847 / 306) * width + offsetX;
-//     final double controlX1 = (170.505 / 306) * width + offsetX;
-//     final double controlX2 = (173.055 / 306) * width + offsetX;
-//     final double pointX1 = (174.931 / 306) * width + offsetX;
-//     final double pointY1 = (27.1038 / 286) * height + offsetY;
-//     final double pointX2 = (181.069 / 306) * width + offsetX;
-//     final double pointY2 = (20.9426 / 286) * height + offsetY;
-//     final double pointX3 = (182.945 / 306) * width + offsetX;
-//     final double pointY3 = (19.0589 / 286) * height + offsetY;
-//     final double pointX4 = (185.495 / 306) * width + offsetX;
-//     final double pointY4 = (18 / 286) * height + offsetY;
-//     final double pointX5 = (188.153 / 306) * width + offsetX;
-//     final double topX = (280 / 306) * width + offsetX;
-//     final double cornerRadiusX = (284.418 / 306) * width + offsetX;
-//     final double cornerY = (26 / 286) * height + offsetY;
-//     final double bottomRightY = (270 / 286) * height + offsetY;
-//     final double bottomY = (278 / 286) * height + offsetY;
-
-//     path.moveTo(startX, startY);
-//     path.lineTo(startX, controlY1);
-//     path.cubicTo(
-//       startX,
-//       controlY2,
-//       cornerX,
-//       controlY3,
-//       cornerX,
-//       controlY3,
-//     );
-//     path.lineTo(lineBreakX, controlY3);
-//     path.cubicTo(
-//       controlX1,
-//       controlY3,
-//       controlX2,
-//       pointY1,
-//       pointX1,
-//       pointY1,
-//     );
-//     path.lineTo(pointX2, pointY2);
-//     path.cubicTo(
-//       pointX3,
-//       pointY3,
-//       pointX4,
-//       pointY4,
-//       pointX5,
-//       pointY4,
-//     );
-//     path.lineTo(topX, pointY4);
-//     path.cubicTo(
-//       cornerRadiusX,
-//       pointY4,
-//       endX,
-//       cornerY,
-//       endX,
-//       cornerY,
-//     );
-//     path.lineTo(endX, bottomRightY);
-//     path.cubicTo(
-//       endX,
-//       bottomY,
-//       cornerRadiusX,
-//       bottomY,
-//       topX,
-//       bottomY,
-//     );
-//     path.lineTo(cornerX, bottomY);
-//     path.cubicTo(
-//       startX,
-//       bottomY,
-//       startX,
-//       bottomY,
-//       startX,
-//       startY,
-//     );
-//     path.close();
-
-//     return path;
-//   }
-
-//   @override
-//   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-//     return oldClipper is MenuExactSvgShape &&
-//         (oldClipper.offsetX != offsetX || oldClipper.offsetY != offsetY);
-//   }
-// }

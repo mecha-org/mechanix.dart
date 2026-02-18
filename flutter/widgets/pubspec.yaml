@@ -59,6 +59,9 @@ flutter:
     - assets/icons/success_icon.png
     - assets/icons/error_icon.png
     - assets/icons/three_dot_icon.png
+    - assets/icons/eye_slash.png
+    - assets/icons/eye.png
+    - assets/icons/lock_icon.png
 
   fonts:
     - family: Overused Grotesk

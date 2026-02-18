@@ -11,8 +11,8 @@ ThemeData createTheme(
 
   return theme.copyWith(
       splashFactory: const TouchOptimizedSplashFactory(),
-      highlightColor: colorScheme.surfaceContainerHigh.withAlpha(100),
-      splashColor: colorScheme.surfaceContainerHigh.withAlpha(100),
+      highlightColor: colorScheme.onSecondaryFixedVariant.withAlpha(10),
+      splashColor: colorScheme.onSecondaryFixedVariant.withAlpha(10),
       hoverColor: Colors.transparent,
       textTheme: createTextTheme(
         onSurface: colorScheme.onSurface,
@@ -211,6 +211,7 @@ ThemeData createDarkTheme({
     primary: themeColors.accent_300,
     primaryContainer: themeColors.accent_200,
     primaryFixed: themeColors.accent_500,
+    primaryFixedDim: themeColors.accent_0,
     // BACKGROUND
     secondary: themeColors.background_800,
     secondaryContainer: themeColors.background_700,
@@ -230,6 +231,7 @@ ThemeData createDarkTheme({
     onTertiaryFixedVariant: themeColors.foreground_100,
     onSecondaryContainer: themeColors.foreground_300,
     onInverseSurface: themeColors.foreground_600,
+    onTertiaryFixed: themeColors.foreground_400,
   );
 
   // primary: themeColors.accent_300, // rgb(181,103,0)

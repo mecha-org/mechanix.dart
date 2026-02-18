@@ -16,18 +16,21 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     this.buttonPadding = const EdgeInsets.all(0),
     this.elevation = 4,
     this.borderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.dropdownWidth,
-    this.dropdownHeight,
     this.constraints = const BoxConstraints(maxHeight: 400, maxWidth: 225),
     this.itemBackgroundColor,
-    this.itemPadding = const EdgeInsets.only(top: 11, bottom: 11, left: 16),
+    this.itemPadding = const EdgeInsets.only(
+      top: 10,
+      bottom: 10,
+      left: 16,
+      right: 16,
+    ),
     this.itemBorderRadius,
     this.itemHeight,
     this.disabledTextStyle = const TextStyle(),
     this.disabledBackgroundColor,
     this.selectedBackgroundColor,
-    this.titleTextStyle,
-    this.padding,
+    this.titleTextStyle = const TextStyle(),
+    this.padding = const EdgeInsets.only(top: 30),
     this.clipBehavior = Clip.none,
     this.margin,
     this.transform,
@@ -45,8 +48,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
   final double? elevation;
   final double? disableOpacity;
   final BorderRadius? borderRadius;
-  final double? dropdownWidth;
-  final double? dropdownHeight;
   final BoxConstraints? constraints;
   final Color? itemBackgroundColor;
   final EdgeInsets? itemPadding;
@@ -73,8 +74,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     EdgeInsetsGeometry? buttonPadding,
     double? elevation,
     BorderRadius? borderRadius,
-    double? dropdownWidth,
-    double? dropdownHeight,
     BoxConstraints? constraints,
     Color? itemBackgroundColor,
     EdgeInsets? itemPadding,
@@ -103,8 +102,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
           activeButtonDecoration ?? this.activeButtonDecoration,
       elevation: elevation ?? this.elevation,
       borderRadius: borderRadius ?? this.borderRadius,
-      dropdownWidth: dropdownWidth ?? this.dropdownWidth,
-      dropdownHeight: dropdownHeight ?? this.dropdownHeight,
       constraints: constraints ?? this.constraints,
       itemBackgroundColor: itemBackgroundColor ?? this.itemBackgroundColor,
       itemPadding: itemPadding ?? this.itemPadding,
@@ -146,8 +143,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       elevation: lerpDouble(elevation, o?.elevation, t),
       disableOpacity: lerpDouble(disableOpacity, o?.disableOpacity, t),
       borderRadius: BorderRadius.lerp(borderRadius, o?.borderRadius, t),
-      dropdownWidth: lerpDouble(dropdownWidth, o?.dropdownWidth, t),
-      dropdownHeight: lerpDouble(dropdownHeight, o?.dropdownHeight, t),
       constraints: constraints,
       itemBackgroundColor:
           Color.lerp(itemBackgroundColor, o?.itemBackgroundColor, t),
@@ -186,8 +181,7 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
     properties.add(DoubleProperty('elevation', elevation));
     properties.add(DoubleProperty('disableOpacity', disableOpacity));
     properties.add(DiagnosticsProperty('borderRadius', borderRadius));
-    properties.add(DoubleProperty('dropdownWidth', dropdownWidth));
-    properties.add(DoubleProperty('dropdownHeight', dropdownHeight));
+
     properties.add(DiagnosticsProperty('constraints', constraints));
     properties
         .add(DiagnosticsProperty('itemBackgroundColor', itemBackgroundColor));
@@ -221,8 +215,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
         activeButtonDecoration == other.activeButtonDecoration &&
         elevation == other.elevation &&
         borderRadius == other.borderRadius &&
-        dropdownWidth == other.dropdownWidth &&
-        dropdownHeight == other.dropdownHeight &&
         constraints == other.constraints &&
         itemBackgroundColor == other.itemBackgroundColor &&
         itemPadding == other.itemPadding &&
@@ -251,8 +243,6 @@ class MechanixMenuThemeData extends ThemeExtension<MechanixMenuThemeData>
       buttonPadding,
       elevation,
       borderRadius,
-      dropdownWidth,
-      dropdownHeight,
       constraints,
       itemBackgroundColor,
       itemPadding,

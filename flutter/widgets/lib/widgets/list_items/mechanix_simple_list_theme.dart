@@ -9,7 +9,7 @@ class MechanixSimpleListThemeData
   const MechanixSimpleListThemeData({
     this.backgroundColor,
     this.widgetRadius = const BorderRadius.all(Radius.circular(8)),
-    this.widgetMargin = const EdgeInsets.only(bottom: 40),
+    this.widgetMargin = const EdgeInsets.only(bottom: 36),
     this.itemRadius,
     this.dividerThickness = 1,
     this.dividerHeight = 1,
