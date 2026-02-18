@@ -13,7 +13,7 @@ class MechanixSectionListThemeData
     this.dividerHeight = 1,
     this.dividerColor,
     this.divider,
-    this.widgetPadding = const EdgeInsets.only(bottom: 40),
+    this.widgetPadding = const EdgeInsets.only(bottom: 36),
     this.titlePadding = const EdgeInsets.only(bottom: 8),
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 16),
     this.dividerPadding = const EdgeInsets.symmetric(horizontal: 20),
