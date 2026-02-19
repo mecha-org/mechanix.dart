@@ -16,7 +16,7 @@ class MechanixMenu extends StatefulWidget {
     this.menuButton,
     this.animationType = MenuTransitions.fade,
     this.animationDuration = const Duration(milliseconds: 600),
-    this.dropdownPosition = DropdownPosition.bottomCenter,
+    this.dropdownPosition = MenuDropdownPosition.bottom,
     this.theme,
     this.openMenu,
     this.closeMenu,
@@ -55,7 +55,7 @@ class MechanixMenu extends StatefulWidget {
     this.menuButton,
     this.animationType = MenuTransitions.fade,
     this.animationDuration = const Duration(milliseconds: 600),
-    this.dropdownPosition = DropdownPosition.bottomCenter,
+    this.dropdownPosition = MenuDropdownPosition.bottom,
     this.theme,
     this.openMenu,
     this.closeMenu,
@@ -94,7 +94,7 @@ class MechanixMenu extends StatefulWidget {
   final IconButton? menuButton;
   final MenuTransitions animationType;
   final Duration animationDuration;
-  final DropdownPosition dropdownPosition;
+  final MenuDropdownPosition dropdownPosition;
   final MechanixMenuThemeData? theme;
   final VoidCallback? openMenu;
   final VoidCallback? closeMenu;
@@ -134,6 +134,8 @@ class MechanixMenu extends StatefulWidget {
 
 class _MechanixMenuState extends State<MechanixMenu> {
   final LayerLink _layerLink = LayerLink();
+  final GlobalKey _targetKey = GlobalKey();
+
   OverlayEntry? _overlayEntry;
   bool isClicked = false;
 
@@ -174,6 +176,12 @@ class _MechanixMenuState extends State<MechanixMenu> {
   }
 
   void _showOptions(BuildContext context) {
+    final Offset smartOffset = calculateSmartOffset(
+      context: context,
+      menuSize: widget.dropdownSize,
+      position: widget.dropdownPosition,
+    );
+
     _overlayEntry = OverlayEntry(
       builder: (context) => _MechanixMenuContainer(
         layerLink: _layerLink,
@@ -202,7 +210,7 @@ class _MechanixMenuState extends State<MechanixMenu> {
         reverse: widget.reverse,
         scrollDirection: widget.scrollDirection,
         findChildIndexCallback: widget.findChildIndexCallback,
-        offset: widget.offset,
+        offset: smartOffset,
         shrinkWrap: widget.shrinkWrap,
         wingSize: widget.wingSize,
         dropdownSize: widget.dropdownSize,
@@ -220,9 +228,7 @@ class _MechanixMenuState extends State<MechanixMenu> {
     if (widget.closeMenu != null) {
       widget.closeMenu?.call();
     }
-    setState(() {
-      isClicked = false;
-    });
+    setState(() => isClicked = false);
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
@@ -236,6 +242,7 @@ class _MechanixMenuState extends State<MechanixMenu> {
       link: _layerLink,
       child: widget.isMenuButtonRequired
           ? Container(
+              key: _targetKey,
               height: menuTheme.buttonSize.height,
               width: menuTheme.buttonSize.width,
               decoration: isClicked ? menuTheme.activeButtonDecoration : null,
@@ -311,7 +318,7 @@ class _MechanixMenuContainer extends StatefulWidget {
   final List<MechanixMenuItemsType> items;
   final MenuTransitions animationType;
   final Duration animationDuration;
-  final DropdownPosition dropdownPosition;
+  final MenuDropdownPosition dropdownPosition;
   final MechanixMenuThemeData? theme;
   final bool isCustomBuilder;
   final int itemCount;
@@ -643,8 +650,6 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
     final menuTheme =
         MechanixMenuTheme.of(context).merge(widget.theme, context);
 
-    final anchors = getDropDownPosition(widget.dropdownPosition);
-
     return Stack(
       children: [
         Positioned.fill(
@@ -657,8 +662,8 @@ class _MechanixMenuContainerState extends State<_MechanixMenuContainer>
           child: CompositedTransformFollower(
             link: widget.layerLink,
             showWhenUnlinked: false,
-            followerAnchor: anchors.followerAnchor,
-            targetAnchor: anchors.targetAnchor,
+            targetAnchor: Alignment.topLeft,
+            followerAnchor: Alignment.topLeft,
             offset: widget.offset,
             child: _buildAnimatedMenuContent(
               child: Container(
