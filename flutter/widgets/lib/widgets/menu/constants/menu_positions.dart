@@ -9,3 +9,18 @@ enum DropdownPosition {
   bottomRight,
   bottomLeft,
 }
+
+enum MenuDropdownPosition {
+  left,
+  leftStart,
+  leftEnd,
+  top,
+  topStart,
+  topEnd,
+  right,
+  rightStart,
+  rightEnd,
+  bottom,
+  bottomStart,
+  bottomEnd,
+}
