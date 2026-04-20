@@ -64,15 +64,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MechanixTheme(
-      data: MechanixThemeData(
-        mechanixVariant: MechanixVariant.blue,
-        themeMode: ThemeMode.system,
-        useMaterial3: true,
-      ),
-      child: MaterialApp(
-        title: 'My Mechanix App',
-        home: HomePage(),
+    return MaterialApp(
+      title: 'My Mechanix App',
+      home: MechanixTheme(
+        data: MechanixThemeData(mechanixVariant: MechanixVariant.coral),
+        child: HomePage(),
       ),
     );
   }
