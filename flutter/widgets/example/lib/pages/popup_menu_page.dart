@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/mechanix.dart';
-import 'package:widgets/widgets/menu/constants/menu_selection_type.dart';
 import 'package:widgets/widgets/menu/constants/menu_transitions.dart';
 import 'package:widgets/widgets/menu/models/mechanix_menu_item.dart';
 
@@ -57,7 +56,6 @@ class _PopupMenuPageState extends State<PopupMenuPage> {
                 MechanixMenu.builder(
                   menuController: _menuController,
                   animationType: MenuTransitions.slideDown,
-                  selectionType: MenuSelection.single,
                   isMenuButtonRequired: false,
                   itemCount: 4,
                   itemBuilder: (context, index) {

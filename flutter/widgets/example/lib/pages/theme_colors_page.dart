@@ -41,10 +41,14 @@ class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
     final mechanixVariant =
         watchPropertyValue((ThemeToggle t) => t.mechanixVariant);
 
+    final mechanixThemeMode =
+        watchPropertyValue((ThemeToggle t) => t.themeMode);
+
     final colorSetting =
         ColorSetting(accentColor: mechanixVariant?.color ?? Colors.blue);
 
-    final ThemeColors themeColors = colorSetting.getThemeColor();
+    final ThemeColors themeColors =
+        colorSetting.getThemeColor(themeMode: mechanixThemeMode);
 
     final accents = [
       {"accent 0": themeColors.accent_0},
@@ -58,8 +62,6 @@ class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
       {"accent 800": themeColors.accent_800},
       {"accent 900": themeColors.accent_900},
       {"accent 1000": themeColors.accent_1000},
-      {"accent 1100": themeColors.accent_1100},
-      {"accent 1200": themeColors.accent_1200},
     ];
 
     final backgrounds = [
@@ -74,8 +76,6 @@ class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
       {"background 800": themeColors.background_800},
       {"background 900": themeColors.background_900},
       {"background 1000": themeColors.background_1000},
-      {"background 1100": themeColors.background_1100},
-      {"background 1200": themeColors.background_1200},
     ];
 
     final foregrounds = [
@@ -90,8 +90,6 @@ class MechanixThemeColorsPage extends StatelessWidget with WatchItMixin {
       {"foreground 800": themeColors.foreground_800},
       {"foreground 900": themeColors.foreground_900},
       {"foreground 1000": themeColors.foreground_1000},
-      {"foreground 1100": themeColors.foreground_1100},
-      {"foreground 1200": themeColors.foreground_1200},
     ];
 
     return Scaffold(
