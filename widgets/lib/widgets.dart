@@ -17,6 +17,7 @@ export 'src/theme/theme.dart';
 // Extensions
 export 'src/extensions/build_context.dart';
 export 'src/extensions/shape_extension.dart';
+export 'src/extensions/typography_extension.dart';
 
 // Components
 export 'src/components/button/button_style.dart';
