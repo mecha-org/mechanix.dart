@@ -61,10 +61,12 @@ abstract class MechanixTheme extends StatefulWidget {
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
   static ThemeData createTheme({required ColorScheme colorScheme}) {
+    final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      textTheme: createTextTheme(textColor: colorScheme.onSurface),
+      textTheme: textTheme,
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
@@ -214,6 +216,66 @@ abstract class MechanixTheme extends StatefulWidget {
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        border: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.primary, width: 3.0),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.0),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 3.0),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.onSurface, width: 1.0),
+        ),
+        labelStyle: textTheme.emphasized.labelLarge?.copyWith(
+          color: colorScheme.onSecondaryFixed,
+        ),
+        floatingLabelStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.primary,
+        ),
+        hintStyle: textTheme.emphasized.titleMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        helperStyle: textTheme.bodySmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+      ),
+      extensions: [
+        ShapeTheme.standard(),
+        CheckboxThemeDataConfig(
+          focusRingColor: colorScheme.outline,
+          focusRingWidth: 2.0,
+          focusRingRadius: 22.0,
+          showFocusIndicator: true,
+        ),
+      ],
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
