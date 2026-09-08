@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 import '../features/components/button_preview.dart';
+import '../features/components/checkbox_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -48,9 +49,7 @@ class _AppShellState extends State<AppShell> {
 
     if (!isDesktop) {
       return Scaffold(
-        appBar: AppBar(
-          title: Text(_appBarTitle(_selectedSection)),
-        ),
+        appBar: AppBar(title: Text(_appBarTitle(_selectedSection))),
         drawer: Drawer(
           backgroundColor: theme.colorScheme.surfaceContainerLow,
           child: SafeArea(
@@ -91,9 +90,7 @@ class _AppShellState extends State<AppShell> {
               ),
             ),
           ),
-          Expanded(
-            child: _MainContent(section: _selectedSection),
-          ),
+          Expanded(child: _MainContent(section: _selectedSection)),
         ],
       ),
     );
@@ -107,6 +104,8 @@ class _AppShellState extends State<AppShell> {
         return 'Theme Overview';
       case 'buttons':
         return 'Buttons';
+      case 'checkboxes':
+        return 'Checkboxes';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -134,6 +133,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'buttons':
         content = const ButtonPreview();
+        break;
+      case 'checkboxes':
+        content = const CheckboxPreview();
         break;
       case 'theme':
         content = const ThemePreview();
@@ -172,12 +174,7 @@ class _MainContent extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      body: ListView(
-        padding: const EdgeInsets.all(24),
-        children: [
-          content,
-        ],
-      ),
+      body: ListView(padding: const EdgeInsets.all(24), children: [content]),
     );
   }
 }

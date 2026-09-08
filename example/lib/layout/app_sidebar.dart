@@ -111,6 +111,12 @@ class AppSidebar extends StatelessWidget {
                 title: 'Buttons',
                 icon: Icons.smart_button_outlined,
               ),
+              _buildNavItem(
+                context,
+                id: 'checkboxes',
+                title: 'Checkboxes',
+                icon: Icons.check_box_outlined,
+              ),
             ],
           ),
         ),

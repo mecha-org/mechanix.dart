@@ -18,13 +18,22 @@ void main() {
       expect(MechanixTheme.dark, isA<ThemeData>());
       expect(MechanixColors.lightColorScheme, isA<ColorScheme>());
       expect(MechanixColors.darkColorScheme, isA<ColorScheme>());
-      expect(
-        const MechanixTheme(child: SizedBox()),
-        isA<MechanixThemeScope>(),
-      );
+      expect(const MechanixTheme(child: SizedBox()), isA<MechanixThemeScope>());
       expect(
         MechanixButton(label: 'Test', onPressed: () {}),
         isA<MechanixButton>(),
+      );
+      expect(
+        MechanixCheckbox(value: true, onChanged: (_) {}),
+        isA<MechanixCheckbox>(),
+      );
+      expect(const CheckboxThemeDataConfig(), isA<CheckboxThemeDataConfig>());
+      expect(
+        const MechanixCheckboxTheme(
+          data: CheckboxThemeDataConfig(),
+          child: SizedBox(),
+        ),
+        isA<MechanixCheckboxTheme>(),
       );
     },
   );
