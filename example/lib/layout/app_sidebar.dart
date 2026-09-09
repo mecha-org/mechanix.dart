@@ -123,6 +123,12 @@ class AppSidebar extends StatelessWidget {
                 title: 'Icon Buttons',
                 icon: Icons.info_outline_rounded,
               ),
+              _buildNavItem(
+                context,
+                id: 'snackbars',
+                title: 'Snackbars',
+                icon: Icons.chat_bubble_outline,
+              ),
             ],
           ),
         ),

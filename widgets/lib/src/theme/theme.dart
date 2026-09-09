@@ -254,6 +254,10 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
+      snackBarTheme: _createSnackBarTheme(
+        colorScheme,
+        createTextTheme(textColor: colorScheme.onSurface),
+      ),
       extensions: [
         ShapeTheme.standard(),
         CheckboxThemeDataConfig(
@@ -264,7 +268,38 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
+        MechanixSnackbarThemeData.standard(
+          colorScheme,
+          createTextTheme(textColor: colorScheme.onSurface),
+        ),
       ],
+    );
+  }
+
+  /// Creates a [SnackBarThemeData] configured with Mechanix specifications.
+  static SnackBarThemeData _createSnackBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    final snackbarTheme =
+        MechanixSnackbarThemeData.standard(colorScheme, textTheme);
+    return SnackBarThemeData(
+      backgroundColor: snackbarTheme.backgroundColor,
+      actionTextColor: snackbarTheme.actionColor,
+      closeIconColor: snackbarTheme.closeIconColor,
+      elevation: snackbarTheme.elevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: snackbarTheme.borderRadius ?? BorderRadius.circular(8.0),
+        side: BorderSide(
+          color: snackbarTheme.borderColor ?? Colors.transparent,
+          width: snackbarTheme.borderWidth ?? 1.0,
+        ),
+      ),
+      behavior: SnackBarBehavior.floating,
+      insetPadding: snackbarTheme.margin is EdgeInsets
+          ? snackbarTheme.margin as EdgeInsets
+          : snackbarTheme.margin?.resolve(TextDirection.ltr),
+      contentTextStyle: snackbarTheme.contentTextStyle,
     );
   }
 
@@ -280,7 +315,7 @@ abstract class MechanixTheme extends StatefulWidget {
       fillColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.disabled)) {
           if (states.contains(WidgetState.selected)) {
-            return colorScheme.onSurface;
+            return colorScheme.onSurface.withValues(alpha: 0.38);
           }
           return Colors.transparent;
         }
