@@ -617,8 +617,6 @@ class _SnackbarActionButton extends StatefulWidget {
 }
 
 class _SnackbarActionButtonState extends State<_SnackbarActionButton> {
-  bool _isHovered = false;
-  bool _isFocused = false;
   bool _haveTriggeredAction = false;
 
   void _handleTap() {
@@ -633,91 +631,23 @@ class _SnackbarActionButtonState extends State<_SnackbarActionButton> {
   Widget build(BuildContext context) {
     final isEnabled = widget.action.isEnabled;
 
-    final effectiveTextColor = isEnabled
-        ? widget.color
-        : (widget.action.disabledTextColor ??
-              widget.disabledTextColor ??
-              widget.color.withValues(alpha: 0.38));
-
-    final effectiveBgColor = isEnabled
-        ? (_isHovered
-              ? (widget.hoverColor ?? widget.color.withValues(alpha: 0.12))
-              : (widget.action.backgroundColor ?? Colors.transparent))
-        : (widget.action.disabledBackgroundColor ??
-              widget.disabledBackgroundColor ??
-              Colors.transparent);
-
-    final style =
-        (widget.textStyle ??
-                context.textTheme.labelLarge ??
-                const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: mechanixFontFamily,
-                ))
-            .copyWith(color: effectiveTextColor);
-
-    return FocusableActionDetector(
+    Widget button = MechanixButton.text(
+      onPressed: isEnabled ? _handleTap : null,
+      label: widget.action.label,
       focusNode: widget.action.focusNode,
       autofocus: widget.action.autofocus,
-      enabled: isEnabled,
-      onShowFocusHighlight: (v) => setState(() => _isFocused = v),
-      onShowHoverHighlight: (v) => setState(() => _isHovered = v),
-      actions: <Type, Action<Intent>>{
-        ActivateIntent: CallbackAction<ActivateIntent>(
-          onInvoke: (intent) => _handleTap(),
-        ),
-      },
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: isEnabled ? _handleTap : null,
-        child: Semantics(
-          button: true,
-          enabled: isEnabled,
-          label: widget.action.semanticLabel ?? widget.action.label,
-          child: MouseRegion(
-            cursor: isEnabled
-                ? SystemMouseCursors.click
-                : SystemMouseCursors.basic,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minWidth: 48.0,
-                minHeight: 48.0,
-              ),
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 6.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: effectiveBgColor,
-                    borderRadius: BorderRadius.circular(4.0),
-                    border: Border.all(
-                      color:
-                          (isEnabled && _isFocused && widget.showFocusIndicator)
-                          ? widget.focusBorderColor
-                          : Colors.transparent,
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Text(
-                    widget.action.label,
-                    style: style,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      size: ButtonSize.xSmall,
     );
+
+    if (widget.action.semanticLabel != null) {
+      button = Semantics(label: widget.action.semanticLabel, child: button);
+    }
+
+    return button;
   }
 }
 
-class _SnackbarCloseButton extends StatefulWidget {
+class _SnackbarCloseButton extends StatelessWidget {
   const _SnackbarCloseButton({
     required this.color,
     this.hoverColor,
@@ -733,69 +663,16 @@ class _SnackbarCloseButton extends StatefulWidget {
   final VoidCallback onPressed;
 
   @override
-  State<_SnackbarCloseButton> createState() => _SnackbarCloseButtonState();
-}
-
-class _SnackbarCloseButtonState extends State<_SnackbarCloseButton> {
-  bool _isHovered = false;
-  bool _isFocused = false;
-
-  @override
   Widget build(BuildContext context) {
     final tooltip = MaterialLocalizations.of(context).closeButtonTooltip;
 
-    return FocusableActionDetector(
-      onShowFocusHighlight: (v) => setState(() => _isFocused = v),
-      onShowHoverHighlight: (v) => setState(() => _isHovered = v),
-      actions: <Type, Action<Intent>>{
-        ActivateIntent: CallbackAction<ActivateIntent>(
-          onInvoke: (intent) => widget.onPressed(),
-        ),
-      },
-      child: Tooltip(
-        message: tooltip,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: widget.onPressed,
-          child: Semantics(
-            button: true,
-            label: tooltip,
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minWidth: 48.0,
-                  minHeight: 48.0,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 28.0,
-                    height: 28.0,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: _isHovered
-                          ? (widget.hoverColor ??
-                                widget.color.withValues(alpha: 0.12))
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(4.0),
-                      border: Border.all(
-                        color: (_isFocused && widget.showFocusIndicator)
-                            ? widget.focusBorderColor
-                            : Colors.transparent,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Icon(
-                      MechanixIcons.x,
-                      size: 18.0,
-                      color: widget.color,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+    return Tooltip(
+      message: tooltip,
+      child: MechanixIconButton.standard(
+        icon: MechanixIcons.x,
+        onPressed: onPressed,
+        size: IconButtonSize.xSmall,
+        foregroundColor: color,
       ),
     );
   }

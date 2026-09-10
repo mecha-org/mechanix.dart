@@ -497,11 +497,11 @@ void main() {
         ),
       );
 
-      final actionDetectorFinder = find.ancestor(
+      final actionButtonFinder = find.ancestor(
         of: find.text('ACTION'),
-        matching: find.byType(FocusableActionDetector),
+        matching: find.byType(MechanixButton),
       );
-      final size = tester.getSize(actionDetectorFinder);
+      final size = tester.getSize(actionButtonFinder);
       expect(size.width, greaterThanOrEqualTo(48.0));
       expect(size.height, greaterThanOrEqualTo(48.0));
     });
