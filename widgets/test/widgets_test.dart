@@ -35,6 +35,18 @@ void main() {
         ),
         isA<MechanixCheckboxTheme>(),
       );
+      expect(
+        MechanixRadio<int>(value: 1, onChanged: (_) {}),
+        isA<MechanixRadio<int>>(),
+      );
+      expect(const RadioThemeDataConfig(), isA<RadioThemeDataConfig>());
+      expect(
+        const MechanixRadioTheme(
+          data: RadioThemeDataConfig(),
+          child: SizedBox(),
+        ),
+        isA<MechanixRadioTheme>(),
+      );
     },
   );
 }
