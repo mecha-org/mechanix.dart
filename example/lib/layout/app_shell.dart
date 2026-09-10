@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
+import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/icon_button_preview.dart';
@@ -109,6 +110,8 @@ class _AppShellState extends State<AppShell> {
         return 'Checkboxes';
       case 'icon_buttons':
         return 'Icon Buttons';
+      case 'bottom_sheets':
+        return 'Bottom Sheets';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -142,6 +145,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'icon_buttons':
         content = const IconButtonPreview();
+        break;
+      case 'bottom_sheets':
+        content = const BottomSheetPreview();
         break;
       case 'theme':
         content = const ThemePreview();

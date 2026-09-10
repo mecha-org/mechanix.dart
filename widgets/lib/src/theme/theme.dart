@@ -61,6 +61,7 @@ abstract class MechanixTheme extends StatefulWidget {
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
   static ThemeData createTheme({required ColorScheme colorScheme}) {
+    final shapeTheme = ShapeTheme.standard();
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
@@ -254,8 +255,9 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
+      bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
       extensions: [
-        ShapeTheme.standard(),
+        shapeTheme,
         CheckboxThemeDataConfig(
           focusRingColor: colorScheme.outline,
           focusRingWidth: 2.0,
@@ -265,6 +267,26 @@ abstract class MechanixTheme extends StatefulWidget {
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
       ],
+    );
+  }
+
+  /// Creates a [BottomSheetThemeData] configured with Mechanix specifications.
+  static BottomSheetThemeData _createBottomSheetTheme(
+    ColorScheme colorScheme,
+    ShapeTheme shapeTheme,
+  ) {
+    return BottomSheetThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      modalBackgroundColor: colorScheme.surfaceContainerLow,
+      modalBarrierColor: colorScheme.scrim.withValues(alpha: 0.32),
+      elevation: 1.0,
+      modalElevation: 1.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: shapeTheme.none,
+      ),
+      showDragHandle: true,
+      dragHandleColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+      clipBehavior: Clip.antiAlias,
     );
   }
 
@@ -280,7 +302,7 @@ abstract class MechanixTheme extends StatefulWidget {
       fillColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.disabled)) {
           if (states.contains(WidgetState.selected)) {
-            return colorScheme.onSurface;
+            return colorScheme.onSurface.withValues(alpha: 0.38);
           }
           return Colors.transparent;
         }

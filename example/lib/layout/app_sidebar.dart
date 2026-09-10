@@ -123,6 +123,12 @@ class AppSidebar extends StatelessWidget {
                 title: 'Icon Buttons',
                 icon: Icons.info_outline_rounded,
               ),
+              _buildNavItem(
+                context,
+                id: 'bottom_sheets',
+                title: 'Bottom Sheets',
+                icon: Icons.vertical_align_bottom_rounded,
+              ),
             ],
           ),
         ),
