@@ -170,86 +170,31 @@ class MechanixSnackbar extends StatelessWidget {
   /// Custom inner padding override.
   final EdgeInsetsGeometry? padding;
 
-  /// Convenience presentation method that wraps this [MechanixSnackbar] in a
-  /// floating [SnackBar] and presents it via [ScaffoldMessenger.showSnackBar].
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> show(
+  /// Displays this [MechanixSnackbar] in a floating [SnackBar] using the nearest
+  /// [ScaffoldMessenger] from the given [context].
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> show(
     BuildContext context, {
-    Widget? message,
-    String? messageText,
-    MechanixSnackbarAction? action,
-    bool showCloseIcon = false,
-    VoidCallback? onClose,
-    SnackbarLayout layout = SnackbarLayout.auto,
-    MechanixSnackbarThemeData? theme,
     Duration duration = const Duration(seconds: 4),
     EdgeInsetsGeometry? margin,
     double? width,
+    DismissDirection dismissDirection = DismissDirection.down,
     SnackBarBehavior? behavior,
-    double? actionOverflowThreshold,
     bool? persist,
     VoidCallback? onVisible,
-    Clip clipBehavior = Clip.hardEdge,
+    Clip? clipBehavior,
     HitTestBehavior? hitTestBehavior,
-    DismissDirection dismissDirection = DismissDirection.down,
-    Color? backgroundColor,
-    Color? foregroundColor,
-    Color? borderColor,
-    BorderRadius? borderRadius,
-    double? elevation,
-    EdgeInsetsGeometry? padding,
   }) {
-    assert(
-      message != null || messageText != null,
-      'Either message or messageText must be provided to MechanixSnackbar.show',
-    );
-    assert(
-      margin == null || width == null,
-      'Cannot provide both a margin and a width to MechanixSnackbar.show',
-    );
-    assert(
-      behavior != SnackBarBehavior.fixed || (margin == null && width == null),
-      'Margin and width can only be used with SnackBarBehavior.floating',
-    );
-    assert(
-      actionOverflowThreshold == null ||
-          (actionOverflowThreshold >= 0.0 && actionOverflowThreshold <= 1.0),
-      'Action overflow threshold must be between 0.0 and 1.0 inclusive',
-    );
-
-    final snackbar = MechanixSnackbar(
-      message: message ?? Text(messageText!),
-      action: action,
-      showCloseIcon: showCloseIcon,
-      onClose: onClose,
-      layout: layout,
-      theme: theme,
-      width: width,
-      margin: margin,
-      behavior: behavior,
-      actionOverflowThreshold: actionOverflowThreshold,
-      persist: persist,
-      onVisible: onVisible,
-      clipBehavior: clipBehavior,
-      hitTestBehavior: hitTestBehavior,
-      backgroundColor: backgroundColor,
-      foregroundColor: foregroundColor,
-      borderColor: borderColor,
-      borderRadius: borderRadius,
-      elevation: elevation,
-      padding: padding,
-    );
-
     return ScaffoldMessenger.of(context).showSnackBar(
-      snackbar.toSnackBar(
+      toSnackBar(
         duration: duration,
         margin: margin,
         width: width,
+        dismissDirection: dismissDirection,
         behavior: behavior,
         persist: persist,
         onVisible: onVisible,
         clipBehavior: clipBehavior,
         hitTestBehavior: hitTestBehavior,
-        dismissDirection: dismissDirection,
       ),
     );
   }
@@ -526,8 +471,6 @@ class MechanixSnackbar extends StatelessWidget {
     return _SnackbarActionButton(
       action: act,
       color: actionColor,
-      disabledTextColor: effectiveTheme.disabledActionTextColor,
-      disabledBackgroundColor: effectiveTheme.disabledActionBackgroundColor,
       hoverColor: effectiveTheme.actionHoverColor,
       textStyle: effectiveTheme.actionTextStyle,
       showFocusIndicator: effectiveTheme.showFocusIndicator ?? true,
@@ -569,8 +512,6 @@ class MechanixSnackbar extends StatelessWidget {
         foregroundColor: theme!.foregroundColor,
         actionColor: theme!.actionColor,
         actionHoverColor: theme!.actionHoverColor,
-        disabledActionTextColor: theme!.disabledActionTextColor,
-        disabledActionBackgroundColor: theme!.disabledActionBackgroundColor,
         closeIconColor: theme!.closeIconColor,
         borderColor: theme!.borderColor,
         borderWidth: theme!.borderWidth,
@@ -595,8 +536,6 @@ class _SnackbarActionButton extends StatefulWidget {
   const _SnackbarActionButton({
     required this.action,
     required this.color,
-    this.disabledTextColor,
-    this.disabledBackgroundColor,
     this.hoverColor,
     this.textStyle,
     required this.showFocusIndicator,
@@ -605,8 +544,6 @@ class _SnackbarActionButton extends StatefulWidget {
 
   final MechanixSnackbarAction action;
   final Color color;
-  final Color? disabledTextColor;
-  final Color? disabledBackgroundColor;
   final Color? hoverColor;
   final TextStyle? textStyle;
   final bool showFocusIndicator;

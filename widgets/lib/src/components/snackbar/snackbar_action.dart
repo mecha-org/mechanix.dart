@@ -9,9 +9,7 @@ class MechanixSnackbarAction with Diagnosticable {
     required this.label,
     this.onPressed,
     this.textColor,
-    this.disabledTextColor,
     this.backgroundColor,
-    this.disabledBackgroundColor,
     this.focusNode,
     this.autofocus = false,
     this.semanticLabel,
@@ -27,14 +25,8 @@ class MechanixSnackbarAction with Diagnosticable {
   /// [ColorScheme.primary].
   final Color? textColor;
 
-  /// Optional custom text color for this action button when disabled.
-  final Color? disabledTextColor;
-
-  /// Optional background fill color for this action button when enabled.
+  /// Optional background fill color for this action button.
   final Color? backgroundColor;
-
-  /// Optional background fill color for this action button when disabled.
-  final Color? disabledBackgroundColor;
 
   /// An optional focus node for keyboard navigation.
   final FocusNode? focusNode;
@@ -55,9 +47,7 @@ class MechanixSnackbarAction with Diagnosticable {
         other.label == label &&
         other.onPressed == onPressed &&
         other.textColor == textColor &&
-        other.disabledTextColor == disabledTextColor &&
         other.backgroundColor == backgroundColor &&
-        other.disabledBackgroundColor == disabledBackgroundColor &&
         other.focusNode == focusNode &&
         other.autofocus == autofocus &&
         other.semanticLabel == semanticLabel;
@@ -68,9 +58,7 @@ class MechanixSnackbarAction with Diagnosticable {
     label,
     onPressed,
     textColor,
-    disabledTextColor,
     backgroundColor,
-    disabledBackgroundColor,
     focusNode,
     autofocus,
     semanticLabel,
@@ -81,11 +69,7 @@ class MechanixSnackbarAction with Diagnosticable {
     super.debugFillProperties(properties);
     properties.add(StringProperty('label', label));
     properties.add(ColorProperty('textColor', textColor));
-    properties.add(ColorProperty('disabledTextColor', disabledTextColor));
     properties.add(ColorProperty('backgroundColor', backgroundColor));
-    properties.add(
-      ColorProperty('disabledBackgroundColor', disabledBackgroundColor),
-    );
     properties.add(
       FlagProperty('autofocus', value: autofocus, ifTrue: 'autofocus'),
     );

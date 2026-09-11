@@ -13,8 +13,6 @@ class MechanixSnackbarThemeData
     this.foregroundColor,
     this.actionColor,
     this.actionHoverColor,
-    this.disabledActionTextColor,
-    this.disabledActionBackgroundColor,
     this.closeIconColor,
     this.borderColor,
     this.borderWidth,
@@ -42,12 +40,6 @@ class MechanixSnackbarThemeData
 
   /// Hover overlay color for the action button.
   final Color? actionHoverColor;
-
-  /// The text color of the action button when disabled.
-  final Color? disabledActionTextColor;
-
-  /// The background color of the action button when disabled.
-  final Color? disabledActionBackgroundColor;
 
   /// The color of the optional dismiss '✕' icon.
   final Color? closeIconColor;
@@ -134,10 +126,6 @@ class MechanixSnackbarThemeData
       foregroundColor: fg,
       actionColor: actionCol,
       actionHoverColor: actionCol.withValues(alpha: 0.12),
-      disabledActionTextColor: isDark
-          ? colorScheme.onSurface.withValues(alpha: 0.38)
-          : colorScheme.onInverseSurface.withValues(alpha: 0.38),
-      disabledActionBackgroundColor: Colors.transparent,
       closeIconColor: closeCol,
       borderColor: borderCol,
       borderWidth: 1.0,
@@ -161,8 +149,6 @@ class MechanixSnackbarThemeData
     Color? foregroundColor,
     Color? actionColor,
     Color? actionHoverColor,
-    Color? disabledActionTextColor,
-    Color? disabledActionBackgroundColor,
     Color? closeIconColor,
     Color? borderColor,
     double? borderWidth,
@@ -183,10 +169,6 @@ class MechanixSnackbarThemeData
       foregroundColor: foregroundColor ?? this.foregroundColor,
       actionColor: actionColor ?? this.actionColor,
       actionHoverColor: actionHoverColor ?? this.actionHoverColor,
-      disabledActionTextColor:
-          disabledActionTextColor ?? this.disabledActionTextColor,
-      disabledActionBackgroundColor:
-          disabledActionBackgroundColor ?? this.disabledActionBackgroundColor,
       closeIconColor: closeIconColor ?? this.closeIconColor,
       borderColor: borderColor ?? this.borderColor,
       borderWidth: borderWidth ?? this.borderWidth,
@@ -217,13 +199,6 @@ class MechanixSnackbarThemeData
       actionColor: Color.lerp(actionColor, other.actionColor, t),
       actionHoverColor:
           Color.lerp(actionHoverColor, other.actionHoverColor, t),
-      disabledActionTextColor:
-          Color.lerp(disabledActionTextColor, other.disabledActionTextColor, t),
-      disabledActionBackgroundColor: Color.lerp(
-        disabledActionBackgroundColor,
-        other.disabledActionBackgroundColor,
-        t,
-      ),
       closeIconColor: Color.lerp(closeIconColor, other.closeIconColor, t),
       borderColor: Color.lerp(borderColor, other.borderColor, t),
       borderWidth: lerpDouble(borderWidth, other.borderWidth, t),
@@ -262,8 +237,6 @@ class MechanixSnackbarThemeData
         other.foregroundColor == foregroundColor &&
         other.actionColor == actionColor &&
         other.actionHoverColor == actionHoverColor &&
-        other.disabledActionTextColor == disabledActionTextColor &&
-        other.disabledActionBackgroundColor == disabledActionBackgroundColor &&
         other.closeIconColor == closeIconColor &&
         other.borderColor == borderColor &&
         other.borderWidth == borderWidth &&
@@ -286,8 +259,6 @@ class MechanixSnackbarThemeData
         foregroundColor,
         actionColor,
         actionHoverColor,
-        disabledActionTextColor,
-        disabledActionBackgroundColor,
         closeIconColor,
         borderColor,
         borderWidth,
@@ -310,8 +281,6 @@ class MechanixSnackbarThemeData
     properties.add(ColorProperty('backgroundColor', backgroundColor));
     properties.add(ColorProperty('foregroundColor', foregroundColor));
     properties.add(ColorProperty('actionColor', actionColor));
-    properties.add(ColorProperty('disabledActionTextColor', disabledActionTextColor));
-    properties.add(ColorProperty('disabledActionBackgroundColor', disabledActionBackgroundColor));
     properties.add(ColorProperty('borderColor', borderColor));
     properties.add(DoubleProperty('borderWidth', borderWidth));
     properties.add(DiagnosticsProperty<BorderRadius>('borderRadius', borderRadius));

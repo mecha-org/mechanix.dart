@@ -122,34 +122,31 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                 MechanixButton.outline(
                   label: 'Simple Message',
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
+                    MechanixSnackbar.text(
                       width: 400,
-                      messageText: 'File deleted from your device.',
-                    );
+                      text: 'File deleted from your device.',
+                    ).show(context);
                   },
                 ),
                 MechanixButton.outline(
                   label: 'With Action',
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Connection lost. Offline mode active.',
+                    MechanixSnackbar.text(
+                      text: 'Connection lost. Offline mode active.',
                       action: MechanixSnackbarAction(
                         label: 'RETRY',
                         onPressed: () {
                           setState(() => _lastActionMessage = 'Retry invoked!');
                         },
                       ),
-                    );
+                    ).show(context);
                   },
                 ),
                 MechanixButton.outline(
                   label: 'With Action & Close',
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Photo archived to cloud album.',
+                    MechanixSnackbar.text(
+                      text: 'Photo archived to cloud album.',
                       action: MechanixSnackbarAction(
                         label: 'UNDO',
                         onPressed: () {
@@ -157,36 +154,36 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                         },
                       ),
                       showCloseIcon: true,
-                    );
+                    ).show(context);
                   },
                 ),
                 MechanixButton.outline(
                   label: 'Multiline (Inline Action)',
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'A software update is ready for installation. Reboot required to complete setup.',
+                    MechanixSnackbar.text(
+                      text:
+                          'A software update is ready for installation. Reboot required to complete setup.',
                       action: MechanixSnackbarAction(
                         label: 'REBOOT',
                         onPressed: () {},
                       ),
                       showCloseIcon: true,
-                    );
+                    ).show(context);
                   },
                 ),
                 MechanixButton.filled(
                   label: 'Stacked (Action Below)',
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
+                    MechanixSnackbar.text(
                       layout: SnackbarLayout.stacked,
-                      messageText: 'Changes could not be synchronized with server because local buffer is full.',
+                      text:
+                          'Changes could not be synchronized with server because local buffer is full.',
                       action: MechanixSnackbarAction(
                         label: 'MANAGE STORAGE',
                         onPressed: () {},
                       ),
                       showCloseIcon: true,
-                    );
+                    ).show(context);
                   },
                 ),
               ],

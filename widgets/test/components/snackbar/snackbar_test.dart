@@ -291,7 +291,7 @@ void main() {
       expect(nativeSnackBar.content, equals(snackbar));
     });
 
-    testWidgets('MechanixSnackbar.show displays snackbar via ScaffoldMessenger', (tester) async {
+    testWidgets('MechanixSnackbar.text(...).show displays snackbar via ScaffoldMessenger', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: MechanixTheme.dark,
@@ -300,15 +300,14 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Displayed via show()',
+                    MechanixSnackbar.text(
+                      text: 'Displayed via show()',
                       action: MechanixSnackbarAction(
                         label: 'CONFIRM',
                         onPressed: () {},
                       ),
                       showCloseIcon: true,
-                    );
+                    ).show(context);
                   },
                   child: const Text('Show'),
                 );
@@ -336,6 +335,42 @@ void main() {
       expect(find.text('Displayed via show()'), findsNothing);
     });
 
+    testWidgets('MechanixSnackbar(message: ...).show displays custom widget via ScaffoldMessenger', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    const MechanixSnackbar(
+                      message: Row(
+                        children: [
+                          Icon(Icons.info),
+                          SizedBox(width: 8),
+                          Text('Custom widget message'),
+                        ],
+                      ),
+                    ).show(context);
+                  },
+                  child: const Text('Show Custom'),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Custom widget message'), findsNothing);
+      await tester.tap(find.text('Show Custom'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.text('Custom widget message'), findsOneWidget);
+      expect(find.byIcon(Icons.info), findsOneWidget);
+    });
+
     testWidgets('tapping action dismisses enclosing snackbar from Scaffold', (tester) async {
       var actionFired = false;
 
@@ -347,16 +382,15 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Action dismiss test',
+                    MechanixSnackbar.text(
+                      text: 'Action dismiss test',
                       action: MechanixSnackbarAction(
                         label: 'UNDO',
                         onPressed: () {
                           actionFired = true;
                         },
                       ),
-                    );
+                    ).show(context);
                   },
                   child: const Text('Show'),
                 );
@@ -404,7 +438,7 @@ void main() {
       expect(nativeSnackBar.margin, isNull);
     });
 
-    testWidgets('MechanixSnackbar.show displays snackbar with width without crashing', (tester) async {
+    testWidgets('MechanixSnackbar.text(...).show displays snackbar with width without crashing', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           theme: MechanixTheme.dark,
@@ -413,11 +447,10 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
+                    MechanixSnackbar.text(
                       width: 400,
-                      messageText: 'Fixed width message',
-                    );
+                      text: 'Fixed width message',
+                    ).show(context);
                   },
                   child: const Text('Show Fixed Width'),
                 );
@@ -517,16 +550,15 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Re-entrancy test',
+                    MechanixSnackbar.text(
+                      text: 'Re-entrancy test',
                       action: MechanixSnackbarAction(
                         label: 'CLICK',
                         onPressed: () {
                           callCount++;
                         },
                       ),
-                    );
+                    ).show(context);
                   },
                   child: const Text('Show'),
                 );
@@ -574,6 +606,11 @@ void main() {
       await tester.tap(find.text('DISABLED'));
       await tester.pump();
       expect(find.text('DISABLED'), findsOneWidget);
+      final disabledText = tester.widget<Text>(find.text('DISABLED'));
+      expect(
+        disabledText.style?.color,
+        equals(MechanixColors.darkColorScheme.onSurface.withValues(alpha: 0.38)),
+      );
     });
 
     testWidgets('toSnackBar propagates persist flag correctly', (tester) async {
@@ -617,13 +654,12 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.show(
-                      context,
-                      messageText: 'Visible test',
+                    MechanixSnackbar.text(
+                      text: 'Visible test',
                       onVisible: () {
                         visibleFired = true;
                       },
-                    );
+                    ).show(context);
                   },
                   child: const Text('Show'),
                 );

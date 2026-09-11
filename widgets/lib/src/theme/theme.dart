@@ -254,6 +254,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
+      radioTheme: _createRadioTheme(colorScheme),
       snackBarTheme: _createSnackBarTheme(
         colorScheme,
         createTextTheme(textColor: colorScheme.onSurface),
@@ -268,10 +269,6 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
-        MechanixSnackbarThemeData.standard(
-          colorScheme,
-          createTextTheme(textColor: colorScheme.onSurface),
-        ),
       ],
     );
   }
@@ -281,8 +278,10 @@ abstract class MechanixTheme extends StatefulWidget {
     ColorScheme colorScheme,
     TextTheme textTheme,
   ) {
-    final snackbarTheme =
-        MechanixSnackbarThemeData.standard(colorScheme, textTheme);
+    final snackbarTheme = MechanixSnackbarThemeData.standard(
+      colorScheme,
+      textTheme,
+    );
     return SnackBarThemeData(
       backgroundColor: snackbarTheme.backgroundColor,
       actionTextColor: snackbarTheme.actionColor,
@@ -369,6 +368,36 @@ abstract class MechanixTheme extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
       ),
+    );
+  }
+
+  /// Creates a [RadioThemeData] configured with Mechanix specifications.
+  static RadioThemeData _createRadioTheme(ColorScheme colorScheme) {
+    return RadioThemeData(
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
+      fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return colorScheme.onSurface.withValues(alpha: 0.38);
+        }
+        if (states.contains(WidgetState.selected)) {
+          return colorScheme.primary;
+        }
+        if (states.contains(WidgetState.hovered) ||
+            states.contains(WidgetState.focused) ||
+            states.contains(WidgetState.pressed)) {
+          return colorScheme.onSurface;
+        }
+        return colorScheme.onSurfaceVariant;
+      }),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      splashRadius: 20.0,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
     );
   }
 
