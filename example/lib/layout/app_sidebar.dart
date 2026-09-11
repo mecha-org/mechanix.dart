@@ -141,6 +141,12 @@ class AppSidebar extends StatelessWidget {
                 title: 'Switch',
                 icon: Icons.toggle_on_outlined,
               ),
+              _buildNavItem(
+                context,
+                id: 'lists',
+                title: 'Lists',
+                icon: Icons.view_list_outlined,
+              ),
             ],
           ),
         ),

@@ -259,6 +259,7 @@ abstract class MechanixTheme extends StatefulWidget {
         colorScheme,
         createTextTheme(textColor: colorScheme.onSurface),
       ),
+      listTileTheme: _createListTileTheme(colorScheme),
       extensions: [
         ShapeTheme.standard(),
         CheckboxThemeDataConfig(
@@ -320,6 +321,11 @@ abstract class MechanixTheme extends StatefulWidget {
           }),
           focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
           focusBorderWidth: 1.0,
+        ),
+        ListTileThemeDataConfig(
+          focusBorderColor: colorScheme.outline,
+          focusBorderWidth: 3.0,
+          showFocusIndicator: true,
         ),
       ],
     );
@@ -449,6 +455,26 @@ abstract class MechanixTheme extends StatefulWidget {
       overlayColor: WidgetStateProperty.all(Colors.transparent),
       splashRadius: 20.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
+    );
+  }
+
+  /// Creates a [ListTileThemeData] configured with Mechanix specifications.
+  static ListTileThemeData _createListTileTheme(ColorScheme colorScheme) {
+    return ListTileThemeData(
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
+      tileColor: Colors.transparent,
+      selectedTileColor: colorScheme.primary.withValues(alpha: 0.12),
+      iconColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      horizontalTitleGap: 8.0,
+      minVerticalPadding: 8.0,
       visualDensity: VisualDensity.standard,
     );
   }

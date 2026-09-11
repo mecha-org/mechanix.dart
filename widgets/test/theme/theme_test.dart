@@ -85,6 +85,25 @@ void main() {
       expect(theme.extension<IconButtonThemeDataConfig>(), isNotNull);
     });
 
+    test('MechanixTheme.createTheme creates theme with listTileTheme and ListTileThemeDataConfig extension', () {
+      final theme = MechanixTheme.light;
+
+      expect(theme.listTileTheme, isNotNull);
+      expect(theme.extension<ListTileThemeDataConfig>(), isNotNull);
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.focusBorderColor,
+        equals(theme.colorScheme.outline),
+      );
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.focusBorderWidth,
+        equals(3.0),
+      );
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.showFocusIndicator,
+        isTrue,
+      );
+    });
+
     test('MechanixTheme.createTheme creates theme from custom colorScheme', () {
       const customColorScheme = ColorScheme.light(
         primary: Colors.indigo,
