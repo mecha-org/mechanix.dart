@@ -31,3 +31,8 @@ export 'src/components/snackbar/snackbar.dart';
 export 'src/components/switch/switch_style.dart';
 export 'src/components/switch/switch_theme.dart';
 export 'src/components/switch/switch.dart';
+export 'src/components/bottom_sheet/bottom_sheet.dart';
+export 'src/components/divider/divider.dart';
+export 'src/components/divider/divider_enums.dart';
+export 'src/components/badge/badge.dart';
+export 'src/components/badge/badge_enums.dart';
