@@ -256,6 +256,11 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
+      radioTheme: _createRadioTheme(colorScheme),
+      snackBarTheme: _createSnackBarTheme(
+        colorScheme,
+        createTextTheme(textColor: colorScheme.onSurface),
+      ),
       bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
       dividerTheme: _createDividerTheme(colorScheme),
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
@@ -269,7 +274,88 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
+        SwitchThemeDataConfig(
+          trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
+          handleColor: WidgetStateProperty.resolveWith((states) {
+            final isSelected = states.contains(WidgetState.selected);
+            if (states.contains(WidgetState.disabled)) {
+              return isSelected
+                  ? colorScheme.primary.withValues(alpha: 0.52)
+                  : colorScheme.onSecondaryFixedVariant.withValues(alpha: 0.16);
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return isSelected
+                  ? colorScheme.primaryFixed
+                  : colorScheme.onSurfaceVariant;
+            }
+            if (states.contains(WidgetState.hovered)) {
+              return isSelected
+                  ? colorScheme.primary
+                  : colorScheme.onSecondaryFixedVariant;
+            }
+            return isSelected
+                ? colorScheme.primary
+                : colorScheme.onSecondaryFixedVariant;
+          }),
+          handleBorder: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return BorderSide.none;
+            }
+            final isSelected = states.contains(WidgetState.selected);
+            if (states.contains(WidgetState.hovered)) {
+              return BorderSide(
+                color: isSelected
+                    ? colorScheme.onPrimary.withValues(alpha: 0.16)
+                    : colorScheme.primary.withValues(alpha: 0.16),
+                width: 2.0,
+              );
+            }
+            return BorderSide.none;
+          }),
+          textColor: WidgetStateProperty.resolveWith((states) {
+            final isSelected = states.contains(WidgetState.selected);
+            if (states.contains(WidgetState.disabled)) {
+              return isSelected
+                  ? colorScheme.onPrimary.withValues(alpha: 0.16)
+                  : colorScheme.onSecondaryContainer.withValues(alpha: 0.16);
+            }
+            return isSelected
+                ? colorScheme.onPrimary
+                : colorScheme.onSecondaryContainer;
+          }),
+          focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
+          focusBorderWidth: 1.0,
+        ),
       ],
+    );
+  }
+
+  /// Creates a [SnackBarThemeData] configured with Mechanix specifications.
+  static SnackBarThemeData _createSnackBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    final snackbarTheme = MechanixSnackbarThemeData.standard(
+      colorScheme,
+      textTheme,
+    );
+    return SnackBarThemeData(
+      backgroundColor: snackbarTheme.backgroundColor,
+      actionTextColor: snackbarTheme.actionColor,
+      closeIconColor: snackbarTheme.closeIconColor,
+      elevation: snackbarTheme.elevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: snackbarTheme.borderRadius ?? BorderRadius.circular(8.0),
+        side: BorderSide(
+          color: snackbarTheme.borderColor ?? Colors.transparent,
+          width: snackbarTheme.borderWidth ?? 1.0,
+        ),
+      ),
+      behavior: SnackBarBehavior.floating,
+      insetPadding: snackbarTheme.margin is EdgeInsets
+          ? snackbarTheme.margin as EdgeInsets
+          : snackbarTheme.margin?.resolve(TextDirection.ltr),
+      contentTextStyle: snackbarTheme.contentTextStyle,
     );
   }
 
@@ -384,6 +470,36 @@ abstract class MechanixTheme extends StatefulWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
       ),
+    );
+  }
+
+  /// Creates a [RadioThemeData] configured with Mechanix specifications.
+  static RadioThemeData _createRadioTheme(ColorScheme colorScheme) {
+    return RadioThemeData(
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
+      fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return colorScheme.onSurface.withValues(alpha: 0.38);
+        }
+        if (states.contains(WidgetState.selected)) {
+          return colorScheme.primary;
+        }
+        if (states.contains(WidgetState.hovered) ||
+            states.contains(WidgetState.focused) ||
+            states.contains(WidgetState.pressed)) {
+          return colorScheme.onSurface;
+        }
+        return colorScheme.onSurfaceVariant;
+      }),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      splashRadius: 20.0,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
     );
   }
 

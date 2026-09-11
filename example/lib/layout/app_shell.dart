@@ -7,6 +7,9 @@ import '../features/components/button_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
 import '../features/components/icon_button_preview.dart';
+import '../features/components/radio_preview.dart';
+import '../features/components/snackbar_preview.dart';
+import '../features/components/switch_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -121,6 +124,12 @@ class _AppShellState extends State<AppShell> {
         return 'Checkboxes';
       case 'icon_buttons':
         return 'Icon Buttons';
+      case 'radio_buttons':
+        return 'Radio Buttons';
+      case 'snackbars':
+        return 'Snackbars';
+      case 'switch':
+        return 'Switch';
       case 'bottom_sheets':
         return 'Bottom Sheets';
       case 'dividers':
@@ -165,6 +174,9 @@ class _MainContent extends StatelessWidget {
       'bottom_sheets' => (const BottomSheetPreview(), true),
       'dividers' => (const DividerPreview(), true),
       'badges' => (const BadgePreview(), true),
+      'radio_buttons' => (const RadioPreview(), true),
+      'snackbars' => (const SnackbarPreview(), true),
+      'switch' => (const SwitchPreview(), true),
       'theme' => (const ThemePreview(), false),
       _ => (
         Center(

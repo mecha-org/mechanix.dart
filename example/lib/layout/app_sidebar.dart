@@ -125,6 +125,24 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
+                id: 'radio_buttons',
+                title: 'Radio Buttons',
+                icon: Icons.radio_button_checked_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'snackbars',
+                title: 'Snackbars',
+                icon: Icons.chat_bubble_outline,
+              ),
+              _buildNavItem(
+                context,
+                id: 'switch',
+                title: 'Switch',
+                icon: Icons.toggle_on_outlined,
+              ),
+              _buildNavItem(
+                context,
                 id: 'bottom_sheets',
                 title: 'Bottom Sheets',
                 icon: Icons.vertical_align_bottom_rounded,

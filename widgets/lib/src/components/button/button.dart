@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
+
 export 'button_enums.dart';
 export 'button_size.dart';
 
@@ -387,6 +388,13 @@ class MechanixButton extends StatelessWidget {
     final iconWidget = _buildIcon(theme, sizeSpec);
     final textWidget = _buildText(context, theme, sizeSpec);
 
+    if (iconWidget == null && textWidget != null) {
+      return textWidget;
+    }
+    if (iconWidget != null && textWidget == null) {
+      return iconWidget;
+    }
+
     final children = <Widget>[];
 
     if (iconWidget != null) {
@@ -398,7 +406,9 @@ class MechanixButton extends StatelessWidget {
     }
 
     if (textWidget != null) {
-      children.add(textWidget);
+      children.add(
+        textWidget is Flexible ? textWidget : Flexible(child: textWidget),
+      );
     }
 
     return Row(
@@ -431,7 +441,12 @@ class MechanixButton extends StatelessWidget {
     if (label != null) {
       final baseStyle = theme.textStyle ?? sizeSpec.labelTextStyle;
       final defaultColor = DefaultTextStyle.of(context).style.color;
-      return Text(label!, style: baseStyle.copyWith(color: defaultColor));
+      return Text(
+        label!,
+        style: baseStyle.copyWith(color: defaultColor),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
     }
     return null;
   }
