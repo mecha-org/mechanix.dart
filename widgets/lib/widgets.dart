@@ -26,3 +26,7 @@ export 'src/components/checkbox/checkbox_theme.dart';
 export 'src/components/checkbox/checkbox.dart';
 export 'src/components/icon_button/icon_button.dart';
 export 'src/components/bottom_sheet/bottom_sheet.dart';
+export 'src/components/divider/divider.dart';
+export 'src/components/divider/divider_enums.dart';
+export 'src/components/badge/badge.dart';
+export 'src/components/badge/badge_enums.dart';

@@ -517,5 +517,82 @@ void main() {
       // Sheet re-rendered dynamically to dark brightness without being reopened
       expect(find.text('Brightness: Brightness.dark'), findsOneWidget);
     });
+
+    testWidgets('standalone MechanixBottomSheet widget supports drag gesture without assertion failure', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.light,
+          home: Scaffold(
+            body: MechanixBottomSheet(
+              enableDrag: true,
+              builder: (context) => const SizedBox(
+                height: 200,
+                child: Center(child: Text('Standalone Draggable Sheet')),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Standalone Draggable Sheet'), findsOneWidget);
+
+      // Drag downwards
+      await tester.drag(find.text('Standalone Draggable Sheet'), const Offset(0, 150));
+      await tester.pumpAndSettle();
+
+      // Verify no exception was thrown during drag
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('showModal with avoidKeyboard pads for view insets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.light,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () {
+                  MechanixBottomSheet.showModal(
+                    context: context,
+                    avoidKeyboard: true,
+                    builder: (context) => const SizedBox(
+                      height: 200,
+                      child: Text('Keyboard Aware Sheet'),
+                    ),
+                  );
+                },
+                child: const Text('Open Modal'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open Modal'));
+      await tester.pumpAndSettle();
+      expect(find.text('Keyboard Aware Sheet'), findsOneWidget);
+
+      // Simulate keyboard opening with 300px viewInsets bottom
+      tester.view.devicePixelRatio = 1.0;
+      tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+      addTearDown(() {
+        tester.view.resetDevicePixelRatio();
+        tester.view.resetViewInsets();
+      });
+      await tester.pumpAndSettle();
+
+      // Find padding wrapping the sheet content
+      final paddingFinder = find.ancestor(
+        of: find.text('Keyboard Aware Sheet'),
+        matching: find.byType(Padding),
+      );
+      expect(paddingFinder, findsWidgets);
+      final paddingWidget = tester.widget<Padding>(paddingFinder.first);
+      expect(paddingWidget.padding, const EdgeInsets.only(bottom: 300));
+    });
   });
 }

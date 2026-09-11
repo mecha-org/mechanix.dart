@@ -129,6 +129,18 @@ class AppSidebar extends StatelessWidget {
                 title: 'Bottom Sheets',
                 icon: Icons.vertical_align_bottom_rounded,
               ),
+              _buildNavItem(
+                context,
+                id: 'dividers',
+                title: 'Dividers',
+                icon: Icons.horizontal_rule_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'badges',
+                title: 'Badges',
+                icon: Icons.mark_chat_unread_outlined,
+              ),
             ],
           ),
         ),

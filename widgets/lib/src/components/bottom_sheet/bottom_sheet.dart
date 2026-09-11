@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Wraps Flutter's native [BottomSheet] and provides static presentation methods:
 /// - [showModal] for modal presentation with scrim backdrop and drag dismissal.
 /// - [show] for standard persistent bottom sheet presentation anchored to a [Scaffold].
-class MechanixBottomSheet extends StatelessWidget {
+class MechanixBottomSheet extends StatefulWidget {
   /// Creates a Mechanix bottom sheet widget.
   const MechanixBottomSheet({
     super.key,
@@ -33,6 +33,9 @@ class MechanixBottomSheet extends StatelessWidget {
   final VoidCallback? onClosing;
 
   /// Animation controller that drives the entrance and exit animations.
+  ///
+  /// If null and [enableDrag] is true, [MechanixBottomSheet] creates and manages
+  /// an internal animation controller to support drag physics.
   final AnimationController? animationController;
 
   /// Whether the sheet can be dismissed or resized by dragging.
@@ -71,7 +74,8 @@ class MechanixBottomSheet extends StatelessWidget {
   /// Box constraints applied to the sheet.
   ///
   /// Defaults to null, resolving to 640dp on desktop for modal sheets via
-  /// framework M3 defaults while allowing persistent sheets to remain full-width.
+  /// framework M3 defaults while allowing persistent sheets to remain full-width
+  /// unless explicitly constrained.
   final BoxConstraints? constraints;
 
   /// Callback called when a drag gesture begins.
@@ -89,7 +93,7 @@ class MechanixBottomSheet extends StatelessWidget {
   /// - Square edge with zero corner radius ([ShapeTheme.none]).
   /// - Centered drag handle.
   /// - 640dp responsive desktop max-width constraint.
-  /// - Full keyboard and safe-area inset protection.
+  /// - Full keyboard and safe-area inset protection via [avoidKeyboard].
   static Future<T?> showModal<T>({
     required BuildContext context,
     required WidgetBuilder builder,
@@ -98,6 +102,7 @@ class MechanixBottomSheet extends StatelessWidget {
     bool isDismissible = true,
     bool enableDrag = true,
     bool useSafeArea = true,
+    bool avoidKeyboard = true,
     Color? backgroundColor,
     Color? barrierColor,
     String? barrierLabel,
@@ -111,9 +116,24 @@ class MechanixBottomSheet extends StatelessWidget {
     bool useRootNavigator = false,
     AnimationStyle? sheetAnimationStyle,
   }) {
+    WidgetBuilder effectiveBuilder = builder;
+    if (avoidKeyboard) {
+      effectiveBuilder = (BuildContext sheetContext) {
+        final bottomInset = MediaQuery.viewInsetsOf(sheetContext).bottom;
+        final content = builder(sheetContext);
+        if (bottomInset > 0) {
+          return Padding(
+            padding: EdgeInsets.only(bottom: bottomInset),
+            child: content,
+          );
+        }
+        return content;
+      };
+    }
+
     return showModalBottomSheet<T>(
       context: context,
-      builder: builder,
+      builder: effectiveBuilder,
       showDragHandle: showDragHandle,
       isScrollControlled: isScrollControlled,
       isDismissible: isDismissible,
@@ -138,6 +158,9 @@ class MechanixBottomSheet extends StatelessWidget {
   ///
   /// Unlike [showModal], a standard bottom sheet coexists with the main application UI,
   /// displays no modal scrim, and does not block interaction with the underlying content.
+  ///
+  /// On wide desktop displays, pass [constraints] (e.g. `BoxConstraints(maxWidth: 640)`)
+  /// to constrain the sheet width if full-width layout is not desired.
   static PersistentBottomSheetController show({
     required BuildContext context,
     required WidgetBuilder builder,
@@ -163,23 +186,64 @@ class MechanixBottomSheet extends StatelessWidget {
   }
 
   @override
+  State<MechanixBottomSheet> createState() => _MechanixBottomSheetState();
+}
+
+class _MechanixBottomSheetState extends State<MechanixBottomSheet>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _internalAnimationController;
+
+  AnimationController? get _effectiveAnimationController =>
+      widget.animationController ?? _internalAnimationController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.animationController == null && widget.enableDrag) {
+      _internalAnimationController = BottomSheet.createAnimationController(this)
+        ..value = 1.0;
+    }
+  }
+
+  @override
+  void didUpdateWidget(MechanixBottomSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animationController != null &&
+        _internalAnimationController != null) {
+      _internalAnimationController?.dispose();
+      _internalAnimationController = null;
+    } else if (widget.animationController == null &&
+        _internalAnimationController == null &&
+        widget.enableDrag) {
+      _internalAnimationController = BottomSheet.createAnimationController(this)
+        ..value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _internalAnimationController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BottomSheet(
-      animationController: animationController,
-      enableDrag: enableDrag,
-      showDragHandle: showDragHandle,
-      dragHandleColor: dragHandleColor,
-      dragHandleSize: dragHandleSize,
-      onDragStart: onDragStart,
-      onDragEnd: onDragEnd,
-      backgroundColor: backgroundColor,
-      shadowColor: shadowColor,
-      elevation: elevation,
-      shape: shape,
-      clipBehavior: clipBehavior,
-      constraints: constraints,
-      onClosing: onClosing ?? () {},
-      builder: builder,
+      animationController: _effectiveAnimationController,
+      enableDrag: widget.enableDrag,
+      showDragHandle: widget.showDragHandle,
+      dragHandleColor: widget.dragHandleColor,
+      dragHandleSize: widget.dragHandleSize,
+      onDragStart: widget.onDragStart,
+      onDragEnd: widget.onDragEnd,
+      backgroundColor: widget.backgroundColor,
+      shadowColor: widget.shadowColor,
+      elevation: widget.elevation,
+      shape: widget.shape,
+      clipBehavior: widget.clipBehavior,
+      constraints: widget.constraints,
+      onClosing: widget.onClosing ?? () {},
+      builder: widget.builder,
     );
   }
 }
