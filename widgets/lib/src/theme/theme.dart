@@ -267,15 +267,6 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
       ),
-      extensions: [
-        ShapeTheme.standard(),
-        CheckboxThemeDataConfig(
-          focusRingColor: colorScheme.outline,
-          focusRingWidth: 2.0,
-          focusRingRadius: 22.0,
-          showFocusIndicator: true,
-        ),
-      ],
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
