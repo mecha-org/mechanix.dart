@@ -25,7 +25,6 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.automaticallyImplyLeading = true,
     this.title,
     this.supportingText,
-    this.subtitle,
     this.actions,
     this.bottom,
     this.elevation,
@@ -86,10 +85,9 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingWidth,
     this.titleTextStyle,
     this.actionsPadding,
+    this.supportingText,
+    this.supportingTextStyle,
   }) : variant = AppBarVariant.small,
-       supportingText = null,
-       subtitle = null,
-       supportingTextStyle = null,
        searchWidget = null,
        searchHint = null,
        searchController = null,
@@ -131,10 +129,9 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leadingWidth,
     this.titleTextStyle,
     this.actionsPadding,
+    this.supportingText,
+    this.supportingTextStyle,
   }) : variant = AppBarVariant.medium,
-       supportingText = null,
-       subtitle = null,
-       supportingTextStyle = null,
        searchWidget = null,
        searchHint = null,
        searchController = null,
@@ -152,8 +149,7 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Creates a large two-row flexible [MechanixAppBar].
   ///
-  /// Height is 120 dp by default (title only), or 152 dp when [supportingText]
-  /// or [subtitle] is provided.
+  /// Height is 120 dp by default (title only), or 152 dp when [supportingText] is provided
   ///
   /// Features an extra-large display title below navigation/action icons
   /// using [TextTheme.displayMedium].
@@ -163,7 +159,6 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.automaticallyImplyLeading = true,
     this.title,
     this.supportingText,
-    this.subtitle,
     this.actions,
     this.bottom,
     this.elevation,
@@ -234,7 +229,6 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : variant = AppBarVariant.search,
        title = null,
        supportingText = null,
-       subtitle = null,
        supportingTextStyle = null,
        centerTitle = false,
        titleSpacing = null,
@@ -251,9 +245,6 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Secondary text or widget displayed beneath the [title] in large variants.
   final Widget? supportingText;
-
-  /// An alias for [supportingText].
-  final Widget? subtitle;
 
   /// Text style applied to [supportingText] in large variants.
   final TextStyle? supportingTextStyle;
@@ -476,10 +467,41 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
             config.smallTitleTextStyle ??
             textTheme.headlineSmall?.copyWith(color: effectiveFg);
 
+        final effectiveSupportingTextStyle =
+            supportingTextStyle ??
+            config.smallSupportingTextStyle ??
+            textTheme.labelMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            );
+
+        final titleWidget = supportingText == null
+            ? title
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: effectiveCenterTitle
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle(
+                    style: effectiveTitleStyle ?? const TextStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    child: title ?? const SizedBox.shrink(),
+                  ),
+                  const SizedBox(height: 2),
+                  DefaultTextStyle(
+                    style: effectiveSupportingTextStyle ?? const TextStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    child: supportingText!,
+                  ),
+                ],
+              );
+
         appBarWidget = AppBar(
           leading: leading,
           automaticallyImplyLeading: automaticallyImplyLeading,
-          title: title,
+          title: titleWidget,
           actions: actions,
           actionsPadding: effectiveActionsPadding,
           bottom: bottom,
@@ -505,8 +527,15 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
             config.mediumTitleTextStyle ??
             textTheme.headlineMedium!.copyWith(color: effectiveFg);
 
-        final totalHeight = toolbarHeight ?? 112.0;
+        final totalHeight =
+            toolbarHeight ?? (supportingText != null ? 136.0 : 112.0);
+
         final mediumTitleHeight = totalHeight - 56.0;
+
+        final effectiveSupportingTextStyle =
+            supportingTextStyle ??
+            config.mediumSupportingTextStyle ??
+            textTheme.labelLarge!.copyWith(color: colorScheme.onSurfaceVariant);
 
         final titleWidget = Container(
           height: mediumTitleHeight,
@@ -518,17 +547,31 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: effectiveCenterTitle
               ? Alignment.bottomCenter
               : AlignmentDirectional.bottomStart,
-          child: DefaultTextStyle(
-            style: effectiveTitleStyle,
-            textAlign: effectiveCenterTitle
-                ? TextAlign.center
-                : TextAlign.start,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            child: Semantics(
-              header: true,
-              child: title ?? const SizedBox.shrink(),
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: effectiveCenterTitle
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
+            children: [
+              DefaultTextStyle(
+                style: effectiveTitleStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                child: Semantics(
+                  header: true,
+                  child: title ?? const SizedBox.shrink(),
+                ),
+              ),
+              if (supportingText != null) ...[
+                const SizedBox(height: 8),
+                DefaultTextStyle(
+                  style: effectiveSupportingTextStyle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  child: supportingText!,
+                ),
+              ],
+            ],
           ),
         );
 
@@ -579,8 +622,18 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
             config.largeTitleTextStyle ??
             textTheme.displayMedium!.copyWith(color: effectiveFg);
 
-        final totalHeight = toolbarHeight ?? 120.0;
+        final totalHeight =
+            toolbarHeight ?? (supportingText != null ? 152.0 : 120.0);
+
         final largeTitleHeight = totalHeight - 56.0;
+
+        final effectiveSupportingTextStyle =
+            supportingTextStyle ??
+            config.largeSupportingTextStyle ??
+            textTheme.titleMedium!.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            );
+
         final titleWidget = Container(
           height: largeTitleHeight,
           padding: EdgeInsetsDirectional.only(
@@ -591,17 +644,34 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
           alignment: effectiveCenterTitle
               ? Alignment.bottomCenter
               : AlignmentDirectional.bottomStart,
-          child: DefaultTextStyle(
-            style: effectiveTitleStyle,
-            textAlign: effectiveCenterTitle
-                ? TextAlign.center
-                : TextAlign.start,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            child: Semantics(
-              header: true,
-              child: title ?? const SizedBox.shrink(),
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: effectiveCenterTitle
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
+            children: [
+              DefaultTextStyle(
+                style: effectiveTitleStyle,
+                textAlign: effectiveCenterTitle
+                    ? TextAlign.center
+                    : TextAlign.start,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                child: Semantics(
+                  header: true,
+                  child: title ?? const SizedBox.shrink(),
+                ),
+              ),
+              if (supportingText != null) ...[
+                const SizedBox(height: 8),
+                DefaultTextStyle(
+                  style: effectiveSupportingTextStyle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  child: supportingText!,
+                ),
+              ],
+            ],
           ),
         );
 

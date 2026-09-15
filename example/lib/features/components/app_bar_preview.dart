@@ -33,6 +33,11 @@ class AppBarPreview extends StatelessWidget {
 
         // 6. Bottom Content
         _buildBottomSection(context),
+        const SizedBox(height: 32),
+
+        // 7. Supporting Text (Subtitle)
+        _buildSupportingTextSection(context),
+        const SizedBox(height: 32),
       ],
     );
   }
@@ -157,8 +162,12 @@ class AppBarPreview extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final isDesktop = MediaQuery.sizeOf(context).width >= 900;
 
-    final appBar = _buildAppBarPreview(context, item.variant, item.centerTitle);
-
+    final appBar = _buildAppBarPreview(
+      context,
+      item.variant,
+      item.centerTitle,
+      item.showSupportingText,
+    );
     if (isDesktop) {
       return Padding(
         padding: const EdgeInsets.all(20),
@@ -224,6 +233,7 @@ class AppBarPreview extends StatelessWidget {
     BuildContext context,
     AppBarVariant variant,
     bool centerTitle,
+    bool showSupportingText,
   ) {
     switch (variant) {
       case AppBarVariant.small:
@@ -231,6 +241,9 @@ class AppBarPreview extends StatelessWidget {
           primary: false,
           centerTitle: centerTitle,
           title: const Text('Settings'),
+          supportingText: showSupportingText
+              ? const Text('Manage your device settings')
+              : null,
           leading: MechanixIconButton.standard(
             icon: Icons.arrow_back,
             onPressed: () {},
@@ -248,6 +261,9 @@ class AppBarPreview extends StatelessWidget {
         return MechanixAppBar.medium(
           primary: false,
           title: const Text('Settings'),
+          supportingText: showSupportingText
+              ? const Text('Manage your device settings')
+              : null,
           leading: MechanixIconButton.standard(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {},
@@ -268,6 +284,9 @@ class AppBarPreview extends StatelessWidget {
         return MechanixAppBar.large(
           primary: false,
           title: const Text('Settings'),
+          supportingText: showSupportingText
+              ? const Text('Manage your device settings')
+              : null,
           leading: MechanixIconButton.standard(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {},
@@ -624,6 +643,73 @@ class AppBarPreview extends StatelessWidget {
       ],
     );
   }
+
+  // --- SECTION 7: SUPPORTING TEXT ---
+  Widget _buildSupportingTextSection(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final items = [
+      _AppBarVariantItem(
+        title: 'Small',
+        description: 'Small app bar with supporting text',
+        variant: AppBarVariant.small,
+        showSupportingText: true,
+      ),
+      _AppBarVariantItem(
+        title: 'Small (Centered)',
+        description: 'Small centered app bar with supporting text',
+        variant: AppBarVariant.small,
+        centerTitle: true,
+        showSupportingText: true,
+      ),
+      _AppBarVariantItem(
+        title: 'Medium',
+        description: 'Medium app bar with supporting text',
+        variant: AppBarVariant.medium,
+        showSupportingText: true,
+      ),
+      _AppBarVariantItem(
+        title: 'Large',
+        description: 'Large app bar with supporting text',
+        variant: AppBarVariant.large,
+        showSupportingText: true,
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Supporting Text (Subtitle)',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          elevation: 0,
+          color: colorScheme.surfaceContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: Column(
+            children: [
+              for (int i = 0; i < items.length; i++) ...[
+                if (i > 0)
+                  Divider(
+                    height: 1,
+                    color: colorScheme.outlineVariant.withValues(alpha: 0.6),
+                  ),
+                _buildVariantRow(context, items[i]),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class _AppBarVariantItem {
@@ -631,11 +717,13 @@ class _AppBarVariantItem {
   final String description;
   final AppBarVariant variant;
   final bool centerTitle;
+  final bool showSupportingText;
 
   const _AppBarVariantItem({
     required this.title,
     required this.description,
     required this.variant,
     this.centerTitle = false,
+    this.showSupportingText = false,
   });
 }

@@ -19,7 +19,9 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
     this.titleSpacing,
     this.toolbarHeight,
     this.smallTitleTextStyle,
+    this.smallSupportingTextStyle,
     this.mediumTitleTextStyle,
+    this.mediumSupportingTextStyle,
     this.largeTitleTextStyle,
     this.largeSupportingTextStyle,
     this.searchHintTextStyle,
@@ -61,9 +63,13 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
   /// Defaults to [TextTheme.headlineSmall].
   final TextStyle? smallTitleTextStyle;
 
+  final TextStyle? smallSupportingTextStyle;
+
   /// Text style applied to the title label in medium flexible app bar variants.
   /// Defaults to [TextTheme.headlineMedium].
   final TextStyle? mediumTitleTextStyle;
+
+  final TextStyle? mediumSupportingTextStyle;
 
   /// Text style applied to the title label in large flexible app bar variants.
   /// Defaults to [TextTheme.displayMedium].
@@ -109,13 +115,19 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
       smallTitleTextStyle: textTheme.headlineSmall?.copyWith(
         color: colorScheme.onSurface,
       ),
+      smallSupportingTextStyle: textTheme.labelMedium?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+      ),
       mediumTitleTextStyle: textTheme.headlineMedium?.copyWith(
         color: colorScheme.onSurface,
+      ),
+      mediumSupportingTextStyle: textTheme.labelLarge?.copyWith(
+        color: colorScheme.onSurfaceVariant,
       ),
       largeTitleTextStyle: textTheme.displayMedium?.copyWith(
         color: colorScheme.onSurface,
       ),
-      largeSupportingTextStyle: textTheme.bodyMedium?.copyWith(
+      largeSupportingTextStyle: textTheme.titleMedium?.copyWith(
         color: colorScheme.onSurfaceVariant,
       ),
       searchHintTextStyle: textTheme.bodyLarge?.copyWith(
