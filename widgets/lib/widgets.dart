@@ -19,6 +19,9 @@ export 'src/extensions/build_context.dart';
 export 'src/extensions/shape_extension.dart';
 
 // Components
+export 'src/components/app_bar/app_bar.dart';
+export 'src/components/app_bar/app_bar_enums.dart';
+export 'src/components/app_bar/app_bar_theme.dart';
 export 'src/components/button/button_style.dart';
 export 'src/components/button/button_theme.dart';
 export 'src/components/button/button.dart';
