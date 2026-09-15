@@ -145,7 +145,7 @@ class AppSidebar extends StatelessWidget {
                 context,
                 id: 'app_bar',
                 title: 'App Bar',
-                icon: Icons.title_rounded,
+                icon: Icons.web_asset_rounded,
               ),
             ],
           ),

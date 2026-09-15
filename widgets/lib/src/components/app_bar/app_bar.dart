@@ -352,9 +352,10 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
       case AppBarVariant.small:
         baseHeight = toolbarHeight ?? 64.0;
       case AppBarVariant.medium:
-        baseHeight = toolbarHeight ?? 112.0;
+        baseHeight = toolbarHeight ?? (supportingText != null ? 136.0 : 112.0);
+
       case AppBarVariant.large:
-        baseHeight = toolbarHeight ?? 120.0;
+        baseHeight = toolbarHeight ?? (supportingText != null ? 152.0 : 120.0);
       case AppBarVariant.search:
         baseHeight = toolbarHeight ?? 64.0;
     }
