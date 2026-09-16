@@ -1,3 +1,4 @@
+import 'package:example/features/components/app_bar_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
@@ -125,6 +126,8 @@ class _AppShellState extends State<AppShell> {
         return 'Inputs';
       case 'cards':
         return 'Cards';
+      case 'app_bar':
+        return 'App Bar';
       default:
         return 'Mechanix UI';
     }
@@ -169,6 +172,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'theme':
         content = const ThemePreview();
+        break;
+      case 'app_bar':
+        content = const AppBarPreview();
         break;
       default:
         content = Center(

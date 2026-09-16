@@ -62,10 +62,13 @@ abstract class MechanixTheme extends StatefulWidget {
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
   static ThemeData createTheme({required ColorScheme colorScheme}) {
     final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+    final appBarTheme = _createAppBarTheme(colorScheme, textTheme);
+
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: textTheme,
+      appBarTheme: appBarTheme,
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
@@ -260,6 +263,7 @@ abstract class MechanixTheme extends StatefulWidget {
       navigationBarTheme: _createNavigationBarTheme(colorScheme, textTheme),
       extensions: [
         ShapeTheme.standard(),
+        AppBarThemeDataConfig.standard(colorScheme, textTheme),
         CheckboxThemeDataConfig(
           focusRingColor: colorScheme.outline,
           focusRingWidth: 2.0,
@@ -322,6 +326,28 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         NavigationBarThemeDataConfig.standard(colorScheme, textTheme),
       ],
+    );
+  }
+
+  /// Creates an [AppBarTheme] configured with Mechanix specifications.
+  static AppBarTheme _createAppBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    final config = AppBarThemeDataConfig.standard(colorScheme, textTheme);
+    return AppBarTheme(
+      backgroundColor: config.backgroundColor,
+      foregroundColor: config.foregroundColor,
+      elevation: config.elevation,
+      scrolledUnderElevation: config.scrolledUnderElevation,
+      shadowColor: config.shadowColor,
+      surfaceTintColor: config.surfaceTintColor,
+      centerTitle: config.centerTitle,
+      titleSpacing: config.titleSpacing,
+      toolbarHeight: config.toolbarHeight,
+      titleTextStyle: config.smallTitleTextStyle,
+      iconTheme: config.iconTheme,
+      actionsIconTheme: config.actionsIconTheme,
     );
   }
 
