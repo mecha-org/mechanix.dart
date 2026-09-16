@@ -7,6 +7,7 @@ import '../features/components/icon_button_preview.dart';
 import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
 import '../features/components/switch_preview.dart';
+import '../features/components/navigation_bar_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -118,6 +119,8 @@ class _AppShellState extends State<AppShell> {
         return 'Snackbars';
       case 'switch':
         return 'Switch';
+      case 'navigation_bar':
+        return 'Navigation Bar';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -160,6 +163,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'switch':
         content = const SwitchPreview();
+        break;
+      case 'navigation_bar':
+        content = const NavigationBarPreview();
         break;
       case 'theme':
         content = const ThemePreview();

@@ -31,3 +31,5 @@ export 'src/components/snackbar/snackbar.dart';
 export 'src/components/switch/switch_style.dart';
 export 'src/components/switch/switch_theme.dart';
 export 'src/components/switch/switch.dart';
+export 'src/components/navigation_bar/navigation_bar.dart';
+export 'src/components/navigation_bar/navigation_bar_theme.dart';
