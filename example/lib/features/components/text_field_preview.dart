@@ -21,16 +21,16 @@ class TextFieldPreview extends StatelessWidget {
           SizedBox(height: 32),
           MechanixTextField.outlined(labelText: 'Enter your name'),
           // 2. Interactive Playground
-          // _PlaygroundSection(),
-          // SizedBox(height: 48),
+          _PlaygroundSection(),
+          SizedBox(height: 48),
 
           // 3. Reference Design Matrix (Mirroring the reference image)
-          // _ReferenceMatrixSection(),
-          // SizedBox(height: 48),
+          _ReferenceMatrixSection(),
+          SizedBox(height: 48),
 
-          // // 4. Form Validation Example
-          // _FormExampleSection(),
-          // SizedBox(height: 48),
+          // 4. Form Validation Example
+          _FormExampleSection(),
+          SizedBox(height: 48),
         ],
       ),
     );
