@@ -170,6 +170,23 @@ void main() {
       expect(find.text('Field cannot be empty'), findsNothing);
     });
 
+    testWidgets('MechanixTextFormField displays errorText directly',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixTextFormField(
+              labelText: 'Field with error',
+              errorText: 'Server validation failed',
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Server validation failed'), findsOneWidget);
+    });
+
     testWidgets('respects scoped MechanixTextFieldTheme overrides',
         (WidgetTester tester) async {
       const customFill = Color(0xFF112233);
@@ -180,7 +197,7 @@ void main() {
           home: const Scaffold(
             body: MechanixTextFieldTheme(
               data: TextFieldThemeDataConfig(
-                fillColor: const WidgetStatePropertyAll(customFill),
+                fillColor: WidgetStatePropertyAll(customFill),
               ),
               child: MechanixTextField.filled(
                 labelText: 'Themed Field',
@@ -230,6 +247,42 @@ void main() {
 
       final focusedBorder = border.resolve({WidgetState.focused});
       expect(focusedBorder.borderSide.color, focusedBorderColor);
+    });
+
+    testWidgets('resolves prefixIconColor and suffixIconColor independently', (
+      WidgetTester tester,
+    ) async {
+      const customPrefix = Color(0xFF11AA22);
+      const customSuffix = Color(0xFFCC3344);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixTextField(
+              prefixIcon: Icon(Icons.search),
+              suffixIcon: Icon(Icons.clear),
+              theme: TextFieldThemeDataConfig(
+                prefixIconColor: customPrefix,
+                suffixIconColor: customSuffix,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      final resolvedPrefix = WidgetStateProperty.resolveAs(
+        textField.decoration?.prefixIconColor,
+        <WidgetState>{},
+      );
+      final resolvedSuffix = WidgetStateProperty.resolveAs(
+        textField.decoration?.suffixIconColor,
+        <WidgetState>{},
+      );
+
+      expect(resolvedPrefix, customPrefix);
+      expect(resolvedSuffix, customSuffix);
     });
   });
 }

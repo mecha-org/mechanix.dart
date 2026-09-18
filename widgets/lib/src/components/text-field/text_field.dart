@@ -70,7 +70,6 @@ class MechanixTextField extends StatelessWidget {
     this.label,
     this.hintText,
     this.supportingText,
-    this.helperText,
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
@@ -139,7 +138,6 @@ class MechanixTextField extends StatelessWidget {
     this.label,
     this.hintText,
     this.supportingText,
-    this.helperText,
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
@@ -208,7 +206,6 @@ class MechanixTextField extends StatelessWidget {
     this.label,
     this.hintText,
     this.supportingText,
-    this.helperText,
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
@@ -389,11 +386,8 @@ class MechanixTextField extends StatelessWidget {
   /// Optional placeholder / hint text.
   final String? hintText;
 
-  /// Supporting text displayed below the field (alias for [helperText]).
+  /// Supporting text displayed below the field.
   final String? supportingText;
-
-  /// Helper text displayed below the field.
-  final String? helperText;
 
   /// Error text displayed below the field, putting it in error state.
   final String? errorText;
@@ -489,266 +483,306 @@ class MechanixTextField extends StatelessWidget {
 
   /// Resolves the full [InputDecoration] for this [MechanixTextField].
   InputDecoration resolveDecoration(BuildContext context) {
-    final themeData = Theme.of(context);
-    final colorScheme = themeData.colorScheme;
-    final textTheme = themeData.textTheme;
-    final shapeTheme =
-        themeData.extension<ShapeTheme>() ?? ShapeTheme.standard();
-    final componentTheme = theme ?? MechanixTextFieldTheme.of(context);
-
-    final isFilled = variant == MechanixTextFieldVariant.filled;
-
-    // Resolve borders responding to WidgetState
-    final WidgetStateInputBorder baseBorder = _buildBorder(
-      isFilled: isFilled,
-      colorScheme: colorScheme,
-      shapeTheme: shapeTheme,
-      componentTheme: componentTheme,
+    return resolveMechanixTextFieldDecoration(
+      context: context,
+      variant: variant,
+      decoration: decoration,
+      labelText: labelText,
+      label: label,
+      hintText: hintText,
+      supportingText: supportingText,
+      errorText: errorText,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      prefix: prefix,
+      suffix: suffix,
+      theme: theme,
     );
+  }
+}
 
-    // Dynamic fill color responding to states
-    final WidgetStateColor? dynamicFillColor = isFilled
-        ? WidgetStateColor.resolveWith((states) {
-            final override = componentTheme.fillColor?.resolve(states);
-            if (override != null) return override;
+/// Resolves the full [InputDecoration] for Mechanix text field components.
+InputDecoration resolveMechanixTextFieldDecoration({
+  required BuildContext context,
+  required MechanixTextFieldVariant variant,
+  InputDecoration? decoration,
+  String? labelText,
+  Widget? label,
+  String? hintText,
+  String? supportingText,
+  String? errorText,
+  Widget? prefixIcon,
+  Widget? suffixIcon,
+  Widget? prefix,
+  Widget? suffix,
+  TextFieldThemeDataConfig? theme,
+}) {
+  final themeData = Theme.of(context);
+  final colorScheme = themeData.colorScheme;
+  final textTheme = themeData.textTheme;
+  final shapeTheme = themeData.extension<ShapeTheme>() ?? ShapeTheme.standard();
+  final componentTheme = theme ?? MechanixTextFieldTheme.of(context);
 
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.04);
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return Color.alphaBlend(
-                colorScheme.onSurface.withValues(alpha: 0.05),
-                colorScheme.surfaceContainerHighest,
-              );
-            }
-            return colorScheme.surfaceContainerHighest;
-          })
-        : null;
+  final isFilled = variant == MechanixTextFieldVariant.filled;
 
-    final effectiveLabelText = labelText;
-    final effectiveLabel =
-        label ?? (effectiveLabelText != null ? Text(effectiveLabelText) : null);
-    final effectiveHelperText = supportingText ?? helperText;
+  // Resolve borders responding to WidgetState
+  final WidgetStateInputBorder baseBorder = _buildTextFieldBorder(
+    isFilled: isFilled,
+    colorScheme: colorScheme,
+    shapeTheme: shapeTheme,
+    componentTheme: componentTheme,
+  );
 
-    // Typography
-    final effectiveLabelStyle =
-        componentTheme.labelStyle ??
-        textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant);
+  // Dynamic fill color responding to states
+  final WidgetStateColor? dynamicFillColor = isFilled
+      ? WidgetStateColor.resolveWith((states) {
+          final override = componentTheme.fillColor?.resolve(states);
+          if (override != null) return override;
 
-    final effectiveFloatingLabelStyle = WidgetStateTextStyle.resolveWith((
-      states,
-    ) {
-      final base =
-          componentTheme.floatingLabelStyle ??
-          textTheme.labelMedium?.copyWith(
-            fontWeight: FontWeight.w400,
-            letterSpacing: 0.5,
-          ) ??
-          const TextStyle(fontSize: 12);
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.04);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return Color.alphaBlend(
+              colorScheme.onSurface.withValues(alpha: 0.05),
+              colorScheme.surfaceContainerHighest,
+            );
+          }
+          return colorScheme.surfaceContainerHighest;
+        })
+      : null;
 
-      final stateBorderColor = componentTheme.borderColor?.resolve(states);
-      if (stateBorderColor != null) {
-        return base.copyWith(color: stateBorderColor);
-      }
+  final effectiveLabelText = labelText;
+  final effectiveLabel =
+      label ?? (effectiveLabelText != null ? Text(effectiveLabelText) : null);
+  final effectiveHelperText = supportingText;
 
-      if (states.contains(WidgetState.error)) {
-        return base.copyWith(color: colorScheme.error);
-      }
-      if (states.contains(WidgetState.focused)) {
-        return base.copyWith(color: colorScheme.primary);
-      }
-      if (states.contains(WidgetState.disabled)) {
-        return base.copyWith(
-          color: colorScheme.onSurface.withValues(alpha: 0.38),
-        );
-      }
+  // Typography
+  final effectiveLabelStyle =
+      componentTheme.labelStyle ??
+      textTheme.bodyLarge?.copyWith(color: colorScheme.onSurfaceVariant);
+
+  final effectiveFloatingLabelStyle = WidgetStateTextStyle.resolveWith((
+    states,
+  ) {
+    final base =
+        componentTheme.floatingLabelStyle ??
+        textTheme.labelMedium?.copyWith(
+          fontWeight: FontWeight.w400,
+          letterSpacing: 0.5,
+        ) ??
+        const TextStyle(fontSize: 12);
+
+    final stateBorderColor = componentTheme.borderColor?.resolve(states);
+    if (stateBorderColor != null) {
+      return base.copyWith(color: stateBorderColor);
+    }
+
+    if (states.contains(WidgetState.error)) {
+      return base.copyWith(color: colorScheme.error);
+    }
+    if (states.contains(WidgetState.focused)) {
+      return base.copyWith(color: colorScheme.primary);
+    }
+    if (states.contains(WidgetState.disabled)) {
       return base.copyWith(
-        color: componentTheme.labelStyle?.color ?? colorScheme.onSurfaceVariant,
+        color: colorScheme.onSurface.withValues(alpha: 0.38),
       );
-    });
+    }
+    return base.copyWith(
+      color: componentTheme.labelStyle?.color ?? colorScheme.onSurfaceVariant,
+    );
+  });
 
-    final effectiveHintStyle =
-        componentTheme.hintStyle ??
-        textTheme.bodyLarge?.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-          fontWeight: FontWeight.w300,
-        );
+  final effectiveHintStyle =
+      componentTheme.hintStyle ??
+      textTheme.bodyLarge?.copyWith(
+        color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+        fontWeight: FontWeight.w300,
+      );
 
-    final effectiveHelperStyle =
-        componentTheme.helperStyle ??
-        textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant);
+  final effectiveHelperStyle =
+      componentTheme.helperStyle ??
+      textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant);
 
-    final effectiveErrorStyle =
-        componentTheme.errorStyle ??
-        textTheme.bodySmall?.copyWith(color: colorScheme.error);
+  final effectiveErrorStyle =
+      componentTheme.errorStyle ??
+      textTheme.bodySmall?.copyWith(color: colorScheme.error);
 
-    final dynamicIconColor = WidgetStateColor.resolveWith((states) {
+  WidgetStateColor resolveIconColor(Color? themeColor) {
+    return WidgetStateColor.resolveWith((states) {
       if (states.contains(WidgetState.error)) {
         return colorScheme.error;
       }
       if (states.contains(WidgetState.disabled)) {
         return colorScheme.onSurface.withValues(alpha: 0.38);
       }
-      return componentTheme.prefixIconColor ?? colorScheme.onSurfaceVariant;
+      return themeColor ?? colorScheme.onSurfaceVariant;
     });
+  }
 
-    final defaultDecoration = InputDecoration(
-      filled: isFilled,
-      fillColor: isFilled ? dynamicFillColor : Colors.transparent,
-      border: baseBorder,
-      label: effectiveLabel,
-      hintText: hintText,
-      hintStyle: effectiveHintStyle,
-      helperText: effectiveHelperText,
-      helperStyle: effectiveHelperStyle,
-      errorText: errorText,
-      errorStyle: effectiveErrorStyle,
-      prefixIcon: prefixIcon,
-      prefixIconColor: dynamicIconColor,
-      suffixIcon: suffixIcon,
-      suffixIconColor: dynamicIconColor,
-      prefix: prefix,
-      suffix: suffix,
-      labelStyle: effectiveLabelStyle,
-      floatingLabelStyle: effectiveFloatingLabelStyle,
-      floatingLabelBehavior: FloatingLabelBehavior.auto,
+  final dynamicPrefixIconColor = resolveIconColor(
+    componentTheme.prefixIconColor,
+  );
+  final dynamicSuffixIconColor = resolveIconColor(
+    componentTheme.suffixIconColor,
+  );
+
+  final defaultDecoration = InputDecoration(
+    filled: isFilled,
+    fillColor: isFilled ? dynamicFillColor : Colors.transparent,
+    border: baseBorder,
+    label: effectiveLabel,
+    hintText: hintText,
+    hintStyle: effectiveHintStyle,
+    helperText: effectiveHelperText,
+    helperStyle: effectiveHelperStyle,
+    errorText: errorText,
+    errorStyle: effectiveErrorStyle,
+    prefixIcon: prefixIcon,
+    prefixIconColor: dynamicPrefixIconColor,
+    suffixIcon: suffixIcon,
+    suffixIconColor: dynamicSuffixIconColor,
+    prefix: prefix,
+    suffix: suffix,
+    labelStyle: effectiveLabelStyle,
+    floatingLabelStyle: effectiveFloatingLabelStyle,
+    floatingLabelBehavior: FloatingLabelBehavior.auto,
+    contentPadding:
+        componentTheme.contentPadding ??
+        (isFilled
+            ? const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
+            : const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
+    isDense: false,
+  );
+
+  if (decoration != null) {
+    return defaultDecoration.copyWith(
+      icon: decoration.icon,
+      iconColor: decoration.iconColor,
+      label: decoration.label ?? defaultDecoration.label,
+      labelText: decoration.labelText ?? defaultDecoration.labelText,
+      labelStyle: decoration.labelStyle ?? defaultDecoration.labelStyle,
+      floatingLabelStyle:
+          decoration.floatingLabelStyle ?? defaultDecoration.floatingLabelStyle,
+      helperText: decoration.helperText ?? defaultDecoration.helperText,
+      helperStyle: decoration.helperStyle ?? defaultDecoration.helperStyle,
+      helperMaxLines: decoration.helperMaxLines,
+      hintText: decoration.hintText ?? defaultDecoration.hintText,
+      hintStyle: decoration.hintStyle ?? defaultDecoration.hintStyle,
+      hintTextDirection: decoration.hintTextDirection,
+      hintMaxLines: decoration.hintMaxLines,
+      error: decoration.error,
+      errorText: decoration.errorText ?? defaultDecoration.errorText,
+      errorStyle: decoration.errorStyle ?? defaultDecoration.errorStyle,
+      errorMaxLines: decoration.errorMaxLines,
+      floatingLabelBehavior:
+          decoration.floatingLabelBehavior ??
+          defaultDecoration.floatingLabelBehavior,
+      floatingLabelAlignment: decoration.floatingLabelAlignment,
+      isDense: decoration.isDense ?? defaultDecoration.isDense,
       contentPadding:
-          componentTheme.contentPadding ??
-          (isFilled
-              ? const EdgeInsets.symmetric(horizontal: 16, vertical: 12)
-              : const EdgeInsets.symmetric(horizontal: 16, vertical: 16)),
-      isDense: false,
+          decoration.contentPadding ?? defaultDecoration.contentPadding,
+      isCollapsed: decoration.isCollapsed,
+      prefixIcon: decoration.prefixIcon ?? defaultDecoration.prefixIcon,
+      prefixIconConstraints: decoration.prefixIconConstraints,
+      prefix: decoration.prefix ?? defaultDecoration.prefix,
+      prefixText: decoration.prefixText,
+      prefixStyle: decoration.prefixStyle,
+      prefixIconColor:
+          decoration.prefixIconColor ?? defaultDecoration.prefixIconColor,
+      suffixIcon: decoration.suffixIcon ?? defaultDecoration.suffixIcon,
+      suffix: decoration.suffix ?? defaultDecoration.suffix,
+      suffixText: decoration.suffixText,
+      suffixStyle: decoration.suffixStyle,
+      suffixIconColor:
+          decoration.suffixIconColor ?? defaultDecoration.suffixIconColor,
+      suffixIconConstraints: decoration.suffixIconConstraints,
+      counter: decoration.counter,
+      counterText: decoration.counterText,
+      counterStyle: decoration.counterStyle,
+      filled: decoration.filled ?? defaultDecoration.filled,
+      fillColor: decoration.fillColor ?? defaultDecoration.fillColor,
+      focusColor: decoration.focusColor,
+      hoverColor: decoration.hoverColor,
+      errorBorder: decoration.errorBorder,
+      focusedBorder: decoration.focusedBorder,
+      focusedErrorBorder: decoration.focusedErrorBorder,
+      disabledBorder: decoration.disabledBorder,
+      enabledBorder: decoration.enabledBorder,
+      border: decoration.border ?? defaultDecoration.border,
+      enabled: decoration.enabled,
+      semanticCounterText: decoration.semanticCounterText,
+      alignLabelWithHint: decoration.alignLabelWithHint,
+      constraints: decoration.constraints,
+    );
+  }
+
+  return defaultDecoration;
+}
+
+WidgetStateInputBorder _buildTextFieldBorder({
+  required bool isFilled,
+  required ColorScheme colorScheme,
+  required ShapeTheme shapeTheme,
+  required TextFieldThemeDataConfig componentTheme,
+}) {
+  final borderRadius =
+      componentTheme.borderRadius ??
+      (isFilled
+          ? BorderRadius.vertical(
+              top: Radius.circular(shapeTheme.extraSmall.topLeft.x),
+            )
+          : shapeTheme.extraSmall);
+
+  final dynamicBorderColor = WidgetStateColor.resolveWith((states) {
+    final override = componentTheme.borderColor?.resolve(states);
+    if (override != null) return override;
+
+    if (states.contains(WidgetState.disabled)) {
+      return colorScheme.onSurface.withValues(alpha: 0.12);
+    }
+    if (states.contains(WidgetState.error)) {
+      return colorScheme.error;
+    }
+    if (states.contains(WidgetState.focused)) {
+      return colorScheme.primary;
+    }
+    if (states.contains(WidgetState.hovered)) {
+      return colorScheme.onSurface;
+    }
+    return isFilled
+        ? colorScheme.onSurfaceVariant.withValues(alpha: 0.38)
+        : colorScheme.outline;
+  });
+
+  final dynamicBorderWidth = WidgetStateProperty.resolveWith<double>((states) {
+    final override = componentTheme.borderWidth?.resolve(states);
+    if (override != null) return override;
+
+    if (states.contains(WidgetState.focused) ||
+        states.contains(WidgetState.error)) {
+      return 2.0;
+    }
+    return 1.0;
+  });
+
+  return WidgetStateInputBorder.resolveWith((states) {
+    final borderSide = BorderSide(
+      color: dynamicBorderColor.resolve(states),
+      width: dynamicBorderWidth.resolve(states),
     );
 
-    if (decoration != null) {
-      return defaultDecoration.copyWith(
-        icon: decoration!.icon,
-        iconColor: decoration!.iconColor,
-        label: decoration!.label ?? defaultDecoration.label,
-        labelText: decoration!.labelText ?? defaultDecoration.labelText,
-        labelStyle: decoration!.labelStyle ?? defaultDecoration.labelStyle,
-        floatingLabelStyle:
-            decoration!.floatingLabelStyle ??
-            defaultDecoration.floatingLabelStyle,
-        helperText: decoration!.helperText ?? defaultDecoration.helperText,
-        helperStyle: decoration!.helperStyle ?? defaultDecoration.helperStyle,
-        helperMaxLines: decoration!.helperMaxLines,
-        hintText: decoration!.hintText ?? defaultDecoration.hintText,
-        hintStyle: decoration!.hintStyle ?? defaultDecoration.hintStyle,
-        hintTextDirection: decoration!.hintTextDirection,
-        hintMaxLines: decoration!.hintMaxLines,
-        error: decoration!.error,
-        errorText: decoration!.errorText ?? defaultDecoration.errorText,
-        errorStyle: decoration!.errorStyle ?? defaultDecoration.errorStyle,
-        errorMaxLines: decoration!.errorMaxLines,
-        floatingLabelBehavior:
-            decoration!.floatingLabelBehavior ??
-            defaultDecoration.floatingLabelBehavior,
-        floatingLabelAlignment: decoration!.floatingLabelAlignment,
-        isDense: decoration!.isDense ?? defaultDecoration.isDense,
-        contentPadding:
-            decoration!.contentPadding ?? defaultDecoration.contentPadding,
-        isCollapsed: decoration!.isCollapsed,
-        prefixIcon: decoration!.prefixIcon ?? defaultDecoration.prefixIcon,
-        prefixIconConstraints: decoration!.prefixIconConstraints,
-        prefix: decoration!.prefix ?? defaultDecoration.prefix,
-        prefixText: decoration!.prefixText,
-        prefixStyle: decoration!.prefixStyle,
-        prefixIconColor:
-            decoration!.prefixIconColor ?? defaultDecoration.prefixIconColor,
-        suffixIcon: decoration!.suffixIcon ?? defaultDecoration.suffixIcon,
-        suffix: decoration!.suffix ?? defaultDecoration.suffix,
-        suffixText: decoration!.suffixText,
-        suffixStyle: decoration!.suffixStyle,
-        suffixIconColor:
-            decoration!.suffixIconColor ?? defaultDecoration.suffixIconColor,
-        suffixIconConstraints: decoration!.suffixIconConstraints,
-        counter: decoration!.counter,
-        counterText: decoration!.counterText,
-        counterStyle: decoration!.counterStyle,
-        filled: decoration!.filled ?? defaultDecoration.filled,
-        fillColor: decoration!.fillColor ?? defaultDecoration.fillColor,
-        focusColor: decoration!.focusColor,
-        hoverColor: decoration!.hoverColor,
-        errorBorder: decoration!.errorBorder,
-        focusedBorder: decoration!.focusedBorder,
-        focusedErrorBorder: decoration!.focusedErrorBorder,
-        disabledBorder: decoration!.disabledBorder,
-        enabledBorder: decoration!.enabledBorder,
-        border: decoration!.border ?? defaultDecoration.border,
-        enabled: decoration!.enabled,
-        semanticCounterText: decoration!.semanticCounterText,
-        alignLabelWithHint: decoration!.alignLabelWithHint,
-        constraints: decoration!.constraints,
-      );
-    }
-
-    return defaultDecoration;
-  }
-
-  WidgetStateInputBorder _buildBorder({
-    required bool isFilled,
-    required ColorScheme colorScheme,
-    required ShapeTheme shapeTheme,
-    required TextFieldThemeDataConfig componentTheme,
-  }) {
-    final borderRadius =
-        componentTheme.borderRadius ??
-        (isFilled
-            ? BorderRadius.vertical(
-                top: Radius.circular(shapeTheme.extraSmall.topLeft.x),
-              )
-            : shapeTheme.extraSmall);
-
-    final dynamicBorderColor = WidgetStateColor.resolveWith((states) {
-      final override = componentTheme.borderColor?.resolve(states);
-      if (override != null) return override;
-
-      if (states.contains(WidgetState.disabled)) {
-        return colorScheme.onSurface.withValues(alpha: 0.12);
-      }
-      if (states.contains(WidgetState.error)) {
-        return colorScheme.error;
-      }
-      if (states.contains(WidgetState.focused)) {
-        return colorScheme.primary;
-      }
-      if (states.contains(WidgetState.hovered)) {
-        return colorScheme.onSurface;
-      }
-      return isFilled
-          ? colorScheme.onSurfaceVariant.withValues(alpha: 0.38)
-          : colorScheme.outline;
-    });
-
-    final dynamicBorderWidth = WidgetStateProperty.resolveWith<double>((states) {
-      final override = componentTheme.borderWidth?.resolve(states);
-      if (override != null) return override;
-
-      if (states.contains(WidgetState.focused) ||
-          states.contains(WidgetState.error)) {
-        return 2.0;
-      }
-      return 1.0;
-    });
-
-    return WidgetStateInputBorder.resolveWith((states) {
-      final borderSide = BorderSide(
-        color: dynamicBorderColor.resolve(states),
-        width: dynamicBorderWidth.resolve(states),
-      );
-
-      return isFilled
-          ? UnderlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: borderSide,
-            )
-          : OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: borderSide,
-            );
-    });
-  }
+    return isFilled
+        ? UnderlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: borderSide,
+          )
+        : OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: borderSide,
+          );
+  });
 }
 
 /// A form field version of [MechanixTextField] that integrates with [Form].
@@ -813,7 +847,7 @@ class MechanixTextFormField extends StatelessWidget {
     this.label,
     this.hintText,
     this.supportingText,
-    this.helperText,
+    this.errorText,
     this.prefixIcon,
     this.suffixIcon,
     this.prefix,
@@ -992,11 +1026,11 @@ class MechanixTextFormField extends StatelessWidget {
   /// Optional placeholder / hint text.
   final String? hintText;
 
-  /// Supporting text displayed below the field (alias for [helperText]).
+  /// Supporting text displayed below the field.
   final String? supportingText;
 
-  /// Helper text displayed below the field.
-  final String? helperText;
+  /// Error text displayed below the field, putting it in error state.
+  final String? errorText;
 
   /// Optional prefix icon or widget.
   final Widget? prefixIcon;
@@ -1015,20 +1049,21 @@ class MechanixTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveDecoration = MechanixTextField(
+    final effectiveDecoration = resolveMechanixTextFieldDecoration(
+      context: context,
       variant: variant,
       labelText: labelText,
       label: label,
       hintText: hintText,
       supportingText: supportingText,
-      helperText: helperText,
+      errorText: errorText,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       prefix: prefix,
       suffix: suffix,
       theme: theme,
       decoration: decoration,
-    ).resolveDecoration(context);
+    );
 
     final themeData = Theme.of(context);
     final componentTheme = theme ?? MechanixTextFieldTheme.of(context);
