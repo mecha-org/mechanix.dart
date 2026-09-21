@@ -113,15 +113,27 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
-                id: 'checkboxes',
-                title: 'Checkboxes',
-                icon: Icons.check_box_outlined,
+                id: 'text_fields',
+                title: 'Text Fields',
+                icon: Icons.text_fields_rounded,
               ),
               _buildNavItem(
                 context,
-                id: 'icon_buttons',
-                title: 'Icon Buttons',
-                icon: Icons.info_outline_rounded,
+                id: 'radio_buttons',
+                title: 'Radio Buttons',
+                icon: Icons.radio_button_checked_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'snackbars',
+                title: 'Snackbars',
+                icon: Icons.chat_bubble_outline,
+              ),
+              _buildNavItem(
+                context,
+                id: 'switch',
+                title: 'Switch',
+                icon: Icons.toggle_on_outlined,
               ),
               _buildNavItem(
                 context,
