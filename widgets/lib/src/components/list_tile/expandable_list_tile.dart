@@ -76,8 +76,8 @@ class MechanixExpandableListTile extends StatefulWidget {
   const MechanixExpandableListTile({
     super.key,
     this.variant = ListTileVariant.standard,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -108,8 +108,8 @@ class MechanixExpandableListTile extends StatefulWidget {
   /// Factory constructor for a Segmented Filled [MechanixExpandableListTile].
   const MechanixExpandableListTile.segmented({
     super.key,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -141,10 +141,10 @@ class MechanixExpandableListTile extends StatefulWidget {
   final ListTileVariant variant;
 
   /// Primary label text.
-  final String? label;
+  final String? labelText;
 
   /// Custom widget for primary label.
-  final Widget? labelText;
+  final Widget? label;
 
   /// Overline text.
   final String? overline;
@@ -293,8 +293,8 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
 
     final header = MechanixListTile(
       variant: widget.variant,
-      label: widget.label,
       labelText: widget.labelText,
+      label: widget.label,
       overline: widget.overline,
       showOverline: widget.showOverline,
       supportingText: widget.supportingText,

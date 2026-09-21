@@ -16,8 +16,8 @@ class MechanixListTile extends StatefulWidget {
   const MechanixListTile({
     super.key,
     this.variant = ListTileVariant.standard,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -62,8 +62,8 @@ class MechanixListTile extends StatefulWidget {
   /// Factory constructor for a Segmented Filled [MechanixListTile].
   const MechanixListTile.segmented({
     super.key,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -110,10 +110,10 @@ class MechanixListTile extends StatefulWidget {
   final ListTileVariant variant;
 
   /// Primary label text string.
-  final String? label;
+  final String? labelText;
 
-  /// Custom widget for primary label (overrides [label] if provided).
-  final Widget? labelText;
+  /// Custom widget for primary label (overrides [labelText] if provided).
+  final Widget? label;
 
   /// Uppercase overline text string.
   final String? overline;
@@ -396,14 +396,12 @@ class _MechanixListTileState extends State<MechanixListTile> {
               .copyWith(fontWeight: FontWeight.w400)
               .merge(scopedTheme.labelStyle);
 
-      if (widget.labelText != null) {
-        children.add(
-          DefaultTextStyle(style: labelStyle, child: widget.labelText!),
-        );
-      } else if (widget.label != null && widget.label!.isNotEmpty) {
+      if (widget.label != null) {
+        children.add(DefaultTextStyle(style: labelStyle, child: widget.label!));
+      } else if (widget.labelText != null && widget.labelText!.isNotEmpty) {
         children.add(
           Text(
-            widget.label!,
+            widget.labelText!,
             style: labelStyle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

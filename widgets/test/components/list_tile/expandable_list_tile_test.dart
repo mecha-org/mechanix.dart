@@ -4,7 +4,9 @@ import 'package:widgets/widgets.dart';
 
 void main() {
   group('MechanixExpandableListTile Widget Tests', () {
-    testWidgets('renders accordion button and toggles expansion on tap', (WidgetTester tester) async {
+    testWidgets('renders accordion button and toggles expansion on tap', (
+      WidgetTester tester,
+    ) async {
       bool? expansionState;
 
       await tester.pumpWidget(
@@ -12,7 +14,7 @@ void main() {
           theme: MechanixTheme.dark,
           home: Scaffold(
             body: MechanixExpandableListTile(
-              label: 'Expandable Title',
+              labelText: 'Expandable Title',
               leading: const Icon(Icons.star_outline),
               onExpansionChanged: (val) => expansionState = val,
               children: const [
@@ -67,16 +69,16 @@ void main() {
       expect(collapsedAlign.heightFactor, equals(0.0));
     });
 
-    testWidgets('respects initiallyExpanded property', (WidgetTester tester) async {
+    testWidgets('respects initiallyExpanded property', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
             body: MechanixExpandableListTile(
-              label: 'Already Expanded',
+              labelText: 'Already Expanded',
               initiallyExpanded: true,
-              children: [
-                Text('Visible child'),
-              ],
+              children: [Text('Visible child')],
             ),
           ),
         ),

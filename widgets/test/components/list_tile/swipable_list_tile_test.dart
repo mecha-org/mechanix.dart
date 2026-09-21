@@ -30,7 +30,7 @@ void main() {
             theme: MechanixTheme.dark,
             home: Scaffold(
               body: MechanixSwipableListTile(
-                label: 'Swipable Item',
+                labelText: 'Swipable Item',
                 actions: actions,
               ),
             ),
@@ -78,7 +78,7 @@ void main() {
           theme: MechanixTheme.dark,
           home: Scaffold(
             body: MechanixSwipableListTile(
-              label: 'Swipable Item',
+              labelText: 'Swipable Item',
               actions: actions,
               autoClose: false,
             ),
@@ -131,7 +131,7 @@ void main() {
           theme: MechanixTheme.dark,
           home: Scaffold(
             body: MechanixSwipableListTile(
-              label: 'Open Item',
+              labelText: 'Open Item',
               actions: actions,
               initiallyOpen: true,
             ),
@@ -163,7 +163,7 @@ void main() {
             theme: MechanixTheme.dark,
             home: Scaffold(
               body: MechanixSwipableListTile(
-                label: 'Standard Swipable',
+                labelText: 'Standard Swipable',
                 actions: actions,
                 initiallyOpen: true,
               ),
@@ -225,7 +225,7 @@ void main() {
           theme: MechanixTheme.dark,
           home: Scaffold(
             body: MechanixSwipableListTile(
-              label: 'Open Item',
+              labelText: 'Open Item',
               actions: actions,
               initiallyOpen: true,
               onTap: () => tileTapped = true,
@@ -262,7 +262,7 @@ void main() {
           home: Scaffold(
             body: MechanixSwipableListTile(
               key: const ValueKey('tile'),
-              label: 'Open Item',
+              labelText: 'Open Item',
               initiallyOpen: true,
               controller: controller,
               actions: [
@@ -311,7 +311,7 @@ void main() {
                 children: [
                   MechanixSwipableListTile(
                     key: const ValueKey('tile1'),
-                    label: 'Item 1',
+                    labelText: 'Item 1',
                     initiallyOpen: true,
                     controller: tile1Controller,
                     actions: [
@@ -325,7 +325,7 @@ void main() {
                   ),
                   MechanixSwipableListTile(
                     key: const ValueKey('tile2'),
-                    label: 'Item 2',
+                    labelText: 'Item 2',
                     controller: tile2Controller,
                     actions: [
                       MechanixIconButton.standard(
@@ -369,7 +369,7 @@ void main() {
             theme: MechanixTheme.dark,
             home: Scaffold(
               body: MechanixSwipableListTile(
-                label: 'Controlled Item',
+                labelText: 'Controlled Item',
                 controller: controller,
                 actions: [
                   MechanixIconButton.standard(
@@ -407,7 +407,7 @@ void main() {
     test('asserts if more than 3 actions are provided', () {
       expect(
         () => MechanixSwipableListTile(
-          label: 'Too many',
+          labelText: 'Too many',
           actions: const [
             Icon(Icons.add),
             Icon(Icons.edit),

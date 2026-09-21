@@ -153,7 +153,7 @@ class _ListPreviewState extends State<ListPreview> {
                     children: [
                       MechanixListTile(
                         leading: const Icon(Icons.star_outline),
-                        label: 'Label text',
+                        labelText: 'Label text',
                         trailingText: '⌘C',
                         trailingWidgets: [
                           MechanixIconButton.standard(
@@ -168,7 +168,7 @@ class _ListPreviewState extends State<ListPreview> {
                       const SizedBox(height: 8),
                       MechanixListTile(
                         leading: const Icon(Icons.star_outline),
-                        label: 'Label text',
+                        labelText: 'Label text',
                         trailingText: '⌘C',
                         trailingWidgets: [
                           MechanixIconButton.standard(
@@ -190,7 +190,7 @@ class _ListPreviewState extends State<ListPreview> {
                         children: [
                           MechanixListTile.segmented(
                             leading: const Icon(Icons.star_outline),
-                            label: 'Label text',
+                            labelText: 'Label text',
                             trailingText: '⌘C',
                             trailingWidgets: [
                               MechanixIconButton.standard(
@@ -204,7 +204,7 @@ class _ListPreviewState extends State<ListPreview> {
                           ),
                           MechanixListTile.segmented(
                             leading: const Icon(Icons.star_outline),
-                            label: 'Label text',
+                            labelText: 'Label text',
                             trailingText: '⌘C',
                             trailingWidgets: [
                               MechanixIconButton.standard(
@@ -226,7 +226,7 @@ class _ListPreviewState extends State<ListPreview> {
                     children: [
                       const MechanixExpandableListTile(
                         leading: Icon(Icons.star_outline),
-                        label: 'Label text',
+                        labelText: 'Label text',
                         trailingText: '⌘C',
                         children: [
                           Padding(
@@ -244,7 +244,7 @@ class _ListPreviewState extends State<ListPreview> {
                       MechanixDraggableListTile(
                         index: 0,
                         leading: Icon(Icons.star_outline),
-                        label: 'Label text',
+                        labelText: 'Label text',
                         trailingText: '⌘C',
                         trailingWidgets: [
                           MechanixIconButton.standard(
@@ -260,7 +260,7 @@ class _ListPreviewState extends State<ListPreview> {
                       MechanixDraggableListTile(
                         index: 1,
                         leading: Icon(Icons.star_outline),
-                        label: 'Label text',
+                        labelText: 'Label text',
                         trailingText: '⌘C',
                         dragHandleIcon: Icons.drag_handle_rounded,
                         isDragging: true,
@@ -279,7 +279,7 @@ class _ListPreviewState extends State<ListPreview> {
                           return MechanixSwipableListTile(
                             key: ValueKey('std_swipe_$index'),
                             leading: const Icon(Icons.star_outline),
-                            label: 'Label text',
+                            labelText: 'Label text',
                             trailingText: '⌘C',
                             trailingWidgets: [
                               MechanixIconButton.standard(
@@ -332,7 +332,7 @@ class _ListPreviewState extends State<ListPreview> {
                               return MechanixSwipableListTile.segmented(
                                 key: ValueKey('seg_swipe_$index'),
                                 leading: const Icon(Icons.star_outline),
-                                label: 'Label text',
+                                labelText: 'Label text',
                                 trailingText: '⌘C',
                                 trailingWidgets: [
                                   MechanixIconButton.standard(
@@ -396,7 +396,7 @@ class _ListPreviewState extends State<ListPreview> {
                         leading: const Icon(Icons.star_outline),
                         overline: 'Overline',
                         showOverline: true,
-                        label: 'Label text',
+                        labelText: 'Label text',
                         supportingText:
                             'Supporting line text, lorem ipsum dolor sit amet',
                         showSupportingText: true,
@@ -423,7 +423,7 @@ class _ListPreviewState extends State<ListPreview> {
                             leading: const Icon(Icons.star_outline),
                             overline: 'Overline',
                             showOverline: true,
-                            label: 'Label text 1',
+                            labelText: 'Label text 1',
                             supportingText: 'Supporting line text, lorem ipsum dolor sit amet',
                             showSupportingText: true,
                             trailingText: '⌘C',
@@ -441,7 +441,7 @@ class _ListPreviewState extends State<ListPreview> {
                             leading: const Icon(Icons.star_outline),
                             overline: 'Overline',
                             showOverline: true,
-                            label: 'Label text 2',
+                            labelText: 'Label text 2',
                             supportingText:
                                 'Second supporting line text with ellipsis',
                             showSupportingText: true,
@@ -468,7 +468,7 @@ class _ListPreviewState extends State<ListPreview> {
                         leading: Icon(Icons.star_outline),
                         overline: 'Overline',
                         showOverline: true,
-                        label: 'Label text',
+                        labelText: 'Label text',
                         supportingText:
                             'Supporting line text, lorem ipsum dolor',
                         showSupportingText: true,
@@ -602,7 +602,7 @@ class _ListPreviewState extends State<ListPreview> {
                         ),
                         const SizedBox(height: 8),
                         MechanixListTile(
-                          label: 'Label text',
+                          labelText: 'Label text',
                           overline: 'Overline',
                           showOverline: _showOverline,
                           supportingText: 'Supporting line text, lorem ipsum dolor sit amet',
@@ -645,7 +645,7 @@ class _ListPreviewState extends State<ListPreview> {
                         ),
                         const SizedBox(height: 8),
                         MechanixListTile.segmented(
-                          label: 'Label text',
+                          labelText: 'Label text',
                           overline: 'Overline',
                           showOverline: _showOverline,
                           supportingText: 'Supporting line text, lorem ipsum dolor sit amet',
@@ -712,18 +712,18 @@ class _ListPreviewState extends State<ListPreview> {
             children: [
               MechanixExpandableListTile(
                 leading: Icon(Icons.folder_outlined),
-                label: 'Documents & Files (Standard Expandable)',
+                labelText: 'Documents & Files (Standard Expandable)',
                 supportingText: 'Tap header or accordion button to view files',
                 trailingText: '3 items',
                 children: [
                   MechanixListTile(
                     leading: Icon(Icons.description_outlined),
-                    label: 'Quarterly_Report_2026.pdf',
+                    labelText: 'Quarterly_Report_2026.pdf',
                     supportingText: '2.4 MB • Updated yesterday',
                   ),
                   MechanixListTile(
                     leading: Icon(Icons.image_outlined),
-                    label: 'Design_System_Mockup.png',
+                    labelText: 'Design_System_Mockup.png',
                     supportingText: '5.1 MB • Updated 3 hours ago',
                   ),
                 ],
@@ -731,7 +731,7 @@ class _ListPreviewState extends State<ListPreview> {
               const Divider(height: 24),
               MechanixExpandableListTile.segmented(
                 leading: Icon(Icons.security_rounded),
-                label: 'Privacy & Security (Segmented Expandable)',
+                labelText: 'Privacy & Security (Segmented Expandable)',
                 supportingText:
                     'Manage credentials, permissions and biometric locks',
                 trailingText: 'Active',
@@ -740,12 +740,12 @@ class _ListPreviewState extends State<ListPreview> {
                     children: [
                       MechanixListTile.segmented(
                         leading: Icon(Icons.fingerprint_rounded),
-                        label: 'Biometric Authentication',
+                        labelText: 'Biometric Authentication',
                         supportingText: 'Enabled with hardware enclave',
                       ),
                       MechanixListTile.segmented(
                         leading: Icon(Icons.vpn_key_rounded),
-                        label: 'Two-Factor Authentication',
+                        labelText: 'Two-Factor Authentication',
                         supportingText: 'Configured via Authenticator App',
                       ),
                     ],
@@ -818,7 +818,7 @@ class _ListPreviewState extends State<ListPreview> {
                         index: i,
                         variant: ListTileVariant.segmented,
                         leading: const Icon(Icons.star_outline),
-                        label: _draggableItems[i],
+                        labelText: _draggableItems[i],
                         supportingText:
                             'Position ${i + 1} of ${_draggableItems.length}',
                         trailingText: '⌘C',
@@ -883,7 +883,7 @@ class _ListPreviewState extends State<ListPreview> {
                   // 3 actions
                   MechanixSwipableListTile(
                     leading: const Icon(Icons.inbox_rounded),
-                    label: 'Swipe to reveal 3 actions',
+                    labelText: 'Swipe to reveal 3 actions',
                     supportingText: 'Gear, sensor, and chat bubble buttons',
                     trailingText: '⌘C',
                     trailingWidgets: [
@@ -922,7 +922,7 @@ class _ListPreviewState extends State<ListPreview> {
                   // 2 actions
                   MechanixSwipableListTile(
                     leading: const Icon(Icons.share_outlined),
-                    label: 'Swipe to reveal 2 actions',
+                    labelText: 'Swipe to reveal 2 actions',
                     supportingText: 'Share and pencil actions',
                     trailingText: '⌘C',
                     trailingWidgets: [
@@ -954,7 +954,7 @@ class _ListPreviewState extends State<ListPreview> {
                   // 1 action
                   MechanixSwipableListTile(
                     leading: const Icon(Icons.sync_rounded),
-                    label: 'Swipe to reveal 1 action',
+                    labelText: 'Swipe to reveal 1 action',
                     supportingText: 'Single refresh / sync button',
                     trailingText: '⌘C',
                     trailingWidgets: [
@@ -997,7 +997,7 @@ class _ListPreviewState extends State<ListPreview> {
                       MechanixSwipableListTile.segmented(
                         leading: const Icon(Icons.email_outlined),
                         overline: 'Mail',
-                        label: 'Important Project Update',
+                        labelText: 'Important Project Update',
                         supportingText: 'Swipe left to reveal archive, flag, and reply actions',
                         trailingText: '⌘C',
                         trailingWidgets: [
@@ -1036,7 +1036,7 @@ class _ListPreviewState extends State<ListPreview> {
                       MechanixSwipableListTile.segmented(
                         leading: const Icon(Icons.star_outline),
                         overline: 'Notifications',
-                        label: 'Weekly Summary Available',
+                        labelText: 'Weekly Summary Available',
                         supportingText: 'Swipe left to refresh or dismiss',
                         trailingText: '⌘C',
                         trailingWidgets: [

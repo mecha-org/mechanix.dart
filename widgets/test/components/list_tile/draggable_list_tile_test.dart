@@ -58,7 +58,7 @@ void main() {
                   MechanixDraggableListTile(
                     key: Key('resting'),
                     index: 0,
-                    label: 'Resting Item',
+                    labelText: 'Resting Item',
                     trailingWidgets: [const Icon(Icons.crop_square_rounded)],
                     dragHandleIcon: Icons.drag_handle_rounded,
                     isDragging: false,
@@ -66,7 +66,7 @@ void main() {
                   MechanixDraggableListTile(
                     key: Key('dragging'),
                     index: 1,
-                    label: 'Dragging Item',
+                    labelText: 'Dragging Item',
                     trailingWidgets: [const Icon(Icons.crop_square_rounded)],
                     dragHandleIcon: Icons.drag_handle_rounded,
                     isDragging: true,
@@ -115,7 +115,7 @@ void main() {
                       MechanixDraggableListTile(
                         key: ValueKey(items[i]),
                         index: i,
-                        label: items[i],
+                        labelText: items[i],
                       ),
                   ],
                 );

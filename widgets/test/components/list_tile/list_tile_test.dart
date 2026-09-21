@@ -15,11 +15,11 @@ void main() {
               children: [
                 MechanixListTile(
                   key: Key('standard_tile'),
-                  label: 'Standard Tile',
+                  labelText: 'Standard Tile',
                 ),
                 MechanixListTile.segmented(
                   key: Key('segmented_tile'),
-                  label: 'Segmented Tile',
+                  labelText: 'Segmented Tile',
                 ),
               ],
             ),
@@ -49,7 +49,7 @@ void main() {
             theme: MechanixTheme.dark,
             home: Scaffold(
               body: MechanixListTile(
-                label: 'Main Title',
+                labelText: 'Main Title',
                 overline: 'Overline text',
                 showOverline: true,
                 supportingText: 'Supporting line text, lorem ipsum dolor',
@@ -83,7 +83,7 @@ void main() {
           theme: MechanixTheme.dark,
           home: Scaffold(
             body: MechanixListTile(
-              label: 'Tile with icons',
+              labelText: 'Tile with icons',
               leading: Icon(Icons.star_outline),
               trailingText: '⌘C',
             ),
@@ -103,7 +103,7 @@ void main() {
             theme: MechanixTheme.dark,
             home: Scaffold(
               body: MechanixListTile(
-                label: 'Tile without icons',
+                labelText: 'Tile without icons',
                 leading: Icon(Icons.star_outline),
                 showLeading: false,
                 trailingText: '⌘C',
@@ -130,12 +130,12 @@ void main() {
               children: [
                 MechanixListTile(
                   key: const Key('enabled_tile'),
-                  label: 'Enabled',
+                  labelText: 'Enabled',
                   onTap: () => taps++,
                 ),
                 MechanixListTile(
                   key: const Key('disabled_tile'),
-                  label: 'Disabled',
+                  labelText: 'Disabled',
                   enabled: false,
                   onTap: () => taps++,
                 ),
@@ -165,7 +165,7 @@ void main() {
                 minHeight: 48.0,
                 backgroundColor: Colors.purple,
               ),
-              child: MechanixListTile(label: 'Themed Tile'),
+              child: MechanixListTile(labelText: 'Themed Tile'),
             ),
           ),
         ),
@@ -191,7 +191,9 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             theme: MechanixTheme.dark,
-            home: Scaffold(body: MechanixListTile(label: 'Theme Config Tile')),
+            home: Scaffold(
+              body: MechanixListTile(labelText: 'Theme Config Tile'),
+            ),
           ),
         );
 
@@ -217,9 +219,9 @@ void main() {
             body: MechanixSegmentedList(
               gap: 2.0,
               children: [
-                MechanixListTile.segmented(label: 'Item 1'),
-                MechanixListTile.segmented(label: 'Item 2'),
-                MechanixListTile.segmented(label: 'Item 3'),
+                MechanixListTile.segmented(labelText: 'Item 1'),
+                MechanixListTile.segmented(labelText: 'Item 2'),
+                MechanixListTile.segmented(labelText: 'Item 3'),
               ],
             ),
           ),

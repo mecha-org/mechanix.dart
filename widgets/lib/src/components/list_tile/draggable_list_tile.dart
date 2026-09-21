@@ -96,8 +96,8 @@ class MechanixDraggableListTile extends StatelessWidget {
     super.key,
     required this.index,
     this.variant = ListTileVariant.standard,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -133,10 +133,10 @@ class MechanixDraggableListTile extends StatelessWidget {
   final ListTileVariant variant;
 
   /// Primary label text.
-  final String? label;
+  final String? labelText;
 
   /// Custom widget for primary label.
-  final Widget? labelText;
+  final Widget? label;
 
   /// Overline text.
   final String? overline;
@@ -219,8 +219,8 @@ class MechanixDraggableListTile extends StatelessWidget {
 
     final tile = MechanixListTile(
       variant: variant,
-      label: label,
       labelText: labelText,
+      label: label,
       overline: overline,
       showOverline: showOverline,
       supportingText: supportingText,

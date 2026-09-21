@@ -332,8 +332,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.closeOnScroll = true,
     this.groupTag,
     this.variant = ListTileVariant.standard,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -379,8 +379,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.initiallyOpen = false,
     this.closeOnScroll = true,
     this.groupTag,
-    this.label,
     this.labelText,
+    this.label,
     this.overline,
     this.showOverline = true,
     this.supportingText,
@@ -462,10 +462,10 @@ class MechanixSwipableListTile extends StatefulWidget {
   final ListTileVariant variant;
 
   /// Primary label text.
-  final String? label;
+  final String? labelText;
 
   /// Custom widget for primary label.
-  final Widget? labelText;
+  final Widget? label;
 
   /// Overline text.
   final String? overline;
@@ -802,8 +802,8 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
 
             final tile = MechanixListTile(
               variant: widget.variant,
-              label: widget.label,
               labelText: widget.labelText,
+              label: widget.label,
               overline: widget.overline,
               showOverline: widget.showOverline,
               supportingText: widget.supportingText,
