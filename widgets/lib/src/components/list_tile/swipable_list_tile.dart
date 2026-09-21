@@ -126,7 +126,7 @@ class MechanixSwipeController extends ChangeNotifier {
   CurvedAnimation? _curvedAnimation;
   bool _isInternalController = false;
 
-  void _attach(AnimationController animController) {
+  void _attach(AnimationController animController, notifyScopeOpened) {
     if (_animController == animController) return;
     _animController?.removeListener(notifyListeners);
     _animController = animController;
@@ -201,11 +201,13 @@ typedef SlidableController = MechanixSwipeController;
 class MechanixSwipableList extends StatefulWidget {
   const MechanixSwipableList({
     super.key,
-    required this.children,
+    this.children = const [],
+    this.child,
     this.closeOnScroll = true,
   });
 
   final List<Widget> children;
+  final Widget? child;
   final bool closeOnScroll;
 
   @override
@@ -234,11 +236,42 @@ class _MechanixSwipableListState extends State<MechanixSwipableList> {
     }
   }
 
+  void _onPointerDown(PointerDownEvent event) {
+    for (final tile in _registeredTiles) {
+      if (!tile.mounted || tile.controller.value <= 0.001) continue;
+
+      final RenderBox? tileBox = tile.context.findRenderObject() as RenderBox?;
+      if (tileBox != null && tileBox.hasSize) {
+        final localPos = tileBox.globalToLocal(event.position);
+        final isInsideTile = tileBox.paintBounds.contains(localPos);
+        if (isInsideTile) {
+          final maxExtent = tileBox.size.width * tile.effectiveExtentRatio;
+          final actionPaneRect = Rect.fromLTWH(
+            tileBox.size.width - maxExtent,
+            0,
+            maxExtent,
+            tileBox.size.height,
+          );
+          if (actionPaneRect.contains(localPos)) {
+            // Tap is inside the action pane buttons of this open tile
+            continue;
+          }
+        }
+        // Tap is outside this tile (e.g. on another tile) or on the sliding body of this tile -> close!
+        tile.close();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _MechanixSwipeScope(
-      state: this,
-      child: Column(children: widget.children),
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: _onPointerDown,
+      child: _MechanixSwipeScope(
+        state: this,
+        child: widget.child ?? Column(children: widget.children),
+      ),
     );
   }
 }
@@ -258,7 +291,7 @@ class SlidableAutoCloseBehavior extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _MechanixSwipeScope(state: null, child: child);
+    return MechanixSwipableList(child: child);
   }
 }
 
@@ -530,11 +563,11 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
 
     if (widget.controller != null) {
       _controller = widget.controller!;
-      _controller._attach(_animController);
+      _controller._attach(_animController, _notifyScopeOpened);
     } else {
       _controller = MechanixSwipeController();
       _controller._isInternalController = true;
-      _controller._attach(_animController);
+      _controller._attach(_animController, _notifyScopeOpened);
       _createdController = true;
     }
 
@@ -577,8 +610,11 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
   }
 
   void _handleStatusChange(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      _notifyScopeOpened();
+    if (status == AnimationStatus.forward ||
+        status == AnimationStatus.completed) {
+      if (_animController.value > 0.001) {
+        _notifyScopeOpened();
+      }
     }
   }
 
@@ -603,7 +639,7 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
       }
 
       _controller = widget.controller!;
-      _controller._attach(_animController);
+      _controller._attach(_animController, _notifyScopeOpened);
     }
   }
 
@@ -621,6 +657,7 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
 
   /// Opens the action pane.
   Future<void> open() {
+    _notifyScopeOpened();
     return _animController.animateTo(1.0, curve: Curves.easeOutCubic);
   }
 
@@ -628,6 +665,14 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
   Future<void> close() {
     return _animController.animateTo(0.0, curve: Curves.easeOutCubic);
   }
+
+  /// Effective extent ratio of the action pane.
+  double get effectiveExtentRatio =>
+      widget.extentRatio ??
+      widget.endActionPane?.extentRatio ??
+      _resolveExtentRatio(
+        widget.endActionPane?.children.length ?? widget.actions.length,
+      );
 
   double _resolveExtentRatio(int count) {
     switch (count) {
@@ -812,7 +857,13 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
 
             final slidingTile = Transform.translate(
               offset: Offset(-slideOffset, 0),
-              child: tile,
+              child: isSwiped
+                  ? GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: close,
+                      child: IgnorePointer(ignoring: true, child: tile),
+                    )
+                  : tile,
             );
 
             Widget content = Stack(

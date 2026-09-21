@@ -296,6 +296,69 @@ void main() {
 
       controller.dispose();
     });
+
+    testWidgets(
+      'tapping anywhere in middle of another tile in MechanixSwipableList closes the open tile',
+      (tester) async {
+        final tile1Controller = MechanixSwipeController();
+        final tile2Controller = MechanixSwipeController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixSwipableList(
+                children: [
+                  MechanixSwipableListTile(
+                    key: const ValueKey('tile1'),
+                    label: 'Item 1',
+                    initiallyOpen: true,
+                    controller: tile1Controller,
+                    actions: [
+                      MechanixIconButton.standard(
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        icon: Icons.delete,
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  MechanixSwipableListTile(
+                    key: const ValueKey('tile2'),
+                    label: 'Item 2',
+                    controller: tile2Controller,
+                    actions: [
+                      MechanixIconButton.standard(
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        icon: Icons.archive,
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(tile1Controller.isOpen, isTrue);
+        expect(tile2Controller.isClosed, isTrue);
+
+        // Tap the center of Item 2
+        await tester.tap(find.text('Item 2'));
+        await tester.pumpAndSettle();
+
+        // Tile 1 must now be closed
+        expect(tile1Controller.isClosed, isTrue);
+        expect(find.byIcon(Icons.delete), findsNothing);
+
+        tile1Controller.dispose();
+        tile2Controller.dispose();
+      },
+    );
     testWidgets(
       'MechanixSwipeController programmatically opens and closes tile',
       (WidgetTester tester) async {
