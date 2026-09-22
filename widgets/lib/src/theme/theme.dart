@@ -60,13 +60,21 @@ abstract class MechanixTheme extends StatefulWidget {
   static ColorScheme get darkColorScheme => MechanixColors.darkColorScheme;
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
-  static ThemeData createTheme({required ColorScheme colorScheme}) {
-    final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+  static ThemeData createTheme({
+    required ColorScheme colorScheme,
+    String? fontFamily = mechanixFontFamily,
+  }) {
+    final textTheme = createTextTheme(
+      textColor: colorScheme.onSurface,
+      fontFamily: fontFamily,
+    );
     final appBarTheme = _createAppBarTheme(colorScheme, textTheme);
 
+    final shapeTheme = ShapeTheme.standard();
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      fontFamily: fontFamily,
       textTheme: textTheme,
       appBarTheme: appBarTheme,
       iconButtonTheme: IconButtonThemeData(
@@ -218,6 +226,57 @@ abstract class MechanixTheme extends StatefulWidget {
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        border: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.primary, width: 3.0),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.0),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 3.0),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.onSurface, width: 1.0),
+        ),
+        labelStyle: textTheme.emphasized.labelLarge?.copyWith(
+          color: colorScheme.onSecondaryFixed,
+        ),
+        floatingLabelStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.primary,
+        ),
+        hintStyle: textTheme.emphasized.titleMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        helperStyle: textTheme.bodySmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
@@ -261,8 +320,11 @@ abstract class MechanixTheme extends StatefulWidget {
       radioTheme: _createRadioTheme(colorScheme),
       snackBarTheme: _createSnackBarTheme(colorScheme, textTheme),
       navigationBarTheme: _createNavigationBarTheme(colorScheme, textTheme),
+      bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
+      dividerTheme: _createDividerTheme(colorScheme),
+      badgeTheme: _createBadgeTheme(colorScheme, textTheme),
       extensions: [
-        ShapeTheme.standard(),
+        shapeTheme,
         AppBarThemeDataConfig.standard(colorScheme, textTheme),
         CheckboxThemeDataConfig(
           focusRingColor: colorScheme.outline,
@@ -415,6 +477,51 @@ abstract class MechanixTheme extends StatefulWidget {
           ? snackbarTheme.margin as EdgeInsets
           : snackbarTheme.margin?.resolve(TextDirection.ltr),
       contentTextStyle: snackbarTheme.contentTextStyle,
+    );
+  }
+
+  /// Creates a [BottomSheetThemeData] configured with Mechanix specifications.
+  static BottomSheetThemeData _createBottomSheetTheme(
+    ColorScheme colorScheme,
+    ShapeTheme shapeTheme,
+  ) {
+    return BottomSheetThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      modalBackgroundColor: colorScheme.surfaceContainerLow,
+      modalBarrierColor: colorScheme.scrim.withValues(alpha: 0.32),
+      elevation: 1.0,
+      modalElevation: 1.0,
+      shape: RoundedRectangleBorder(borderRadius: shapeTheme.none),
+      showDragHandle: true,
+      dragHandleColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+      clipBehavior: Clip.antiAlias,
+    );
+  }
+
+  /// Creates a [DividerThemeData] configured with Mechanix specifications.
+  static DividerThemeData _createDividerTheme(ColorScheme colorScheme) {
+    return DividerThemeData(
+      color: colorScheme.outlineVariant,
+      space: MechanixSpacing.medium,
+      thickness: 1.0,
+      indent: 0.0,
+      endIndent: 0.0,
+    );
+  }
+
+  /// Creates a [BadgeThemeData] configured with Mechanix specifications.
+  static BadgeThemeData _createBadgeTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return BadgeThemeData(
+      backgroundColor: colorScheme.error,
+      textColor: colorScheme.onError,
+      smallSize: 6.0,
+      largeSize: 16.0,
+      padding: const EdgeInsets.symmetric(horizontal: MechanixSpacing.xxSmall),
+      alignment: AlignmentDirectional.topEnd,
+      textStyle: textTheme.labelSmall,
     );
   }
 

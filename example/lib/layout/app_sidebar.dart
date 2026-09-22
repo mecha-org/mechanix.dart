@@ -113,15 +113,9 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
-                id: 'checkboxes',
-                title: 'Checkboxes',
-                icon: Icons.check_box_outlined,
-              ),
-              _buildNavItem(
-                context,
-                id: 'icon_buttons',
-                title: 'Icon Buttons',
-                icon: Icons.info_outline_rounded,
+                id: 'text_fields',
+                title: 'Text Fields',
+                icon: Icons.text_fields_rounded,
               ),
               _buildNavItem(
                 context,
@@ -146,6 +140,24 @@ class AppSidebar extends StatelessWidget {
                 id: 'app_bar',
                 title: 'App Bar',
                 icon: Icons.web_asset_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'bottom_sheets',
+                title: 'Bottom Sheets',
+                icon: Icons.vertical_align_bottom_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'dividers',
+                title: 'Dividers',
+                icon: Icons.horizontal_rule_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'badges',
+                title: 'Badges',
+                icon: Icons.mark_chat_unread_outlined,
               ),
               _buildNavItem(
                 context,
