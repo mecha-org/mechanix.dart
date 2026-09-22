@@ -553,7 +553,6 @@ class IconButtonPreview extends StatelessWidget {
                     item.codeName,
                     style: TextStyle(
                       fontSize: 10,
-                      fontFamily: 'monospace',
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -593,7 +592,6 @@ class IconButtonPreview extends StatelessWidget {
             item.codeName,
             style: TextStyle(
               fontSize: 11,
-              fontFamily: 'monospace',
               color: colorScheme.onSurfaceVariant,
             ),
           ),
@@ -631,7 +629,6 @@ class IconButtonPreview extends StatelessWidget {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            fontFamily: 'monospace',
             color: colorScheme.onSurface,
           ),
         ),

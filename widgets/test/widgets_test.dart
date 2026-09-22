@@ -47,6 +47,9 @@ void main() {
         ),
         isA<MechanixRadioTheme>(),
       );
+      expect(const MechanixDivider(), isA<MechanixDivider>());
+      expect(const MechanixVerticalDivider(), isA<MechanixVerticalDivider>());
+      expect(const MechanixBadge(), isA<MechanixBadge>());
     },
   );
 }

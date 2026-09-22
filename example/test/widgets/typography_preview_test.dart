@@ -123,5 +123,28 @@ void main() {
       expect(find.byType(TypographyPreview), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets('renders cleanly on desktop viewport', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1200, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      await tester.pumpWidget(
+        MechanixTheme(
+          builder: (context, theme, child) => MaterialApp(
+            theme: theme.light,
+            home: const Scaffold(
+              body: SingleChildScrollView(child: TypographyPreview()),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(TypographyPreview), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
   });
 }

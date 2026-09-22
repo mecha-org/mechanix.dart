@@ -60,13 +60,21 @@ abstract class MechanixTheme extends StatefulWidget {
   static ColorScheme get darkColorScheme => MechanixColors.darkColorScheme;
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
-  static ThemeData createTheme({required ColorScheme colorScheme}) {
-    final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+  static ThemeData createTheme({
+    required ColorScheme colorScheme,
+    String? fontFamily = mechanixFontFamily,
+  }) {
+    final textTheme = createTextTheme(
+      textColor: colorScheme.onSurface,
+      fontFamily: fontFamily,
+    );
     final appBarTheme = _createAppBarTheme(colorScheme, textTheme);
 
+    final shapeTheme = ShapeTheme.standard();
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      fontFamily: fontFamily,
       textTheme: textTheme,
       appBarTheme: appBarTheme,
       iconButtonTheme: IconButtonThemeData(
@@ -314,8 +322,11 @@ abstract class MechanixTheme extends StatefulWidget {
         colorScheme,
         createTextTheme(textColor: colorScheme.onSurface),
       ),
+      bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
+      dividerTheme: _createDividerTheme(colorScheme),
+      badgeTheme: _createBadgeTheme(colorScheme, textTheme),
       extensions: [
-        ShapeTheme.standard(),
+        shapeTheme,
         AppBarThemeDataConfig.standard(colorScheme, textTheme),
         CheckboxThemeDataConfig(
           focusRingColor: colorScheme.outline,
@@ -430,6 +441,51 @@ abstract class MechanixTheme extends StatefulWidget {
           ? snackbarTheme.margin as EdgeInsets
           : snackbarTheme.margin?.resolve(TextDirection.ltr),
       contentTextStyle: snackbarTheme.contentTextStyle,
+    );
+  }
+
+  /// Creates a [BottomSheetThemeData] configured with Mechanix specifications.
+  static BottomSheetThemeData _createBottomSheetTheme(
+    ColorScheme colorScheme,
+    ShapeTheme shapeTheme,
+  ) {
+    return BottomSheetThemeData(
+      backgroundColor: colorScheme.surfaceContainerLow,
+      modalBackgroundColor: colorScheme.surfaceContainerLow,
+      modalBarrierColor: colorScheme.scrim.withValues(alpha: 0.32),
+      elevation: 1.0,
+      modalElevation: 1.0,
+      shape: RoundedRectangleBorder(borderRadius: shapeTheme.none),
+      showDragHandle: true,
+      dragHandleColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+      clipBehavior: Clip.antiAlias,
+    );
+  }
+
+  /// Creates a [DividerThemeData] configured with Mechanix specifications.
+  static DividerThemeData _createDividerTheme(ColorScheme colorScheme) {
+    return DividerThemeData(
+      color: colorScheme.outlineVariant,
+      space: MechanixSpacing.medium,
+      thickness: 1.0,
+      indent: 0.0,
+      endIndent: 0.0,
+    );
+  }
+
+  /// Creates a [BadgeThemeData] configured with Mechanix specifications.
+  static BadgeThemeData _createBadgeTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return BadgeThemeData(
+      backgroundColor: colorScheme.error,
+      textColor: colorScheme.onError,
+      smallSize: 6.0,
+      largeSize: 16.0,
+      padding: const EdgeInsets.symmetric(horizontal: MechanixSpacing.xxSmall),
+      alignment: AlignmentDirectional.topEnd,
+      textStyle: textTheme.labelSmall,
     );
   }
 
