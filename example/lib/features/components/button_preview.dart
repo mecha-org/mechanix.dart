@@ -121,7 +121,8 @@ class ButtonPreview extends StatelessWidget {
       ),
       _VariantTypeItem(
         title: 'Text - Rounded',
-        description: 'Transparent background and no border with rounded pill corners',
+        description:
+            'Transparent background and no border with rounded pill corners',
         variant: ButtonVariant.text,
         type: ButtonType.rounded,
       ),
@@ -530,7 +531,6 @@ class ButtonPreview extends StatelessWidget {
                     item.codeName,
                     style: TextStyle(
                       fontSize: 10,
-                      fontFamily: 'monospace',
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -572,11 +572,7 @@ class ButtonPreview extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             item.codeName,
-            style: TextStyle(
-              fontSize: 11,
-              fontFamily: 'monospace',
-              color: colorScheme.onSurfaceVariant,
-            ),
+            style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 12),
           buttonSamples,
@@ -797,7 +793,6 @@ class ButtonPreview extends StatelessWidget {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.w600,
-            fontFamily: 'monospace',
             color: colorScheme.onSurface,
           ),
         ),

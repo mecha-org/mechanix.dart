@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 /// Default font family for Mechanix apps.
 const String mechanixFontFamily = 'SpaceGrotesk';
 
+/// Package name providing Mechanix typography assets.
+const String mechanixFontPackage = 'widgets';
+
 TextTheme createTextTheme({
   required Color textColor,
-  String? fontFamily,
+  String? fontFamily = mechanixFontFamily,
   List<String>? fontFamilyFallback,
 }) {
   return TextTheme(
@@ -163,12 +166,14 @@ class _MechanixTextStyle extends TextStyle {
     super.fontWeight,
     super.letterSpacing,
     required Color super.color,
-    String? fontFamily,
+    String? fontFamily = mechanixFontFamily,
     super.fontFamilyFallback,
+    String? package = mechanixFontPackage,
   }) : super(
          fontSize: fontSize,
          height: height / fontSize,
          fontFamily: fontFamily ?? mechanixFontFamily,
+         package: package,
          leadingDistribution: TextLeadingDistribution.even,
        );
 }
