@@ -474,7 +474,6 @@ class ThemePreview extends StatelessWidget {
             style: TextStyle(
               color: effectiveTextColor.withValues(alpha: 0.8),
               fontSize: 10,
-              fontFamily: 'monospace',
             ),
           ),
         ],

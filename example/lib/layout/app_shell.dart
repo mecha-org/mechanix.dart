@@ -2,9 +2,12 @@ import 'package:example/features/components/app_bar_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
+import '../features/components/badge_preview.dart';
+import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
 import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
+import '../features/components/divider_preview.dart';
 import '../features/components/icon_button_preview.dart';
 import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
@@ -38,6 +41,14 @@ class _AppShellState extends State<AppShell> {
   void initState() {
     super.initState();
     _selectedSection = widget.initialSection;
+  }
+
+  @override
+  void didUpdateWidget(AppShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialSection != oldWidget.initialSection) {
+      _selectedSection = widget.initialSection;
+    }
   }
 
   void _handleSectionSelected(String section) {
@@ -102,12 +113,13 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  String _appBarTitle(String section) {
+  /// Maps a catalog section identifier to its human-readable title.
+  static String sectionTitle(String section) {
     switch (section) {
-      case 'typography':
-        return 'Typography';
       case 'theme':
         return 'Theme Overview';
+      case 'typography':
+        return 'Typography';
       case 'buttons':
         return 'Buttons';
       case 'text_fields':
@@ -122,6 +134,12 @@ class _AppShellState extends State<AppShell> {
         return 'Snackbars';
       case 'switch':
         return 'Switch';
+      case 'bottom_sheets':
+        return 'Bottom Sheets';
+      case 'dividers':
+        return 'Dividers';
+      case 'badges':
+        return 'Badges';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -129,9 +147,19 @@ class _AppShellState extends State<AppShell> {
       case 'app_bar':
         return 'App Bar';
       default:
-        return 'Mechanix UI';
+        if (section.isEmpty) return 'Mechanix UI';
+        return section
+            .split('_')
+            .map(
+              (word) => word.isEmpty
+                  ? ''
+                  : '${word[0].toUpperCase()}${word.substring(1)}',
+            )
+            .join(' ');
     }
   }
+
+  String _appBarTitle(String section) => sectionTitle(section);
 }
 
 /// The main content area displaying the selected catalog section.
@@ -176,6 +204,16 @@ class _MainContent extends StatelessWidget {
       case 'app_bar':
         content = const AppBarPreview();
         break;
+      case 'bottom_sheets':
+        content = const BottomSheetPreview();
+        break;
+      case 'dividers':
+        content = const DividerPreview();
+        break;
+      case 'badges':
+        content = const BadgePreview();
+        break;
+
       default:
         content = Center(
           child: Padding(
@@ -190,7 +228,7 @@ class _MainContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '${section[0].toUpperCase()}${section.substring(1)} Section',
+                  '${_AppShellState.sectionTitle(section)} Section',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -207,6 +245,7 @@ class _MainContent extends StatelessWidget {
           ),
         );
     }
+    ;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
