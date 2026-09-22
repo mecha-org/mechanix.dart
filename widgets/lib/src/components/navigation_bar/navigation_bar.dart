@@ -57,50 +57,6 @@ class MechanixNavigationDestination extends StatelessWidget {
   }
 }
 
-/// A Material 3 Navigation Bar component styled with Mechanix design tokens.
-///
-/// Features:
-/// - Exact default height of 80 dp (hug height)
-/// - 4 dp destination gap between adjacent navigation destination items
-/// - Hover, focus, pressed, and selected background colors and 1px top border
-///   applied to the **whole navigation item** containing both icon and label
-///   - Selected: `onSurface` with 10% opacity (`rgba(245, 245, 245, 0.1)`)
-///   - Selected Top Border: 1px solid `onSecondaryFixed` (`rgba(141, 141, 145, 1)`)
-///   - Hovered: `onSurface` with 8% opacity (`rgba(245, 245, 245, 0.08)`)
-///   - Focused / Pressed: `surfaceContainerLow` (`rgba(20, 20, 21, 1)`)
-/// - 24 dp icon size with state-aware colors:
-///   - Selected: `onSurface`
-///   - Unselected: `onSurfaceVariant`
-/// - 4 dp vertical gap between item icon and label
-/// - `labelLarge` typography with `onSecondaryContainer` color
-/// - Full keyboard navigation, hover tracking, and accessibility semantics
-/// - Seamless compatibility with standard Flutter [NavigationDestination]
-///
-/// ### Example Usage:
-/// ```dart
-/// MechanixNavigationBar(
-///   selectedIndex: _currentIndex,
-///   destinationGap: 4.0,
-///   onDestinationSelected: (index) => setState(() => _currentIndex = index),
-///   destinations: const [
-///     MechanixNavigationDestination(
-///       icon: Icon(Icons.home_outlined),
-///       selectedIcon: Icon(Icons.home),
-///       label: 'Home',
-///     ),
-///     MechanixNavigationDestination(
-///       icon: Icon(Icons.search_outlined),
-///       selectedIcon: Icon(Icons.search),
-///       label: 'Search',
-///     ),
-///     MechanixNavigationDestination(
-///       icon: Icon(Icons.settings_outlined),
-///       selectedIcon: Icon(Icons.settings),
-///       label: 'Settings',
-///     ),
-///   ],
-/// )
-/// ```
 class MechanixNavigationBar extends StatefulWidget {
   /// Creates a [MechanixNavigationBar].
   const MechanixNavigationBar({
@@ -211,38 +167,54 @@ class _MechanixNavigationBarState extends State<MechanixNavigationBar> {
         effectiveConfig.dividerColor ??
         themeData.colorScheme.outlineVariant.withValues(alpha: 0.2);
 
-    Widget destinationsRow = Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (int i = 0; i < widget.destinations.length; i++) ...[
-          if (i > 0)
-            if (destinationGap > 0)
-              SizedBox(width: destinationGap)
-            else if (showDividers)
-              Container(
+    Widget destinationsRow = LayoutBuilder(
+      builder: (context, constraints) {
+        final gap = destinationGap > 0 ? destinationGap : 0.0;
+        final totalGap = gap * (widget.destinations.length - 1);
+
+        final destinationWidth =
+            (constraints.maxWidth - totalGap) / widget.destinations.length;
+
+        return ListView.separated(
+          scrollDirection: Axis.horizontal,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: widget.destinations.length,
+          separatorBuilder: (context, index) {
+            if (destinationGap > 0) {
+              return SizedBox(width: destinationGap);
+            }
+
+            if (showDividers) {
+              return Container(
                 width: 1.0,
                 height: effectiveHeight,
                 color: dividerColor,
-              ),
-          Expanded(
-            child: _MechanixNavigationDestinationCell(
-              key: ValueKey('destination_$i'),
-              index: i,
-              isSelected: widget.selectedIndex == i,
-              destination: widget.destinations[i],
-              config: effectiveConfig,
-              labelBehavior: widget.labelBehavior,
-              animationDuration: widget.animationDuration,
-              effectiveHeight: effectiveHeight,
-              onTap: _isDestinationEnabled(widget.destinations[i])
-                  ? () => widget.onDestinationSelected?.call(i)
-                  : null,
-            ),
-          ),
-        ],
-      ],
-    );
+              );
+            }
 
+            return const SizedBox.shrink();
+          },
+          itemBuilder: (context, index) {
+            return SizedBox(
+              width: destinationWidth,
+              child: _MechanixNavigationDestinationCell(
+                key: ValueKey('destination_$index'),
+                index: index,
+                isSelected: widget.selectedIndex == index,
+                destination: widget.destinations[index],
+                config: effectiveConfig,
+                labelBehavior: widget.labelBehavior,
+                animationDuration: widget.animationDuration,
+                effectiveHeight: effectiveHeight,
+                onTap: _isDestinationEnabled(widget.destinations[index])
+                    ? () => widget.onDestinationSelected?.call(index)
+                    : null,
+              ),
+            );
+          },
+        );
+      },
+    );
     if (widget.padding != null) {
       destinationsRow = Padding(
         padding: widget.padding!,
