@@ -60,14 +60,21 @@ abstract class MechanixTheme extends StatefulWidget {
   static ColorScheme get darkColorScheme => MechanixColors.darkColorScheme;
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
-  static ThemeData createTheme({required ColorScheme colorScheme}) {
-    final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+  static ThemeData createTheme({
+    required ColorScheme colorScheme,
+    String? fontFamily = mechanixFontFamily,
+  }) {
+    final textTheme = createTextTheme(
+      textColor: colorScheme.onSurface,
+      fontFamily: fontFamily,
+    );
     final appBarTheme = _createAppBarTheme(colorScheme, textTheme);
 
     final shapeTheme = ShapeTheme.standard();
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      fontFamily: fontFamily,
       textTheme: textTheme,
       appBarTheme: appBarTheme,
       iconButtonTheme: IconButtonThemeData(

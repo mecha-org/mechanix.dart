@@ -78,6 +78,21 @@ void main() {
       },
     );
 
+    test('MechanixTheme.createTheme supports custom fontFamily', () {
+      const customColorScheme = ColorScheme.light(
+        primary: Colors.indigo,
+        onSurface: Color(0xFF123456),
+      );
+
+      final theme = MechanixTheme.createTheme(
+        colorScheme: customColorScheme,
+        fontFamily: 'CustomFont',
+      );
+
+      expect(theme.textTheme.displayLarge?.fontFamily, equals('CustomFont'));
+      expect(theme.textTheme.bodyMedium?.fontFamily, equals('CustomFont'));
+    });
+
     test('MechanixTheme.createTheme creates theme with iconButtonTheme and IconButtonThemeDataConfig extension', () {
       final theme = MechanixTheme.light;
 
@@ -417,64 +432,52 @@ void main() {
   });
 
   group('MechanixColors Dynamic Scheme Generation', () {
-    test(
-      'createLightColorScheme returns lightColorScheme when accent is null or default',
-      () {
-        final scheme1 = MechanixColors.createLightColorScheme();
-        final scheme2 = MechanixColors.createLightColorScheme(
-          accentColor: MechanixColors.defaultAccentColor,
-        );
+    test('createLightColorScheme returns lightColorScheme when accent is null or default', () {
+      final scheme1 = MechanixColors.createLightColorScheme();
+      final scheme2 = MechanixColors.createLightColorScheme(
+        accentColor: MechanixColors.defaultAccentColor,
+      );
 
-        expect(scheme1, equals(MechanixColors.lightColorScheme));
-        expect(scheme2, equals(MechanixColors.lightColorScheme));
-      },
-    );
+      expect(scheme1, equals(MechanixColors.lightColorScheme));
+      expect(scheme2, equals(MechanixColors.lightColorScheme));
+    });
 
-    test(
-      'createDarkColorScheme returns darkColorScheme when accent is null or default',
-      () {
-        final scheme1 = MechanixColors.createDarkColorScheme();
-        final scheme2 = MechanixColors.createDarkColorScheme(
-          accentColor: MechanixColors.defaultAccentColor,
-        );
+    test('createDarkColorScheme returns darkColorScheme when accent is null or default', () {
+      final scheme1 = MechanixColors.createDarkColorScheme();
+      final scheme2 = MechanixColors.createDarkColorScheme(
+        accentColor: MechanixColors.defaultAccentColor,
+      );
 
-        expect(scheme1, equals(MechanixColors.darkColorScheme));
-        expect(scheme2, equals(MechanixColors.darkColorScheme));
-      },
-    );
+      expect(scheme1, equals(MechanixColors.darkColorScheme));
+      expect(scheme2, equals(MechanixColors.darkColorScheme));
+    });
 
-    test(
-      'createLightColorScheme generates custom accent roles while preserving surfaces',
-      () {
-        final scheme = MechanixColors.createLightColorScheme(
-          accentColor: Colors.cyan,
-        );
+    test('createLightColorScheme generates custom accent roles while preserving surfaces', () {
+      final scheme = MechanixColors.createLightColorScheme(
+        accentColor: Colors.cyan,
+      );
 
-        expect(scheme.primary, equals(Colors.cyan));
-        expect(scheme.surface, equals(MechanixColors.lightColorScheme.surface));
-        expect(
-          scheme.surfaceContainer,
-          equals(MechanixColors.lightColorScheme.surfaceContainer),
-        );
-        expect(scheme.error, equals(MechanixColors.lightColorScheme.error));
-      },
-    );
+      expect(scheme.primary, equals(Colors.cyan));
+      expect(scheme.surface, equals(MechanixColors.lightColorScheme.surface));
+      expect(
+        scheme.surfaceContainer,
+        equals(MechanixColors.lightColorScheme.surfaceContainer),
+      );
+      expect(scheme.error, equals(MechanixColors.lightColorScheme.error));
+    });
 
-    test(
-      'createDarkColorScheme generates custom accent roles while preserving surfaces',
-      () {
-        final scheme = MechanixColors.createDarkColorScheme(
-          accentColor: Colors.cyan,
-        );
+    test('createDarkColorScheme generates custom accent roles while preserving surfaces', () {
+      final scheme = MechanixColors.createDarkColorScheme(
+        accentColor: Colors.cyan,
+      );
 
-        expect(scheme.primary, equals(Colors.cyan));
-        expect(scheme.surface, equals(MechanixColors.darkColorScheme.surface));
-        expect(
-          scheme.surfaceContainer,
-          equals(MechanixColors.darkColorScheme.surfaceContainer),
-        );
-        expect(scheme.error, equals(MechanixColors.darkColorScheme.error));
-      },
-    );
+      expect(scheme.primary, equals(Colors.cyan));
+      expect(scheme.surface, equals(MechanixColors.darkColorScheme.surface));
+      expect(
+        scheme.surfaceContainer,
+        equals(MechanixColors.darkColorScheme.surfaceContainer),
+      );
+      expect(scheme.error, equals(MechanixColors.darkColorScheme.error));
+    });
   });
 }
