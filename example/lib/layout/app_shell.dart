@@ -1,9 +1,11 @@
+import 'package:example/features/components/app_bar_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 import '../features/components/badge_preview.dart';
 import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
+import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
 import '../features/components/icon_button_preview.dart';
@@ -120,6 +122,8 @@ class _AppShellState extends State<AppShell> {
         return 'Typography';
       case 'buttons':
         return 'Buttons';
+      case 'text_fields':
+        return 'Text Fields';
       case 'checkboxes':
         return 'Checkboxes';
       case 'icon_buttons':
@@ -140,6 +144,8 @@ class _AppShellState extends State<AppShell> {
         return 'Inputs';
       case 'cards':
         return 'Cards';
+      case 'app_bar':
+        return 'App Bar';
       default:
         if (section.isEmpty) return 'Mechanix UI';
         return section
@@ -166,20 +172,50 @@ class _MainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final (Widget content, bool isSelfScrolling) = switch (section) {
-      'typography' => (const TypographyPreview(), false),
-      'buttons' => (const ButtonPreview(), false),
-      'checkboxes' => (const CheckboxPreview(), true),
-      'icon_buttons' => (const IconButtonPreview(), false),
-      'bottom_sheets' => (const BottomSheetPreview(), true),
-      'dividers' => (const DividerPreview(), true),
-      'badges' => (const BadgePreview(), true),
-      'radio_buttons' => (const RadioPreview(), true),
-      'snackbars' => (const SnackbarPreview(), true),
-      'switch' => (const SwitchPreview(), true),
-      'theme' => (const ThemePreview(), false),
-      _ => (
-        Center(
+    Widget content;
+    switch (section) {
+      case 'typography':
+        content = const TypographyPreview();
+        break;
+      case 'buttons':
+        content = const ButtonPreview();
+        break;
+      case 'text_fields':
+        content = const TextFieldPreview();
+        break;
+      case 'checkboxes':
+        content = const CheckboxPreview();
+        break;
+      case 'icon_buttons':
+        content = const IconButtonPreview();
+        break;
+      case 'radio_buttons':
+        content = const RadioPreview();
+        break;
+      case 'snackbars':
+        content = const SnackbarPreview();
+        break;
+      case 'switch':
+        content = const SwitchPreview();
+        break;
+      case 'theme':
+        content = const ThemePreview();
+        break;
+      case 'app_bar':
+        content = const AppBarPreview();
+        break;
+      case 'bottom_sheets':
+        content = const BottomSheetPreview();
+        break;
+      case 'dividers':
+        content = const DividerPreview();
+        break;
+      case 'badges':
+        content = const BadgePreview();
+        break;
+
+      default:
+        content = Center(
           child: Padding(
             padding: const EdgeInsets.all(32),
             child: Column(
@@ -207,19 +243,13 @@ class _MainContent extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        false,
-      ),
-    };
+        );
+    }
+    ;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
-      body: isSelfScrolling
-          ? content
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: content,
-            ),
+      body: ListView(padding: const EdgeInsets.all(24), children: [content]),
     );
   }
 }

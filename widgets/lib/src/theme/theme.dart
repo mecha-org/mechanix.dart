@@ -61,12 +61,15 @@ abstract class MechanixTheme extends StatefulWidget {
 
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
   static ThemeData createTheme({required ColorScheme colorScheme}) {
-    final shapeTheme = ShapeTheme.standard();
     final textTheme = createTextTheme(textColor: colorScheme.onSurface);
+    final appBarTheme = _createAppBarTheme(colorScheme, textTheme);
+
+    final shapeTheme = ShapeTheme.standard();
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
       textTheme: textTheme,
+      appBarTheme: appBarTheme,
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
@@ -216,6 +219,57 @@ abstract class MechanixTheme extends StatefulWidget {
           animationDuration: const Duration(milliseconds: 200),
         ),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colorScheme.surfaceContainerHighest,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        border: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(
+            color: colorScheme.onSurfaceVariant,
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.primary, width: 3.0),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 1.0),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.error, width: 3.0),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+          borderSide: BorderSide(color: colorScheme.onSurface, width: 1.0),
+        ),
+        labelStyle: textTheme.emphasized.labelLarge?.copyWith(
+          color: colorScheme.onSecondaryFixed,
+        ),
+        floatingLabelStyle: textTheme.labelMedium?.copyWith(
+          color: colorScheme.primary,
+        ),
+        hintStyle: textTheme.emphasized.titleMedium?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        helperStyle: textTheme.bodySmall?.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
+        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
@@ -266,6 +320,7 @@ abstract class MechanixTheme extends StatefulWidget {
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
       extensions: [
         shapeTheme,
+        AppBarThemeDataConfig.standard(colorScheme, textTheme),
         CheckboxThemeDataConfig(
           focusRingColor: colorScheme.outline,
           focusRingWidth: 2.0,
@@ -327,6 +382,28 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderWidth: 1.0,
         ),
       ],
+    );
+  }
+
+  /// Creates an [AppBarTheme] configured with Mechanix specifications.
+  static AppBarTheme _createAppBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    final config = AppBarThemeDataConfig.standard(colorScheme, textTheme);
+    return AppBarTheme(
+      backgroundColor: config.backgroundColor,
+      foregroundColor: config.foregroundColor,
+      elevation: config.elevation,
+      scrolledUnderElevation: config.scrolledUnderElevation,
+      shadowColor: config.shadowColor,
+      surfaceTintColor: config.surfaceTintColor,
+      centerTitle: config.centerTitle,
+      titleSpacing: config.titleSpacing,
+      toolbarHeight: config.toolbarHeight,
+      titleTextStyle: config.smallTitleTextStyle,
+      iconTheme: config.iconTheme,
+      actionsIconTheme: config.actionsIconTheme,
     );
   }
 
