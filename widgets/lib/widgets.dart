@@ -37,3 +37,4 @@ export 'src/components/snackbar/snackbar.dart';
 export 'src/components/switch/switch_style.dart';
 export 'src/components/switch/switch_theme.dart';
 export 'src/components/switch/switch.dart';
+export 'src/components/floating_action_button/floating_action_button.dart';

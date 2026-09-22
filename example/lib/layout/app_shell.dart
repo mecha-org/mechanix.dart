@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 import '../features/components/button_preview.dart';
+import '../features/components/floating_action_button_preview.dart';
 import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/icon_button_preview.dart';
@@ -110,6 +111,8 @@ class _AppShellState extends State<AppShell> {
         return 'Theme Overview';
       case 'buttons':
         return 'Buttons';
+      case 'floating_action_button':
+        return 'Floating Action Button';
       case 'text_fields':
         return 'Text Fields';
       case 'checkboxes':
@@ -151,6 +154,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'buttons':
         content = const ButtonPreview();
+        break;
+      case 'floating_action_button':
+        content = const FloatingActionButtonPreview();
         break;
       case 'text_fields':
         content = const TextFieldPreview();

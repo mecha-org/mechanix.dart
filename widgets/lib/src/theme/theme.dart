@@ -325,6 +325,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
+        const FloatingActionButtonThemeDataConfig(),
         SwitchThemeDataConfig(
           trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
           handleColor: WidgetStateProperty.resolveWith((states) {
