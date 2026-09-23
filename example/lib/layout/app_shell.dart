@@ -13,6 +13,7 @@ import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
 import '../features/components/switch_preview.dart';
 import '../features/components/navigation_bar_preview.dart';
+import '../features/components/list_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -143,6 +144,8 @@ class _AppShellState extends State<AppShell> {
         return 'Badges';
       case 'navigation_bar':
         return 'Navigation Bar';
+      case 'lists':
+        return 'Lists';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -203,6 +206,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'navigation_bar':
         content = const NavigationBarPreview();
+        break;
+      case 'lists':
+        content = const ListPreview();
         break;
       case 'theme':
         content = const ThemePreview();

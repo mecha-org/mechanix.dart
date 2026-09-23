@@ -165,6 +165,12 @@ class AppSidebar extends StatelessWidget {
                 title: 'Navigation Bar',
                 icon: Icons.navigation_outlined,
               ),
+              _buildNavItem(
+                context,
+                id: 'lists',
+                title: 'Lists',
+                icon: Icons.view_list_outlined,
+              ),
             ],
           ),
         ),
