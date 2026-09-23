@@ -12,6 +12,7 @@ abstract class IconButtonStyleResolver {
     required IconButtonVariant variant,
     required IconButtonType type,
     required IconButtonSizeConfig sizeSpec,
+    bool isToggleable = false,
     IconButtonThemeDataConfig? theme,
     Color? customBackgroundColor,
     Color? customHoverColor,
@@ -24,6 +25,13 @@ abstract class IconButtonStyleResolver {
     Color? customBorderColor,
     double? customBorderWidth,
     Color? customFocusBorderColor,
+    Color? customSelectedBackgroundColor,
+    Color? customSelectedHoverColor,
+    Color? customSelectedPressedColor,
+    Color? customSelectedForegroundColor,
+    Color? customSelectedHoverForegroundColor,
+    Color? customSelectedPressedForegroundColor,
+    Color? customSelectedBorderColor,
     Duration? duration,
     Curve? curve,
     bool showFocusIndicator = true,
@@ -40,45 +48,7 @@ abstract class IconButtonStyleResolver {
         };
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
-    // 2. Default color resolution per variant:
-    late final Color defaultBg;
-    late final Color defaultFg;
-    late final Color? defaultBorderColor;
-    late final double defaultBorderWidth;
-
-    switch (variant) {
-      case IconButtonVariant.filled:
-        defaultBg = scheme.primary;
-        defaultFg = scheme.onSurface;
-        defaultBorderColor = scheme.secondaryFixedDim;
-        defaultBorderWidth = 1.0;
-        break;
-      case IconButtonVariant.tonal:
-        defaultBg = scheme.secondary;
-        defaultFg = scheme.onSecondaryFixed;
-        defaultBorderColor = null;
-        defaultBorderWidth = 0.0;
-        break;
-      case IconButtonVariant.outline:
-        defaultBg = scheme.secondary;
-        defaultFg = scheme.onSecondaryFixed;
-        defaultBorderColor = scheme.outline;
-        defaultBorderWidth = 2.0;
-        break;
-      case IconButtonVariant.standard:
-        defaultBg = Colors.transparent;
-        defaultFg = scheme.onSecondaryFixed;
-        defaultBorderColor = null;
-        defaultBorderWidth = 0.0;
-        break;
-    }
-
-    final baseBg = customBackgroundColor ?? defaultBg;
-    final baseFg = customForegroundColor ?? defaultFg;
-    final baseBorderColor = customBorderColor ?? defaultBorderColor;
-    final baseBorderWidth = customBorderWidth ?? defaultBorderWidth;
-
-    // 3. State-aware background resolution
+    // 2. State-aware background resolution
     final backgroundColorProperty = WidgetStateProperty.resolveWith<Color?>((
       states,
     ) {
@@ -86,6 +56,91 @@ abstract class IconButtonStyleResolver {
           customDisabledColor != null) {
         return customDisabledColor;
       }
+
+      final isSelected = states.contains(WidgetState.selected);
+
+      // Selected state background resolution
+      if (isSelected) {
+        if (states.contains(WidgetState.pressed)) {
+          if (customSelectedPressedColor != null) {
+            return customSelectedPressedColor;
+          }
+          if (customPressedColor != null) {
+            return customPressedColor;
+          }
+          if (theme?.selectedPressedColor != null) {
+            return theme!.selectedPressedColor;
+          }
+        }
+        if (states.contains(WidgetState.hovered)) {
+          if (customSelectedHoverColor != null) {
+            return customSelectedHoverColor;
+          }
+          if (customHoverColor != null) {
+            return customHoverColor;
+          }
+          if (theme?.selectedHoverColor != null) {
+            return theme!.selectedHoverColor;
+          }
+        }
+        if (customSelectedBackgroundColor != null) {
+          return customSelectedBackgroundColor;
+        }
+        if (theme?.selectedBackgroundColor != null) {
+          return theme!.selectedBackgroundColor;
+        }
+
+        // Resolve from theme WidgetStateProperty if provided
+        if (theme?.backgroundColor != null) {
+          final themeColor = theme!.backgroundColor!.resolve(states);
+          if (themeColor != null) return themeColor;
+        }
+
+        // ---------------------------------------------------------------------
+        // Decision on Disabled vs Selected:
+        // Disabled styling wins outright over active/selected styling to ensure
+        // inoperability is clearly and unambiguously communicated to the user
+        // via low-contrast disabled tokens, adhering to M3 accessibility standards.
+        // If an explicit customDisabledColor is supplied, that override takes precedence.
+        // ---------------------------------------------------------------------
+        if (states.contains(WidgetState.disabled)) {
+          return switch (variant) {
+            IconButtonVariant.filled ||
+            IconButtonVariant.tonal => scheme.onSurface.withValues(alpha: 0.10),
+            IconButtonVariant.outline =>
+              scheme.onSurface.withValues(alpha: 0.10),
+            IconButtonVariant.standard => Colors.transparent,
+          };
+        }
+
+        final selectedBaseBg = switch (variant) {
+          IconButtonVariant.filled => scheme.primary,
+          IconButtonVariant.tonal => scheme.secondaryContainer,
+          IconButtonVariant.outline => scheme.inverseSurface,
+          IconButtonVariant.standard => Colors.transparent,
+        };
+
+        if (states.contains(WidgetState.pressed) ||
+            states.contains(WidgetState.hovered) ||
+            states.contains(WidgetState.focused)) {
+          final stateLayerColor = switch (variant) {
+            IconButtonVariant.filled => scheme.onPrimary,
+            IconButtonVariant.tonal => scheme.onSecondaryContainer,
+            IconButtonVariant.outline => scheme.onInverseSurface,
+            IconButtonVariant.standard => scheme.primary,
+          };
+          final opacity = states.contains(WidgetState.pressed) ? 0.12 : 0.08;
+          return _applyStateLayer(
+            baseColor: selectedBaseBg,
+            stateLayerColor: stateLayerColor,
+            opacity: opacity,
+          );
+        }
+
+        return selectedBaseBg;
+      }
+
+      // Unselected / push button state background resolution
       if (states.contains(WidgetState.pressed) && customPressedColor != null) {
         return customPressedColor;
       }
@@ -111,27 +166,36 @@ abstract class IconButtonStyleResolver {
         };
       }
 
+      final unselectedBaseBg = switch (variant) {
+        IconButtonVariant.filled =>
+          isToggleable ? scheme.secondary : scheme.primary,
+        IconButtonVariant.tonal => scheme.secondary,
+        IconButtonVariant.outline => scheme.secondary,
+        IconButtonVariant.standard => Colors.transparent,
+      };
+
       if (states.contains(WidgetState.pressed) ||
           states.contains(WidgetState.hovered) ||
           states.contains(WidgetState.focused)) {
         final stateLayerColor = switch (variant) {
-          IconButtonVariant.filled => scheme.onPrimary,
+          IconButtonVariant.filled =>
+            isToggleable ? scheme.primary : scheme.onPrimary,
           IconButtonVariant.tonal => scheme.onSecondaryContainer,
           IconButtonVariant.outline ||
           IconButtonVariant.standard => scheme.onSurfaceVariant,
         };
         final opacity = states.contains(WidgetState.pressed) ? 0.12 : 0.08;
         return _applyStateLayer(
-          baseColor: baseBg,
+          baseColor: unselectedBaseBg,
           stateLayerColor: stateLayerColor,
           opacity: opacity,
         );
       }
 
-      return baseBg;
+      return unselectedBaseBg;
     });
 
-    // 4. State-aware foreground resolution
+    // 3. State-aware foreground resolution
     final foregroundColorProperty = WidgetStateProperty.resolveWith<Color?>((
       states,
     ) {
@@ -139,6 +203,59 @@ abstract class IconButtonStyleResolver {
           customDisabledForegroundColor != null) {
         return customDisabledForegroundColor;
       }
+
+      final isSelected = states.contains(WidgetState.selected);
+
+      // Selected state foreground resolution
+      if (isSelected) {
+        if (states.contains(WidgetState.pressed)) {
+          if (customSelectedPressedForegroundColor != null) {
+            return customSelectedPressedForegroundColor;
+          }
+          if (customPressedForegroundColor != null) {
+            return customPressedForegroundColor;
+          }
+          if (theme?.selectedPressedForegroundColor != null) {
+            return theme!.selectedPressedForegroundColor;
+          }
+        }
+        if (states.contains(WidgetState.hovered)) {
+          if (customSelectedHoverForegroundColor != null) {
+            return customSelectedHoverForegroundColor;
+          }
+          if (customHoverForegroundColor != null) {
+            return customHoverForegroundColor;
+          }
+          if (theme?.selectedHoverForegroundColor != null) {
+            return theme!.selectedHoverForegroundColor;
+          }
+        }
+        if (customSelectedForegroundColor != null) {
+          return customSelectedForegroundColor;
+        }
+        if (theme?.selectedForegroundColor != null) {
+          return theme!.selectedForegroundColor;
+        }
+
+        // Resolve from theme WidgetStateProperty if provided
+        if (theme?.foregroundColor != null) {
+          final themeFg = theme!.foregroundColor!.resolve(states);
+          if (themeFg != null) return themeFg;
+        }
+
+        if (states.contains(WidgetState.disabled)) {
+          return scheme.onSurface.withValues(alpha: 0.38);
+        }
+
+        return switch (variant) {
+          IconButtonVariant.filled => scheme.onSurface,
+          IconButtonVariant.tonal => scheme.onSecondaryContainer,
+          IconButtonVariant.outline => scheme.onInverseSurface,
+          IconButtonVariant.standard => scheme.primary,
+        };
+      }
+
+      // Unselected / push button state foreground resolution
       if (states.contains(WidgetState.pressed) &&
           customPressedForegroundColor != null) {
         return customPressedForegroundColor;
@@ -160,10 +277,17 @@ abstract class IconButtonStyleResolver {
       if (states.contains(WidgetState.disabled)) {
         return scheme.onSurface.withValues(alpha: 0.38);
       }
-      return baseFg;
+
+      return switch (variant) {
+        IconButtonVariant.filled =>
+          isToggleable ? scheme.primary : scheme.onSurface,
+        IconButtonVariant.tonal => scheme.onSecondaryFixed,
+        IconButtonVariant.outline => scheme.onSecondaryFixed,
+        IconButtonVariant.standard => scheme.onSecondaryFixed,
+      };
     });
 
-    // 5. State-aware border side resolution
+    // 4. State-aware border side resolution
     final sideProperty = WidgetStateProperty.resolveWith<BorderSide?>((states) {
       // Resolve from theme WidgetStateProperty if provided
       if (theme?.side != null) {
@@ -183,34 +307,88 @@ abstract class IconButtonStyleResolver {
         return BorderSide(color: focusBorderColor, width: focusWidth);
       }
 
+      final isSelected = states.contains(WidgetState.selected);
+
       if (states.contains(WidgetState.disabled)) {
+        if (isSelected) {
+          return switch (variant) {
+            IconButtonVariant.filled => BorderSide(
+              color: scheme.secondary.withValues(alpha: 0.10),
+              width: customBorderWidth ?? 1.0,
+            ),
+            IconButtonVariant.tonal ||
+            IconButtonVariant.outline ||
+            IconButtonVariant.standard =>
+              null,
+          };
+        }
         return switch (variant) {
           IconButtonVariant.filled => BorderSide(
             color: scheme.secondary.withValues(alpha: 0.10),
-            width: baseBorderWidth,
+            width: customBorderWidth ?? 1.0,
           ),
           IconButtonVariant.outline => BorderSide(
-            color: (baseBorderColor ?? scheme.outline).withValues(alpha: 0.38),
-            width: baseBorderWidth,
+            color: (customBorderColor ?? scheme.outline).withValues(alpha: 0.38),
+            width: customBorderWidth ?? 2.0,
           ),
           IconButtonVariant.tonal || IconButtonVariant.standard =>
-            baseBorderColor != null
+            customBorderColor != null
                 ? BorderSide(
-                    color: baseBorderColor.withValues(alpha: 0.38),
-                    width: baseBorderWidth,
+                    color: customBorderColor.withValues(alpha: 0.38),
+                    width: customBorderWidth ?? 1.0,
                   )
                 : null,
         };
       }
 
-      if (baseBorderColor != null) {
+      // Selected state border
+      if (isSelected) {
+        if (customSelectedBorderColor != null) {
+          return BorderSide(
+            color: customSelectedBorderColor,
+            width: customBorderWidth ??
+                (variant == IconButtonVariant.outline ? 2.0 : 1.0),
+          );
+        }
+        if (theme?.selectedBorderColor != null) {
+          return BorderSide(
+            color: theme!.selectedBorderColor!,
+            width: customBorderWidth ??
+                (variant == IconButtonVariant.outline ? 2.0 : 1.0),
+          );
+        }
+        return switch (variant) {
+          IconButtonVariant.filled => BorderSide(
+            color: scheme.secondaryFixedDim,
+            width: customBorderWidth ?? 1.0,
+          ),
+          IconButtonVariant.outline ||
+          IconButtonVariant.tonal ||
+          IconButtonVariant.standard =>
+            null,
+        };
+      }
+
+      // Unselected / push button border
+      final baseBorderColor = customBorderColor ??
+          switch (variant) {
+            IconButtonVariant.filled => scheme.secondaryFixedDim,
+            IconButtonVariant.outline => scheme.outline,
+            IconButtonVariant.tonal || IconButtonVariant.standard => null,
+          };
+      final baseBorderWidth = customBorderWidth ??
+          (baseBorderColor != null
+              ? (variant == IconButtonVariant.outline ? 2.0 : 1.0)
+              : 0.0);
+
+      if (baseBorderColor != null && baseBorderWidth > 0) {
         return BorderSide(color: baseBorderColor, width: baseBorderWidth);
       }
 
       return null;
     });
 
-    // 6. Native tap target sizing
+    // 5. Native tap target sizing
     final tapTargetSize = sizeSpec.minTapTargetSize > 0
         ? MaterialTapTargetSize.padded
         : MaterialTapTargetSize.shrinkWrap;

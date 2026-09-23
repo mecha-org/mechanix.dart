@@ -3,15 +3,19 @@ import '../button/button_enums.dart';
 /// Defines the visual variant of the [MechanixIconButton].
 enum IconButtonVariant {
   /// Filled background button style with primary color.
+  /// When toggleable and unselected, uses secondary container background.
   filled,
 
   /// Tonal background button style with secondary color.
+  /// When selected, uses secondaryContainer background.
   tonal,
 
-  /// Outlined border button style with surface variant background.
+  /// Outlined border button style with surface variant background and outline border.
+  /// When selected, uses inverseSurface background with no border.
   outline,
 
   /// Standard icon button style with transparent background.
+  /// When selected, the icon color activates to primary color.
   standard,
 }
 
