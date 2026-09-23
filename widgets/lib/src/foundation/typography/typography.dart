@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
 abstract final class MechanixFontFamily {
-  /// Primary font for display and headline typography.
   static const String spaceGrotesk = 'SpaceGrotesk';
 
-  /// Primary font for body, title, and standard labels.
   static const String geist = 'Geist';
 
-  /// Monospace font for code, tokens, metrics, and compact labels.
   static const String geistMono = 'GeistMono';
 }
 
-/// Default font family for Mechanix apps.
 const String mechanixFontFamily = MechanixFontFamily.spaceGrotesk;
 
-/// Package name providing Mechanix typography assets.
 const String mechanixFontPackage = 'widgets';
 
 TextTheme createTextTheme({
