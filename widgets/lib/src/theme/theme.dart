@@ -318,10 +318,8 @@ abstract class MechanixTheme extends StatefulWidget {
       ),
       checkboxTheme: _createCheckboxTheme(colorScheme),
       radioTheme: _createRadioTheme(colorScheme),
-      snackBarTheme: _createSnackBarTheme(
-        colorScheme,
-        createTextTheme(textColor: colorScheme.onSurface),
-      ),
+      snackBarTheme: _createSnackBarTheme(colorScheme, textTheme),
+      navigationBarTheme: _createNavigationBarTheme(colorScheme, textTheme),
       bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
       dividerTheme: _createDividerTheme(colorScheme),
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
@@ -388,6 +386,7 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
           focusBorderWidth: 1.0,
         ),
+        NavigationBarThemeDataConfig.standard(colorScheme, textTheme),
       ],
     );
   }
@@ -411,6 +410,44 @@ abstract class MechanixTheme extends StatefulWidget {
       titleTextStyle: config.smallTitleTextStyle,
       iconTheme: config.iconTheme,
       actionsIconTheme: config.actionsIconTheme,
+    );
+  }
+
+  /// Creates a [NavigationBarThemeData] configured with Mechanix specifications.
+  static NavigationBarThemeData _createNavigationBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return NavigationBarThemeData(
+      height: 80.0,
+      backgroundColor: colorScheme.surface,
+      elevation: 0.0,
+      shadowColor: colorScheme.shadow,
+      surfaceTintColor: Colors.transparent,
+      indicatorColor: colorScheme.onSurface.withValues(alpha: 0.10),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        final style = textTheme.labelLarge?.copyWith(
+          color: colorScheme.onSecondaryContainer,
+        );
+        if (states.contains(WidgetState.disabled)) {
+          return style?.copyWith(
+            color: colorScheme.onSecondaryContainer.withValues(alpha: 0.38),
+          );
+        }
+        return style;
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return IconThemeData(
+            size: 24.0,
+            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.38),
+          );
+        }
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(size: 24.0, color: colorScheme.onSurface);
+        }
+        return IconThemeData(size: 24.0, color: colorScheme.onSurfaceVariant);
+      }),
     );
   }
 
