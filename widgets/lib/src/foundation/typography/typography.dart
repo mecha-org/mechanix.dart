@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
 
-/// Default font family for Mechanix apps.
-const String mechanixFontFamily = 'SpaceGrotesk';
+abstract final class MechanixFontFamily {
+  static const String spaceGrotesk = 'SpaceGrotesk';
 
-/// Package name providing Mechanix typography assets.
+  static const String geist = 'Geist';
+
+  static const String geistMono = 'GeistMono';
+}
+
+const String mechanixFontFamily = MechanixFontFamily.spaceGrotesk;
+
 const String mechanixFontPackage = 'widgets';
 
 TextTheme createTextTheme({
   required Color textColor,
-  String? fontFamily = mechanixFontFamily,
+  String? fontFamily,
   List<String>? fontFamilyFallback,
+  String? package = mechanixFontPackage,
 }) {
+  final resolvedDisplayFont = fontFamily ?? MechanixFontFamily.spaceGrotesk;
+  final resolvedHeadlineFont = fontFamily ?? MechanixFontFamily.spaceGrotesk;
+  final resolvedTitleFont = fontFamily ?? MechanixFontFamily.geist;
+  final resolvedBodyFont = fontFamily ?? MechanixFontFamily.geist;
+  final resolvedLabelFont = fontFamily ?? MechanixFontFamily.geist;
+  final resolvedLabelMonoFont = fontFamily ?? MechanixFontFamily.geistMono;
+
+  String? packageFor(String family) {
+    if (family == MechanixFontFamily.spaceGrotesk ||
+        family == MechanixFontFamily.geist ||
+        family == MechanixFontFamily.geistMono) {
+      return package;
+    }
+    return null;
+  }
+
   return TextTheme(
     // Display
     displayLarge: _MechanixTextStyle(
@@ -19,8 +42,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedDisplayFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedDisplayFont),
     ),
     displayMedium: _MechanixTextStyle(
       fontSize: 45,
@@ -28,8 +52,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedDisplayFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedDisplayFont),
     ),
     displaySmall: _MechanixTextStyle(
       fontSize: 36,
@@ -37,8 +62,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedDisplayFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedDisplayFont),
     ),
 
     // Headline
@@ -48,8 +74,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedHeadlineFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedHeadlineFont),
     ),
     headlineMedium: _MechanixTextStyle(
       fontSize: 24,
@@ -57,8 +84,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 2.0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedHeadlineFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedHeadlineFont),
     ),
     headlineSmall: _MechanixTextStyle(
       fontSize: 22,
@@ -66,8 +94,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedHeadlineFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedHeadlineFont),
     ),
 
     // Title
@@ -77,8 +106,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w400,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedTitleFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedTitleFont),
     ),
     titleMedium: _MechanixTextStyle(
       fontSize: 18,
@@ -86,8 +116,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedTitleFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedTitleFont),
     ),
     titleSmall: _MechanixTextStyle(
       fontSize: 16,
@@ -95,8 +126,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0.1,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedTitleFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedTitleFont),
     ),
 
     // Body
@@ -106,8 +138,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w400,
       letterSpacing: 0,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedBodyFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedBodyFont),
     ),
     bodyMedium: _MechanixTextStyle(
       fontSize: 14,
@@ -115,8 +148,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: -0.25,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedBodyFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedBodyFont),
     ),
     bodySmall: _MechanixTextStyle(
       fontSize: 12,
@@ -124,8 +158,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0.4,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedBodyFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedBodyFont),
     ),
 
     // Label
@@ -135,8 +170,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w400,
       letterSpacing: -0.5,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedLabelMonoFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedLabelMonoFont),
     ),
     labelMedium: _MechanixTextStyle(
       fontSize: 12,
@@ -144,8 +180,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0.5,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedLabelFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedLabelFont),
     ),
     labelSmall: _MechanixTextStyle(
       fontSize: 11,
@@ -153,8 +190,9 @@ TextTheme createTextTheme({
       fontWeight: FontWeight.w300,
       letterSpacing: 0.5,
       color: textColor,
-      fontFamily: fontFamily,
+      fontFamily: resolvedLabelMonoFont,
       fontFamilyFallback: fontFamilyFallback,
+      package: packageFor(resolvedLabelMonoFont),
     ),
   );
 }
@@ -166,13 +204,13 @@ class _MechanixTextStyle extends TextStyle {
     super.fontWeight,
     super.letterSpacing,
     required Color super.color,
-    String? fontFamily = mechanixFontFamily,
+    String? fontFamily,
     super.fontFamilyFallback,
-    String? package = mechanixFontPackage,
+    String? package,
   }) : super(
          fontSize: fontSize,
          height: height / fontSize,
-         fontFamily: fontFamily ?? mechanixFontFamily,
+         fontFamily: fontFamily,
          package: package,
          leadingDistribution: TextLeadingDistribution.even,
        );

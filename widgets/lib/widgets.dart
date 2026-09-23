@@ -42,6 +42,8 @@ export 'src/components/divider/divider.dart';
 export 'src/components/divider/divider_enums.dart';
 export 'src/components/badge/badge.dart';
 export 'src/components/badge/badge_enums.dart';
+export 'src/components/navigation_bar/navigation_bar.dart';
+export 'src/components/navigation_bar/navigation_bar_theme.dart';
 export 'src/components/list_tile/list_tile.dart';
 export 'src/components/list_tile/expandable_list_tile.dart';
 export 'src/components/list_tile/draggable_list_tile.dart';
