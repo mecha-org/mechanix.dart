@@ -21,7 +21,7 @@ void main() {
         // Check text theme composition
         final textTheme = theme.textTheme;
         expect(textTheme.displayLarge, isNotNull);
-        expect(textTheme.displayLarge?.fontFamily, equals(mechanixFontFamily));
+        expect(textTheme.displayLarge?.fontFamily, endsWith(mechanixFontFamily));
         expect(textTheme.displayLarge?.fontSize, equals(52.0));
         expect(textTheme.headlineLarge, isNotNull);
         expect(textTheme.titleLarge, isNotNull);
@@ -58,7 +58,7 @@ void main() {
         // Check text theme composition
         final textTheme = theme.textTheme;
         expect(textTheme.displayLarge, isNotNull);
-        expect(textTheme.displayLarge?.fontFamily, equals(mechanixFontFamily));
+        expect(textTheme.displayLarge?.fontFamily, endsWith(mechanixFontFamily));
         expect(textTheme.displayLarge?.fontSize, equals(52.0));
         expect(textTheme.headlineLarge, isNotNull);
         expect(textTheme.titleLarge, isNotNull);

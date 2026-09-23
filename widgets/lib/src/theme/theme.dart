@@ -62,7 +62,7 @@ abstract class MechanixTheme extends StatefulWidget {
   /// Creates a [ThemeData] configured with Mechanix specifications for the given [colorScheme].
   static ThemeData createTheme({
     required ColorScheme colorScheme,
-    String? fontFamily = mechanixFontFamily,
+    String? fontFamily,
   }) {
     final textTheme = createTextTheme(
       textColor: colorScheme.onSurface,
