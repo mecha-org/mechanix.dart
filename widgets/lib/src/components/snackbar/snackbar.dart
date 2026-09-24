@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 export 'snackbar_action.dart';
+export 'snackbar_controller.dart';
 export 'snackbar_enums.dart';
 export 'snackbar_theme.dart';
+
+import '_snackbar_overlay_host.dart';
 
 class MechanixSnackbar extends StatelessWidget {
   /// Creates a [MechanixSnackbar] with a custom [message] widget.
   const MechanixSnackbar({
     super.key,
     required this.message,
+    this.position = MechanixSnackbarPosition.bottom,
     this.action,
     this.showCloseIcon = false,
     this.onClose,
@@ -49,6 +53,7 @@ class MechanixSnackbar extends StatelessWidget {
   factory MechanixSnackbar.text({
     Key? key,
     required String text,
+    MechanixSnackbarPosition position = MechanixSnackbarPosition.bottom,
     MechanixSnackbarAction? action,
     bool showCloseIcon = false,
     VoidCallback? onClose,
@@ -88,6 +93,7 @@ class MechanixSnackbar extends StatelessWidget {
     return MechanixSnackbar(
       key: key,
       message: Text(text, maxLines: maxLines, overflow: overflow),
+      position: position,
       action: action,
       showCloseIcon: showCloseIcon,
       onClose: onClose,
@@ -112,6 +118,11 @@ class MechanixSnackbar extends StatelessWidget {
 
   /// The primary message widget (typically a [Text] widget).
   final Widget message;
+
+  /// The vertical position on the screen where the snackbar appears.
+  ///
+  /// Defaults to [MechanixSnackbarPosition.bottom].
+  final MechanixSnackbarPosition position;
 
   /// An optional action button displayed within the snackbar.
   final MechanixSnackbarAction? action;
@@ -170,48 +181,81 @@ class MechanixSnackbar extends StatelessWidget {
   /// Custom inner padding override.
   final EdgeInsetsGeometry? padding;
 
-  /// Displays this [MechanixSnackbar] in a floating [SnackBar] using the nearest
-  /// [ScaffoldMessenger] from the given [context].
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> show(
+  /// Displays this [MechanixSnackbar].
+  MechanixSnackbarController show(
     BuildContext context, {
     Duration duration = const Duration(seconds: 4),
+    MechanixSnackbarPosition? position,
     EdgeInsetsGeometry? margin,
     double? width,
-    DismissDirection dismissDirection = DismissDirection.down,
+    DismissDirection? dismissDirection,
     SnackBarBehavior? behavior,
     bool? persist,
     VoidCallback? onVisible,
     Clip? clipBehavior,
     HitTestBehavior? hitTestBehavior,
+    bool useOverlay = false,
   }) {
-    return ScaffoldMessenger.of(context).showSnackBar(
-      toSnackBar(
-        duration: duration,
-        margin: margin,
-        width: width,
-        dismissDirection: dismissDirection,
-        behavior: behavior,
-        persist: persist,
-        onVisible: onVisible,
-        clipBehavior: clipBehavior,
-        hitTestBehavior: hitTestBehavior,
-      ),
+    final effectiveTheme = _resolveTheme(context);
+    final effectivePosition = position ?? this.position;
+
+    if (effectivePosition == MechanixSnackbarPosition.bottom && !useOverlay) {
+      final messenger = ScaffoldMessenger.maybeOf(context);
+      if (messenger != null) {
+        final controller = messenger.showSnackBar(
+          toSnackBar(
+            duration: duration,
+            position: effectivePosition,
+            margin: margin,
+            width: width,
+            dismissDirection: dismissDirection,
+            behavior: behavior,
+            persist: persist,
+            onVisible: onVisible,
+            clipBehavior: clipBehavior,
+            hitTestBehavior: hitTestBehavior,
+          ),
+        );
+        return ScaffoldSnackbarController(controller);
+      }
+    }
+
+    return MechanixSnackbarOverlayManager.show(
+      context,
+      snackbar: this,
+      position: effectivePosition,
+      duration: duration,
+      persist: persist ?? this.persist,
+      onVisible: onVisible ?? this.onVisible,
+      margin: margin ?? this.margin ?? effectiveTheme.margin,
+      width: width ?? this.width,
     );
+  }
+
+  /// Hides the currently displaying snackbar across both overlay and [ScaffoldMessenger].
+  static void hide(
+    BuildContext context, {
+    SnackBarClosedReason reason = SnackBarClosedReason.dismiss,
+  }) {
+    MechanixSnackbarOverlayManager.hideCurrent(reason: reason);
+    ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar(reason: reason);
   }
 
   /// Converts this [MechanixSnackbar] into Flutter's native [SnackBar] wrapper
   /// suitable for passing to [ScaffoldMessengerState.showSnackBar].
   SnackBar toSnackBar({
     Duration duration = const Duration(seconds: 4),
+    MechanixSnackbarPosition? position,
     EdgeInsetsGeometry? margin,
     double? width,
-    DismissDirection dismissDirection = DismissDirection.down,
+    DismissDirection? dismissDirection,
     SnackBarBehavior? behavior,
     bool? persist,
     VoidCallback? onVisible,
     Clip? clipBehavior,
     HitTestBehavior? hitTestBehavior,
   }) {
+    final effectivePosition = position ?? this.position;
     final effectiveBehavior =
         behavior ??
         this.behavior ??
@@ -228,6 +272,12 @@ class MechanixSnackbar extends StatelessWidget {
     final effectiveOnVisible = onVisible ?? this.onVisible;
     final effectiveClip = clipBehavior ?? this.clipBehavior;
     final effectiveHitTest = hitTestBehavior ?? this.hitTestBehavior;
+
+    final defaultDismiss = switch (effectivePosition) {
+      MechanixSnackbarPosition.top => DismissDirection.up,
+      MechanixSnackbarPosition.bottom => DismissDirection.down,
+      MechanixSnackbarPosition.center => DismissDirection.horizontal,
+    };
 
     assert(
       effectiveWidth == null || effectiveMargin == null,
@@ -259,7 +309,7 @@ class MechanixSnackbar extends StatelessWidget {
                       ))),
       width: effectiveWidth,
       duration: duration,
-      dismissDirection: dismissDirection,
+      dismissDirection: dismissDirection ?? defaultDismiss,
       persist: effectivePersist,
       onVisible: effectiveOnVisible,
       clipBehavior: effectiveClip,
@@ -341,6 +391,7 @@ class MechanixSnackbar extends StatelessWidget {
         }
 
         return Center(
+          heightFactor: 1.0,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: effectiveMaxWidth ?? double.infinity,
@@ -492,8 +543,13 @@ class MechanixSnackbar extends StatelessWidget {
       focusBorderColor: effectiveTheme.focusBorderColor ?? closeColor,
       onPressed: () {
         onClose?.call();
-        ScaffoldMessenger.maybeOf(context)
-            ?.hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+        final scope = MechanixSnackbarScope.maybeOf(context);
+        if (scope != null) {
+          scope.dismiss(reason: SnackBarClosedReason.dismiss);
+        } else {
+          ScaffoldMessenger.maybeOf(context)
+              ?.hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+        }
       },
     );
   }
@@ -526,6 +582,7 @@ class MechanixSnackbar extends StatelessWidget {
         actionTextStyle: theme!.actionTextStyle,
         showFocusIndicator: theme!.showFocusIndicator,
         focusBorderColor: theme!.focusBorderColor,
+        position: theme!.position,
       );
     }
     return resolved;
@@ -560,8 +617,13 @@ class _SnackbarActionButtonState extends State<_SnackbarActionButton> {
     if (!widget.action.isEnabled || _haveTriggeredAction) return;
     setState(() => _haveTriggeredAction = true);
     widget.action.onPressed!();
-    ScaffoldMessenger.maybeOf(context)
-        ?.hideCurrentSnackBar(reason: SnackBarClosedReason.action);
+    final scope = MechanixSnackbarScope.maybeOf(context);
+    if (scope != null) {
+      scope.dismiss(reason: SnackBarClosedReason.action);
+    } else {
+      ScaffoldMessenger.maybeOf(context)
+          ?.hideCurrentSnackBar(reason: SnackBarClosedReason.action);
+    }
   }
 
   @override
@@ -574,6 +636,10 @@ class _SnackbarActionButtonState extends State<_SnackbarActionButton> {
       focusNode: widget.action.focusNode,
       autofocus: widget.action.autofocus,
       size: ButtonSize.xSmall,
+      foregroundColor: widget.color,
+      hoverColor: widget.hoverColor,
+      focusBorderColor: widget.focusBorderColor,
+      showFocusIndicator: widget.showFocusIndicator,
     );
 
     if (widget.action.semanticLabel != null) {

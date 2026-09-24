@@ -11,3 +11,16 @@ enum SnackbarLayout {
   /// right-aligned according to Material 3 multiline guidelines.
   stacked,
 }
+
+/// Defines the vertical positioning strategy for a [MechanixSnackbar].
+enum MechanixSnackbarPosition {
+  /// Floats at the top of the screen below status and app bars.
+  top,
+
+  /// Floats in the vertical center of the screen.
+  center,
+
+  /// Floats at the bottom of the screen above navigation bars (default).
+  bottom,
+}
+
