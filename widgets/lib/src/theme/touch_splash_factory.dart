@@ -53,10 +53,6 @@ class _TouchOptimizedSplash extends InteractiveInkFeature {
     }
     _activeSplashes[referenceBox] = this;
 
-    // Immediately register and mark for painting - critical for instant 0ms touch responsiveness
-    controller.addInkFeature(this);
-    controller.markNeedsPaint();
-
     _fadeController =
         AnimationController(
             duration: const Duration(milliseconds: 150),
@@ -69,6 +65,10 @@ class _TouchOptimizedSplash extends InteractiveInkFeature {
               dispose();
             }
           });
+
+    // Register and mark for painting only after all internal state is ready
+    controller.addInkFeature(this);
+    controller.markNeedsPaint();
   }
 
   static final Expando<_TouchOptimizedSplash> _activeSplashes =
