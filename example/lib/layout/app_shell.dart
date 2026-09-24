@@ -5,6 +5,7 @@ import 'package:widgets/widgets.dart';
 import '../features/components/badge_preview.dart';
 import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
+import '../features/components/floating_action_button_preview.dart';
 import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
@@ -124,6 +125,8 @@ class _AppShellState extends State<AppShell> {
         return 'Typography';
       case 'buttons':
         return 'Buttons';
+      case 'floating_action_button':
+        return 'Floating Action Button';
       case 'text_fields':
         return 'Text Fields';
       case 'checkboxes':
@@ -185,6 +188,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'buttons':
         content = const ButtonPreview();
+        break;
+      case 'floating_action_button':
+        content = const FloatingActionButtonPreview();
         break;
       case 'text_fields':
         content = const TextFieldPreview();
