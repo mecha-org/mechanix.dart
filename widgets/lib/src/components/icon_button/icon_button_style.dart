@@ -215,8 +215,42 @@ abstract class IconButtonStyleResolver {
         ? MaterialTapTargetSize.padded
         : MaterialTapTargetSize.shrinkWrap;
 
+    final overlayColorProperty =
+        WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(WidgetState.pressed)) {
+        if (customPressedColor != null) {
+          return customPressedColor;
+        }
+        final stateLayerColor = switch (variant) {
+          IconButtonVariant.filled => scheme.onPrimary,
+          IconButtonVariant.tonal => scheme.onSecondaryContainer,
+          IconButtonVariant.outline ||
+          IconButtonVariant.standard => scheme.onSurfaceVariant,
+        };
+        return stateLayerColor.withValues(alpha: 0.12);
+      }
+      if (states.contains(WidgetState.hovered) ||
+          states.contains(WidgetState.focused)) {
+        if (customHoverColor != null) {
+          return customHoverColor;
+        }
+        final stateLayerColor = switch (variant) {
+          IconButtonVariant.filled => scheme.onPrimary,
+          IconButtonVariant.tonal => scheme.onSecondaryContainer,
+          IconButtonVariant.outline ||
+          IconButtonVariant.standard => scheme.onSurfaceVariant,
+        };
+        return stateLayerColor.withValues(alpha: 0.08);
+      }
+      return Colors.transparent;
+    });
+
     return ButtonStyle(
-      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      splashFactory: const TouchOptimizedSplashFactory(),
+      overlayColor: overlayColorProperty,
       backgroundColor: backgroundColorProperty,
       foregroundColor: foregroundColorProperty,
       iconColor: foregroundColorProperty,
