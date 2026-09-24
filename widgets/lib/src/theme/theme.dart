@@ -102,12 +102,6 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return Colors.transparent;
           }),
-          // backgroundColor: WidgetStateProperty.resolveWith((states) {
-          //   if (states.contains(WidgetState.disabled)) {
-          //     return colorScheme.onSurface.withValues(alpha: 0.10);
-          //   }
-          //   return colorScheme.primary;
-          // }),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return colorScheme.onSurface.withValues(alpha: 0.10);
@@ -171,12 +165,6 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return Colors.transparent;
           }),
-          // backgroundColor: WidgetStateProperty.resolveWith((states) {
-          //   if (states.contains(WidgetState.disabled)) {
-          //     return colorScheme.onSurface.withValues(alpha: 0.10);
-          //   }
-          //   return colorScheme.secondaryFixedDim;
-          // }),
           backgroundColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.disabled)) {
               return colorScheme.onSurface.withValues(alpha: 0.10);

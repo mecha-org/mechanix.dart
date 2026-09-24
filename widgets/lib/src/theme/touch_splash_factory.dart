@@ -1,25 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// An [InteractiveInkFeatureFactory] that creates a flat bounding-box
-/// touch highlight with an instant 0ms attack and a fixed 150ms fade-out upon release.
-///
-/// Unlike standard Material ink ripples, this does not paint an expanding radial wave;
-/// instead it fills the entire button/ink bounds immediately with the specified touch/splash color,
-/// guaranteeing visible tactile feedback even on ultra-fast taps and within scrollables.
-///
-/// **Performance & Rendering Architecture**:
-/// - **Zero GPU clipping**: Directly draws shapes via `drawRRect`, `drawPath`, `drawCircle`, and `drawRect`
-///   instead of stencil clipping (`clipRRect`/`clipPath`), avoiding off-screen stencil passes.
-/// - **Geometry & Path Caching**: Caches evaluated [Path] and [RRect] across animation ticks, eliminating
-///   redundant path re-tessellation and object allocations during the fade-out phase.
-/// - **Zero heap allocation during paint**: Reuses a cached [Paint] object across all paint calls.
-/// - **Matrix translation fast-path**: Shifts geometry coordinates directly instead of pushing expensive
-///   `canvas.save()` / `canvas.restore()` state stack operations for translation transforms.
-/// - **Overlap deduplication**: Automatically coalesces and cancels obsolete splashes on the same
-///   reference box during rapid repeated taps, preventing opacity stacking and duplicate active tickers.
-/// - **Degenerate rect safe**: Gracefully skips painting when reference bounds are unmeasured or collapsed.
-/// - **RTL-aware**: Preserves ambient [TextDirection] for asymmetrical shape borders.
-/// - **Safe lifecycle**: Status-driven teardown prevents double-dispose and unhandled ticker cancellations.
 class TouchOptimizedSplashFactory extends InteractiveInkFeatureFactory {
   const TouchOptimizedSplashFactory();
 
