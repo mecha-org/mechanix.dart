@@ -95,8 +95,8 @@ class MechanixFloatingActionButton extends StatefulWidget {
   /// Callback when the button is tapped. If null, the button is disabled.
   final VoidCallback? onPressed;
 
-  /// Icon widget or [IconData] to display centered in the FAB.
-  final dynamic icon;
+  /// Icon widget to display centered in the FAB.
+  final Widget icon;
 
   /// Size variant of the FAB ([MechanixFloatingActionButtonSize.small], [medium], [large]).
   final MechanixFloatingActionButtonSize size;
@@ -368,15 +368,10 @@ class _MechanixFloatingActionButtonState
   }
 
   Widget _buildIcon(Color color, double size) {
-    if (widget.icon is Widget) {
-      return IconTheme.merge(
-        data: IconThemeData(color: color, size: size),
-        child: widget.icon as Widget,
-      );
-    } else if (widget.icon is IconData) {
-      return Icon(widget.icon as IconData, size: size, color: color);
-    }
-    return const SizedBox.shrink();
+    return IconTheme.merge(
+      data: IconThemeData(color: color, size: size),
+      child: widget.icon,
+    );
   }
 }
 
