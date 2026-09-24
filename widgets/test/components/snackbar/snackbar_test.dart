@@ -767,47 +767,6 @@ void main() {
       expect(find.text('Top Snackbar'), findsNothing);
     });
 
-    testWidgets('MechanixSnackbar with position: center displays in vertical center', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
-          home: Scaffold(
-            body: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    MechanixSnackbar.text(
-                      text: 'Center Snackbar',
-                      position: MechanixSnackbarPosition.center,
-                    ).show(context);
-                  },
-                  child: const Text('Show Center'),
-                );
-              },
-            ),
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Show Center'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 350));
-
-      expect(find.text('Center Snackbar'), findsOneWidget);
-
-      // Verify it is vertically centered around ~300 in a 600px default test window
-      final center = tester.getCenter(find.text('Center Snackbar'));
-      expect(center.dy, closeTo(300.0, 50.0));
-
-      // Dismiss via MechanixSnackbar.hide
-      final BuildContext ctx = tester.element(find.text('Show Center'));
-      MechanixSnackbar.hide(ctx);
-      await tester.pump();
-      await tester.pumpAndSettle();
-
-      expect(find.text('Center Snackbar'), findsNothing);
-    });
-
     testWidgets('MechanixSnackbarController close() dismisses overlay snackbar and completes closed future', (tester) async {
       late MechanixSnackbarController controller;
       await tester.pumpWidget(
@@ -854,6 +813,7 @@ void main() {
     });
 
     testWidgets('MechanixSnackbar with position: top dismisses on upward swipe gesture', (tester) async {
+      late MechanixSnackbarController controller;
       await tester.pumpWidget(
         MaterialApp(
           theme: MechanixTheme.dark,
@@ -862,7 +822,7 @@ void main() {
               builder: (context) {
                 return ElevatedButton(
                   onPressed: () {
-                    MechanixSnackbar.text(
+                    controller = MechanixSnackbar.text(
                       text: 'Swipe Me',
                       position: MechanixSnackbarPosition.top,
                     ).show(context);
@@ -881,11 +841,17 @@ void main() {
 
       expect(find.text('Swipe Me'), findsOneWidget);
 
+      SnackBarClosedReason? swipeReason;
+      controller.closed.then((reason) {
+        swipeReason = reason;
+      });
+
       // Drag up to dismiss
       await tester.drag(find.text('Swipe Me'), const Offset(0.0, -200.0));
       await tester.pumpAndSettle();
 
       expect(find.text('Swipe Me'), findsNothing);
+      expect(swipeReason, equals(SnackBarClosedReason.swipe));
     });
 
     test('theme position property is respected by default and copyWith', () {
@@ -894,10 +860,10 @@ void main() {
       );
 
       expect(themeData.position, equals(MechanixSnackbarPosition.top));
-      final copy = themeData.copyWith(position: MechanixSnackbarPosition.center);
-      expect(copy.position, equals(MechanixSnackbarPosition.center));
-      final merged = themeData.merge(const MechanixSnackbarThemeData(position: MechanixSnackbarPosition.bottom));
-      expect(merged.position, equals(MechanixSnackbarPosition.bottom));
+      final copy = themeData.copyWith(position: MechanixSnackbarPosition.bottom);
+      expect(copy.position, equals(MechanixSnackbarPosition.bottom));
+      final merged = themeData.merge(const MechanixSnackbarThemeData(position: MechanixSnackbarPosition.top));
+      expect(merged.position, equals(MechanixSnackbarPosition.top));
     });
   });
 }

@@ -182,7 +182,6 @@ class _SnackbarOverlayHostState extends State<_SnackbarOverlayHost>
   late final AnimationController _animController;
   late final Animation<double> _fadeAnimation;
   late final Animation<Offset> _slideAnimation;
-  late final Animation<double> _scaleAnimation;
 
   Timer? _dismissTimer;
   bool _isDismissing = false;
@@ -207,17 +206,11 @@ class _SnackbarOverlayHostState extends State<_SnackbarOverlayHost>
     final Offset slideBegin = switch (widget.position) {
       MechanixSnackbarPosition.top => const Offset(0.0, -1.0),
       MechanixSnackbarPosition.bottom => const Offset(0.0, 1.0),
-      MechanixSnackbarPosition.center => Offset.zero,
     };
 
     _slideAnimation = Tween<Offset>(
       begin: slideBegin,
       end: Offset.zero,
-    ).animate(curved);
-
-    _scaleAnimation = Tween<double>(
-      begin: widget.position == MechanixSnackbarPosition.center ? 0.85 : 1.0,
-      end: 1.0,
     ).animate(curved);
 
     _animController.forward().then((_) {
@@ -277,38 +270,22 @@ class _SnackbarOverlayHostState extends State<_SnackbarOverlayHost>
             horizontal: 16.0,
             vertical: 14.0,
           ),
-          MechanixSnackbarPosition.center => const EdgeInsets.symmetric(
-            horizontal: 24.0,
-            vertical: 16.0,
-          ),
         };
 
     final alignment = switch (widget.position) {
       MechanixSnackbarPosition.top => Alignment.topCenter,
       MechanixSnackbarPosition.bottom => Alignment.bottomCenter,
-      MechanixSnackbarPosition.center => Alignment.center,
     };
 
     final dismissDirection = switch (widget.position) {
       MechanixSnackbarPosition.top => DismissDirection.up,
       MechanixSnackbarPosition.bottom => DismissDirection.down,
-      MechanixSnackbarPosition.center => DismissDirection.horizontal,
     };
 
-    Widget animatedChild = widget.snackbar;
-
-    // Center uses scale animation, top/bottom use slide animation
-    if (widget.position == MechanixSnackbarPosition.center) {
-      animatedChild = ScaleTransition(
-        scale: _scaleAnimation,
-        child: FadeTransition(opacity: _fadeAnimation, child: animatedChild),
-      );
-    } else {
-      animatedChild = SlideTransition(
-        position: _slideAnimation,
-        child: FadeTransition(opacity: _fadeAnimation, child: animatedChild),
-      );
-    }
+    final Widget animatedChild = SlideTransition(
+      position: _slideAnimation,
+      child: FadeTransition(opacity: _fadeAnimation, child: widget.snackbar),
+    );
 
     final scopedChild = MechanixSnackbarScope(
       dismiss: ({SnackBarClosedReason reason = SnackBarClosedReason.dismiss}) {
@@ -325,6 +302,11 @@ class _SnackbarOverlayHostState extends State<_SnackbarOverlayHost>
             key: const ValueKey('mechanix_overlay_snackbar'),
             direction: dismissDirection,
             onDismissed: (_) {
+              if (_isDismissing) return;
+
+              _isDismissing = true;
+              _dismissTimer?.cancel();
+
               widget.onDismissed(SnackBarClosedReason.swipe);
             },
             child: widget.width != null

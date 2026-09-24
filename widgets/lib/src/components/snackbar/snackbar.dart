@@ -276,7 +276,6 @@ class MechanixSnackbar extends StatelessWidget {
     final defaultDismiss = switch (effectivePosition) {
       MechanixSnackbarPosition.top => DismissDirection.up,
       MechanixSnackbarPosition.bottom => DismissDirection.down,
-      MechanixSnackbarPosition.center => DismissDirection.horizontal,
     };
 
     assert(

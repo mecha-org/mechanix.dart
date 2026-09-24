@@ -135,11 +135,6 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                       label: Text('Top'),
                     ),
                     ButtonSegment(
-                      value: MechanixSnackbarPosition.center,
-                      icon: Icon(Icons.filter_center_focus_rounded),
-                      label: Text('Center'),
-                    ),
-                    ButtonSegment(
                       value: MechanixSnackbarPosition.bottom,
                       icon: Icon(Icons.arrow_downward_rounded),
                       label: Text('Bottom (Default)'),
