@@ -4,7 +4,7 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: ^3.13.1
+  sdk: ^3.13.0
   flutter: ">=1.17.0"
 
 dependencies:
@@ -31,16 +31,38 @@ flutter:
         - asset: assets/fonts/MechanixIcons.ttf
     - family: SpaceGrotesk
       fonts:
-        - asset: assets/fonts/SpaceGrotesk-Light.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Light.ttf
           weight: 300
-        - asset: assets/fonts/SpaceGrotesk-Regular.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Regular.ttf
           weight: 400
-        - asset: assets/fonts/SpaceGrotesk-Medium.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Medium.ttf
           weight: 500
-        - asset: assets/fonts/SpaceGrotesk-SemiBold.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/SpaceGrotesk-Bold.ttf
+        - asset: assets/fonts/space_grotesk/SpaceGrotesk-Bold.ttf
           weight: 700
+    - family: Geist
+      fonts:
+        - asset: assets/fonts/geist/Geist-Light.ttf
+          weight: 300
+        - asset: assets/fonts/geist/Geist-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/geist/Geist-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/geist/Geist-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/geist/Geist-Bold.ttf
+          weight: 700
+    - family: GeistMono
+      fonts:
+        - asset: assets/fonts/geist_mono/GeistMono-Light.ttf
+          weight: 300
+        - asset: assets/fonts/geist_mono/GeistMono-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/geist_mono/GeistMono-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/geist_mono/GeistMono-SemiBold.ttf
+          weight: 600
 
 icon_font:
   input_svg_dir: assets/icons/svg

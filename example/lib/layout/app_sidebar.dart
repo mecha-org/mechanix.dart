@@ -137,24 +137,6 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
-                id: 'radio_buttons',
-                title: 'Radio Buttons',
-                icon: Icons.radio_button_checked_rounded,
-              ),
-              _buildNavItem(
-                context,
-                id: 'snackbars',
-                title: 'Snackbars',
-                icon: Icons.chat_bubble_outline,
-              ),
-              _buildNavItem(
-                context,
-                id: 'switch',
-                title: 'Switch',
-                icon: Icons.toggle_on_outlined,
-              ),
-              _buildNavItem(
-                context,
                 id: 'app_bar',
                 title: 'App Bar',
                 icon: Icons.web_asset_rounded,
@@ -176,6 +158,18 @@ class AppSidebar extends StatelessWidget {
                 id: 'badges',
                 title: 'Badges',
                 icon: Icons.mark_chat_unread_outlined,
+              ),
+              _buildNavItem(
+                context,
+                id: 'navigation_bar',
+                title: 'Navigation Bar',
+                icon: Icons.navigation_outlined,
+              ),
+              _buildNavItem(
+                context,
+                id: 'lists',
+                title: 'Lists',
+                icon: Icons.view_list_outlined,
               ),
             ],
           ),

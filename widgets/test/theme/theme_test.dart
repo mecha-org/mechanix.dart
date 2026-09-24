@@ -21,7 +21,7 @@ void main() {
         // Check text theme composition
         final textTheme = theme.textTheme;
         expect(textTheme.displayLarge, isNotNull);
-        expect(textTheme.displayLarge?.fontFamily, equals(mechanixFontFamily));
+        expect(textTheme.displayLarge?.fontFamily, endsWith(mechanixFontFamily));
         expect(textTheme.displayLarge?.fontSize, equals(52.0));
         expect(textTheme.headlineLarge, isNotNull);
         expect(textTheme.titleLarge, isNotNull);
@@ -58,7 +58,7 @@ void main() {
         // Check text theme composition
         final textTheme = theme.textTheme;
         expect(textTheme.displayLarge, isNotNull);
-        expect(textTheme.displayLarge?.fontFamily, equals(mechanixFontFamily));
+        expect(textTheme.displayLarge?.fontFamily, endsWith(mechanixFontFamily));
         expect(textTheme.displayLarge?.fontSize, equals(52.0));
         expect(textTheme.headlineLarge, isNotNull);
         expect(textTheme.titleLarge, isNotNull);
@@ -98,6 +98,25 @@ void main() {
 
       expect(theme.iconButtonTheme, isNotNull);
       expect(theme.extension<IconButtonThemeDataConfig>(), isNotNull);
+    });
+
+    test('MechanixTheme.createTheme creates theme with listTileTheme and ListTileThemeDataConfig extension', () {
+      final theme = MechanixTheme.light;
+
+      expect(theme.listTileTheme, isNotNull);
+      expect(theme.extension<ListTileThemeDataConfig>(), isNotNull);
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.focusBorderColor,
+        equals(theme.colorScheme.outline),
+      );
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.focusBorderWidth,
+        equals(3.0),
+      );
+      expect(
+        theme.extension<ListTileThemeDataConfig>()?.showFocusIndicator,
+        isTrue,
+      );
     });
 
     test('MechanixTheme.createTheme creates theme from custom colorScheme', () {

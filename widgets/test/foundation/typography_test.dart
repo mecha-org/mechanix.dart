@@ -14,7 +14,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w300));
       expect(large.letterSpacing, equals(0.0));
       expect(large.color, equals(textColor));
-      expect(large.fontFamily, equals('SpaceGrotesk'));
+      expect(large.fontFamily, endsWith('SpaceGrotesk'));
       expect(large.leadingDistribution, equals(TextLeadingDistribution.even));
 
       final medium = theme.displayMedium!;
@@ -23,6 +23,7 @@ void main() {
       expect(medium.fontWeight, equals(FontWeight.w300));
       expect(medium.letterSpacing, equals(0.0));
       expect(medium.color, equals(textColor));
+      expect(medium.fontFamily, endsWith('SpaceGrotesk'));
 
       final small = theme.displaySmall!;
       expect(small.fontSize, equals(36.0));
@@ -30,6 +31,7 @@ void main() {
       expect(small.fontWeight, equals(FontWeight.w300));
       expect(small.letterSpacing, equals(0.0));
       expect(small.color, equals(textColor));
+      expect(small.fontFamily, endsWith('SpaceGrotesk'));
     });
 
     test('Headline styles match Mechanix specifications', () {
@@ -39,6 +41,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w300));
       expect(large.letterSpacing, equals(0.0));
       expect(large.color, equals(textColor));
+      expect(large.fontFamily, endsWith('SpaceGrotesk'));
 
       final medium = theme.headlineMedium!;
       expect(medium.fontSize, equals(24.0));
@@ -46,6 +49,7 @@ void main() {
       expect(medium.fontWeight, equals(FontWeight.w300));
       expect(medium.letterSpacing, equals(2.0));
       expect(medium.color, equals(textColor));
+      expect(medium.fontFamily, endsWith('SpaceGrotesk'));
 
       final small = theme.headlineSmall!;
       expect(small.fontSize, equals(22.0));
@@ -53,6 +57,7 @@ void main() {
       expect(small.fontWeight, equals(FontWeight.w300));
       expect(small.letterSpacing, equals(0.0));
       expect(small.color, equals(textColor));
+      expect(small.fontFamily, endsWith('SpaceGrotesk'));
     });
 
     test('Title styles match Mechanix specifications', () {
@@ -62,6 +67,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w400));
       expect(large.letterSpacing, equals(0.0));
       expect(large.color, equals(textColor));
+      expect(large.fontFamily, endsWith('Geist'));
 
       final medium = theme.titleMedium!;
       expect(medium.fontSize, equals(18.0));
@@ -69,6 +75,7 @@ void main() {
       expect(medium.fontWeight, equals(FontWeight.w300));
       expect(medium.letterSpacing, equals(0.0));
       expect(medium.color, equals(textColor));
+      expect(medium.fontFamily, endsWith('Geist'));
 
       final small = theme.titleSmall!;
       expect(small.fontSize, equals(16.0));
@@ -76,6 +83,7 @@ void main() {
       expect(small.fontWeight, equals(FontWeight.w300));
       expect(small.letterSpacing, equals(0.1));
       expect(small.color, equals(textColor));
+      expect(small.fontFamily, endsWith('Geist'));
     });
 
     test('Body styles match Mechanix specifications', () {
@@ -85,6 +93,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w400));
       expect(large.letterSpacing, equals(0.0));
       expect(large.color, equals(textColor));
+      expect(large.fontFamily, endsWith('Geist'));
 
       final medium = theme.bodyMedium!;
       expect(medium.fontSize, equals(14.0));
@@ -92,6 +101,7 @@ void main() {
       expect(medium.fontWeight, equals(FontWeight.w300));
       expect(medium.letterSpacing, equals(-0.25));
       expect(medium.color, equals(textColor));
+      expect(medium.fontFamily, endsWith('Geist'));
 
       final small = theme.bodySmall!;
       expect(small.fontSize, equals(12.0));
@@ -99,6 +109,7 @@ void main() {
       expect(small.fontWeight, equals(FontWeight.w300));
       expect(small.letterSpacing, equals(0.4));
       expect(small.color, equals(textColor));
+      expect(small.fontFamily, endsWith('Geist'));
     });
 
     test('Label styles match Mechanix specifications', () {
@@ -108,6 +119,7 @@ void main() {
       expect(large.fontWeight, equals(FontWeight.w400));
       expect(large.letterSpacing, equals(-0.5));
       expect(large.color, equals(textColor));
+      expect(large.fontFamily, endsWith('GeistMono'));
 
       final medium = theme.labelMedium!;
       expect(medium.fontSize, equals(12.0));
@@ -115,6 +127,7 @@ void main() {
       expect(medium.fontWeight, equals(FontWeight.w300));
       expect(medium.letterSpacing, equals(0.5));
       expect(medium.color, equals(textColor));
+      expect(medium.fontFamily, endsWith('Geist'));
 
       final small = theme.labelSmall!;
       expect(small.fontSize, equals(11.0));
@@ -122,6 +135,7 @@ void main() {
       expect(small.fontWeight, equals(FontWeight.w300));
       expect(small.letterSpacing, equals(0.5));
       expect(small.color, equals(textColor));
+      expect(small.fontFamily, endsWith('GeistMono'));
     });
 
     test('Font family and fallbacks can be customized', () {
