@@ -5,6 +5,7 @@ import 'package:widgets/widgets.dart';
 import '../features/components/badge_preview.dart';
 import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
+import '../features/components/floating_action_button_preview.dart';
 import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
@@ -13,6 +14,7 @@ import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
 import '../features/components/switch_preview.dart';
 import '../features/components/navigation_bar_preview.dart';
+import '../features/components/list_preview.dart';
 import '../features/theme/theme_preview.dart';
 import '../features/typography/typography_preview.dart';
 import 'app_sidebar.dart';
@@ -123,6 +125,8 @@ class _AppShellState extends State<AppShell> {
         return 'Typography';
       case 'buttons':
         return 'Buttons';
+      case 'floating_action_button':
+        return 'Floating Action Button';
       case 'text_fields':
         return 'Text Fields';
       case 'checkboxes':
@@ -143,6 +147,8 @@ class _AppShellState extends State<AppShell> {
         return 'Badges';
       case 'navigation_bar':
         return 'Navigation Bar';
+      case 'lists':
+        return 'Lists';
       case 'inputs':
         return 'Inputs';
       case 'cards':
@@ -183,6 +189,9 @@ class _MainContent extends StatelessWidget {
       case 'buttons':
         content = const ButtonPreview();
         break;
+      case 'floating_action_button':
+        content = const FloatingActionButtonPreview();
+        break;
       case 'text_fields':
         content = const TextFieldPreview();
         break;
@@ -203,6 +212,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'navigation_bar':
         content = const NavigationBarPreview();
+        break;
+      case 'lists':
+        content = const ListPreview();
         break;
       case 'theme':
         content = const ThemePreview();

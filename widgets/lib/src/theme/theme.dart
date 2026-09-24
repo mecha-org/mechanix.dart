@@ -332,6 +332,7 @@ abstract class MechanixTheme extends StatefulWidget {
       bottomSheetTheme: _createBottomSheetTheme(colorScheme, shapeTheme),
       dividerTheme: _createDividerTheme(colorScheme),
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
+      listTileTheme: _createListTileTheme(colorScheme),
       extensions: [
         shapeTheme,
         AppBarThemeDataConfig.standard(colorScheme, textTheme),
@@ -343,6 +344,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
+        const FloatingActionButtonThemeDataConfig(),
         SwitchThemeDataConfig(
           trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
           handleColor: WidgetStateProperty.resolveWith((states) {
@@ -396,6 +398,11 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderWidth: 1.0,
         ),
         NavigationBarThemeDataConfig.standard(colorScheme, textTheme),
+        ListTileThemeDataConfig(
+          focusBorderColor: colorScheme.outline,
+          focusBorderWidth: 3.0,
+          showFocusIndicator: true,
+        ),
       ],
     );
   }
@@ -629,6 +636,26 @@ abstract class MechanixTheme extends StatefulWidget {
       overlayColor: WidgetStateProperty.all(Colors.transparent),
       splashRadius: 20.0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.standard,
+    );
+  }
+
+  /// Creates a [ListTileThemeData] configured with Mechanix specifications.
+  static ListTileThemeData _createListTileTheme(ColorScheme colorScheme) {
+    return ListTileThemeData(
+      mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return SystemMouseCursors.basic;
+        }
+        return SystemMouseCursors.click;
+      }),
+      tileColor: Colors.transparent,
+      selectedTileColor: colorScheme.primary.withValues(alpha: 0.12),
+      iconColor: colorScheme.onSurface,
+      textColor: colorScheme.onSurface,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      horizontalTitleGap: 8.0,
+      minVerticalPadding: 8.0,
       visualDensity: VisualDensity.standard,
     );
   }
