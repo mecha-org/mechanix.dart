@@ -198,8 +198,35 @@ abstract class ButtonStyleResolver {
         ? MaterialTapTargetSize.padded
         : MaterialTapTargetSize.shrinkWrap;
 
+    final overlayColorProperty =
+        WidgetStateProperty.resolveWith<Color?>((states) {
+      if (states.contains(WidgetState.disabled)) {
+        return Colors.transparent;
+      }
+      if (states.contains(WidgetState.pressed)) {
+        if (customPressedColor != null || theme?.pressedColor != null) {
+          return customPressedColor ?? theme?.pressedColor;
+        }
+        final layerColor = isOutline
+            ? scheme.onSurfaceVariant
+            : (isText ? scheme.onSurface : scheme.onPrimary);
+        return layerColor.withValues(alpha: 0.12);
+      }
+      if (states.contains(WidgetState.hovered)) {
+        if (customHoverColor != null || theme?.hoverColor != null) {
+          return customHoverColor ?? theme?.hoverColor;
+        }
+        final layerColor = isOutline
+            ? scheme.onSurfaceVariant
+            : (isText ? scheme.onSurface : scheme.onPrimary);
+        return layerColor.withValues(alpha: 0.08);
+      }
+      return Colors.transparent;
+    });
+
     return ButtonStyle(
-      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      splashFactory: const TouchOptimizedSplashFactory(),
+      overlayColor: overlayColorProperty,
       backgroundColor: backgroundColorProperty,
       foregroundColor: foregroundColorProperty,
       iconColor: foregroundColorProperty,

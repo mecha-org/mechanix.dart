@@ -266,7 +266,7 @@ class _FloatingActionButtonPreviewState
                     children: [
                       MechanixFloatingActionButton(
                         size: _selectedSize,
-                        icon: _selectedIcon,
+                        icon: Icon(_selectedIcon),
                         tooltip: 'Interactive FAB ($_clickCount clicks)',
                         onPressed: _isEnabled
                             ? () {
@@ -343,7 +343,7 @@ class _FloatingActionButtonPreviewState
                   badge: '56 x 56 px',
                   iconBadge: '24px icon',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.add_rounded,
+                    icon: const Icon(Icons.add_rounded),
                     tooltip: 'Small FAB (56px)',
                     onPressed: () {},
                   ),
@@ -354,7 +354,7 @@ class _FloatingActionButtonPreviewState
                   badge: '80 x 80 px',
                   iconBadge: '32px icon',
                   fab: MechanixFloatingActionButton.medium(
-                    icon: Icons.add_rounded,
+                    icon: const Icon(Icons.add_rounded),
                     tooltip: 'Medium FAB (80px)',
                     onPressed: () {},
                   ),
@@ -365,7 +365,7 @@ class _FloatingActionButtonPreviewState
                   badge: '96 x 96 px',
                   iconBadge: '36px icon',
                   fab: MechanixFloatingActionButton.large(
-                    icon: Icons.add_rounded,
+                    icon: const Icon(Icons.add_rounded),
                     tooltip: 'Large FAB (96px)',
                     onPressed: () {},
                   ),
@@ -468,7 +468,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Enabled',
                   subtitle: 'Default rest state',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.edit_rounded,
+                    icon: const Icon(Icons.edit_rounded),
                     tooltip: 'Enabled FAB',
                     onPressed: () {},
                   ),
@@ -478,7 +478,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Hovered',
                   subtitle: '8% state layer (hover over me)',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.brush_rounded,
+                    icon: const Icon(Icons.brush_rounded),
                     tooltip: 'Hover me',
                     onPressed: () {},
                   ),
@@ -488,7 +488,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Pressed',
                   subtitle: '12% state layer (press & hold)',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.touch_app_rounded,
+                    icon: const Icon(Icons.touch_app_rounded),
                     tooltip: 'Press and hold me',
                     onPressed: () {},
                   ),
@@ -498,7 +498,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Focused',
                   subtitle: '3px solid outline focus ring',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.center_focus_strong_rounded,
+                    icon: const Icon(Icons.center_focus_strong_rounded),
                     tooltip: 'Focused FAB',
                     autofocus: true,
                     onPressed: () {},
@@ -509,7 +509,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Disabled',
                   subtitle: '12% container, 38% content',
                   fab: const MechanixFloatingActionButton(
-                    icon: Icons.block_rounded,
+                    icon: Icon(Icons.block_rounded),
                     tooltip: 'Disabled FAB',
                     onPressed: null,
                   ),
@@ -606,7 +606,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Primary Color',
                   subtitle: 'Custom color properties',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.send_rounded,
+                    icon: const Icon(Icons.send_rounded),
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
                     tooltip: 'Primary FAB',
@@ -620,7 +620,7 @@ class _FloatingActionButtonPreviewState
                   title: 'Error Container',
                   subtitle: 'Semantic warning/delete action',
                   fab: MechanixFloatingActionButton(
-                    icon: Icons.delete_outline_rounded,
+                    icon: const Icon(Icons.delete_outline_rounded),
                     backgroundColor: colorScheme.errorContainer,
                     foregroundColor: colorScheme.onErrorContainer,
                     tooltip: 'Delete Action',
@@ -645,7 +645,7 @@ class _FloatingActionButtonPreviewState
                       focusBorderWidth: 4.0,
                     ),
                     child: MechanixFloatingActionButton(
-                      icon: Icons.star_rounded,
+                      icon: const Icon(Icons.star_rounded),
                       tooltip: 'Tertiary Theme FAB',
                       onPressed: () {},
                     ),

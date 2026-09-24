@@ -12,6 +12,7 @@ class SnackbarPreview extends StatefulWidget {
 
 class _SnackbarPreviewState extends State<SnackbarPreview> {
   String? _lastActionMessage;
+  MechanixSnackbarPosition _selectedPosition = MechanixSnackbarPosition.bottom;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +74,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Snackbars provide brief messages about app processes at the bottom of the screen.',
+                'Snackbars provide brief messages about app processes at the bottom, center, or top of the screen.',
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -109,12 +110,44 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
             ),
             const SizedBox(height: 6),
             Text(
-              'Click any button below to trigger a live floating MechanixSnackbar via ScaffoldMessenger:',
+              'Select screen position and click any button below to trigger a live MechanixSnackbar:',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Screen Position',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                SegmentedButton<MechanixSnackbarPosition>(
+                  segments: const [
+                    ButtonSegment(
+                      value: MechanixSnackbarPosition.top,
+                      icon: Icon(Icons.arrow_upward_rounded),
+                      label: Text('Top'),
+                    ),
+                    ButtonSegment(
+                      value: MechanixSnackbarPosition.bottom,
+                      icon: Icon(Icons.arrow_downward_rounded),
+                      label: Text('Bottom (Default)'),
+                    ),
+                  ],
+                  selected: {_selectedPosition},
+                  onSelectionChanged: (selected) {
+                    setState(() => _selectedPosition = selected.first);
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             Wrap(
               spacing: 12,
               runSpacing: 12,
@@ -124,6 +157,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                   onPressed: () {
                     MechanixSnackbar.text(
                       width: 400,
+                      position: _selectedPosition,
                       text: 'File deleted from your device.',
                     ).show(context);
                   },
@@ -132,6 +166,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                   label: 'With Action',
                   onPressed: () {
                     MechanixSnackbar.text(
+                      position: _selectedPosition,
                       text: 'Connection lost. Offline mode active.',
                       action: MechanixSnackbarAction(
                         label: 'RETRY',
@@ -146,6 +181,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                   label: 'With Action & Close',
                   onPressed: () {
                     MechanixSnackbar.text(
+                      position: _selectedPosition,
                       text: 'Photo archived to cloud album.',
                       action: MechanixSnackbarAction(
                         label: 'UNDO',
@@ -161,6 +197,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                   label: 'Multiline (Inline Action)',
                   onPressed: () {
                     MechanixSnackbar.text(
+                      position: _selectedPosition,
                       text:
                           'A software update is ready for installation. Reboot required to complete setup.',
                       action: MechanixSnackbarAction(
@@ -175,6 +212,7 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                   label: 'Stacked (Action Below)',
                   onPressed: () {
                     MechanixSnackbar.text(
+                      position: _selectedPosition,
                       layout: SnackbarLayout.stacked,
                       text:
                           'Changes could not be synchronized with server because local buffer is full.',
@@ -184,6 +222,12 @@ class _SnackbarPreviewState extends State<SnackbarPreview> {
                       ),
                       showCloseIcon: true,
                     ).show(context);
+                  },
+                ),
+                MechanixButton.outline(
+                  label: 'Hide Active',
+                  onPressed: () {
+                    MechanixSnackbar.hide(context);
                   },
                 ),
               ],

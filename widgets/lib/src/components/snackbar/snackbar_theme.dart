@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../foundation/typography/typography.dart';
+import 'snackbar_enums.dart';
 
 /// Defines default property values for descendant [MechanixSnackbar] widgets.
 @immutable
@@ -27,6 +28,7 @@ class MechanixSnackbarThemeData
     this.actionTextStyle,
     this.showFocusIndicator,
     this.focusBorderColor,
+    this.position,
   });
 
   /// The background color of the snackbar container.
@@ -84,6 +86,9 @@ class MechanixSnackbarThemeData
   /// The color of the keyboard focus ring.
   final Color? focusBorderColor;
 
+  /// The default screen positioning for descendant snackbars.
+  final MechanixSnackbarPosition? position;
+
   /// Creates a standard [MechanixSnackbarThemeData] configured with Mechanix design tokens.
   factory MechanixSnackbarThemeData.standard(
     ColorScheme colorScheme, [
@@ -140,6 +145,7 @@ class MechanixSnackbarThemeData
       actionTextStyle: baseActionStyle.copyWith(color: actionCol),
       showFocusIndicator: true,
       focusBorderColor: actionCol,
+      position: MechanixSnackbarPosition.bottom,
     );
   }
 
@@ -163,6 +169,7 @@ class MechanixSnackbarThemeData
     TextStyle? actionTextStyle,
     bool? showFocusIndicator,
     Color? focusBorderColor,
+    MechanixSnackbarPosition? position,
   }) {
     return MechanixSnackbarThemeData(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -184,6 +191,33 @@ class MechanixSnackbarThemeData
       actionTextStyle: actionTextStyle ?? this.actionTextStyle,
       showFocusIndicator: showFocusIndicator ?? this.showFocusIndicator,
       focusBorderColor: focusBorderColor ?? this.focusBorderColor,
+      position: position ?? this.position,
+    );
+  }
+
+  /// Merges another [MechanixSnackbarThemeData] on top of this one.
+  MechanixSnackbarThemeData merge(MechanixSnackbarThemeData? other) {
+    if (other == null) return this;
+    return copyWith(
+      backgroundColor: other.backgroundColor,
+      foregroundColor: other.foregroundColor,
+      actionColor: other.actionColor,
+      actionHoverColor: other.actionHoverColor,
+      closeIconColor: other.closeIconColor,
+      borderColor: other.borderColor,
+      borderWidth: other.borderWidth,
+      borderRadius: other.borderRadius,
+      elevation: other.elevation,
+      padding: other.padding,
+      margin: other.margin,
+      maxWidth: other.maxWidth,
+      behavior: other.behavior,
+      actionOverflowThreshold: other.actionOverflowThreshold,
+      contentTextStyle: other.contentTextStyle,
+      actionTextStyle: other.actionTextStyle,
+      showFocusIndicator: other.showFocusIndicator,
+      focusBorderColor: other.focusBorderColor,
+      position: other.position,
     );
   }
 
@@ -221,6 +255,7 @@ class MechanixSnackbarThemeData
           t < 0.5 ? showFocusIndicator : other.showFocusIndicator,
       focusBorderColor:
           Color.lerp(focusBorderColor, other.focusBorderColor, t),
+      position: t < 0.5 ? position : other.position,
     );
   }
 
@@ -250,7 +285,8 @@ class MechanixSnackbarThemeData
         other.contentTextStyle == contentTextStyle &&
         other.actionTextStyle == actionTextStyle &&
         other.showFocusIndicator == showFocusIndicator &&
-        other.focusBorderColor == focusBorderColor;
+        other.focusBorderColor == focusBorderColor &&
+        other.position == position;
   }
 
   @override
@@ -273,6 +309,7 @@ class MechanixSnackbarThemeData
         actionTextStyle,
         showFocusIndicator,
         focusBorderColor,
+        position,
       );
 
   @override
@@ -290,6 +327,7 @@ class MechanixSnackbarThemeData
     properties.add(DoubleProperty('maxWidth', maxWidth));
     properties.add(EnumProperty<SnackBarBehavior>('behavior', behavior));
     properties.add(DoubleProperty('actionOverflowThreshold', actionOverflowThreshold));
+    properties.add(EnumProperty<MechanixSnackbarPosition>('position', position));
   }
 }
 

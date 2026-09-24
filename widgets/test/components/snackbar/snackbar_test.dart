@@ -724,5 +724,147 @@ void main() {
       );
       expect(columnFinder, findsOneWidget);
     });
+
+    testWidgets('MechanixSnackbar with position: top displays at the top via Overlay', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    MechanixSnackbar.text(
+                      text: 'Top Snackbar',
+                      position: MechanixSnackbarPosition.top,
+                      showCloseIcon: true,
+                    ).show(context);
+                  },
+                  child: const Text('Show Top'),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show Top'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+
+      expect(find.text('Top Snackbar'), findsOneWidget);
+
+      // Verify it is positioned near the top of the screen
+      final topFinder = find.text('Top Snackbar');
+      final topLeft = tester.getTopLeft(topFinder);
+      expect(topLeft.dy, lessThan(100.0));
+
+      // Close it using close icon
+      await tester.tap(find.byIcon(MechanixIcons.x));
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Top Snackbar'), findsNothing);
+    });
+
+    testWidgets('MechanixSnackbarController close() dismisses overlay snackbar and completes closed future', (tester) async {
+      late MechanixSnackbarController controller;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    controller = MechanixSnackbar.text(
+                      text: 'Controller Test',
+                      position: MechanixSnackbarPosition.top,
+                    ).show(context);
+                  },
+                  child: const Text('Show'),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+
+      expect(find.text('Controller Test'), findsOneWidget);
+
+      bool closedFutureCompleted = false;
+      SnackBarClosedReason? resolvedReason;
+      controller.closed.then((reason) {
+        closedFutureCompleted = true;
+        resolvedReason = reason;
+      });
+
+      controller.close();
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Controller Test'), findsNothing);
+      expect(closedFutureCompleted, isTrue);
+      expect(resolvedReason, equals(SnackBarClosedReason.dismiss));
+    });
+
+    testWidgets('MechanixSnackbar with position: top dismisses on upward swipe gesture', (tester) async {
+      late MechanixSnackbarController controller;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    controller = MechanixSnackbar.text(
+                      text: 'Swipe Me',
+                      position: MechanixSnackbarPosition.top,
+                    ).show(context);
+                  },
+                  child: const Text('Show Swipe'),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show Swipe'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+
+      expect(find.text('Swipe Me'), findsOneWidget);
+
+      SnackBarClosedReason? swipeReason;
+      controller.closed.then((reason) {
+        swipeReason = reason;
+      });
+
+      // Drag up to dismiss
+      await tester.drag(find.text('Swipe Me'), const Offset(0.0, -200.0));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Swipe Me'), findsNothing);
+      expect(swipeReason, equals(SnackBarClosedReason.swipe));
+    });
+
+    test('theme position property is respected by default and copyWith', () {
+      const themeData = MechanixSnackbarThemeData(
+        position: MechanixSnackbarPosition.top,
+      );
+
+      expect(themeData.position, equals(MechanixSnackbarPosition.top));
+      final copy = themeData.copyWith(position: MechanixSnackbarPosition.bottom);
+      expect(copy.position, equals(MechanixSnackbarPosition.bottom));
+      final merged = themeData.merge(const MechanixSnackbarThemeData(position: MechanixSnackbarPosition.top));
+      expect(merged.position, equals(MechanixSnackbarPosition.top));
+    });
   });
 }
+
