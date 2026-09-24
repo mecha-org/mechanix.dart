@@ -85,11 +85,14 @@ abstract class MechanixTheme extends StatefulWidget {
             }
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return Color.alphaBlend(
+                colorScheme.onPrimary.withValues(alpha: 0.12),
+                colorScheme.primary,
+              );
             }
+
             if (states.contains(WidgetState.hovered) ||
                 states.contains(WidgetState.focused)) {
               return Color.alphaBlend(
@@ -97,12 +100,13 @@ abstract class MechanixTheme extends StatefulWidget {
                 colorScheme.primary,
               );
             }
-            if (states.contains(WidgetState.pressed)) {
-              return Color.alphaBlend(
-                colorScheme.onPrimary.withValues(alpha: 0.12),
-                colorScheme.primary,
-              );
+            return Colors.transparent;
+          }),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.10);
             }
+
             return colorScheme.primary;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
@@ -135,11 +139,7 @@ abstract class MechanixTheme extends StatefulWidget {
 
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
-            }
+          overlayColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
               return Color.alphaBlend(
                 colorScheme.onPrimary.withValues(alpha: 0.12),
@@ -151,6 +151,12 @@ abstract class MechanixTheme extends StatefulWidget {
                 colorScheme.onPrimary.withValues(alpha: 0.08),
                 colorScheme.secondaryFixedDim,
               );
+            }
+            return Colors.transparent;
+          }),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colorScheme.onSurface.withValues(alpha: 0.10);
             }
             return colorScheme.secondaryFixedDim;
           }),
@@ -179,11 +185,7 @@ abstract class MechanixTheme extends StatefulWidget {
 
             return SystemMouseCursors.click;
           }),
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
+          overlayColor: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.pressed)) {
               return Color.alphaBlend(
                 colorScheme.onSurfaceVariant.withValues(alpha: 0.12),
@@ -196,6 +198,13 @@ abstract class MechanixTheme extends StatefulWidget {
                 Colors.transparent,
               );
             }
+            return Colors.transparent;
+          }),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return Colors.transparent;
+            }
+
             return Colors.transparent;
           }),
           foregroundColor: WidgetStateProperty.resolveWith((states) {
