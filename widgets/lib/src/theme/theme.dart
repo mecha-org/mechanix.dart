@@ -445,6 +445,7 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderWidth: 3.0,
           showFocusIndicator: true,
         ),
+        MenuThemeDataConfig.standard(colorScheme, textTheme, shapeTheme),
       ],
     );
   }
