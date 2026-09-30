@@ -24,6 +24,8 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
     this.mediumSupportingTextStyle,
     this.largeTitleTextStyle,
     this.largeSupportingTextStyle,
+    this.largeIconTitleTextStyle,
+    this.largeIconSupportingTextStyle,
     this.searchHintTextStyle,
     this.searchBackgroundColor,
     this.searchBorderRadius,
@@ -79,6 +81,14 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
   /// Defaults to [TextTheme.bodyMedium].
   final TextStyle? largeSupportingTextStyle;
 
+  /// Text style applied to the title label in large icon single-row app bar variants.
+  /// Defaults to [TextTheme.displayMedium].
+  final TextStyle? largeIconTitleTextStyle;
+
+  /// Text style applied to the supporting text in large icon single-row app bar variants.
+  /// Defaults to [TextTheme.titleMedium].
+  final TextStyle? largeIconSupportingTextStyle;
+
   /// Text style applied to the search bar placeholder text.
   final TextStyle? searchHintTextStyle;
 
@@ -130,6 +140,12 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
       largeSupportingTextStyle: textTheme.titleMedium?.copyWith(
         color: colorScheme.onSurfaceVariant,
       ),
+      largeIconTitleTextStyle: textTheme.displayMedium?.copyWith(
+        color: colorScheme.onSurface,
+      ),
+      largeIconSupportingTextStyle: textTheme.titleMedium?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+      ),
       searchHintTextStyle: textTheme.bodyLarge?.copyWith(
         color: colorScheme.onSurfaceVariant,
       ),
@@ -156,6 +172,8 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
     TextStyle? mediumTitleTextStyle,
     TextStyle? largeTitleTextStyle,
     TextStyle? largeSupportingTextStyle,
+    TextStyle? largeIconTitleTextStyle,
+    TextStyle? largeIconSupportingTextStyle,
     TextStyle? searchHintTextStyle,
     Color? searchBackgroundColor,
     BorderRadius? searchBorderRadius,
@@ -179,6 +197,10 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
       largeTitleTextStyle: largeTitleTextStyle ?? this.largeTitleTextStyle,
       largeSupportingTextStyle:
           largeSupportingTextStyle ?? this.largeSupportingTextStyle,
+      largeIconTitleTextStyle:
+          largeIconTitleTextStyle ?? this.largeIconTitleTextStyle,
+      largeIconSupportingTextStyle:
+          largeIconSupportingTextStyle ?? this.largeIconSupportingTextStyle,
       searchHintTextStyle: searchHintTextStyle ?? this.searchHintTextStyle,
       searchBackgroundColor:
           searchBackgroundColor ?? this.searchBackgroundColor,
@@ -218,6 +240,14 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
           ? largeSupportingTextStyle?.merge(other.largeSupportingTextStyle) ??
                 other.largeSupportingTextStyle
           : largeSupportingTextStyle,
+      largeIconTitleTextStyle: other.largeIconTitleTextStyle != null
+          ? largeIconTitleTextStyle?.merge(other.largeIconTitleTextStyle) ??
+                other.largeIconTitleTextStyle
+          : largeIconTitleTextStyle,
+      largeIconSupportingTextStyle: other.largeIconSupportingTextStyle != null
+          ? largeIconSupportingTextStyle?.merge(other.largeIconSupportingTextStyle) ??
+                other.largeIconSupportingTextStyle
+          : largeIconSupportingTextStyle,
       searchHintTextStyle: other.searchHintTextStyle != null
           ? searchHintTextStyle?.merge(other.searchHintTextStyle) ??
                 other.searchHintTextStyle
@@ -268,6 +298,16 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
       largeSupportingTextStyle: TextStyle.lerp(
         largeSupportingTextStyle,
         other.largeSupportingTextStyle,
+        t,
+      ),
+      largeIconTitleTextStyle: TextStyle.lerp(
+        largeIconTitleTextStyle,
+        other.largeIconTitleTextStyle,
+        t,
+      ),
+      largeIconSupportingTextStyle: TextStyle.lerp(
+        largeIconSupportingTextStyle,
+        other.largeIconSupportingTextStyle,
         t,
       ),
       searchHintTextStyle: TextStyle.lerp(
@@ -344,6 +384,18 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
     );
     properties.add(
       DiagnosticsProperty<TextStyle>(
+        'largeIconTitleTextStyle',
+        largeIconTitleTextStyle,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<TextStyle>(
+        'largeIconSupportingTextStyle',
+        largeIconSupportingTextStyle,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<TextStyle>(
         'searchHintTextStyle',
         searchHintTextStyle,
       ),
@@ -379,6 +431,8 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
         other.mediumTitleTextStyle == mediumTitleTextStyle &&
         other.largeTitleTextStyle == largeTitleTextStyle &&
         other.largeSupportingTextStyle == largeSupportingTextStyle &&
+        other.largeIconTitleTextStyle == largeIconTitleTextStyle &&
+        other.largeIconSupportingTextStyle == largeIconSupportingTextStyle &&
         other.searchHintTextStyle == searchHintTextStyle &&
         other.searchBackgroundColor == searchBackgroundColor &&
         other.searchBorderRadius == searchBorderRadius &&
@@ -388,7 +442,7 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     backgroundColor,
     foregroundColor,
     elevation,
@@ -399,16 +453,20 @@ class AppBarThemeDataConfig extends ThemeExtension<AppBarThemeDataConfig>
     titleSpacing,
     toolbarHeight,
     smallTitleTextStyle,
+    smallSupportingTextStyle,
     mediumTitleTextStyle,
+    mediumSupportingTextStyle,
     largeTitleTextStyle,
     largeSupportingTextStyle,
+    largeIconTitleTextStyle,
+    largeIconSupportingTextStyle,
     searchHintTextStyle,
     searchBackgroundColor,
     searchBorderRadius,
     actionsPadding,
     iconTheme,
     actionsIconTheme,
-  );
+  ]);
 }
 
 /// An [InheritedTheme] that provides [AppBarThemeDataConfig] to descendant widgets.

@@ -17,6 +17,13 @@ enum AppBarVariant {
   /// and action icons, using [TextTheme.displayMedium].
   large,
 
+  /// Large single-row app bar with prominent display title and action icons (height 120.0 dp).
+  ///
+  /// Displays the title and actions in a single horizontally-spaced row
+  /// with 120 dp height, vertical padding of 8 dp, and horizontal padding of 20 dp.
+  largeIcon,
+
   /// App bar containing an embedded search bar container.
   search,
 }
+
