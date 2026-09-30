@@ -203,13 +203,9 @@ class MechanixIconButton extends StatelessWidget {
   final dynamic icon;
 
   /// Icon widget or IconData to display when [isSelected] is true.
-  /// If null and [isSelected] is true, [icon] will be displayed.
   final dynamic selectedIcon;
 
   /// Whether this icon button is currently selected (toggled).
-  ///
-  /// If null, this button behaves as a standard push button.
-  /// If true or false, this button behaves as a toggleable icon button.
   final bool? isSelected;
 
   /// Corner/shape style type ([IconButtonType.square], [rounded]).

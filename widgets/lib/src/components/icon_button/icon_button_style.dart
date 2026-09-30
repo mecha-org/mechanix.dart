@@ -96,19 +96,13 @@ abstract class IconButtonStyleResolver {
           if (themeColor != null) return themeColor;
         }
 
-        // ---------------------------------------------------------------------
-        // Decision on Disabled vs Selected:
-        // Disabled styling wins outright over active/selected styling to ensure
-        // inoperability is clearly and unambiguously communicated to the user
-        // via low-contrast disabled tokens, adhering to M3 accessibility standards.
-        // If an explicit customDisabledColor is supplied, that override takes precedence.
-        // ---------------------------------------------------------------------
         if (states.contains(WidgetState.disabled)) {
           return switch (variant) {
             IconButtonVariant.filled ||
             IconButtonVariant.tonal => scheme.onSurface.withValues(alpha: 0.10),
-            IconButtonVariant.outline =>
-              scheme.onSurface.withValues(alpha: 0.10),
+            IconButtonVariant.outline => scheme.onSurface.withValues(
+              alpha: 0.10,
+            ),
             IconButtonVariant.standard => Colors.transparent,
           };
         }
@@ -318,8 +312,7 @@ abstract class IconButtonStyleResolver {
             ),
             IconButtonVariant.tonal ||
             IconButtonVariant.outline ||
-            IconButtonVariant.standard =>
-              null,
+            IconButtonVariant.standard => null,
           };
         }
         return switch (variant) {
@@ -328,7 +321,9 @@ abstract class IconButtonStyleResolver {
             width: customBorderWidth ?? 1.0,
           ),
           IconButtonVariant.outline => BorderSide(
-            color: (customBorderColor ?? scheme.outline).withValues(alpha: 0.38),
+            color: (customBorderColor ?? scheme.outline).withValues(
+              alpha: 0.38,
+            ),
             width: customBorderWidth ?? 2.0,
           ),
           IconButtonVariant.tonal || IconButtonVariant.standard =>
@@ -346,14 +341,16 @@ abstract class IconButtonStyleResolver {
         if (customSelectedBorderColor != null) {
           return BorderSide(
             color: customSelectedBorderColor,
-            width: customBorderWidth ??
+            width:
+                customBorderWidth ??
                 (variant == IconButtonVariant.outline ? 2.0 : 1.0),
           );
         }
         if (theme?.selectedBorderColor != null) {
           return BorderSide(
             color: theme!.selectedBorderColor!,
-            width: customBorderWidth ??
+            width:
+                customBorderWidth ??
                 (variant == IconButtonVariant.outline ? 2.0 : 1.0),
           );
         }
@@ -364,19 +361,20 @@ abstract class IconButtonStyleResolver {
           ),
           IconButtonVariant.outline ||
           IconButtonVariant.tonal ||
-          IconButtonVariant.standard =>
-            null,
+          IconButtonVariant.standard => null,
         };
       }
 
       // Unselected / push button border
-      final baseBorderColor = customBorderColor ??
+      final baseBorderColor =
+          customBorderColor ??
           switch (variant) {
             IconButtonVariant.filled => scheme.secondaryFixedDim,
             IconButtonVariant.outline => scheme.outline,
             IconButtonVariant.tonal || IconButtonVariant.standard => null,
           };
-      final baseBorderWidth = customBorderWidth ??
+      final baseBorderWidth =
+          customBorderWidth ??
           (baseBorderColor != null
               ? (variant == IconButtonVariant.outline ? 2.0 : 1.0)
               : 0.0);
@@ -393,8 +391,9 @@ abstract class IconButtonStyleResolver {
         ? MaterialTapTargetSize.padded
         : MaterialTapTargetSize.shrinkWrap;
 
-    final overlayColorProperty =
-        WidgetStateProperty.resolveWith<Color?>((states) {
+    final overlayColorProperty = WidgetStateProperty.resolveWith<Color?>((
+      states,
+    ) {
       if (states.contains(WidgetState.disabled)) {
         return Colors.transparent;
       }
