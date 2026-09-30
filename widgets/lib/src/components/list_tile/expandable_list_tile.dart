@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'list_tile.dart';
 
-/// A circular accordion toggle button displaying an animated chevron.
+/// A circular accordion toggle button displaying an animated chevron or custom icon widgets.
 ///
 /// Corresponds to `Type="Accordion button"` in the Mechanix design specifications.
 class MechanixAccordionButton extends StatelessWidget {
@@ -10,6 +10,8 @@ class MechanixAccordionButton extends StatelessWidget {
     super.key,
     required this.isExpanded,
     this.onTap,
+    this.icon,
+    this.expandedIcon,
     this.size = 32.0,
     this.iconSize = 20.0,
     this.backgroundColor,
@@ -22,16 +24,22 @@ class MechanixAccordionButton extends StatelessWidget {
   /// Callback when tapped.
   final VoidCallback? onTap;
 
-  /// Diameter of the circular button container. Defaults to 28.0.
+  /// Custom icon or widget displayed inside the button when collapsed.
+  final Widget? icon;
+
+  /// Custom icon or widget displayed inside the button when expanded.
+  final Widget? expandedIcon;
+
+  /// Diameter of the circular button container. Defaults to 32.0.
   final double size;
 
-  /// Size of the chevron icon. Defaults to 18.0.
+  /// Size of the icon. Defaults to 20.0.
   final double iconSize;
 
   /// Button circle background color.
   final Color? backgroundColor;
 
-  /// Chevron icon color.
+  /// Icon color.
   final Color? iconColor;
 
   @override
@@ -44,6 +52,55 @@ class MechanixAccordionButton extends StatelessWidget {
             : colorScheme.surfaceContainerHighest);
     final resolvedIconColor = iconColor ?? colorScheme.onSurfaceVariant;
 
+    final Widget iconWidget;
+    if (expandedIcon != null) {
+      final activeChild = isExpanded
+          ? expandedIcon!
+          : (icon ??
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: iconSize,
+                  color: resolvedIconColor,
+                ));
+
+      iconWidget = AnimatedSwitcher(
+        duration: const Duration(milliseconds: 250),
+        switchInCurve: const Cubic(0.2, 0.0, 0.0, 1.0),
+        switchOutCurve: const Cubic(0.2, 0.0, 0.0, 1.0),
+        transitionBuilder: (child, animation) {
+          return RotationTransition(
+            turns: Tween<double>(begin: 0.25, end: 0.0).animate(animation),
+            child: FadeTransition(opacity: animation, child: child),
+          );
+        },
+        child: KeyedSubtree(
+          key: ValueKey<bool>(isExpanded),
+          child: IconTheme(
+            data: IconThemeData(size: iconSize, color: resolvedIconColor),
+            child: activeChild,
+          ),
+        ),
+      );
+    } else {
+      final baseChild =
+          icon ??
+          Icon(
+            Icons.keyboard_arrow_down_rounded,
+            size: iconSize,
+            color: resolvedIconColor,
+          );
+
+      iconWidget = AnimatedRotation(
+        turns: isExpanded ? 0.5 : 0.0,
+        duration: const Duration(milliseconds: 250),
+        curve: const Cubic(0.2, 0.0, 0.0, 1.0),
+        child: IconTheme(
+          data: IconThemeData(size: iconSize, color: resolvedIconColor),
+          child: baseChild,
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -53,22 +110,18 @@ class MechanixAccordionButton extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(color: resolvedBg, shape: BoxShape.circle),
-        child: Center(
-          child: AnimatedRotation(
-            turns: isExpanded ? 0.5 : 0.0,
-            duration: const Duration(milliseconds: 250),
-            curve: const Cubic(0.2, 0.0, 0.0, 1.0),
-            child: Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: iconSize,
-              color: resolvedIconColor,
-            ),
-          ),
-        ),
+        child: Center(child: iconWidget),
       ),
     );
   }
 }
+
+/// Signature for building a custom accordion button with access to expansion state and toggle callback.
+typedef AccordionButtonBuilder = Widget Function(
+  BuildContext context,
+  bool isExpanded,
+  VoidCallback toggleExpansion,
+);
 
 /// An expandable List Tile that animates open to reveal child content,
 /// controlled by an Accordion button.
@@ -85,6 +138,10 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.leading,
     this.showLeading = true,
     this.trailingText,
+    this.showAccordionButton = true,
+    this.accordionIcon,
+    this.accordionExpandedIcon,
+    this.accordionButtonBuilder,
     this.initiallyExpanded = false,
     this.onExpansionChanged,
     this.children = const <Widget>[],
@@ -117,6 +174,10 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.leading,
     this.showLeading = true,
     this.trailingText,
+    this.showAccordionButton = true,
+    this.accordionIcon,
+    this.accordionExpandedIcon,
+    this.accordionButtonBuilder,
     this.initiallyExpanded = false,
     this.onExpansionChanged,
     this.children = const <Widget>[],
@@ -166,6 +227,18 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Trailing shortcut text preceding the accordion button.
   final String? trailingText;
+
+  /// Whether to show the accordion toggle button. Defaults to true.
+  final bool showAccordionButton;
+
+  /// Custom collapsed icon (or base icon) for the accordion button.
+  final Widget? accordionIcon;
+
+  /// Custom expanded icon for the accordion button (e.g. for `+` / `-` toggle icons).
+  final Widget? accordionExpandedIcon;
+
+  /// Builder for a custom accordion button with access to [isExpanded] and [toggleExpansion].
+  final AccordionButtonBuilder? accordionButtonBuilder;
 
   /// Whether the tile is initially expanded.
   final bool initiallyExpanded;
@@ -281,15 +354,29 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
     if (_isExpanded) {
       headerBg =
           widget.expandedBackgroundColor ??
+          widget.backgroundColor ??
           (widget.variant == ListTileVariant.segmented
               ? colorScheme.surfaceContainerHigh
               : colorScheme.surfaceContainer);
     }
 
-    final accordionButton = MechanixAccordionButton(
-      isExpanded: _isExpanded,
-      onTap: _toggleExpansion,
-    );
+    Widget? accordionButton;
+    if (widget.showAccordionButton) {
+      if (widget.accordionButtonBuilder != null) {
+        accordionButton = widget.accordionButtonBuilder!(
+          context,
+          _isExpanded,
+          _toggleExpansion,
+        );
+      } else {
+        accordionButton = MechanixAccordionButton(
+          isExpanded: _isExpanded,
+          icon: widget.accordionIcon,
+          expandedIcon: widget.accordionExpandedIcon,
+          onTap: _toggleExpansion,
+        );
+      }
+    }
 
     final header = MechanixListTile(
       variant: widget.variant,
@@ -302,7 +389,7 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       leading: widget.leading,
       showLeading: widget.showLeading,
       trailingText: widget.trailingText,
-      trailingWidgets: [accordionButton],
+      trailingWidgets: accordionButton != null ? [accordionButton] : const [],
       showTrailing: true,
       enabled: widget.enabled,
       minHeight: widget.minHeight,

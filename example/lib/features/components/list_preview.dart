@@ -697,8 +697,8 @@ class _ListPreviewState extends State<ListPreview> {
           context,
           title: 'Expandable Lists with Accordion Button',
           subtitle:
-              'Collapsible accordion headers featuring circular animated '
-              'chevrons and smooth expansion.',
+              'Collapsible accordion headers featuring configurable chevron '
+              'or +/- toggle buttons, or completely hidden buttons.',
         ),
         const SizedBox(height: 16),
         Container(
@@ -711,9 +711,9 @@ class _ListPreviewState extends State<ListPreview> {
           child: Column(
             children: [
               MechanixExpandableListTile(
-                leading: Icon(Icons.folder_outlined),
-                labelText: 'Documents & Files (Standard Expandable)',
-                supportingText: 'Tap header or accordion button to view files',
+                leading: const Icon(Icons.folder_outlined),
+                labelText: 'Documents & Files (Chevron Button)',
+                supportingText: 'Tap header or chevron button to view files',
                 trailingText: '3 items',
                 children: [
                   MechanixListTile(
@@ -730,11 +730,13 @@ class _ListPreviewState extends State<ListPreview> {
               ),
               const Divider(height: 24),
               MechanixExpandableListTile.segmented(
-                leading: Icon(Icons.security_rounded),
-                labelText: 'Privacy & Security (Segmented Expandable)',
+                leading: const Icon(Icons.security_rounded),
+                labelText: 'Privacy & Security (+ / - Custom Icons)',
                 supportingText:
-                    'Manage credentials, permissions and biometric locks',
+                    'Configured with custom add/remove icon widgets',
                 trailingText: 'Active',
+                accordionIcon: const Icon(Icons.add_rounded),
+                accordionExpandedIcon: const Icon(Icons.remove_rounded),
                 children: [
                   MechanixSegmentedList(
                     children: [
@@ -749,6 +751,44 @@ class _ListPreviewState extends State<ListPreview> {
                         supportingText: 'Configured via Authenticator App',
                       ),
                     ],
+                  ),
+                ],
+              ),
+              const Divider(height: 24),
+              MechanixExpandableListTile(
+                leading: const Icon(Icons.tune_rounded),
+                labelText: 'Advanced Settings (Hidden Accordion Button)',
+                supportingText: 'Tap header to toggle without trailing button',
+                showAccordionButton: false,
+                children: [
+                  MechanixListTile(
+                    leading: Icon(Icons.developer_mode_rounded),
+                    labelText: 'Developer Options',
+                    supportingText: 'Debugging and diagnostic tools',
+                  ),
+                ],
+              ),
+              const Divider(height: 24),
+              MechanixExpandableListTile(
+                leading: const Icon(Icons.palette_outlined),
+                labelText: 'Theme Styling (Custom Button with Dynamic Icon)',
+                supportingText:
+                    'Switches icon when expanded and toggles on tap',
+                accordionButtonBuilder: (context, isExpanded, toggleExpansion) {
+                  return MechanixIconButton.standard(
+                    icon: isExpanded
+                        ? Icons.close_fullscreen_rounded
+                        : Icons.open_in_full_rounded,
+                    size: IconButtonSize.small,
+                    type: IconButtonType.rounded,
+                    onPressed: toggleExpansion,
+                  );
+                },
+                children: [
+                  MechanixListTile(
+                    leading: Icon(Icons.color_lens_outlined),
+                    labelText: 'Color Palette',
+                    supportingText: 'Primary brand and surface tints',
                   ),
                 ],
               ),
