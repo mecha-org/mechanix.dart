@@ -2,9 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:widgets/widgets.dart';
 
 /// A polished design-system documentation page demonstrating all variants,
-/// shape types, sizes, interactive states, and touch targets of [MechanixIconButton].
-class IconButtonPreview extends StatelessWidget {
+/// toggle behaviors, shape types, sizes, interactive states, and touch targets of [MechanixIconButton].
+class IconButtonPreview extends StatefulWidget {
   const IconButtonPreview({super.key});
+
+  @override
+  State<IconButtonPreview> createState() => _IconButtonPreviewState();
+}
+
+class _IconButtonPreviewState extends State<IconButtonPreview> {
+  bool _filledToggle = false;
+  bool _tonalToggle = true;
+  bool _outlineToggle = false;
+  bool _standardToggle = true;
+  bool _customToggle = true;
+  bool _customHeartToggle = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +27,19 @@ class IconButtonPreview extends StatelessWidget {
         _buildPageHeader(context),
         const SizedBox(height: 24),
 
-        // 2. Variants & Shape Types
+        // 2. Toggleable Icon Buttons (Material 3 Toggleable)
+        _buildToggleSection(context),
+        const SizedBox(height: 32),
+
+        // 3. Variants & Shape Types
         _buildVariantsAndTypesSection(context),
         const SizedBox(height: 32),
 
-        // 3. Button States (Enabled, Disabled, Custom Severities)
+        // 4. Button States (Enabled, Disabled, Custom Severities)
         _buildStatesSection(context),
         const SizedBox(height: 32),
 
-        // 4. Icon Button Sizes Scale
+        // 5. Icon Button Sizes Scale
         _buildSizesSection(context),
         const SizedBox(height: 32),
       ],
@@ -64,7 +80,7 @@ class IconButtonPreview extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Mechanix Icon Button Variants, Shapes, Sizing Scale (32px to 136px), States & 48px Touch Targets',
+                'Mechanix Icon Button Variants, Toggle Behaviors (M3), Shapes, Sizing Scale (32px to 136px), States & 48px Touch Targets',
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -73,6 +89,468 @@ class IconButtonPreview extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  // --- SECTION 2: TOGGLEABLE ICON BUTTONS (M3) ---
+  Widget _buildToggleSection(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Toggleable Icon Buttons (Material 3)',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: colorScheme.primary.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Text(
+                'NEW',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Two-state buttons using isSelected and selectedIcon following M3 specifications. Click to interactively toggle.',
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Card(
+          elevation: 0,
+          color: colorScheme.surfaceContainer,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Interactive Live Toggles',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 24,
+                  runSpacing: 20,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _buildInteractiveToggleCard(
+                      context,
+                      title: 'Filled Toggle',
+                      variantName: 'Filled',
+                      isSelected: _filledToggle,
+                      button: MechanixIconButton.filled(
+                        isSelected: _filledToggle,
+                        icon: Icons.bookmark_border_rounded,
+                        selectedIcon: Icons.bookmark_rounded,
+                        onPressed: () {
+                          setState(() {
+                            _filledToggle = !_filledToggle;
+                          });
+                        },
+                      ),
+                    ),
+                    _buildInteractiveToggleCard(
+                      context,
+                      title: 'Tonal Toggle',
+                      variantName: 'Tonal',
+                      isSelected: _tonalToggle,
+                      button: MechanixIconButton.tonal(
+                        isSelected: _tonalToggle,
+                        icon: Icons.notifications_none_rounded,
+                        selectedIcon: Icons.notifications_active_rounded,
+                        onPressed: () {
+                          setState(() {
+                            _tonalToggle = !_tonalToggle;
+                          });
+                        },
+                      ),
+                    ),
+                    _buildInteractiveToggleCard(
+                      context,
+                      title: 'Outline Toggle',
+                      variantName: 'Outline',
+                      isSelected: _outlineToggle,
+                      button: MechanixIconButton.outline(
+                        isSelected: _outlineToggle,
+                        icon: Icons.favorite_border_rounded,
+                        selectedIcon: Icons.favorite_rounded,
+                        onPressed: () {
+                          setState(() {
+                            _outlineToggle = !_outlineToggle;
+                          });
+                        },
+                      ),
+                    ),
+                    _buildInteractiveToggleCard(
+                      context,
+                      title: 'Standard Toggle',
+                      variantName: 'Standard',
+                      isSelected: _standardToggle,
+                      button: MechanixIconButton.standard(
+                        isSelected: _standardToggle,
+                        icon: Icons.star_border_rounded,
+                        selectedIcon: Icons.star_rounded,
+                        onPressed: () {
+                          setState(() {
+                            _standardToggle = !_standardToggle;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Divider(
+                  height: 1,
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.6),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Side-by-Side State Matrix (Unselected vs Selected vs Disabled)',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildToggleMatrixTable(context),
+                const SizedBox(height: 24),
+                Divider(
+                  height: 1,
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.6),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Custom Selected Color Overrides',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 20,
+                  runSpacing: 16,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _buildCustomToggleCard(
+                      context,
+                      label: 'Success Check Toggle',
+                      isSelected: _customToggle,
+                      button: MechanixIconButton(
+                        isSelected: _customToggle,
+                        icon: Icons.check_circle_outline_rounded,
+                        selectedIcon: Icons.check_circle_rounded,
+                        selectedBackgroundColor: const Color(0xFF2E7D32),
+                        selectedForegroundColor: Colors.white,
+                        onPressed: () {
+                          setState(() {
+                            _customToggle = !_customToggle;
+                          });
+                        },
+                      ),
+                    ),
+                    _buildCustomToggleCard(
+                      context,
+                      label: 'Custom Favorite Toggle',
+                      isSelected: _customHeartToggle,
+                      button: MechanixIconButton.outline(
+                        isSelected: _customHeartToggle,
+                        icon: Icons.favorite_border_rounded,
+                        selectedIcon: Icons.favorite_rounded,
+                        selectedBackgroundColor: const Color(0xFFD32F2F),
+                        selectedForegroundColor: Colors.white,
+                        selectedBorderColor: const Color(0xFFB71C1C),
+                        onPressed: () {
+                          setState(() {
+                            _customHeartToggle = !_customHeartToggle;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInteractiveToggleCard(
+    BuildContext context, {
+    required String title,
+    required String variantName,
+    required bool isSelected,
+    required Widget button,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isSelected
+              ? colorScheme.primary.withValues(alpha: 0.35)
+              : colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            title,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 10),
+          button,
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? colorScheme.primary.withValues(alpha: 0.12)
+                  : colorScheme.onSurface.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              isSelected ? 'Selected (ON)' : 'Unselected (OFF)',
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: isSelected
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggleMatrixTable(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final rows = [
+      (
+        'Unselected (false)',
+        'Shows icon param in unselected role',
+        [
+          MechanixIconButton.filled(
+            isSelected: false,
+            icon: Icons.star_border_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.tonal(
+            isSelected: false,
+            icon: Icons.star_border_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.outline(
+            isSelected: false,
+            icon: Icons.star_border_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.standard(
+            isSelected: false,
+            icon: Icons.star_border_rounded,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      (
+        'Selected (true)',
+        'Swaps to selectedIcon with active role',
+        [
+          MechanixIconButton.filled(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.tonal(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.outline(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: () {},
+          ),
+          MechanixIconButton.standard(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: () {},
+          ),
+        ],
+      ),
+      (
+        'Disabled Selected',
+        'Inoperable state with disabled tokens',
+        [
+          const MechanixIconButton.filled(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: null,
+          ),
+          const MechanixIconButton.tonal(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: null,
+          ),
+          const MechanixIconButton.outline(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: null,
+          ),
+          const MechanixIconButton.standard(
+            isSelected: true,
+            icon: Icons.star_border_rounded,
+            selectedIcon: Icons.star_rounded,
+            onPressed: null,
+          ),
+        ],
+      ),
+    ];
+
+    return Column(
+      children: [
+        for (int i = 0; i < rows.length; i++) ...[
+          if (i > 0)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Divider(
+                height: 1,
+                color: colorScheme.outlineVariant.withValues(alpha: 0.4),
+              ),
+            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 180,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      rows[i].$1,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      rows[i].$2,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Wrap(
+                  spacing: 16,
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: rows[i].$3,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildCustomToggleCard(
+    BuildContext context, {
+    required String label,
+    required bool isSelected,
+    required Widget button,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
+          ),
+          const SizedBox(height: 10),
+          button,
+          const SizedBox(height: 10),
+          Text(
+            isSelected ? 'Selected' : 'Unselected',
+            style: TextStyle(
+              fontSize: 10,
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
