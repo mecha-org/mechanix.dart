@@ -15,6 +15,8 @@ export 'app_bar_theme.dart';
 ///   Features a prominent title below navigation/action icons using [TextTheme.headlineMedium].
 /// - [MechanixAppBar.large]: Large two-row flexible app bar (height 120 dp).
 ///   Features an extra-large display title below navigation/action icons using [TextTheme.displayMedium].
+/// - [MechanixAppBar.largeIcon]: Large single-row app bar with action icons (height 120 dp).
+///   Features a prominent display title aligned with trailing actions in a single row.
 /// - [MechanixAppBar.search]: Single-row app bar with an embedded search container
 ///   and trailing action/avatar (height 64 dp).
 class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -193,6 +195,51 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
        searchBorderRadius = null,
        searchHintTextStyle = null;
 
+  /// Creates a large single-row [MechanixAppBar] (height 120 dp).
+  ///
+  /// Features a prominent display title aligned with trailing actions
+  /// in a single row with 120 dp height, vertical padding of 8 dp,
+  /// and horizontal padding of 20 dp.
+  const MechanixAppBar.largeIcon({
+    super.key,
+    this.leading,
+    this.automaticallyImplyLeading = true,
+    this.title,
+    this.supportingText,
+    this.actions,
+    this.bottom,
+    this.elevation,
+    this.scrolledUnderElevation,
+    this.shadowColor,
+    this.surfaceTintColor,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.iconTheme,
+    this.actionsIconTheme,
+    this.primary = true,
+    this.centerTitle = false,
+    this.titleSpacing,
+    this.toolbarHeight,
+    this.leadingWidth,
+    this.titleTextStyle,
+    this.supportingTextStyle,
+    this.actionsPadding,
+  }) : variant = AppBarVariant.largeIcon,
+       searchWidget = null,
+       searchHint = null,
+       searchController = null,
+       onSearchChanged = null,
+       onSearchSubmitted = null,
+       onSearchTap = null,
+       searchLeading = null,
+       searchTrailing = null,
+       searchFocusNode = null,
+       searchReadOnly = false,
+       searchAutofocus = false,
+       searchBackgroundColor = null,
+       searchBorderRadius = null,
+       searchHintTextStyle = null;
+
   /// Creates a single-row [MechanixAppBar] containing an embedded search bar (height 64 dp).
   const MechanixAppBar.search({
     super.key,
@@ -356,6 +403,8 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       case AppBarVariant.large:
         baseHeight = toolbarHeight ?? (supportingText != null ? 152.0 : 120.0);
+      case AppBarVariant.largeIcon:
+        baseHeight = toolbarHeight ?? 120.0;
       case AppBarVariant.search:
         baseHeight = toolbarHeight ?? 64.0;
     }
@@ -715,6 +764,81 @@ class MechanixAppBar extends StatelessWidget implements PreferredSizeWidget {
           titleSpacing: effectiveTitleSpacing,
           toolbarHeight: 64.0,
           leadingWidth: leadingWidth,
+        );
+
+      case AppBarVariant.largeIcon:
+        final effectiveTitleStyle =
+            titleTextStyle ??
+            config.largeIconTitleTextStyle ??
+            config.largeTitleTextStyle ??
+            textTheme.displayMedium?.copyWith(color: effectiveFg);
+
+        final effectiveSupportingTextStyle =
+            supportingTextStyle ??
+            config.largeIconSupportingTextStyle ??
+            config.largeSupportingTextStyle ??
+            textTheme.titleMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            );
+
+        final titleWidget = supportingText == null
+            ? title
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: effectiveCenterTitle
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle(
+                    style: effectiveTitleStyle ?? const TextStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    child: Semantics(
+                      header: true,
+                      child: title ?? const SizedBox.shrink(),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  DefaultTextStyle(
+                    style: effectiveSupportingTextStyle ?? const TextStyle(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    child: supportingText!,
+                  ),
+                ],
+              );
+
+        final effectiveLargeIconTitleSpacing =
+            titleSpacing ?? 20.0;
+
+        final effectiveLargeIconActionsPadding =
+            actionsPadding ??
+            const EdgeInsetsDirectional.only(end: 20.0);
+
+        final effectiveLargeIconToolbarHeight =
+            toolbarHeight ?? 120.0;
+
+        appBarWidget = AppBar(
+          leading: leading,
+          automaticallyImplyLeading: automaticallyImplyLeading,
+          title: titleWidget,
+          actions: actions,
+          actionsPadding: effectiveLargeIconActionsPadding,
+          bottom: bottom,
+          elevation: effectiveElevation,
+          scrolledUnderElevation: effectiveScrolledUnderElevation,
+          shadowColor: effectiveShadowColor,
+          surfaceTintColor: effectiveSurfaceTintColor,
+          backgroundColor: effectiveBg,
+          foregroundColor: effectiveFg,
+          iconTheme: effectiveIconTheme,
+          actionsIconTheme: effectiveActionsIconTheme,
+          primary: primary,
+          centerTitle: effectiveCenterTitle,
+          titleSpacing: effectiveLargeIconTitleSpacing,
+          toolbarHeight: effectiveLargeIconToolbarHeight,
+          leadingWidth: leadingWidth,
+          titleTextStyle: effectiveTitleStyle,
         );
 
       case AppBarVariant.search:
