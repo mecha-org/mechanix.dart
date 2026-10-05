@@ -5,21 +5,6 @@ sealed class MechanixMenuEntry<T> {
   const MechanixMenuEntry();
 }
 
-/// A standard interactive item inside a Mechanix menu.
-///
-/// Features configurable leading/trailing slots, shortcut text, badges,
-/// supporting text, and interactive states (hovered, focused, pressed, selected, disabled).
-///
-/// Example:
-/// ```dart
-/// MechanixMenuItem<String>(
-///   value: 'copy',
-///   labelText: 'Copy',
-///   leadingIcon: Icons.copy_rounded,
-///   trailingText: '⌘C',
-///   onTap: () => print('Copied'),
-/// )
-/// ```
 class MechanixMenuItem<T> extends MechanixMenuEntry<T> {
   /// Creates a [MechanixMenuItem].
   const MechanixMenuItem({
@@ -111,19 +96,6 @@ class MechanixMenuItem<T> extends MechanixMenuEntry<T> {
   final String? semanticLabel;
 }
 
-/// A horizontal divider line between menu entries.
-///
-/// Extends `MechanixMenuEntry<Never>` so that callers can include dividers
-/// in typed menu entry lists without explicitly specifying generic type arguments.
-///
-/// Example:
-/// ```dart
-/// final entries = <MechanixMenuEntry<String>>[
-///   const MechanixMenuItem(value: 'a', label: 'Option A'),
-///   const MechanixMenuDivider(),
-///   const MechanixMenuItem(value: 'b', label: 'Option B'),
-/// ];
-/// ```
 class MechanixMenuDivider extends MechanixMenuEntry<Never> {
   /// Creates a [MechanixMenuDivider].
   const MechanixMenuDivider({
@@ -150,20 +122,6 @@ class MechanixMenuDivider extends MechanixMenuEntry<Never> {
   final double? endIndent;
 }
 
-/// A logical group of menu entries with an optional header, background surface shade,
-/// and inter-group divider separation.
-///
-/// Example:
-/// ```dart
-/// MechanixMenuGroup<String>(
-///   headerText: 'ACTIONS',
-///   showDivider: true,
-///   entries: [
-///     MechanixMenuItem(value: 'cut', label: 'Cut'),
-///     MechanixMenuItem(value: 'copy', label: 'Copy'),
-///   ],
-/// )
-/// ```
 class MechanixMenuGroup<T> extends MechanixMenuEntry<T> {
   /// Creates a [MechanixMenuGroup].
   const MechanixMenuGroup({
@@ -205,20 +163,6 @@ class MechanixMenuGroup<T> extends MechanixMenuEntry<T> {
   final bool showDivider;
 }
 
-/// A completely custom widget entry inside a Mechanix menu.
-///
-/// Extends `MechanixMenuEntry<Never>` to seamlessly integrate into any typed
-/// menu entry list.
-///
-/// Example:
-/// ```dart
-/// MechanixMenuCustomEntry(
-///   builder: (context) => const Padding(
-///     padding: EdgeInsets.all(8),
-///     child: Text('Custom Entry'),
-///   ),
-/// )
-/// ```
 class MechanixMenuCustomEntry extends MechanixMenuEntry<Never> {
   /// Creates a [MechanixMenuCustomEntry].
   const MechanixMenuCustomEntry({required this.builder});

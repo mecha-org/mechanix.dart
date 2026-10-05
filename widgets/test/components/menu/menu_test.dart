@@ -406,47 +406,50 @@ void main() {
       expect(find.text('Custom RTL Widget'), findsOneWidget);
     });
 
-    testWidgets('does not show keyboard focus highlight on items when opened via pointer', (
-      tester,
-    ) async {
-      final controller = MechanixMenuController();
+    testWidgets(
+      'does not show keyboard focus highlight on items when opened via pointer',
+      (tester) async {
+        final controller = MechanixMenuController();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
-          home: Scaffold(
-            body: MechanixMenu<String>(
-              controller: controller,
-              anchorBuilder: (context, ctrl, _) {
-                return ElevatedButton(
-                  onPressed: ctrl.toggle,
-                  child: const Text('Anchor'),
-                );
-              },
-              entries: const [
-                MechanixMenuItem(value: '1', labelText: 'Item 1'),
-                MechanixMenuItem(value: '2', labelText: 'Item 2'),
-              ],
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixMenu<String>(
+                controller: controller,
+                anchorBuilder: (context, ctrl, _) {
+                  return ElevatedButton(
+                    onPressed: ctrl.toggle,
+                    child: const Text('Anchor'),
+                  );
+                },
+                entries: const [
+                  MechanixMenuItem(value: '1', labelText: 'Item 1'),
+                  MechanixMenuItem(value: '2', labelText: 'Item 2'),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.text('Anchor'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Anchor'));
+        await tester.pumpAndSettle();
 
-      expect(controller.isOpen, isTrue);
+        expect(controller.isOpen, isTrue);
 
-      // Verify that MenuItemTile widgets do not have focus border
-      final container = tester.widget<Container>(
-        find.descendant(
-          of: find.widgetWithText(Semantics, 'Item 1'),
-          matching: find.byType(Container),
-        ).first,
-      );
-      final decoration = container.decoration as BoxDecoration?;
-      expect(decoration?.border, isNull);
-    });
+        // Verify that MenuItemTile widgets do not have focus border
+        final container = tester.widget<Container>(
+          find
+              .descendant(
+                of: find.widgetWithText(Semantics, 'Item 1'),
+                matching: find.byType(Container),
+              )
+              .first,
+        );
+        final decoration = container.decoration as BoxDecoration?;
+        expect(decoration?.border, isNull);
+      },
+    );
 
     testWidgets('closing menu restores focus back to the previous focus node', (
       tester,
@@ -498,5 +501,81 @@ void main() {
       expect(focusNode.hasFocus, isTrue);
       focusNode.dispose();
     });
+
+    testWidgets('updating controller in didUpdateWidget does not throw', (
+      tester,
+    ) async {
+      final controller1 = MechanixMenuController();
+      final controller2 = MechanixMenuController();
+
+      Widget buildMenu(MechanixMenuController ctrl) {
+        return MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixMenu<String>(
+              controller: ctrl,
+              anchorBuilder: (context, c, _) {
+                return ElevatedButton(
+                  onPressed: c.toggle,
+                  child: const Text('Anchor'),
+                );
+              },
+              entries: const [
+                MechanixMenuItem(value: '1', labelText: 'Item 1'),
+              ],
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(buildMenu(controller1));
+      expect(controller1.isOpen, isFalse);
+
+      // Rebuilding with a new controller triggers didUpdateWidget and reassigns _effectiveController
+      await tester.pumpWidget(buildMenu(controller2));
+      expect(tester.takeException(), isNull);
+
+      // Verify the new controller works
+      controller2.open();
+      await tester.pumpAndSettle();
+      expect(controller2.isOpen, isTrue);
+      expect(find.text('Item 1'), findsOneWidget);
+    });
+
+    testWidgets(
+      'keyboard typeahead with empty entries does not throw modulo-by-zero',
+      (tester) async {
+        final controller = MechanixMenuController();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixMenu<String>(
+                controller: controller,
+                anchorBuilder: (context, ctrl, _) {
+                  return ElevatedButton(
+                    onPressed: ctrl.toggle,
+                    child: const Text('Anchor'),
+                  );
+                },
+                entries: const [],
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Anchor'));
+        await tester.pumpAndSettle();
+        expect(controller.isOpen, isTrue);
+
+        // Send typeahead character to trigger keyboard helper with empty flattenedItems
+        await tester.sendKeyDownEvent(LogicalKeyboardKey.keyA, character: 'a');
+        await tester.sendKeyUpEvent(LogicalKeyboardKey.keyA);
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }

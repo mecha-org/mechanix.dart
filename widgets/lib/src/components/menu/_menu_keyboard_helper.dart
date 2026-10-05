@@ -116,6 +116,9 @@ class MenuKeyboardHelper<T> {
     // Typeahead by first letter
     final char = event.character;
     if (char != null && char.isNotEmpty && char.trim().isNotEmpty) {
+      if (flattenedItems.isEmpty) {
+        return false;
+      }
       final searchChar = char.toLowerCase();
       // Search from next item, wrapping around
       final count = flattenedItems.length;

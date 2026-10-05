@@ -7,26 +7,6 @@ import 'menu_entry.dart';
 import 'menu_enums.dart';
 import 'menu_theme.dart';
 
-/// A text-field dropdown menu following Mechanix design specifications.
-///
-/// Built on the existing [MechanixTextField], featuring a floating label,
-/// underline accent indicator, optional leading search icon, clear button,
-/// type-to-filter capability, matching anchor width, and combobox accessibility semantics.
-///
-/// Example:
-/// ```dart
-/// MechanixDropdownMenu<String>(
-///   labelText: 'COUNTRY',
-///   hintText: 'Select country',
-///   leadingIcon: Icons.search_rounded,
-///   entries: const [
-///     MechanixMenuItem(value: 'us', label: 'United States'),
-///     MechanixMenuItem(value: 'ca', label: 'Canada'),
-///     MechanixMenuItem(value: 'mx', label: 'Mexico'),
-///   ],
-///   onSelected: (val) => print('Selected: $val'),
-/// )
-/// ```
 class MechanixDropdownMenu<T> extends StatefulWidget {
   /// Creates a [MechanixDropdownMenu].
   const MechanixDropdownMenu({

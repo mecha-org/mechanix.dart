@@ -8,29 +8,6 @@ import 'menu_entry.dart';
 import 'menu_enums.dart';
 import 'menu_theme.dart';
 
-/// A floating, anchored menu component following the Mechanix design system specifications.
-///
-/// Built on Flutter's [RawMenuAnchor], providing reliable anchor tracking, focus management,
-/// and barrier dismissal without injecting opinionated Material 3 panel decorations.
-///
-/// Example:
-/// ```dart
-/// MechanixMenu<String>(
-///   onSelected: (val) => print('Selected: $val'),
-///   anchorBuilder: (context, controller, child) {
-///     return MechanixButton(
-///       label: 'Options',
-///       onPressed: controller.toggle,
-///     );
-///   },
-///   entries: const [
-///     MechanixMenuItem(value: 'cut', label: 'Cut', leadingIcon: Icons.cut),
-///     MechanixMenuItem(value: 'copy', label: 'Copy', leadingIcon: Icons.copy),
-///     MechanixMenuDivider(),
-///     MechanixMenuItem(value: 'paste', label: 'Paste', leadingIcon: Icons.paste),
-///   ],
-/// )
-/// ```
 class MechanixMenu<T> extends StatefulWidget {
   /// Creates a [MechanixMenu].
   const MechanixMenu({
@@ -114,7 +91,7 @@ class MechanixMenu<T> extends StatefulWidget {
 
 class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
   late final MenuController _nativeMenuController;
-  late final MechanixMenuController _effectiveController;
+  late MechanixMenuController _effectiveController;
   final FocusNode _menuFocusNode = FocusNode();
 
   int _focusedItemIndex = 0;
