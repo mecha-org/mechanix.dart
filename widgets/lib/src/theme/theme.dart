@@ -375,6 +375,7 @@ abstract class MechanixTheme extends StatefulWidget {
       dividerTheme: _createDividerTheme(colorScheme),
       badgeTheme: _createBadgeTheme(colorScheme, textTheme),
       listTileTheme: _createListTileTheme(colorScheme),
+      searchBarTheme: _createSearchBarTheme(colorScheme, textTheme),
       extensions: [
         shapeTheme,
         AppBarThemeDataConfig.standard(colorScheme, textTheme),
@@ -445,7 +446,29 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderWidth: 3.0,
           showFocusIndicator: true,
         ),
+        SearchBarThemeDataConfig.standard(colorScheme, textTheme),
       ],
+    );
+  }
+
+  /// Creates a [SearchBarThemeData] configured with Mechanix specifications.
+  static SearchBarThemeData _createSearchBarTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    final config = SearchBarThemeDataConfig.standard(colorScheme, textTheme);
+    return SearchBarThemeData(
+      elevation: config.elevation,
+      backgroundColor: config.backgroundColor,
+      shadowColor: config.shadowColor,
+      surfaceTintColor: config.surfaceTintColor,
+      overlayColor: config.overlayColor,
+      side: config.side,
+      shape: config.shape,
+      padding: config.padding,
+      textStyle: config.textStyle,
+      hintStyle: config.hintStyle,
+      constraints: config.constraints,
     );
   }
 

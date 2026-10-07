@@ -6,6 +6,7 @@ import '../features/components/badge_preview.dart';
 import '../features/components/bottom_sheet_preview.dart';
 import '../features/components/button_preview.dart';
 import '../features/components/floating_action_button_preview.dart';
+import '../features/components/search_bar_preview.dart';
 import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
@@ -127,6 +128,8 @@ class _AppShellState extends State<AppShell> {
         return 'Buttons';
       case 'floating_action_button':
         return 'Floating Action Button';
+      case 'search_bar':
+        return 'Search Bar';
       case 'text_fields':
         return 'Text Fields';
       case 'checkboxes':
@@ -191,6 +194,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'floating_action_button':
         content = const FloatingActionButtonPreview();
+        break;
+      case 'search_bar':
+        content = const SearchBarPreview();
         break;
       case 'text_fields':
         content = const TextFieldPreview();

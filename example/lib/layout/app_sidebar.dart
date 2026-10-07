@@ -131,6 +131,12 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
+                id: 'search_bar',
+                title: 'Search Bar',
+                icon: Icons.search_rounded,
+              ),
+              _buildNavItem(
+                context,
                 id: 'checkboxes',
                 title: 'Checkboxes',
                 icon: Icons.check_box_outlined,
