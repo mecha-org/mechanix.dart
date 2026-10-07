@@ -54,6 +54,8 @@ class MechanixListTile extends StatefulWidget {
     this.supportingTextColor,
     this.trailingTextColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          trailingWidgets.length <= 2,
          'MechanixListTile supports a maximum of 2 trailing widgets.',
@@ -100,6 +102,8 @@ class MechanixListTile extends StatefulWidget {
     this.supportingTextColor,
     this.trailingTextColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          trailingWidgets.length <= 2,
          'MechanixListTile supports a maximum of 2 trailing widgets.',
@@ -223,6 +227,12 @@ class MechanixListTile extends StatefulWidget {
   /// Custom scoped theme override.
   final ListTileThemeDataConfig? theme;
 
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
+
   @override
   State<MechanixListTile> createState() => _MechanixListTileState();
 }
@@ -264,6 +274,12 @@ class _MechanixListTileState extends State<MechanixListTile> {
 
     final effectiveGap = scopedTheme.gap ?? widget.gap;
     final effectiveMinHeight = scopedTheme.minHeight ?? widget.minHeight;
+
+    final effectiveOverlineLabelGap =
+        scopedTheme.overlineLabelGap ?? widget.overlineLabelGap;
+
+    final effectiveLabelSupportingGap =
+        scopedTheme.labelSupportingGap ?? widget.labelSupportingGap;
 
     // Resolve Background Color
     Color resolvedBackgroundColor;
@@ -379,6 +395,11 @@ class _MechanixListTileState extends State<MechanixListTile> {
             overflow: TextOverflow.ellipsis,
           ),
         );
+
+        if (widget.label != null ||
+            (widget.labelText != null && widget.labelText!.isNotEmpty)) {
+          children.add(SizedBox(height: effectiveOverlineLabelGap));
+        }
       }
 
       // 2. Primary Label Text (Title Large Regular, OnSecondaryFixed / OnSurface)
@@ -414,6 +435,9 @@ class _MechanixListTileState extends State<MechanixListTile> {
           widget.showSupportingText &&
           widget.supportingText != null &&
           widget.supportingText!.isNotEmpty;
+      final hasLabel =
+          widget.label != null ||
+          (widget.labelText != null && widget.labelText!.isNotEmpty);
       if (hasSupporting) {
         final baseSupportingStyle =
             textTheme.bodyLarge ??
@@ -430,6 +454,10 @@ class _MechanixListTileState extends State<MechanixListTile> {
                       ))
                 .copyWith(fontWeight: FontWeight.w400)
                 .merge(scopedTheme.supportingTextStyle);
+
+        if (hasLabel) {
+          children.add(SizedBox(height: effectiveLabelSupportingGap));
+        }
 
         children.add(
           Text(
