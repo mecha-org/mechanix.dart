@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,6 +22,9 @@ class MechanixMenu<T> extends StatefulWidget {
     this.alignment = MechanixMenuAlignment.start,
     this.offset = const Offset(0, 4),
     this.matchAnchorWidth = false,
+    this.width,
+    this.minWidth,
+    this.maxWidth,
     this.maxHeight = 320.0,
     this.closeOnSelect = true,
     this.onOpen,
@@ -62,6 +67,15 @@ class MechanixMenu<T> extends StatefulWidget {
 
   /// Whether the menu width should exactly match the width of the anchor widget.
   final bool matchAnchorWidth;
+
+  /// Explicit fixed width for the menu panel.
+  final double? width;
+
+  /// Minimum width constraint for the menu panel when [width] is null.
+  final double? minWidth;
+
+  /// Maximum width constraint for the menu panel when [width] is null.
+  final double? maxWidth;
 
   /// Maximum height constraint for the menu panel before scrolling occurs.
   final double maxHeight;
@@ -223,83 +237,10 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
       overlayBuilder: (context, info) {
         final anchorRect = info.anchorRect;
         final mediaQuery = MediaQuery.of(context);
-        final screenSize = mediaQuery.size;
-        final isRtl = Directionality.of(context) == TextDirection.rtl;
+        final textDirection = Directionality.of(context);
 
-        // Positioning calculations
-        final double? resolvedWidth = widget.matchAnchorWidth
-            ? anchorRect.width
-            : null;
-
-        // Horizontal positioning
-        double left = 0;
-        if (widget.matchAnchorWidth) {
-          left = anchorRect.left;
-        } else {
-          switch (widget.alignment) {
-            case MechanixMenuAlignment.start:
-              left = isRtl
-                  ? anchorRect.right -
-                        (resolvedWidth ?? 200.0) +
-                        widget.offset.dx
-                  : anchorRect.left + widget.offset.dx;
-              break;
-            case MechanixMenuAlignment.center:
-              left =
-                  anchorRect.center.dx -
-                  ((resolvedWidth ?? 200.0) / 2) +
-                  widget.offset.dx;
-              break;
-            case MechanixMenuAlignment.end:
-              left = isRtl
-                  ? anchorRect.left + widget.offset.dx
-                  : anchorRect.right -
-                        (resolvedWidth ?? 200.0) +
-                        widget.offset.dx;
-              break;
-          }
-        }
-
-        // Clamp to screen bounds horizontally
-        final maxLeft = screenSize.width - (resolvedWidth ?? 200.0) - 8.0;
-        if (maxLeft >= 8.0) {
-          left = left.clamp(8.0, maxLeft);
-        } else {
-          left = 8.0;
-        }
-
-        // Vertical positioning
-        final spaceBelow =
-            (screenSize.height -
-                    anchorRect.bottom -
-                    mediaQuery.padding.bottom -
-                    16)
-                .clamp(0.0, screenSize.height);
-        final spaceAbove = (anchorRect.top - mediaQuery.padding.top - 16).clamp(
-          0.0,
-          screenSize.height,
-        );
-        final shouldFlipAbove = spaceBelow < 120 && spaceAbove > spaceBelow;
-
-        final double top;
-        final double effectiveMaxHeight;
-
-        if (shouldFlipAbove) {
-          effectiveMaxHeight = widget.maxHeight.clamp(
-            0.0,
-            spaceAbove > 0 ? spaceAbove : widget.maxHeight,
-          );
-          final minTop = mediaQuery.padding.top + 8.0;
-          final computedTop =
-              anchorRect.top - widget.offset.dy - effectiveMaxHeight;
-          top = computedTop < minTop ? minTop : computedTop;
-        } else {
-          effectiveMaxHeight = widget.maxHeight.clamp(
-            0.0,
-            spaceBelow > 0 ? spaceBelow : widget.maxHeight,
-          );
-          top = anchorRect.bottom + widget.offset.dy;
-        }
+        final double? resolvedWidth =
+            widget.width ?? (widget.matchAnchorWidth ? anchorRect.width : null);
 
         final panelWidget = Focus(
           focusNode: _menuFocusNode,
@@ -323,8 +264,10 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
             entries: widget.entries,
             size: widget.size,
             theme: effectiveTheme,
-            maxHeight: effectiveMaxHeight,
+            maxHeight: widget.maxHeight,
             width: resolvedWidth,
+            minWidth: widget.minWidth ?? 160.0,
+            maxWidth: widget.maxWidth ?? 360.0,
             focusedIndex: _showFocusHighlight ? _focusedItemIndex : -1,
             onActivateItem: _handleItemActivation,
             onItemHovered: (idx) {
@@ -338,17 +281,26 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
           ),
         );
 
-        final positioned = Positioned(
-          left: left,
-          top: top,
+        return CustomSingleChildLayout(
+          delegate: _MechanixMenuLayoutDelegate(
+            anchorRect: anchorRect,
+            alignment: widget.alignment,
+            offset: widget.offset,
+            matchAnchorWidth: widget.matchAnchorWidth,
+            width: widget.width,
+            minWidth: widget.minWidth,
+            maxWidth: widget.maxWidth,
+            maxHeight: widget.maxHeight,
+            textDirection: textDirection,
+            mediaQueryPadding: mediaQuery.padding,
+            mediaQueryViewInsets: mediaQuery.viewInsets,
+          ),
           child: Semantics(
             container: true,
             label: widget.semanticLabel ?? 'Menu',
             child: panelWidget,
           ),
         );
-
-        return Stack(children: [positioned]);
       },
       child: Semantics(
         expanded: _effectiveController.isOpen,
@@ -359,5 +311,200 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
         ),
       ),
     );
+  }
+}
+
+/// A layout delegate that dynamically constrains and positions the menu overlay
+/// within the visible viewport.
+class _MechanixMenuLayoutDelegate extends SingleChildLayoutDelegate {
+  const _MechanixMenuLayoutDelegate({
+    required this.anchorRect,
+    required this.alignment,
+    required this.offset,
+    required this.matchAnchorWidth,
+    this.width,
+    this.minWidth,
+    this.maxWidth,
+    required this.maxHeight,
+    required this.textDirection,
+    required this.mediaQueryPadding,
+    required this.mediaQueryViewInsets,
+  });
+
+  static const EdgeInsets _screenPadding = EdgeInsets.all(8.0);
+
+  final Rect anchorRect;
+  final MechanixMenuAlignment alignment;
+  final Offset offset;
+  final bool matchAnchorWidth;
+  final double? width;
+  final double? minWidth;
+  final double? maxWidth;
+  final double maxHeight;
+  final TextDirection textDirection;
+  final EdgeInsets mediaQueryPadding;
+  final EdgeInsets mediaQueryViewInsets;
+
+  Rect _computeUsableRect(Size size) {
+    final double left =
+        mediaQueryPadding.left +
+        mediaQueryViewInsets.left +
+        _screenPadding.left;
+    final double top =
+        mediaQueryPadding.top + mediaQueryViewInsets.top + _screenPadding.top;
+    final double right =
+        size.width -
+        (mediaQueryPadding.right +
+            mediaQueryViewInsets.right +
+            _screenPadding.right);
+    final double bottom =
+        size.height -
+        (mediaQueryPadding.bottom +
+            mediaQueryViewInsets.bottom +
+            _screenPadding.bottom);
+
+    final double effectiveRight = math.max(left, right);
+    final double effectiveBottom = math.max(top, bottom);
+    return Rect.fromLTRB(left, top, effectiveRight, effectiveBottom);
+  }
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    final usableRect = _computeUsableRect(constraints.biggest);
+    final usableWidth = usableRect.width;
+
+    // Available vertical space below and above the anchor
+    final double spaceBelow = math.max(
+      0.0,
+      usableRect.bottom - (anchorRect.bottom + offset.dy),
+    );
+    final double spaceAbove = math.max(
+      0.0,
+      (anchorRect.top - offset.dy) - usableRect.top,
+    );
+
+    final double maxAvailableHeight = math.max(spaceBelow, spaceAbove);
+    final double effectiveMaxHeight = math.max(
+      0.0,
+      math.min(maxHeight, maxAvailableHeight),
+    );
+
+    final double minWidth;
+    final double maxWidth;
+    if (width != null) {
+      final double clamped = width!.clamp(0.0, usableWidth);
+      minWidth = clamped;
+      maxWidth = clamped;
+    } else if (matchAnchorWidth) {
+      final double anchorWidth = anchorRect.width.clamp(0.0, usableWidth);
+      minWidth = anchorWidth;
+      maxWidth = anchorWidth;
+    } else {
+      final double minW = (this.minWidth ?? 160.0).clamp(0.0, usableWidth);
+      final double maxW = (this.maxWidth ?? 360.0).clamp(0.0, usableWidth);
+      minWidth = math.min(minW, maxW);
+      maxWidth = maxW;
+    }
+
+    final double effectiveMinWidth = math.min(minWidth, maxWidth);
+
+    return BoxConstraints(
+      minWidth: effectiveMinWidth,
+      maxWidth: maxWidth,
+      minHeight: 0.0,
+      maxHeight: effectiveMaxHeight,
+    );
+  }
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    final usableRect = _computeUsableRect(size);
+    final isRtl = textDirection == TextDirection.rtl;
+
+    // Horizontal positioning
+    double x;
+    if (matchAnchorWidth && width == null) {
+      x = anchorRect.left + offset.dx;
+    } else {
+      switch (alignment) {
+        case MechanixMenuAlignment.start:
+          x = isRtl
+              ? anchorRect.right - childSize.width + offset.dx
+              : anchorRect.left + offset.dx;
+          break;
+        case MechanixMenuAlignment.center:
+          x = anchorRect.center.dx - (childSize.width / 2.0) + offset.dx;
+          break;
+        case MechanixMenuAlignment.end:
+          x = isRtl
+              ? anchorRect.left + offset.dx
+              : anchorRect.right - childSize.width + offset.dx;
+          break;
+      }
+    }
+
+    // Keep horizontal position within usable viewport
+    if (childSize.width >= usableRect.width) {
+      x = usableRect.left;
+    } else {
+      if (x + childSize.width > usableRect.right) {
+        x = usableRect.right - childSize.width;
+      }
+      if (x < usableRect.left) {
+        x = usableRect.left;
+      }
+    }
+
+    // Vertical positioning
+    final double spaceBelow = math.max(
+      0.0,
+      usableRect.bottom - (anchorRect.bottom + offset.dy),
+    );
+    final double spaceAbove = math.max(
+      0.0,
+      (anchorRect.top - offset.dy) - usableRect.top,
+    );
+
+    final double preferredTop = anchorRect.bottom + offset.dy;
+    final double aboveTop = anchorRect.top - offset.dy - childSize.height;
+
+    double y;
+    if (childSize.height <= spaceBelow) {
+      // Preferred position below fits without overflow
+      y = preferredTop;
+    } else if (childSize.height <= spaceAbove) {
+      // Bottom overflow, but enough space above -> flip above
+      y = aboveTop;
+    } else {
+      // Insufficient space on either side -> use the side with more space
+      if (spaceAbove > spaceBelow) {
+        y = aboveTop;
+      } else {
+        y = preferredTop;
+      }
+    }
+
+    final double maxY = math.max(
+      usableRect.top,
+      usableRect.bottom - childSize.height,
+    );
+    y = y.clamp(usableRect.top, maxY);
+
+    return Offset(x, y);
+  }
+
+  @override
+  bool shouldRelayout(_MechanixMenuLayoutDelegate oldDelegate) {
+    return anchorRect != oldDelegate.anchorRect ||
+        alignment != oldDelegate.alignment ||
+        offset != oldDelegate.offset ||
+        matchAnchorWidth != oldDelegate.matchAnchorWidth ||
+        width != oldDelegate.width ||
+        minWidth != oldDelegate.minWidth ||
+        maxWidth != oldDelegate.maxWidth ||
+        maxHeight != oldDelegate.maxHeight ||
+        textDirection != oldDelegate.textDirection ||
+        mediaQueryPadding != oldDelegate.mediaQueryPadding ||
+        mediaQueryViewInsets != oldDelegate.mediaQueryViewInsets;
   }
 }

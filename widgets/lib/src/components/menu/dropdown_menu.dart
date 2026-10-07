@@ -28,6 +28,12 @@ class MechanixDropdownMenu<T> extends StatefulWidget {
     this.textEditingController,
     this.menuController,
     this.style,
+    this.menuWidth,
+    this.menuMinWidth,
+    this.menuMaxWidth,
+    this.matchAnchorWidth = false,
+    this.alignment = MechanixMenuAlignment.start,
+    this.offset = const Offset(0, 4),
   });
 
   /// The list of items to display in the dropdown menu.
@@ -82,6 +88,24 @@ class MechanixDropdownMenu<T> extends StatefulWidget {
 
   /// Optional style override configuration for the menu popup.
   final MenuThemeDataConfig? style;
+
+  /// Explicit width for the dropdown menu popup.
+  final double? menuWidth;
+
+  /// Minimum width constraint for the dropdown menu popup when [menuWidth] is null.
+  final double? menuMinWidth;
+
+  /// Maximum width constraint for the dropdown menu popup when [menuWidth] is null.
+  final double? menuMaxWidth;
+
+  /// Whether the dropdown menu popup should match the width of the anchor input field.
+  final bool matchAnchorWidth;
+
+  /// Alignment strategy of the dropdown menu popup relative to the anchor input field.
+  final MechanixMenuAlignment alignment;
+
+  /// Additional pixel offset applied to the dropdown menu popup relative to the input field.
+  final Offset offset;
 
   @override
   State<MechanixDropdownMenu<T>> createState() =>
@@ -205,7 +229,12 @@ class _MechanixDropdownMenuState<T> extends State<MechanixDropdownMenu<T>> {
     return MechanixMenu<T>(
       controller: _effectiveMenuController,
       entries: filteredEntries,
-      matchAnchorWidth: true,
+      width: widget.menuWidth,
+      minWidth: widget.menuMinWidth,
+      maxWidth: widget.menuMaxWidth,
+      matchAnchorWidth: widget.matchAnchorWidth,
+      alignment: widget.alignment,
+      offset: widget.offset,
       maxHeight: widget.maxHeight,
       size: widget.size,
       style: widget.style,
