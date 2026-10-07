@@ -184,10 +184,12 @@ class MenuPanel<T> extends StatelessWidget {
           child: SingleChildScrollView(
             controller: scrollController,
             padding: theme.padding ?? const EdgeInsets.symmetric(vertical: 4.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: entryWidgets,
+            child: IntrinsicWidth(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: entryWidgets,
+              ),
             ),
           ),
         ),

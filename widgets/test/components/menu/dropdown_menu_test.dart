@@ -182,5 +182,144 @@ void main() {
       expect(selected, equals('opt2'));
       expect(find.text('Option 2'), findsOneWidget);
     });
+
+    testWidgets(
+      'dropdown menu near bottom of screen flips above the field without overflow',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 600);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: Stack(
+                children: [
+                  Positioned(
+                    left: 50,
+                    bottom: 20,
+                    width: 300,
+                    child: MechanixDropdownMenu<String>(
+                      entries: const [
+                        MechanixMenuItem(value: '1', labelText: 'Option 1'),
+                        MechanixMenuItem(value: '2', labelText: 'Option 2'),
+                        MechanixMenuItem(value: '3', labelText: 'Option 3'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        final fieldRect = tester.getRect(find.byType(TextField));
+
+        // Tap text field to open dropdown
+        await tester.tap(find.byType(TextField));
+        await tester.pumpAndSettle();
+
+        // Menu panel should be open
+        final menuFinder = find.byType(SingleChildScrollView);
+        expect(menuFinder, findsOneWidget);
+
+        final menuRect = tester.getRect(menuFinder);
+        // Popup should be flipped above the text field
+        expect(menuRect.bottom, lessThanOrEqualTo(fieldRect.top));
+        expect(menuRect.top, greaterThanOrEqualTo(8.0));
+        expect(menuRect.left, greaterThanOrEqualTo(8.0));
+        expect(menuRect.right, lessThanOrEqualTo(792.0));
+      },
+    );
+
+    testWidgets('dropdown menu sizes to content width of items by default', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 500,
+                child: MechanixDropdownMenu<String>(
+                  entries: const [
+                    MechanixMenuItem(value: '1', labelText: 'Short'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(TextField));
+      await tester.pumpAndSettle();
+
+      final menuRect = tester.getRect(find.byType(SingleChildScrollView));
+      // Content is short, so it clamps to minWidth (160) rather than stretching to field width (500)
+      expect(menuRect.width, equals(160.0));
+    });
+
+    testWidgets('dropdown menu respects custom menuWidth', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 400,
+                child: MechanixDropdownMenu<String>(
+                  menuWidth: 245.0,
+                  entries: const [
+                    MechanixMenuItem(value: '1', labelText: 'Option 1'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(TextField));
+      await tester.pumpAndSettle();
+
+      final menuRect = tester.getRect(find.byType(SingleChildScrollView));
+      expect(menuRect.width, equals(245.0));
+    });
+
+    testWidgets('dropdown menu respects matchAnchorWidth: true', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 320,
+                child: MechanixDropdownMenu<String>(
+                  matchAnchorWidth: true,
+                  entries: const [
+                    MechanixMenuItem(value: '1', labelText: 'Option 1'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(TextField));
+      await tester.pumpAndSettle();
+
+      final fieldRect = tester.getRect(find.byType(TextField));
+      final menuRect = tester.getRect(find.byType(SingleChildScrollView));
+      expect(menuRect.width, equals(fieldRect.width));
+      expect(menuRect.width, equals(320.0));
+    });
   });
 }
+
