@@ -149,22 +149,7 @@ class _SearchBarPreviewState extends State<SearchBarPreview> {
                     ),
                   ),
                 ),
-                const Divider(height: 32),
-                _buildVariantItem(
-                  context,
-                  title: 'Without Leading Icon',
-                  description:
-                      'Search bar with text input only and trailing action',
-                  child: MechanixSearchBar(
-                    hintText: 'Hinted search text',
-                    trailing: [
-                      MechanixIconButton.standard(
-                        icon: Icons.mic_none_outlined,
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
+
                 const Divider(height: 32),
                 _buildVariantItem(
                   context,
@@ -289,24 +274,17 @@ class _SearchBarPreviewState extends State<SearchBarPreview> {
             ),
           ),
           const SizedBox(height: 12),
-          ListenableBuilder(
-            listenable: controller,
-            builder: (context, _) {
-              //final hasText = controller.text.isNotEmpty;
-
-              return MechanixSearchBar(
-                controller: controller,
-                hintText: hintText ?? 'Search',
-                leading: const Icon(Icons.search, size: 22),
-                trailing: [
-                  MechanixIconButton.standard(
-                    type: IconButtonType.rounded,
-                    icon: Icons.close,
-                    onPressed: controller.clear,
-                  ),
-                ],
-              );
-            },
+          MechanixSearchBar(
+            controller: controller,
+            hintText: hintText ?? 'Search',
+            leading: const Icon(Icons.search, size: 22),
+            trailing: [
+              MechanixIconButton.standard(
+                type: IconButtonType.rounded,
+                icon: Icons.close,
+                onPressed: controller.clear,
+              ),
+            ],
           ),
         ],
       ),
