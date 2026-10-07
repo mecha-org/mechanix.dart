@@ -11,6 +11,7 @@ import '../features/components/text_field_preview.dart';
 import '../features/components/checkbox_preview.dart';
 import '../features/components/divider_preview.dart';
 import '../features/components/icon_button_preview.dart';
+import '../features/components/menu_preview.dart';
 import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
 import '../features/components/switch_preview.dart';
@@ -237,6 +238,9 @@ class _MainContent extends StatelessWidget {
       case 'badges':
         content = const BadgePreview();
         break;
+      case 'menus':
+        content = const MenuPreview();
+        break;
 
       default:
         content = Center(
@@ -269,7 +273,6 @@ class _MainContent extends StatelessWidget {
           ),
         );
     }
-    ;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,

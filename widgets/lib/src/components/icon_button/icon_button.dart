@@ -17,6 +17,8 @@ class MechanixIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.selectedIcon,
+    this.isSelected,
     this.onLongPress,
     this.type = IconButtonType.square,
     this.variant = IconButtonVariant.filled,
@@ -37,6 +39,13 @@ class MechanixIconButton extends StatelessWidget {
     this.borderColor,
     this.borderWidth,
     this.focusBorderColor,
+    this.selectedBackgroundColor,
+    this.selectedHoverColor,
+    this.selectedPressedColor,
+    this.selectedForegroundColor,
+    this.selectedHoverForegroundColor,
+    this.selectedPressedForegroundColor,
+    this.selectedBorderColor,
     this.theme,
   });
 
@@ -45,6 +54,8 @@ class MechanixIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.selectedIcon,
+    this.isSelected,
     this.onLongPress,
     this.type = IconButtonType.square,
     this.size = IconButtonSize.medium,
@@ -64,6 +75,13 @@ class MechanixIconButton extends StatelessWidget {
     this.borderColor,
     this.borderWidth,
     this.focusBorderColor,
+    this.selectedBackgroundColor,
+    this.selectedHoverColor,
+    this.selectedPressedColor,
+    this.selectedForegroundColor,
+    this.selectedHoverForegroundColor,
+    this.selectedPressedForegroundColor,
+    this.selectedBorderColor,
     this.theme,
   }) : variant = IconButtonVariant.filled;
 
@@ -72,6 +90,8 @@ class MechanixIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.selectedIcon,
+    this.isSelected,
     this.onLongPress,
     this.type = IconButtonType.square,
     this.size = IconButtonSize.medium,
@@ -91,6 +111,13 @@ class MechanixIconButton extends StatelessWidget {
     this.borderColor,
     this.borderWidth,
     this.focusBorderColor,
+    this.selectedBackgroundColor,
+    this.selectedHoverColor,
+    this.selectedPressedColor,
+    this.selectedForegroundColor,
+    this.selectedHoverForegroundColor,
+    this.selectedPressedForegroundColor,
+    this.selectedBorderColor,
     this.theme,
   }) : variant = IconButtonVariant.tonal;
 
@@ -99,6 +126,8 @@ class MechanixIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.selectedIcon,
+    this.isSelected,
     this.onLongPress,
     this.type = IconButtonType.square,
     this.size = IconButtonSize.medium,
@@ -118,6 +147,13 @@ class MechanixIconButton extends StatelessWidget {
     this.borderColor,
     this.borderWidth,
     this.focusBorderColor,
+    this.selectedBackgroundColor,
+    this.selectedHoverColor,
+    this.selectedPressedColor,
+    this.selectedForegroundColor,
+    this.selectedHoverForegroundColor,
+    this.selectedPressedForegroundColor,
+    this.selectedBorderColor,
     this.theme,
   }) : variant = IconButtonVariant.outline;
 
@@ -126,6 +162,8 @@ class MechanixIconButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.selectedIcon,
+    this.isSelected,
     this.onLongPress,
     this.type = IconButtonType.square,
     this.size = IconButtonSize.medium,
@@ -145,6 +183,13 @@ class MechanixIconButton extends StatelessWidget {
     this.borderColor,
     this.borderWidth,
     this.focusBorderColor,
+    this.selectedBackgroundColor,
+    this.selectedHoverColor,
+    this.selectedPressedColor,
+    this.selectedForegroundColor,
+    this.selectedHoverForegroundColor,
+    this.selectedPressedForegroundColor,
+    this.selectedBorderColor,
     this.theme,
   }) : variant = IconButtonVariant.standard;
 
@@ -154,8 +199,14 @@ class MechanixIconButton extends StatelessWidget {
   /// Callback when button is long pressed.
   final VoidCallback? onLongPress;
 
-  /// Icon widget or IconData to display.
+  /// Icon widget or IconData to display when unselected or in normal push mode.
   final dynamic icon;
+
+  /// Icon widget or IconData to display when [isSelected] is true.
+  final dynamic selectedIcon;
+
+  /// Whether this icon button is currently selected (toggled).
+  final bool? isSelected;
 
   /// Corner/shape style type ([IconButtonType.square], [rounded]).
   final IconButtonType type;
@@ -198,6 +249,15 @@ class MechanixIconButton extends StatelessWidget {
   final double? borderWidth;
   final Color? focusBorderColor;
 
+  /// Selected state color overrides.
+  final Color? selectedBackgroundColor;
+  final Color? selectedHoverColor;
+  final Color? selectedPressedColor;
+  final Color? selectedForegroundColor;
+  final Color? selectedHoverForegroundColor;
+  final Color? selectedPressedForegroundColor;
+  final Color? selectedBorderColor;
+
   /// Custom theme override for this button instance.
   final IconButtonThemeDataConfig? theme;
 
@@ -213,6 +273,7 @@ class MechanixIconButton extends StatelessWidget {
       variant: variant,
       type: type,
       sizeSpec: sizeSpec,
+      isToggleable: isSelected != null,
       theme: mergedTheme,
       customBackgroundColor: backgroundColor,
       customHoverColor: hoverColor,
@@ -225,12 +286,22 @@ class MechanixIconButton extends StatelessWidget {
       customBorderColor: borderColor,
       customBorderWidth: borderWidth,
       customFocusBorderColor: focusBorderColor,
+      customSelectedBackgroundColor: selectedBackgroundColor,
+      customSelectedHoverColor: selectedHoverColor,
+      customSelectedPressedColor: selectedPressedColor,
+      customSelectedForegroundColor: selectedForegroundColor,
+      customSelectedHoverForegroundColor: selectedHoverForegroundColor,
+      customSelectedPressedForegroundColor: selectedPressedForegroundColor,
+      customSelectedBorderColor: selectedBorderColor,
       duration: duration,
       curve: curve,
       showFocusIndicator: showFocusIndicator,
     );
 
-    final iconWidget = _buildIcon(mergedTheme, sizeSpec);
+    final iconWidget = _buildIcon(mergedTheme, sizeSpec, icon);
+    final selectedIconWidget = selectedIcon != null
+        ? _buildIcon(mergedTheme, sizeSpec, selectedIcon)
+        : null;
 
     Widget buttonWidget;
     switch (variant) {
@@ -240,6 +311,8 @@ class MechanixIconButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
+          isSelected: isSelected,
+          selectedIcon: selectedIconWidget,
           icon: iconWidget,
         );
         break;
@@ -249,6 +322,8 @@ class MechanixIconButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
+          isSelected: isSelected,
+          selectedIcon: selectedIconWidget,
           icon: iconWidget,
         );
         break;
@@ -258,6 +333,8 @@ class MechanixIconButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
+          isSelected: isSelected,
+          selectedIcon: selectedIconWidget,
           icon: iconWidget,
         );
         break;
@@ -267,6 +344,8 @@ class MechanixIconButton extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           style: buttonStyle,
+          isSelected: isSelected,
+          selectedIcon: selectedIconWidget,
           icon: iconWidget,
         );
         break;
@@ -311,15 +390,16 @@ class MechanixIconButton extends StatelessWidget {
   Widget _buildIcon(
     IconButtonThemeDataConfig theme,
     IconButtonSizeConfig sizeSpec,
+    dynamic targetIcon,
   ) {
     final targetIconSize = theme.iconSize ?? sizeSpec.iconSize;
-    if (icon is Widget) {
+    if (targetIcon is Widget) {
       return IconTheme.merge(
         data: IconThemeData(size: targetIconSize),
-        child: icon as Widget,
+        child: targetIcon,
       );
-    } else if (icon is IconData) {
-      return Icon(icon as IconData, size: targetIconSize);
+    } else if (targetIcon is IconData) {
+      return Icon(targetIcon, size: targetIconSize);
     }
     return const SizedBox.shrink();
   }

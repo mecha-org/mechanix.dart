@@ -117,6 +117,12 @@ class AppBarPreview extends StatelessWidget {
         variant: AppBarVariant.large,
       ),
       _AppBarVariantItem(
+        title: 'Large Icon',
+        description:
+            'Single-row app bar with prominent title and action icon (120px)',
+        variant: AppBarVariant.largeIcon,
+      ),
+      _AppBarVariantItem(
         title: 'Search',
         description: 'Single-row app bar with an embedded search field',
         variant: AppBarVariant.search,
@@ -298,6 +304,22 @@ class AppBarPreview extends StatelessWidget {
             ),
             MechanixIconButton.standard(
               icon: const Icon(Icons.more_vert),
+              onPressed: () {},
+            ),
+          ],
+        );
+
+      case AppBarVariant.largeIcon:
+        return MechanixAppBar.largeIcon(
+          primary: false,
+          centerTitle: centerTitle,
+          title: const Text('LABEL'),
+          supportingText: showSupportingText
+              ? const Text('Manage your device settings')
+              : null,
+          actions: [
+            MechanixIconButton.standard(
+              icon: const Icon(Icons.search),
               onPressed: () {},
             ),
           ],
@@ -673,6 +695,12 @@ class AppBarPreview extends StatelessWidget {
         title: 'Large',
         description: 'Large app bar with supporting text',
         variant: AppBarVariant.large,
+        showSupportingText: true,
+      ),
+      _AppBarVariantItem(
+        title: 'Large Icon',
+        description: 'Large Icon app bar with supporting text',
+        variant: AppBarVariant.largeIcon,
         showSupportingText: true,
       ),
     ];

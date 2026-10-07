@@ -446,6 +446,7 @@ abstract class MechanixTheme extends StatefulWidget {
           focusBorderWidth: 3.0,
           showFocusIndicator: true,
         ),
+        MenuThemeDataConfig.standard(colorScheme, textTheme, shapeTheme),
         SearchBarThemeDataConfig.standard(colorScheme, textTheme),
       ],
     );
@@ -582,7 +583,7 @@ abstract class MechanixTheme extends StatefulWidget {
   /// Creates a [DividerThemeData] configured with Mechanix specifications.
   static DividerThemeData _createDividerTheme(ColorScheme colorScheme) {
     return DividerThemeData(
-      color: colorScheme.outlineVariant,
+      color: colorScheme.outline,
       space: MechanixSpacing.medium,
       thickness: 1.0,
       indent: 0.0,
