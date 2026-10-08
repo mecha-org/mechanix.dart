@@ -129,5 +129,32 @@ void main() {
       expect(find.text('Item B'), findsOneWidget);
       expect(find.text('Item C'), findsOneWidget);
     });
+
+    testWidgets(
+      'passes overlineLabelGap and labelSupportingGap to MechanixListTile',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixDraggableListTile(
+                index: 0,
+                labelText: 'Draggable Title',
+                overline: 'Draggable Overline',
+                supportingText: 'Draggable Supporting',
+                overlineLabelGap: 10.0,
+                labelSupportingGap: 12.0,
+              ),
+            ),
+          ),
+        );
+
+        final listTile = tester.widget<MechanixListTile>(
+          find.byType(MechanixListTile),
+        );
+        expect(listTile.overlineLabelGap, equals(10.0));
+        expect(listTile.labelSupportingGap, equals(12.0));
+      },
+    );
   });
 }

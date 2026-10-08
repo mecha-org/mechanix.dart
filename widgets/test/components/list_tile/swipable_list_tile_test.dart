@@ -418,5 +418,31 @@ void main() {
         throwsAssertionError,
       );
     });
+
+    testWidgets(
+      'passes overlineLabelGap and labelSupportingGap to MechanixListTile',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixSwipableListTile(
+                labelText: 'Swipable Title',
+                overline: 'Swipable Overline',
+                supportingText: 'Swipable Supporting',
+                overlineLabelGap: 6.0,
+                labelSupportingGap: 10.0,
+              ),
+            ),
+          ),
+        );
+
+        final listTile = tester.widget<MechanixListTile>(
+          find.byType(MechanixListTile),
+        );
+        expect(listTile.overlineLabelGap, equals(6.0));
+        expect(listTile.labelSupportingGap, equals(10.0));
+      },
+    );
   });
 }

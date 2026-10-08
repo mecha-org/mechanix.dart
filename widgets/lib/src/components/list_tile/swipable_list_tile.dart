@@ -355,6 +355,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.hoverColor,
     this.swipedBackgroundColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          actions.length <= 3,
          'MechanixSwipableListTile supports a maximum of 3 reveal actions.',
@@ -402,6 +404,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.hoverColor,
     this.swipedBackgroundColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : variant = ListTileVariant.segmented,
        assert(
          actions.length <= 3,
@@ -531,6 +535,12 @@ class MechanixSwipableListTile extends StatefulWidget {
 
   /// Custom theme override.
   final ListTileThemeDataConfig? theme;
+
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
 
   @override
   State<MechanixSwipableListTile> createState() =>
@@ -824,6 +834,8 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
               backgroundColor: effectiveBg,
               hoverColor: effectiveHoverColor,
               theme: widget.theme,
+              overlineLabelGap: widget.overlineLabelGap,
+              labelSupportingGap: widget.labelSupportingGap,
             );
 
             if (!hasActions) {

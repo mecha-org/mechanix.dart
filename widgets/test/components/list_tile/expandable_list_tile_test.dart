@@ -225,6 +225,32 @@ void main() {
       expect(find.byIcon(Icons.expand_more), findsNothing);
       expect(find.text('Builder Child'), findsOneWidget);
     });
+
+    testWidgets('passes overlineLabelGap and labelSupportingGap to header MechanixListTile', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable Title',
+              overline: 'Expandable Overline',
+              supportingText: 'Expandable Supporting',
+              overlineLabelGap: 8.0,
+              labelSupportingGap: 14.0,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      final listTile = tester.widget<MechanixListTile>(
+        find.byType(MechanixListTile),
+      );
+      expect(listTile.overlineLabelGap, equals(8.0));
+      expect(listTile.labelSupportingGap, equals(14.0));
+    });
   });
 }
 
