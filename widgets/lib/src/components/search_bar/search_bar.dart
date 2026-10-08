@@ -6,6 +6,9 @@ import 'search_bar_theme.dart';
 
 export 'search_bar_theme.dart';
 
+/// A customizable, accessible Search Bar component conforming to the
+/// Mechanix design system specifications, wrapping Flutter's [SearchBar].
+///
 /// Features a pill-shaped container (56 dp height, 28 dp border radius),
 /// leading search icon, placeholder text, trailing action icons (e.g. mic),
 /// optional trailing avatar, and automatic debounced search triggering after
@@ -145,59 +148,12 @@ class MechanixSearchBar extends StatefulWidget {
 }
 
 class _MechanixSearchBarState extends State<MechanixSearchBar> {
-  TextEditingController? _internalController;
-  FocusNode? _internalFocusNode;
   Timer? _debounceTimer;
-
-  bool _isHovered = false;
-  bool _isPressed = false;
-  bool _isFocused = false;
-
-  TextEditingController get _effectiveController =>
-      widget.controller ?? (_internalController ??= TextEditingController());
-
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ??
-      (_internalFocusNode ??= FocusNode(debugLabel: 'MechanixSearchBar'));
-
-  @override
-  void initState() {
-    super.initState();
-    _effectiveFocusNode.addListener(_handleFocusChange);
-  }
-
-  @override
-  void didUpdateWidget(covariant MechanixSearchBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.focusNode != oldWidget.focusNode) {
-      (oldWidget.focusNode ?? _internalFocusNode)?.removeListener(
-        _handleFocusChange,
-      );
-      if (oldWidget.focusNode == null && widget.focusNode != null) {
-        _internalFocusNode?.dispose();
-        _internalFocusNode = null;
-      }
-      _effectiveFocusNode.addListener(_handleFocusChange);
-    }
-  }
 
   @override
   void dispose() {
     _debounceTimer?.cancel();
-    (widget.focusNode ?? _internalFocusNode)?.removeListener(
-      _handleFocusChange,
-    );
-    _internalFocusNode?.dispose();
-    _internalController?.dispose();
     super.dispose();
-  }
-
-  void _handleFocusChange() {
-    if (_isFocused != _effectiveFocusNode.hasFocus) {
-      setState(() {
-        _isFocused = _effectiveFocusNode.hasFocus;
-      });
-    }
   }
 
   void _handleTextChanged(String value) {
@@ -214,13 +170,6 @@ class _MechanixSearchBarState extends State<MechanixSearchBar> {
     }
   }
 
-  Set<WidgetState> get _states => <WidgetState>{
-    if (!widget.enabled) WidgetState.disabled,
-    if (widget.enabled && _isHovered) WidgetState.hovered,
-    if (widget.enabled && _isFocused) WidgetState.focused,
-    if (widget.enabled && _isPressed) WidgetState.pressed,
-  };
-
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -229,72 +178,130 @@ class _MechanixSearchBarState extends State<MechanixSearchBar> {
     final componentTheme = MechanixSearchBarTheme.of(context)
         .merge(widget.theme);
 
-    final states = _states;
+    // Resolve leading icon with theme color
+    Widget? effectiveLeading = widget.leading;
+    if (effectiveLeading != null && componentTheme.leadingIconColor != null) {
+      effectiveLeading = IconTheme.merge(
+        data: IconThemeData(
+          color: componentTheme.leadingIconColor?.resolve({}),
+          size: 24.0,
+        ),
+        child: effectiveLeading,
+      );
+    }
 
-    // Resolve styling properties
-    final resolvedBg =
-        widget.backgroundColor?.resolve(states) ??
-        componentTheme.backgroundColor?.resolve(states) ??
-        colorScheme.surfaceContainerHigh;
+    // Combine trailing widgets and avatar
+    final trailingItems = <Widget>[
+      if (widget.trailing != null) ...widget.trailing!,
+      if (widget.avatar != null) widget.avatar!,
+    ];
 
-    final resolvedElevation =
-        widget.elevation?.resolve(states) ??
-        componentTheme.elevation?.resolve(states) ??
-        0.0;
-
-    final resolvedShadowColor =
-        widget.shadowColor?.resolve(states) ??
-        componentTheme.shadowColor?.resolve(states) ??
-        colorScheme.shadow;
-
-    final resolvedSurfaceTintColor =
-        widget.surfaceTintColor?.resolve(states) ??
-        componentTheme.surfaceTintColor?.resolve(states) ??
-        Colors.transparent;
-
-    final resolvedOverlayColor =
-        widget.overlayColor?.resolve(states) ??
-        componentTheme.overlayColor?.resolve(states) ??
-        Colors.transparent;
-
-    final resolvedSide =
-        widget.side?.resolve(states) ??
-        componentTheme.side?.resolve(states) ??
-        (_isFocused
-            ? BorderSide(color: colorScheme.outline, width: 1.0)
-            : BorderSide.none);
-
-    final baseShape =
-        widget.shape?.resolve(states) ?? componentTheme.shape?.resolve(states);
-
-    final OutlinedBorder resolvedShape = (baseShape != null)
-        ? baseShape.copyWith(side: resolvedSide)
-        : StadiumBorder(side: resolvedSide);
-
-    final resolvedPadding =
-        widget.padding?.resolve(states) ??
-        componentTheme.padding?.resolve(states) ??
-        const EdgeInsets.symmetric(horizontal: 16.0);
-
-    final resolvedTextStyle =
-        widget.textStyle?.resolve(states) ??
-        componentTheme.textStyle?.resolve(states) ??
-        textTheme.bodyLarge?.copyWith(
-          color: widget.enabled
-              ? colorScheme.onSurface
-              : colorScheme.onSurface.withValues(alpha: 0.38),
+    Iterable<Widget>? effectiveTrailing;
+    if (trailingItems.isNotEmpty) {
+      if (componentTheme.trailingIconColor != null) {
+        effectiveTrailing = trailingItems.map(
+          (item) => IconTheme.merge(
+            data: IconThemeData(
+              color: componentTheme.trailingIconColor?.resolve({}),
+              size: 24.0,
+            ),
+            child: item,
+          ),
         );
+      } else {
+        effectiveTrailing = trailingItems;
+      }
+    }
 
-    final resolvedHintStyle =
-        widget.hintStyle?.resolve(states) ??
-        componentTheme.hintStyle?.resolve(states) ??
-        textTheme.bodyLarge?.copyWith(
-          color: widget.enabled
-              ? colorScheme.onSurfaceVariant
-              : colorScheme.onSurfaceVariant.withValues(alpha: 0.38),
-        );
+    final effectiveBackgroundColor =
+        widget.backgroundColor ??
+        componentTheme.backgroundColor ??
+        WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.04);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return Color.alphaBlend(
+              colorScheme.onSurface.withValues(alpha: 0.04),
+              colorScheme.surfaceContainerHigh,
+            );
+          }
+          return colorScheme.surfaceContainerHigh;
+        });
 
-    final resolvedConstraints =
+    final effectiveElevation =
+        widget.elevation ??
+        componentTheme.elevation ??
+        const WidgetStatePropertyAll(0.0);
+
+    final effectiveShadowColor =
+        widget.shadowColor ??
+        componentTheme.shadowColor ??
+        WidgetStatePropertyAll(colorScheme.shadow);
+
+    final effectiveSurfaceTintColor =
+        widget.surfaceTintColor ??
+        componentTheme.surfaceTintColor ??
+        const WidgetStatePropertyAll(Colors.transparent);
+
+    final effectiveOverlayColor =
+        widget.overlayColor ??
+        componentTheme.overlayColor ??
+        WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.onSurface.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.onSurface.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        });
+
+    final effectiveSide =
+        widget.side ??
+        componentTheme.side ??
+        WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
+            return BorderSide(color: colorScheme.outline, width: 1.0);
+          }
+          return BorderSide.none;
+        });
+
+    final effectiveShape =
+        widget.shape ??
+        componentTheme.shape ??
+        const WidgetStatePropertyAll(StadiumBorder());
+
+    final effectivePadding =
+        widget.padding ??
+        componentTheme.padding ??
+        const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 16.0));
+
+    final effectiveTextStyle =
+        widget.textStyle ??
+        componentTheme.textStyle ??
+        WidgetStateProperty.resolveWith((states) {
+          final color = states.contains(WidgetState.disabled)
+              ? colorScheme.onSurface.withValues(alpha: 0.38)
+              : colorScheme.onSurface;
+          return textTheme.bodyLarge?.copyWith(color: color);
+        });
+
+    final effectiveHintStyle =
+        widget.hintStyle ??
+        componentTheme.hintStyle ??
+        WidgetStateProperty.resolveWith((states) {
+          final color = states.contains(WidgetState.disabled)
+              ? colorScheme.onSurfaceVariant.withValues(alpha: 0.38)
+              : colorScheme.onSurfaceVariant;
+          return textTheme.bodyLarge?.copyWith(color: color);
+        });
+
+    final effectiveConstraints =
         widget.constraints ??
         componentTheme.constraints ??
         const BoxConstraints(
@@ -304,155 +311,42 @@ class _MechanixSearchBarState extends State<MechanixSearchBar> {
           maxWidth: 720.0,
         );
 
-    final resolvedLeadingIconColor =
-        componentTheme.leadingIconColor?.resolve(states) ??
-        (widget.enabled
-            ? colorScheme.onSurfaceVariant
-            : colorScheme.onSurfaceVariant.withValues(alpha: 0.38));
+    final searchBarWidget = SearchBar(
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      hintText: widget.hintText,
+      leading: effectiveLeading,
+      trailing: effectiveTrailing,
+      onChanged: _handleTextChanged,
+      onSubmitted: widget.onSubmitted,
+      onTap: widget.onTap,
+      onTapOutside: widget.onTapOutside,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      autoFocus: widget.autofocus,
+      keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      backgroundColor: effectiveBackgroundColor,
+      elevation: effectiveElevation,
+      shadowColor: effectiveShadowColor,
+      surfaceTintColor: effectiveSurfaceTintColor,
+      overlayColor: effectiveOverlayColor,
+      side: effectiveSide,
+      shape: effectiveShape,
+      padding: effectivePadding,
+      textStyle: effectiveTextStyle,
+      hintStyle: effectiveHintStyle,
+      constraints: effectiveConstraints,
+    );
 
-    final resolvedTrailingIconColor =
-        componentTheme.trailingIconColor?.resolve(states) ??
-        (widget.enabled
-            ? colorScheme.onSurfaceVariant
-            : colorScheme.onSurfaceVariant.withValues(alpha: 0.38));
-
-    final effectiveCursorColor =
-        componentTheme.cursorColor ?? colorScheme.primary;
-
-    // Build leading widget
-    Widget? leadingWidget;
-    if (widget.leading != null) {
-      leadingWidget = IconTheme.merge(
-        data: IconThemeData(color: resolvedLeadingIconColor, size: 24.0),
-        child: widget.leading!,
+    if (widget.semanticLabel != null) {
+      return Semantics(
+        container: true,
+        label: widget.semanticLabel,
+        child: searchBarWidget,
       );
     }
 
-    // Build trailing widgets
-    final trailingWidgets = <Widget>[];
-    if (widget.trailing != null) {
-      for (final t in widget.trailing!) {
-        trailingWidgets.add(
-          IconTheme.merge(
-            data: IconThemeData(color: resolvedTrailingIconColor, size: 24.0),
-            child: t,
-          ),
-        );
-      }
-    }
-
-    // Build avatar if shown
-    if ((widget.avatar != null) && widget.avatar != null) {
-      trailingWidgets.add(widget.avatar!);
-    }
-
-    // Build main row contents
-    final rowChildren = <Widget>[
-      if (leadingWidget != null) ...[
-        leadingWidget,
-        const SizedBox(width: 12.0),
-      ],
-      Expanded(
-        child: TextField(
-          controller: _effectiveController,
-          focusNode: _effectiveFocusNode,
-          enabled: widget.enabled,
-          readOnly: widget.readOnly,
-          autofocus: widget.autofocus,
-          keyboardType: widget.keyboardType,
-          textInputAction: widget.textInputAction,
-          style: resolvedTextStyle,
-          cursorColor: effectiveCursorColor,
-          onTapOutside: widget.onTapOutside,
-          onChanged: _handleTextChanged,
-          onSubmitted: widget.onSubmitted,
-          decoration: InputDecoration(
-            isDense: true,
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            contentPadding: EdgeInsets.zero,
-            hintText: widget.hintText,
-            hintStyle: resolvedHintStyle,
-            fillColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-          ),
-        ),
-      ),
-      if (trailingWidgets.isNotEmpty) ...[
-        const SizedBox(width: 8.0),
-        for (int i = 0; i < trailingWidgets.length; i++) ...[
-          if (i > 0) const SizedBox(width: 8.0),
-          trailingWidgets[i],
-        ],
-      ],
-    ];
-
-    Widget content = Container(
-      constraints: resolvedConstraints,
-      padding: resolvedPadding,
-      alignment: Alignment.center,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: rowChildren,
-      ),
-    );
-
-    return Semantics(
-      container: true,
-      label: widget.semanticLabel ?? 'Search bar',
-      enabled: widget.enabled,
-      child: MouseRegion(
-        cursor: widget.enabled
-            ? (widget.readOnly
-                  ? SystemMouseCursors.click
-                  : SystemMouseCursors.text)
-            : SystemMouseCursors.basic,
-        onEnter: (_) {
-          if (widget.enabled && !_isHovered) {
-            setState(() => _isHovered = true);
-          }
-        },
-        onExit: (_) {
-          if (widget.enabled && _isHovered) {
-            setState(() => _isHovered = false);
-          }
-        },
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            if (!widget.enabled) return;
-            if (!widget.readOnly && !_effectiveFocusNode.hasFocus) {
-              _effectiveFocusNode.requestFocus();
-            }
-            widget.onTap?.call();
-          },
-          onTapDown: widget.enabled
-              ? (_) => setState(() => _isPressed = true)
-              : null,
-          onTapUp: widget.enabled
-              ? (_) => setState(() => _isPressed = false)
-              : null,
-          onTapCancel: () {
-            if (widget.enabled && _isPressed) {
-              setState(() => _isPressed = false);
-            }
-          },
-          child: Material(
-            elevation: resolvedElevation,
-            shadowColor: resolvedShadowColor,
-            surfaceTintColor: resolvedSurfaceTintColor,
-            color: resolvedBg,
-            shape: resolvedShape,
-            clipBehavior: Clip.antiAlias,
-            child: (resolvedOverlayColor != Colors.transparent)
-                ? ColoredBox(color: resolvedOverlayColor, child: content)
-                : content,
-          ),
-        ),
-      ),
-    );
+    return searchBarWidget;
   }
 }

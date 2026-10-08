@@ -106,7 +106,12 @@ void main() {
         MaterialApp(
           theme: MechanixTheme.light,
           home: const Scaffold(
-            body: Center(child: MechanixSearchBar(hintText: 'No leading icon')),
+            body: Center(
+              child: MechanixSearchBar(
+                hintText: 'No leading icon',
+                leading: null,
+              ),
+            ),
           ),
         ),
       );
