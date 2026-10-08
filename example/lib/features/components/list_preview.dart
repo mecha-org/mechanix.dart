@@ -152,7 +152,7 @@ class _ListPreviewState extends State<ListPreview> {
                     title: '1. Standard (Configurable 8px Gap)',
                     children: [
                       MechanixList(
-                        gap: 8.0,
+                        listItemGap: 8.0,
                         children: [
                           MechanixListTile(
                             leading: const Icon(Icons.star_outline),
@@ -919,7 +919,7 @@ class _ListPreviewState extends State<ListPreview> {
               const SizedBox(height: 12),
 
               MechanixSwipableList(
-                gap: 12.0,
+                listItemGap: 12.0,
                 children: [
                   // 3 actions
                   MechanixSwipableListTile(
@@ -1027,7 +1027,7 @@ class _ListPreviewState extends State<ListPreview> {
               const SizedBox(height: 12),
 
               MechanixSwipableList.segmented(
-                gap: 4.0,
+                listItemGap: 4.0,
                 children: [
                   // 3 actions
                   MechanixSwipableListTile.segmented(

@@ -205,7 +205,7 @@ class MechanixSwipableList extends StatefulWidget {
     this.children = const [],
     this.child,
     this.variant = ListTileVariant.standard,
-    this.gap,
+    this.listItemGap,
     this.padding,
     this.shrinkWrap = true,
     this.physics,
@@ -218,7 +218,7 @@ class MechanixSwipableList extends StatefulWidget {
     super.key,
     this.children = const [],
     this.child,
-    this.gap,
+    this.listItemGap,
     this.padding,
     this.shrinkWrap = true,
     this.physics,
@@ -236,7 +236,7 @@ class MechanixSwipableList extends StatefulWidget {
   final ListTileVariant variant;
 
   /// Vertical spacing gap between adjacent list items.
-  final double? gap;
+  final double? listItemGap;
 
   /// Optional padding around the list.
   final EdgeInsetsGeometry? padding;
@@ -312,7 +312,7 @@ class _MechanixSwipableListState extends State<MechanixSwipableList> {
         widget.child ??
         MechanixList(
           variant: widget.variant,
-          gap: widget.gap,
+          listItemGap: widget.listItemGap,
           padding: widget.padding,
           shrinkWrap: widget.shrinkWrap,
           physics: widget.physics,

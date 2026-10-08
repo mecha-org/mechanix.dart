@@ -152,7 +152,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.height,
     this.gap = 8.0,
     this.expandedContentGap = 2.0,
-    this.childrenGap,
+    this.listItemGap,
     this.contentPadding,
     this.borderRadius,
     this.backgroundColor,
@@ -191,7 +191,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.height,
     this.gap = 8.0,
     this.expandedContentGap = 2.0,
-    this.childrenGap,
+    this.listItemGap,
     this.contentPadding,
     this.borderRadius,
     this.backgroundColor,
@@ -278,9 +278,9 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Spacing gap between adjacent expanded [children].
   ///
-  /// If null, resolves from [ListTileThemeDataConfig.listGap] in [MechanixListTileTheme],
+  /// If null, resolves from [ListTileThemeDataConfig.listItemGap] in [MechanixListTileTheme],
   /// or defaults to `2.0` for [ListTileVariant.segmented] and `0.0` for [ListTileVariant.standard].
-  final double? childrenGap;
+  final double? listItemGap;
 
   /// Internal padding of the header tile.
   final EdgeInsetsGeometry? contentPadding;
@@ -426,7 +426,7 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
         widget.child ??
         MechanixList(
           variant: widget.variant,
-          gap: widget.childrenGap,
+          listItemGap: widget.listItemGap,
           children: widget.children,
         );
 

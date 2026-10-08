@@ -445,38 +445,39 @@ void main() {
       },
     );
 
-    testWidgets('MechanixSwipableList lays out children with configurable gap', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
-          home: Scaffold(
-            body: MechanixSwipableList(
-              gap: 6.0,
-              children: [
-                MechanixSwipableListTile(labelText: 'Item 1'),
-                MechanixSwipableListTile(labelText: 'Item 2'),
-              ],
+    testWidgets(
+      'MechanixSwipableList lays out children with configurable gap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixSwipableList(
+                listItemGap: 6.0,
+                children: [
+                  MechanixSwipableListTile(labelText: 'Item 1'),
+                  MechanixSwipableListTile(labelText: 'Item 2'),
+                ],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('Item 1'), findsOneWidget);
-      expect(find.text('Item 2'), findsOneWidget);
+        expect(find.text('Item 1'), findsOneWidget);
+        expect(find.text('Item 2'), findsOneWidget);
 
-      final sizedBoxes = tester
-          .widgetList<SizedBox>(
-            find.descendant(
-              of: find.byType(MechanixSwipableList),
-              matching: find.byType(SizedBox),
-            ),
-          )
-          .where((sb) => sb.height == 6.0);
+        final sizedBoxes = tester
+            .widgetList<SizedBox>(
+              find.descendant(
+                of: find.byType(MechanixSwipableList),
+                matching: find.byType(SizedBox),
+              ),
+            )
+            .where((sb) => sb.height == 6.0);
 
-      expect(sizedBoxes.length, equals(1));
-    });
+        expect(sizedBoxes.length, equals(1));
+      },
+    );
 
     testWidgets('MechanixSwipableList.segmented uses default 2px gap', (
       WidgetTester tester,

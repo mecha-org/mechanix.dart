@@ -217,7 +217,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MechanixSegmentedList(
-              gap: 2.0,
+              listItemGap: 2.0,
               children: [
                 MechanixListTile.segmented(labelText: 'Item 1'),
                 MechanixListTile.segmented(labelText: 'Item 2'),
@@ -252,7 +252,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MechanixList(
-              gap: 8.0,
+              listItemGap: 8.0,
               children: [
                 MechanixListTile(labelText: 'Tile 1'),
                 MechanixListTile(labelText: 'Tile 2'),
@@ -299,35 +299,36 @@ void main() {
       expect(find.byKey(const Key('custom_separator')), findsOneWidget);
     });
 
-    testWidgets('MechanixList resolves gap from ListTileThemeDataConfig.listGap', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MechanixListTileTheme(
-              data: const ListTileThemeDataConfig(listGap: 12.0),
-              child: MechanixList(
-                children: [
-                  MechanixListTile(labelText: 'Tile 1'),
-                  MechanixListTile(labelText: 'Tile 2'),
-                ],
+    testWidgets(
+      'MechanixList resolves gap from ListTileThemeDataConfig.listGap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixListTileTheme(
+                data: const ListTileThemeDataConfig(listItemGap: 12.0),
+                child: MechanixList(
+                  children: [
+                    MechanixListTile(labelText: 'Tile 1'),
+                    MechanixListTile(labelText: 'Tile 2'),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
 
-      final sizedBoxes = tester
-          .widgetList<SizedBox>(
-            find.descendant(
-              of: find.byType(MechanixList),
-              matching: find.byType(SizedBox),
-            ),
-          )
-          .where((sb) => sb.height == 12.0);
+        final sizedBoxes = tester
+            .widgetList<SizedBox>(
+              find.descendant(
+                of: find.byType(MechanixList),
+                matching: find.byType(SizedBox),
+              ),
+            )
+            .where((sb) => sb.height == 12.0);
 
-      expect(sizedBoxes.length, equals(1));
-    });
+        expect(sizedBoxes.length, equals(1));
+      },
+    );
   });
 }
