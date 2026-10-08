@@ -244,5 +244,90 @@ void main() {
 
       expect(sizedBoxes.length, equals(2));
     });
+
+    testWidgets('MechanixList separates standard tiles with configurable gap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MechanixList(
+              gap: 8.0,
+              children: [
+                MechanixListTile(labelText: 'Tile 1'),
+                MechanixListTile(labelText: 'Tile 2'),
+                MechanixListTile(labelText: 'Tile 3'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Tile 1'), findsOneWidget);
+      expect(find.text('Tile 2'), findsOneWidget);
+      expect(find.text('Tile 3'), findsOneWidget);
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 8.0);
+
+      expect(sizedBoxes.length, equals(2));
+    });
+
+    testWidgets('MechanixList supports custom separator widget', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MechanixList(
+              separator: const Divider(key: Key('custom_separator')),
+              children: [
+                MechanixListTile(labelText: 'Tile 1'),
+                MechanixListTile(labelText: 'Tile 2'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const Key('custom_separator')), findsOneWidget);
+    });
+
+    testWidgets('MechanixList resolves gap from ListTileThemeDataConfig.listGap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MechanixListTileTheme(
+              data: const ListTileThemeDataConfig(listGap: 12.0),
+              child: MechanixList(
+                children: [
+                  MechanixListTile(labelText: 'Tile 1'),
+                  MechanixListTile(labelText: 'Tile 2'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 12.0);
+
+      expect(sizedBoxes.length, equals(1));
+    });
   });
 }

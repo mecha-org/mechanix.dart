@@ -444,5 +444,72 @@ void main() {
         expect(listTile.labelSupportingGap, equals(10.0));
       },
     );
+
+    testWidgets('MechanixSwipableList lays out children with configurable gap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixSwipableList(
+              gap: 6.0,
+              children: [
+                MechanixSwipableListTile(labelText: 'Item 1'),
+                MechanixSwipableListTile(labelText: 'Item 2'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Item 1'), findsOneWidget);
+      expect(find.text('Item 2'), findsOneWidget);
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixSwipableList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 6.0);
+
+      expect(sizedBoxes.length, equals(1));
+    });
+
+    testWidgets('MechanixSwipableList.segmented uses default 2px gap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixSwipableList.segmented(
+              children: [
+                MechanixSwipableListTile.segmented(labelText: 'Seg 1'),
+                MechanixSwipableListTile.segmented(labelText: 'Seg 2'),
+                MechanixSwipableListTile.segmented(labelText: 'Seg 3'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Seg 1'), findsOneWidget);
+      expect(find.text('Seg 2'), findsOneWidget);
+      expect(find.text('Seg 3'), findsOneWidget);
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixSwipableList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 2.0);
+
+      expect(sizedBoxes.length, equals(2));
+    });
   });
 }

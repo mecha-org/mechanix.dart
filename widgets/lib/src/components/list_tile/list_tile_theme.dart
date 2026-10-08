@@ -20,6 +20,7 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
     this.contentPadding,
     this.borderRadius,
     this.gap,
+    this.listGap,
     this.minHeight,
     this.labelStyle,
     this.overlineStyle,
@@ -65,6 +66,10 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
 
   /// Spacing gap between leading, title content, and trailing elements.
   final double? gap;
+
+  /// Default vertical spacing gap between list tiles in a list container
+  /// (such as [MechanixList], [MechanixSegmentedList], or [MechanixSwipableList]).
+  final double? listGap;
 
   /// Minimum height of the tile.
   final double? minHeight;
@@ -112,6 +117,7 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
     EdgeInsetsGeometry? contentPadding,
     BorderRadius? borderRadius,
     double? gap,
+    double? listGap,
     double? minHeight,
     TextStyle? labelStyle,
     TextStyle? overlineStyle,
@@ -136,6 +142,7 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
       contentPadding: contentPadding ?? this.contentPadding,
       borderRadius: borderRadius ?? this.borderRadius,
       gap: gap ?? this.gap,
+      listGap: listGap ?? this.listGap,
       minHeight: minHeight ?? this.minHeight,
       labelStyle: labelStyle ?? this.labelStyle,
       overlineStyle: overlineStyle ?? this.overlineStyle,
@@ -165,6 +172,7 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
       contentPadding: other.contentPadding,
       borderRadius: other.borderRadius,
       gap: other.gap,
+      listGap: other.listGap,
       minHeight: other.minHeight,
       labelStyle: other.labelStyle,
       overlineStyle: other.overlineStyle,
@@ -203,6 +211,7 @@ class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
       ),
       borderRadius: BorderRadius.lerp(borderRadius, other.borderRadius, t),
       gap: lerpDouble(gap, other.gap, t),
+      listGap: lerpDouble(listGap, other.listGap, t),
       minHeight: lerpDouble(minHeight, other.minHeight, t),
       labelStyle: TextStyle.lerp(labelStyle, other.labelStyle, t),
       overlineStyle: TextStyle.lerp(overlineStyle, other.overlineStyle, t),

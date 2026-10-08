@@ -251,6 +251,68 @@ void main() {
       expect(listTile.overlineLabelGap, equals(8.0));
       expect(listTile.labelSupportingGap, equals(14.0));
     });
+
+    testWidgets('MechanixExpandableListTile spaces children with childrenGap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable Gap',
+              initiallyExpanded: true,
+              childrenGap: 10.0,
+              children: [
+                Text('Child 1'),
+                Text('Child 2'),
+                Text('Child 3'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 10.0);
+
+      expect(sizedBoxes.length, equals(2));
+    });
+
+    testWidgets('MechanixExpandableListTile.segmented uses default 2px children gap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: MechanixExpandableListTile.segmented(
+              labelText: 'Segmented Expandable',
+              initiallyExpanded: true,
+              children: [
+                Text('Child 1'),
+                Text('Child 2'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 2.0);
+
+      expect(sizedBoxes.length, equals(1));
+    });
   });
 }
 

@@ -608,28 +608,50 @@ class _MechanixListTileState extends State<MechanixListTile> {
   }
 }
 
-/// A container that lays out segmented list tiles in a vertical group
-/// with the design-specified 2px gap between adjacent tiles (`gap = 2.0`).
+/// A vertical list container that arranges list tiles with a configurable
+/// vertical spacing gap between adjacent items.
 ///
-/// Using [MechanixSegmentedList] eliminates the need to manually insert
-/// `SizedBox(height: 2)` between segmented list items.
-class MechanixSegmentedList extends StatelessWidget {
-  const MechanixSegmentedList({
+/// Supports Standard and Segmented variants:
+/// - [MechanixList] defaults to `gap = 0.0` (or the scoped theme [ListTileThemeDataConfig.listGap]).
+/// - [MechanixList.segmented] defaults to `gap = 2.0` (or the scoped theme [ListTileThemeDataConfig.listGap]).
+///
+/// An optional [separator] widget can also be provided instead of fixed spacing.
+class MechanixList extends StatelessWidget {
+  const MechanixList({
     super.key,
     required this.children,
-    this.gap = 2.0,
+    this.variant = ListTileVariant.standard,
+    this.gap,
     this.padding,
     this.shrinkWrap = true,
     this.physics,
+    this.separator,
   });
 
-  /// The list of items, typically [MechanixListTile.segmented].
+  /// Factory constructor for a Segmented [MechanixList] with default 2px gap.
+  const MechanixList.segmented({
+    super.key,
+    required this.children,
+    this.gap,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
+  }) : variant = ListTileVariant.segmented;
+
+  /// The list items (e.g. [MechanixListTile], [MechanixDraggableListTile], or [MechanixSwipableListTile]).
   final List<Widget> children;
 
-  /// Vertical spacing gap between adjacent tiles. Defaults to 2.0.
-  final double gap;
+  /// The visual list variant.
+  final ListTileVariant variant;
 
-  /// Optional padding around the list.
+  /// Vertical spacing gap between adjacent list items.
+  ///
+  /// If null, resolves from [ListTileThemeDataConfig.listGap] in [MechanixListTileTheme],
+  /// or falls back to `2.0` for [ListTileVariant.segmented] and `0.0` for [ListTileVariant.standard].
+  final double? gap;
+
+  /// Optional padding around the list container.
   final EdgeInsetsGeometry? padding;
 
   /// Whether to shrink wrap the list. Defaults to true.
@@ -638,14 +660,25 @@ class MechanixSegmentedList extends StatelessWidget {
   /// Optional scroll physics.
   final ScrollPhysics? physics;
 
+  /// Optional custom separator widget placed between adjacent items.
+  final Widget? separator;
+
   @override
   Widget build(BuildContext context) {
     if (children.isEmpty) return const SizedBox.shrink();
 
+    final scopedTheme = MechanixListTileTheme.of(context);
+    final double defaultGap = variant == ListTileVariant.segmented ? 2.0 : 0.0;
+    final effectiveGap = gap ?? scopedTheme.listGap ?? defaultGap;
+
     final items = <Widget>[];
     for (int i = 0; i < children.length; i++) {
       if (i > 0) {
-        items.add(SizedBox(height: gap));
+        if (separator != null) {
+          items.add(separator!);
+        } else if (effectiveGap > 0) {
+          items.add(SizedBox(height: effectiveGap));
+        }
       }
       items.add(children[i]);
     }
@@ -661,5 +694,52 @@ class MechanixSegmentedList extends StatelessWidget {
     }
 
     return content;
+  }
+}
+
+/// A container that lays out segmented list tiles in a vertical group
+/// with the design-specified 2px gap between adjacent tiles (`gap = 2.0`).
+///
+/// Using [MechanixSegmentedList] eliminates the need to manually insert
+/// `SizedBox(height: 2)` between segmented list items.
+class MechanixSegmentedList extends StatelessWidget {
+  const MechanixSegmentedList({
+    super.key,
+    required this.children,
+    this.gap = 2.0,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
+  });
+
+  /// The list of items, typically [MechanixListTile.segmented].
+  final List<Widget> children;
+
+  /// Vertical spacing gap between adjacent tiles. Defaults to 2.0.
+  final double? gap;
+
+  /// Optional padding around the list.
+  final EdgeInsetsGeometry? padding;
+
+  /// Whether to shrink wrap the list. Defaults to true.
+  final bool shrinkWrap;
+
+  /// Optional scroll physics.
+  final ScrollPhysics? physics;
+
+  /// Optional custom separator widget.
+  final Widget? separator;
+
+  @override
+  Widget build(BuildContext context) {
+    return MechanixList.segmented(
+      gap: gap,
+      padding: padding,
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      separator: separator,
+      children: children,
+    );
   }
 }
