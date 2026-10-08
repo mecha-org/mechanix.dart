@@ -54,6 +54,8 @@ class MechanixListTile extends StatefulWidget {
     this.supportingTextColor,
     this.trailingTextColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          trailingWidgets.length <= 2,
          'MechanixListTile supports a maximum of 2 trailing widgets.',
@@ -100,6 +102,8 @@ class MechanixListTile extends StatefulWidget {
     this.supportingTextColor,
     this.trailingTextColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          trailingWidgets.length <= 2,
          'MechanixListTile supports a maximum of 2 trailing widgets.',
@@ -223,6 +227,12 @@ class MechanixListTile extends StatefulWidget {
   /// Custom scoped theme override.
   final ListTileThemeDataConfig? theme;
 
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
+
   @override
   State<MechanixListTile> createState() => _MechanixListTileState();
 }
@@ -264,6 +274,12 @@ class _MechanixListTileState extends State<MechanixListTile> {
 
     final effectiveGap = scopedTheme.gap ?? widget.gap;
     final effectiveMinHeight = scopedTheme.minHeight ?? widget.minHeight;
+
+    final effectiveOverlineLabelGap =
+        scopedTheme.overlineLabelGap ?? widget.overlineLabelGap;
+
+    final effectiveLabelSupportingGap =
+        scopedTheme.labelSupportingGap ?? widget.labelSupportingGap;
 
     // Resolve Background Color
     Color resolvedBackgroundColor;
@@ -379,6 +395,11 @@ class _MechanixListTileState extends State<MechanixListTile> {
             overflow: TextOverflow.ellipsis,
           ),
         );
+
+        if (widget.label != null ||
+            (widget.labelText != null && widget.labelText!.isNotEmpty)) {
+          children.add(SizedBox(height: effectiveOverlineLabelGap));
+        }
       }
 
       // 2. Primary Label Text (Title Large Regular, OnSecondaryFixed / OnSurface)
@@ -414,6 +435,9 @@ class _MechanixListTileState extends State<MechanixListTile> {
           widget.showSupportingText &&
           widget.supportingText != null &&
           widget.supportingText!.isNotEmpty;
+      final hasLabel =
+          widget.label != null ||
+          (widget.labelText != null && widget.labelText!.isNotEmpty);
       if (hasSupporting) {
         final baseSupportingStyle =
             textTheme.bodyLarge ??
@@ -430,6 +454,10 @@ class _MechanixListTileState extends State<MechanixListTile> {
                       ))
                 .copyWith(fontWeight: FontWeight.w400)
                 .merge(scopedTheme.supportingTextStyle);
+
+        if (hasLabel) {
+          children.add(SizedBox(height: effectiveLabelSupportingGap));
+        }
 
         children.add(
           Text(
@@ -580,28 +608,50 @@ class _MechanixListTileState extends State<MechanixListTile> {
   }
 }
 
-/// A container that lays out segmented list tiles in a vertical group
-/// with the design-specified 2px gap between adjacent tiles (`gap = 2.0`).
+/// A vertical list container that arranges list tiles with a configurable
+/// vertical spacing gap between adjacent items.
 ///
-/// Using [MechanixSegmentedList] eliminates the need to manually insert
-/// `SizedBox(height: 2)` between segmented list items.
-class MechanixSegmentedList extends StatelessWidget {
-  const MechanixSegmentedList({
+/// Supports Standard and Segmented variants:
+/// - [MechanixList] defaults to `listItemGap = 0.0` (or the scoped theme [ListTileThemeDataConfig.listItemGap]).
+/// - [MechanixList.segmented] defaults to `listItemGap = 2.0` (or the scoped theme [ListTileThemeDataConfig.listItemGap]).
+///
+/// An optional [separator] widget can also be provided instead of fixed spacing.
+class MechanixList extends StatelessWidget {
+  const MechanixList({
     super.key,
     required this.children,
-    this.gap = 2.0,
+    this.variant = ListTileVariant.standard,
+    this.listItemGap,
     this.padding,
     this.shrinkWrap = true,
     this.physics,
+    this.separator,
   });
 
-  /// The list of items, typically [MechanixListTile.segmented].
+  /// Factory constructor for a Segmented [MechanixList] with default 2px gap.
+  const MechanixList.segmented({
+    super.key,
+    required this.children,
+    this.listItemGap,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
+  }) : variant = ListTileVariant.segmented;
+
+  /// The list items (e.g. [MechanixListTile], [MechanixDraggableListTile], or [MechanixSwipableListTile]).
   final List<Widget> children;
 
-  /// Vertical spacing gap between adjacent tiles. Defaults to 2.0.
-  final double gap;
+  /// The visual list variant.
+  final ListTileVariant variant;
 
-  /// Optional padding around the list.
+  /// Vertical spacing gap between adjacent list items.
+  ///
+  /// If null, resolves from [ListTileThemeDataConfig.listItemGap] in [MechanixListTileTheme],
+  /// or falls back to `2.0` for [ListTileVariant.segmented] and `0.0` for [ListTileVariant.standard].
+  final double? listItemGap;
+
+  /// Optional padding around the list container.
   final EdgeInsetsGeometry? padding;
 
   /// Whether to shrink wrap the list. Defaults to true.
@@ -610,14 +660,25 @@ class MechanixSegmentedList extends StatelessWidget {
   /// Optional scroll physics.
   final ScrollPhysics? physics;
 
+  /// Optional custom separator widget placed between adjacent items.
+  final Widget? separator;
+
   @override
   Widget build(BuildContext context) {
     if (children.isEmpty) return const SizedBox.shrink();
 
+    final scopedTheme = MechanixListTileTheme.of(context);
+    final double defaultGap = variant == ListTileVariant.segmented ? 2.0 : 0.0;
+    final effectiveGap = listItemGap ?? scopedTheme.listItemGap ?? defaultGap;
+
     final items = <Widget>[];
     for (int i = 0; i < children.length; i++) {
       if (i > 0) {
-        items.add(SizedBox(height: gap));
+        if (separator != null) {
+          items.add(separator!);
+        } else if (effectiveGap > 0) {
+          items.add(SizedBox(height: effectiveGap));
+        }
       }
       items.add(children[i]);
     }
@@ -633,5 +694,52 @@ class MechanixSegmentedList extends StatelessWidget {
     }
 
     return content;
+  }
+}
+
+/// A container that lays out segmented list tiles in a vertical group
+/// with the design-specified 2px gap between adjacent tiles (`listItemGap = 2.0`).
+///
+/// Using [MechanixSegmentedList] eliminates the need to manually insert
+/// `SizedBox(height: 2)` between segmented list items.
+class MechanixSegmentedList extends StatelessWidget {
+  const MechanixSegmentedList({
+    super.key,
+    required this.children,
+    this.listItemGap = 2.0,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
+  });
+
+  /// The list of items, typically [MechanixListTile.segmented].
+  final List<Widget> children;
+
+  /// Vertical spacing gap between adjacent tiles. Defaults to 2.0.
+  final double? listItemGap;
+
+  /// Optional padding around the list.
+  final EdgeInsetsGeometry? padding;
+
+  /// Whether to shrink wrap the list. Defaults to true.
+  final bool shrinkWrap;
+
+  /// Optional scroll physics.
+  final ScrollPhysics? physics;
+
+  /// Optional custom separator widget.
+  final Widget? separator;
+
+  @override
+  Widget build(BuildContext context) {
+    return MechanixList.segmented(
+      listItemGap: listItemGap,
+      padding: padding,
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      separator: separator,
+      children: children,
+    );
   }
 }

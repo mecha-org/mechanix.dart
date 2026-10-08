@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 /// Can be provided globally via [ThemeData.extensions] or scoped using
 /// [MechanixListTileTheme].
 @immutable
-class ListTileThemeDataConfig
-    extends ThemeExtension<ListTileThemeDataConfig>
+class ListTileThemeDataConfig extends ThemeExtension<ListTileThemeDataConfig>
     with Diagnosticable {
   const ListTileThemeDataConfig({
     this.backgroundColor,
@@ -21,6 +20,7 @@ class ListTileThemeDataConfig
     this.contentPadding,
     this.borderRadius,
     this.gap,
+    this.listItemGap,
     this.minHeight,
     this.labelStyle,
     this.overlineStyle,
@@ -30,6 +30,8 @@ class ListTileThemeDataConfig
     this.trailingIconColor,
     this.leadingIconSize,
     this.trailingIconSize,
+    this.overlineLabelGap,
+    this.labelSupportingGap,
   });
 
   /// The default tile background color.
@@ -65,6 +67,10 @@ class ListTileThemeDataConfig
   /// Spacing gap between leading, title content, and trailing elements.
   final double? gap;
 
+  /// Default vertical spacing gap between list tiles in a list container
+  /// (such as [MechanixList], [MechanixSegmentedList], or [MechanixSwipableList]).
+  final double? listItemGap;
+
   /// Minimum height of the tile.
   final double? minHeight;
 
@@ -92,6 +98,12 @@ class ListTileThemeDataConfig
   /// Default size for the trailing icon.
   final double? trailingIconSize;
 
+  /// Vertical spacing between the overline and label.
+  final double? overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double? labelSupportingGap;
+
   @override
   ListTileThemeDataConfig copyWith({
     Color? backgroundColor,
@@ -105,6 +117,7 @@ class ListTileThemeDataConfig
     EdgeInsetsGeometry? contentPadding,
     BorderRadius? borderRadius,
     double? gap,
+    double? listItemGap,
     double? minHeight,
     TextStyle? labelStyle,
     TextStyle? overlineStyle,
@@ -114,6 +127,8 @@ class ListTileThemeDataConfig
     Color? trailingIconColor,
     double? leadingIconSize,
     double? trailingIconSize,
+    double? overlineLabelGap,
+    double? labelSupportingGap,
   }) {
     return ListTileThemeDataConfig(
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -127,6 +142,7 @@ class ListTileThemeDataConfig
       contentPadding: contentPadding ?? this.contentPadding,
       borderRadius: borderRadius ?? this.borderRadius,
       gap: gap ?? this.gap,
+      listItemGap: listItemGap ?? this.listItemGap,
       minHeight: minHeight ?? this.minHeight,
       labelStyle: labelStyle ?? this.labelStyle,
       overlineStyle: overlineStyle ?? this.overlineStyle,
@@ -136,6 +152,8 @@ class ListTileThemeDataConfig
       trailingIconColor: trailingIconColor ?? this.trailingIconColor,
       leadingIconSize: leadingIconSize ?? this.leadingIconSize,
       trailingIconSize: trailingIconSize ?? this.trailingIconSize,
+      overlineLabelGap: overlineLabelGap ?? this.overlineLabelGap,
+      labelSupportingGap: labelSupportingGap ?? this.labelSupportingGap,
     );
   }
 
@@ -154,6 +172,7 @@ class ListTileThemeDataConfig
       contentPadding: other.contentPadding,
       borderRadius: other.borderRadius,
       gap: other.gap,
+      listItemGap: other.listItemGap,
       minHeight: other.minHeight,
       labelStyle: other.labelStyle,
       overlineStyle: other.overlineStyle,
@@ -163,6 +182,8 @@ class ListTileThemeDataConfig
       trailingIconColor: other.trailingIconColor,
       leadingIconSize: other.leadingIconSize,
       trailingIconSize: other.trailingIconSize,
+      overlineLabelGap: other.overlineLabelGap,
+      labelSupportingGap: other.labelSupportingGap,
     );
   }
 
@@ -178,31 +199,46 @@ class ListTileThemeDataConfig
       pressedColor: Color.lerp(pressedColor, other.pressedColor, t),
       selectedColor: Color.lerp(selectedColor, other.selectedColor, t),
       disabledColor: Color.lerp(disabledColor, other.disabledColor, t),
-      focusBorderColor:
-          Color.lerp(focusBorderColor, other.focusBorderColor, t),
-      focusBorderWidth:
-          lerpDouble(focusBorderWidth, other.focusBorderWidth, t),
-      showFocusIndicator: t < 0.5 ? showFocusIndicator : other.showFocusIndicator,
-      contentPadding:
-          EdgeInsetsGeometry.lerp(contentPadding, other.contentPadding, t),
-      borderRadius:
-          BorderRadius.lerp(borderRadius, other.borderRadius, t),
+      focusBorderColor: Color.lerp(focusBorderColor, other.focusBorderColor, t),
+      focusBorderWidth: lerpDouble(focusBorderWidth, other.focusBorderWidth, t),
+      showFocusIndicator: t < 0.5
+          ? showFocusIndicator
+          : other.showFocusIndicator,
+      contentPadding: EdgeInsetsGeometry.lerp(
+        contentPadding,
+        other.contentPadding,
+        t,
+      ),
+      borderRadius: BorderRadius.lerp(borderRadius, other.borderRadius, t),
       gap: lerpDouble(gap, other.gap, t),
+      listItemGap: lerpDouble(listItemGap, other.listItemGap, t),
       minHeight: lerpDouble(minHeight, other.minHeight, t),
       labelStyle: TextStyle.lerp(labelStyle, other.labelStyle, t),
       overlineStyle: TextStyle.lerp(overlineStyle, other.overlineStyle, t),
-      supportingTextStyle:
-          TextStyle.lerp(supportingTextStyle, other.supportingTextStyle, t),
-      trailingTextStyle:
-          TextStyle.lerp(trailingTextStyle, other.trailingTextStyle, t),
-      leadingIconColor:
-          Color.lerp(leadingIconColor, other.leadingIconColor, t),
-      trailingIconColor:
-          Color.lerp(trailingIconColor, other.trailingIconColor, t),
-      leadingIconSize:
-          lerpDouble(leadingIconSize, other.leadingIconSize, t),
-      trailingIconSize:
-          lerpDouble(trailingIconSize, other.trailingIconSize, t),
+      supportingTextStyle: TextStyle.lerp(
+        supportingTextStyle,
+        other.supportingTextStyle,
+        t,
+      ),
+      trailingTextStyle: TextStyle.lerp(
+        trailingTextStyle,
+        other.trailingTextStyle,
+        t,
+      ),
+      leadingIconColor: Color.lerp(leadingIconColor, other.leadingIconColor, t),
+      trailingIconColor: Color.lerp(
+        trailingIconColor,
+        other.trailingIconColor,
+        t,
+      ),
+      leadingIconSize: lerpDouble(leadingIconSize, other.leadingIconSize, t),
+      trailingIconSize: lerpDouble(trailingIconSize, other.trailingIconSize, t),
+      overlineLabelGap: lerpDouble(overlineLabelGap, other.overlineLabelGap, t),
+      labelSupportingGap: lerpDouble(
+        labelSupportingGap,
+        other.labelSupportingGap,
+        t,
+      ),
     );
   }
 
@@ -224,8 +260,8 @@ class MechanixListTileTheme extends InheritedTheme {
 
   /// Returns the nearest [ListTileThemeDataConfig] from the given [context].
   static ListTileThemeDataConfig of(BuildContext context) {
-    final theme =
-        context.dependOnInheritedWidgetOfExactType<MechanixListTileTheme>();
+    final theme = context
+        .dependOnInheritedWidgetOfExactType<MechanixListTileTheme>();
     return theme?.data ??
         Theme.of(context).extension<ListTileThemeDataConfig>() ??
         const ListTileThemeDataConfig();

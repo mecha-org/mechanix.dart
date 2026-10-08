@@ -113,12 +113,6 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
-                id: 'icon_buttons',
-                title: 'Icon Buttons',
-                icon: Icons.touch_app_outlined,
-              ),
-              _buildNavItem(
-                context,
                 id: 'floating_action_button',
                 title: 'Floating Action Button',
                 icon: Icons.add_circle_outline_rounded,
@@ -134,6 +128,12 @@ class AppSidebar extends StatelessWidget {
                 id: 'text_fields',
                 title: 'Text Fields',
                 icon: Icons.text_fields_rounded,
+              ),
+              _buildNavItem(
+                context,
+                id: 'search_bar',
+                title: 'Search Bar',
+                icon: Icons.search_rounded,
               ),
               _buildNavItem(
                 context,
