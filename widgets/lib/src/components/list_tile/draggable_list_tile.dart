@@ -121,6 +121,8 @@ class MechanixDraggableListTile extends StatelessWidget {
     this.borderRadius,
     this.backgroundColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          trailingWidgets.length <= 2,
          'MechanixListTile supports a maximum of 2 trailing widgets.',
@@ -207,6 +209,12 @@ class MechanixDraggableListTile extends StatelessWidget {
   /// Custom theme override.
   final ListTileThemeDataConfig? theme;
 
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -242,6 +250,8 @@ class MechanixDraggableListTile extends StatelessWidget {
       borderRadius: borderRadius,
       backgroundColor: backgroundColor,
       theme: theme,
+      overlineLabelGap: overlineLabelGap,
+      labelSupportingGap: labelSupportingGap,
     );
 
     Widget result = tile;

@@ -577,6 +577,50 @@ void main() {
         expect(tester.takeException(), isNull);
       },
     );
+
+    testWidgets(
+      'anchorBuilder reactively updates with controller.isOpen when opened, closed, or dismissed',
+      (tester) async {
+        bool? observedIsOpen;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixMenu<String>(
+                anchorBuilder: (context, controller, child) {
+                  observedIsOpen = controller.isOpen;
+                  return ElevatedButton(
+                    onPressed: controller.toggle,
+                    child: Text(controller.isOpen ? 'Menu Open' : 'Menu Closed'),
+                  );
+                },
+                entries: const [
+                  MechanixMenuItem(value: 'test', labelText: 'Item 1'),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        // Initially closed
+        expect(observedIsOpen, isFalse);
+        expect(find.text('Menu Closed'), findsOneWidget);
+
+        // Open menu
+        await tester.tap(find.text('Menu Closed'));
+        await tester.pumpAndSettle();
+
+        expect(observedIsOpen, isTrue);
+        expect(find.text('Menu Open'), findsOneWidget);
+
+        // Dismiss menu by tapping outside
+        await tester.tapAt(const Offset(700, 500));
+        await tester.pumpAndSettle();
+
+        expect(observedIsOpen, isFalse);
+        expect(find.text('Menu Closed'), findsOneWidget);
+      },
+    );
   });
 
   group('MechanixMenu Viewport-Aware Positioning Tests', () {

@@ -217,7 +217,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MechanixSegmentedList(
-              gap: 2.0,
+              listItemGap: 2.0,
               children: [
                 MechanixListTile.segmented(labelText: 'Item 1'),
                 MechanixListTile.segmented(labelText: 'Item 2'),
@@ -245,28 +245,115 @@ void main() {
       expect(sizedBoxes.length, equals(2));
     });
 
-    testWidgets('renders multiple leading widgets when leadingWidgets is provided', (
+    testWidgets('MechanixList separates standard tiles with configurable gap', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          theme: MechanixTheme.dark,
           home: Scaffold(
-            body: MechanixListTile(
-              labelText: 'Multi-leading Tile',
-              leadingWidgets: const [
-                Icon(Icons.check_box),
-                Icon(Icons.star_outline),
+            body: MechanixList(
+              listItemGap: 8.0,
+              children: [
+                MechanixListTile(labelText: 'Tile 1'),
+                MechanixListTile(labelText: 'Tile 2'),
+                MechanixListTile(labelText: 'Tile 3'),
               ],
             ),
           ),
         ),
       );
 
-      expect(find.byIcon(Icons.check_box), findsOneWidget);
-      expect(find.byIcon(Icons.star_outline), findsOneWidget);
-      expect(find.text('Multi-leading Tile'), findsOneWidget);
+      expect(find.text('Tile 1'), findsOneWidget);
+      expect(find.text('Tile 2'), findsOneWidget);
+      expect(find.text('Tile 3'), findsOneWidget);
+
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 8.0);
+
+      expect(sizedBoxes.length, equals(2));
     });
+
+    testWidgets('MechanixList supports custom separator widget', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MechanixList(
+              separator: const Divider(key: Key('custom_separator')),
+              children: [
+                MechanixListTile(labelText: 'Tile 1'),
+                MechanixListTile(labelText: 'Tile 2'),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const Key('custom_separator')), findsOneWidget);
+    });
+
+    testWidgets(
+      'MechanixList resolves gap from ListTileThemeDataConfig.listGap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixListTileTheme(
+                data: const ListTileThemeDataConfig(listItemGap: 12.0),
+                child: MechanixList(
+                  children: [
+                    MechanixListTile(labelText: 'Tile 1'),
+                    MechanixListTile(labelText: 'Tile 2'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final sizedBoxes = tester
+            .widgetList<SizedBox>(
+              find.descendant(
+                of: find.byType(MechanixList),
+                matching: find.byType(SizedBox),
+              ),
+            )
+            .where((sb) => sb.height == 12.0);
+
+        expect(sizedBoxes.length, equals(1));
+      },
+    );
+
+    testWidgets(
+      'renders multiple leading widgets when leadingWidgets is provided',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixListTile(
+                labelText: 'Multi-leading Tile',
+                leadingWidgets: const [
+                  Icon(Icons.check_box),
+                  Icon(Icons.star_outline),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        expect(find.byIcon(Icons.check_box), findsOneWidget);
+        expect(find.byIcon(Icons.star_outline), findsOneWidget);
+        expect(find.text('Multi-leading Tile'), findsOneWidget);
+      },
+    );
 
     testWidgets('renders multiple leadingWidgets in order with gap', (
       WidgetTester tester,
@@ -278,10 +365,7 @@ void main() {
             body: MechanixListTile(
               labelText: 'Ordered Leading Tile',
               gap: 12.0,
-              leadingWidgets: const [
-                Icon(Icons.favorite),
-                Icon(Icons.star),
-              ],
+              leadingWidgets: const [Icon(Icons.favorite), Icon(Icons.star)],
             ),
           ),
         ),
@@ -294,7 +378,8 @@ void main() {
         find.descendant(
           of: find.byType(MechanixListTile),
           matching: find.byWidgetPredicate(
-            (w) => w is Row && w.children.length == 3, // favorite, SizedBox, star
+            (w) =>
+                w is Row && w.children.length == 3, // favorite, SizedBox, star
           ),
         ),
       );

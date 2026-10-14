@@ -334,7 +334,9 @@ class _ListPreviewState extends State<ListPreview> {
 
                               return MechanixSwipableListTile.segmented(
                                 key: ValueKey('seg_swipe_$index'),
-                                leadingWidgets: const [Icon(Icons.star_outline)],
+                                leadingWidgets: const [
+                                  Icon(Icons.star_outline),
+                                ],
                                 labelText: 'Label text',
                                 trailingText: '⌘C',
                                 trailingWidgets: [

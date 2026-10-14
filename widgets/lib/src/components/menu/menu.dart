@@ -178,6 +178,7 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
     _previousFocusNode = FocusManager.instance.primaryFocus;
     _showFocusHighlight = false;
     _resetFocusIndex();
+    _effectiveController.notifyOpenStateChanged();
   }
 
   void _handleMenuClose() {
@@ -191,6 +192,7 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
         }
       });
     }
+    _effectiveController.notifyOpenStateChanged();
   }
 
   void _handleItemActivation(MechanixMenuItem<T> item) {
@@ -242,7 +244,14 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
         final double? resolvedWidth =
             widget.width ?? (widget.matchAnchorWidth ? anchorRect.width : null);
 
-        final panelWidget = Focus(
+        final panelWidget = TapRegion(
+          groupId: _nativeMenuController,
+          onTapOutside: (event) {
+            if (_effectiveController.isOpen) {
+              _effectiveController.close();
+            }
+          },
+          child: Focus(
           focusNode: _menuFocusNode,
           autofocus: true,
           onKeyEvent: (node, event) {
@@ -279,7 +288,7 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
               }
             },
           ),
-        );
+        ));
 
         return CustomSingleChildLayout(
           delegate: _MechanixMenuLayoutDelegate(
@@ -302,13 +311,18 @@ class _MechanixMenuState<T> extends State<MechanixMenu<T>> {
           ),
         );
       },
-      child: Semantics(
-        expanded: _effectiveController.isOpen,
-        child: widget.anchorBuilder(
-          context,
-          _effectiveController,
-          widget.child,
-        ),
+      child: ListenableBuilder(
+        listenable: _effectiveController,
+        builder: (context, _) {
+          return Semantics(
+            expanded: _effectiveController.isOpen,
+            child: widget.anchorBuilder(
+              context,
+              _effectiveController,
+              widget.child,
+            ),
+          );
+        },
       ),
     );
   }

@@ -94,35 +94,36 @@ void main() {
       expect(find.text('Visible child'), findsOneWidget);
     });
 
-    testWidgets('supports custom icon widgets (+ when collapsed, - when expanded)', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
-          home: const Scaffold(
-            body: MechanixExpandableListTile(
-              labelText: 'Plus Minus Expandable',
-              accordionIcon: Icon(Icons.add_rounded),
-              accordionExpandedIcon: Icon(Icons.remove_rounded),
-              children: [Text('Child')],
+    testWidgets(
+      'supports custom icon widgets (+ when collapsed, - when expanded)',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: const Scaffold(
+              body: MechanixExpandableListTile(
+                labelText: 'Plus Minus Expandable',
+                accordionIcon: Icon(Icons.add_rounded),
+                accordionExpandedIcon: Icon(Icons.remove_rounded),
+                children: [Text('Child')],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      // Collapsed: shows add icon (+)
-      expect(find.byIcon(Icons.add_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.remove_rounded), findsNothing);
+        // Collapsed: shows add icon (+)
+        expect(find.byIcon(Icons.add_rounded), findsOneWidget);
+        expect(find.byIcon(Icons.remove_rounded), findsNothing);
 
-      // Tap to expand
-      await tester.tap(find.text('Plus Minus Expandable'));
-      await tester.pumpAndSettle();
+        // Tap to expand
+        await tester.tap(find.text('Plus Minus Expandable'));
+        await tester.pumpAndSettle();
 
-      // Expanded: shows remove icon (-)
-      expect(find.byIcon(Icons.remove_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.add_rounded), findsNothing);
-    });
+        // Expanded: shows remove icon (-)
+        expect(find.byIcon(Icons.remove_rounded), findsOneWidget);
+        expect(find.byIcon(Icons.add_rounded), findsNothing);
+      },
+    );
 
     testWidgets('hides accordion button when showAccordionButton is false', (
       WidgetTester tester,
@@ -158,77 +159,157 @@ void main() {
       expect(find.text('Hidden Button Child'), findsOneWidget);
     });
 
-    testWidgets('manages background color directly through backgroundColor and expandedBackgroundColor', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
-          home: const Scaffold(
-            body: MechanixExpandableListTile(
-              labelText: 'Direct Bg Expandable',
-              backgroundColor: Colors.red,
-              children: [Text('Child')],
+    testWidgets(
+      'manages background color directly through backgroundColor and expandedBackgroundColor',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: const Scaffold(
+              body: MechanixExpandableListTile(
+                labelText: 'Direct Bg Expandable',
+                backgroundColor: Colors.red,
+                children: [Text('Child')],
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      // Initially collapsed: background color is red
-      MechanixListTile listTile = tester.widget<MechanixListTile>(
-        find.byType(MechanixListTile),
-      );
-      expect(listTile.backgroundColor, equals(Colors.red));
+        // Initially collapsed: background color is red
+        MechanixListTile listTile = tester.widget<MechanixListTile>(
+          find.byType(MechanixListTile),
+        );
+        expect(listTile.backgroundColor, equals(Colors.red));
 
-      // Expand: background color remains red when expandedBackgroundColor is not passed
-      await tester.tap(find.text('Direct Bg Expandable'));
-      await tester.pumpAndSettle();
+        // Expand: background color remains red when expandedBackgroundColor is not passed
+        await tester.tap(find.text('Direct Bg Expandable'));
+        await tester.pumpAndSettle();
 
-      listTile = tester.widget<MechanixListTile>(
-        find.byType(MechanixListTile),
-      );
-      expect(listTile.backgroundColor, equals(Colors.red));
-    });
+        listTile = tester.widget<MechanixListTile>(
+          find.byType(MechanixListTile),
+        );
+        expect(listTile.backgroundColor, equals(Colors.red));
+      },
+    );
 
-    testWidgets('supports accordionButtonBuilder with isExpanded and toggle callback', (
+    testWidgets(
+      'supports accordionButtonBuilder with isExpanded and toggle callback',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: Scaffold(
+              body: MechanixExpandableListTile(
+                labelText: 'Builder Expandable',
+                accordionButtonBuilder: (context, isExpanded, toggleExpansion) {
+                  return IconButton(
+                    key: const ValueKey('builder_btn'),
+                    icon: Icon(isExpanded ? Icons.close : Icons.expand_more),
+                    onPressed: toggleExpansion,
+                  );
+                },
+                children: const [Text('Builder Child')],
+              ),
+            ),
+          ),
+        );
+
+        // Collapsed: builder receives isExpanded = false
+        expect(find.byIcon(Icons.expand_more), findsOneWidget);
+        expect(find.byIcon(Icons.close), findsNothing);
+
+        // Tap builder button
+        await tester.tap(find.byKey(const ValueKey('builder_btn')));
+        await tester.pumpAndSettle();
+
+        // Expanded: builder receives isExpanded = true and displays close icon
+        expect(find.byIcon(Icons.close), findsOneWidget);
+        expect(find.byIcon(Icons.expand_more), findsNothing);
+        expect(find.text('Builder Child'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'passes overlineLabelGap and labelSupportingGap to header MechanixListTile',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: const Scaffold(
+              body: MechanixExpandableListTile(
+                labelText: 'Expandable Title',
+                overline: 'Expandable Overline',
+                supportingText: 'Expandable Supporting',
+                overlineLabelGap: 8.0,
+                labelSupportingGap: 14.0,
+                children: [Text('Child')],
+              ),
+            ),
+          ),
+        );
+
+        final listTile = tester.widget<MechanixListTile>(
+          find.byType(MechanixListTile),
+        );
+        expect(listTile.overlineLabelGap, equals(8.0));
+        expect(listTile.labelSupportingGap, equals(14.0));
+      },
+    );
+
+    testWidgets('MechanixExpandableListTile spaces children with childrenGap', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          theme: MechanixTheme.dark,
+        const MaterialApp(
           home: Scaffold(
             body: MechanixExpandableListTile(
-              labelText: 'Builder Expandable',
-              accordionButtonBuilder: (context, isExpanded, toggleExpansion) {
-                return IconButton(
-                  key: const ValueKey('builder_btn'),
-                  icon: Icon(isExpanded ? Icons.close : Icons.expand_more),
-                  onPressed: toggleExpansion,
-                );
-              },
-              children: const [Text('Builder Child')],
+              labelText: 'Expandable Gap',
+              initiallyExpanded: true,
+              listItemGap: 10.0,
+              children: [Text('Child 1'), Text('Child 2'), Text('Child 3')],
             ),
           ),
         ),
       );
 
-      // Collapsed: builder receives isExpanded = false
-      expect(find.byIcon(Icons.expand_more), findsOneWidget);
-      expect(find.byIcon(Icons.close), findsNothing);
+      final sizedBoxes = tester
+          .widgetList<SizedBox>(
+            find.descendant(
+              of: find.byType(MechanixList),
+              matching: find.byType(SizedBox),
+            ),
+          )
+          .where((sb) => sb.height == 10.0);
 
-      // Tap builder button
-      await tester.tap(find.byKey(const ValueKey('builder_btn')));
-      await tester.pumpAndSettle();
-
-      // Expanded: builder receives isExpanded = true and displays close icon
-      expect(find.byIcon(Icons.close), findsOneWidget);
-      expect(find.byIcon(Icons.expand_more), findsNothing);
-      expect(find.text('Builder Child'), findsOneWidget);
+      expect(sizedBoxes.length, equals(2));
     });
+
+    testWidgets(
+      'MechanixExpandableListTile.segmented uses default 2px children gap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: MechanixExpandableListTile.segmented(
+                labelText: 'Segmented Expandable',
+                initiallyExpanded: true,
+                children: [Text('Child 1'), Text('Child 2')],
+              ),
+            ),
+          ),
+        );
+
+        final sizedBoxes = tester
+            .widgetList<SizedBox>(
+              find.descendant(
+                of: find.byType(MechanixList),
+                matching: find.byType(SizedBox),
+              ),
+            )
+            .where((sb) => sb.height == 2.0);
+
+        expect(sizedBoxes.length, equals(1));
+      },
+    );
   });
 }
-
-
-
-
-
