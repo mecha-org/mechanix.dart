@@ -84,7 +84,7 @@ void main() {
           home: Scaffold(
             body: MechanixListTile(
               labelText: 'Tile with icons',
-              leading: Icon(Icons.star_outline),
+              leadingWidgets: const [Icon(Icons.star_outline)],
               trailingText: '⌘C',
             ),
           ),
@@ -104,7 +104,7 @@ void main() {
             home: Scaffold(
               body: MechanixListTile(
                 labelText: 'Tile without icons',
-                leading: Icon(Icons.star_outline),
+                leadingWidgets: const [Icon(Icons.star_outline)],
                 showLeading: false,
                 trailingText: '⌘C',
                 showTrailing: false,
@@ -243,6 +243,87 @@ void main() {
           .where((sb) => sb.height == 2.0);
 
       expect(sizedBoxes.length, equals(2));
+    });
+
+    testWidgets('renders multiple leading widgets when leadingWidgets is provided', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixListTile(
+              labelText: 'Multi-leading Tile',
+              leadingWidgets: const [
+                Icon(Icons.check_box),
+                Icon(Icons.star_outline),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.check_box), findsOneWidget);
+      expect(find.byIcon(Icons.star_outline), findsOneWidget);
+      expect(find.text('Multi-leading Tile'), findsOneWidget);
+    });
+
+    testWidgets('renders multiple leadingWidgets in order with gap', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixListTile(
+              labelText: 'Ordered Leading Tile',
+              gap: 12.0,
+              leadingWidgets: const [
+                Icon(Icons.favorite),
+                Icon(Icons.star),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.favorite), findsOneWidget);
+      expect(find.byIcon(Icons.star), findsOneWidget);
+
+      final row = tester.widget<Row>(
+        find.descendant(
+          of: find.byType(MechanixListTile),
+          matching: find.byWidgetPredicate(
+            (w) => w is Row && w.children.length == 3, // favorite, SizedBox, star
+          ),
+        ),
+      );
+      expect(row.children.length, equals(3));
+      final gapBox = row.children[1] as SizedBox;
+      expect(gapBox.width, equals(12.0));
+    });
+
+    testWidgets('hides leadingWidgets when showLeading is false', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: Scaffold(
+            body: MechanixListTile(
+              labelText: 'Hidden Leading Widgets',
+              leadingWidgets: const [
+                Icon(Icons.check_box),
+                Icon(Icons.star_outline),
+              ],
+              showLeading: false,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.check_box), findsNothing);
+      expect(find.byIcon(Icons.star_outline), findsNothing);
     });
   });
 }

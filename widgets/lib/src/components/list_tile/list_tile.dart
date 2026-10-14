@@ -23,7 +23,7 @@ class MechanixListTile extends StatefulWidget {
     this.supportingText,
     this.showSupportingText = true,
     this.content,
-    this.leading,
+    this.leadingWidgets = const [],
     this.showLeading = true,
     this.trailingWidgets = const [],
     this.trailingText,
@@ -69,7 +69,7 @@ class MechanixListTile extends StatefulWidget {
     this.supportingText,
     this.showSupportingText = true,
     this.content,
-    this.leading,
+    this.leadingWidgets = const [],
     this.showLeading = true,
     this.trailingWidgets = const [],
     this.trailingText,
@@ -130,10 +130,10 @@ class MechanixListTile extends StatefulWidget {
   /// Custom central content widget (overrides overline, label, and supporting text).
   final Widget? content;
 
-  /// Leading element widget (e.g. icon or avatar).
-  final Widget? leading;
+  /// Custom leading widgets.
+  final List<Widget> leadingWidgets;
 
-  /// Whether to show the leading element. Defaults to true.
+  /// Whether to show the leading element(s). Defaults to true.
   final bool showLeading;
 
   /// Custom trailing widgets. Supports a maximum of 2 widgets.
@@ -327,20 +327,31 @@ class _MechanixListTileState extends State<MechanixListTile> {
 
     // Build Leading
     Widget? leadingWidget;
-    if (widget.showLeading && widget.leading != null) {
+    if (widget.showLeading && widget.leadingWidgets.isNotEmpty) {
       final leadIconColor =
           widget.leadingIconColor ??
           scopedTheme.leadingIconColor ??
           colorScheme.onSurface;
       final leadIconSize = scopedTheme.leadingIconSize ?? 20.0;
 
-      leadingWidget = IconTheme(
-        data: IconThemeData(color: leadIconColor, size: leadIconSize),
-        child: SizedBox(
-          width: leadIconSize,
-          height: leadIconSize,
-          child: Center(child: widget.leading),
-        ),
+      final styledLeadingItems = <Widget>[];
+      for (final item in widget.leadingWidgets) {
+        if (styledLeadingItems.isNotEmpty) {
+          styledLeadingItems.add(SizedBox(width: effectiveGap));
+        }
+
+        styledLeadingItems.add(
+          IconTheme(
+            data: IconThemeData(color: leadIconColor, size: leadIconSize),
+            child: item,
+          ),
+        );
+      }
+
+      leadingWidget = Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: styledLeadingItems,
       );
     }
 
