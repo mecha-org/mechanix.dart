@@ -149,36 +149,40 @@ class _ListPreviewState extends State<ListPreview> {
                 children: [
                   _buildPreviewColumnCard(
                     context,
-                    title: '1. Standard',
+                    title: '1. Standard (Configurable 8px Gap)',
                     children: [
-                      MechanixListTile(
-                        leading: const Icon(Icons.star_outline),
-                        labelText: 'Label text',
-                        trailingText: '⌘C',
-                        trailingWidgets: [
-                          MechanixIconButton.standard(
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () {},
-                            icon: Icons.chat_bubble_outline,
+                      MechanixList(
+                        listItemGap: 8.0,
+                        children: [
+                          MechanixListTile(
+                            leading: const Icon(Icons.star_outline),
+                            labelText: 'Label text',
+                            trailingText: '⌘C',
+                            trailingWidgets: [
+                              MechanixIconButton.standard(
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () {},
+                                icon: Icons.chat_bubble_outline,
+                              ),
+                            ],
+                            onTap: () {},
+                          ),
+                          MechanixListTile(
+                            leading: const Icon(Icons.star_outline),
+                            labelText: 'Label text',
+                            trailingText: '⌘C',
+                            trailingWidgets: [
+                              MechanixIconButton.standard(
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () {},
+                                icon: Icons.chat_bubble_outline,
+                              ),
+                            ],
+                            onTap: () {},
                           ),
                         ],
-                        onTap: () {},
-                      ),
-                      const SizedBox(height: 8),
-                      MechanixListTile(
-                        leading: const Icon(Icons.star_outline),
-                        labelText: 'Label text',
-                        trailingText: '⌘C',
-                        trailingWidgets: [
-                          MechanixIconButton.standard(
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () {},
-                            icon: Icons.chat_bubble_outline,
-                          ),
-                        ],
-                        onTap: () {},
                       ),
                     ],
                   ),
@@ -321,55 +325,51 @@ class _ListPreviewState extends State<ListPreview> {
                   ),
                   _buildPreviewColumnCard(
                     context,
-                    title: '6. Swipable Segmented',
+                    title: '6. Swipable Segmented (2px Gap)',
                     children: [
-                      MechanixSwipableList(
-                        children: [
-                          MechanixSegmentedList(
-                            children: List.generate(5, (index) {
-                              final isOpen = index == 2;
+                      MechanixSwipableList.segmented(
+                        children: List.generate(5, (index) {
+                          final isOpen = index == 2;
 
-                              return MechanixSwipableListTile.segmented(
-                                key: ValueKey('seg_swipe_$index'),
-                                leading: const Icon(Icons.star_outline),
-                                labelText: 'Label text',
-                                trailingText: '⌘C',
-                                trailingWidgets: [
-                                  MechanixIconButton.standard(
-                                    size: IconButtonSize.small,
-                                    type: IconButtonType.rounded,
-                                    onPressed: () {},
-                                    icon: Icons.more_vert,
-                                  ),
-                                ],
-                                initiallyOpen: isOpen,
-                                actions: [
-                                  MechanixIconButton.standard(
-                                    icon: Icons.settings_outlined,
-                                    size: IconButtonSize.small,
-                                    type: IconButtonType.rounded,
-                                    onPressed: () =>
-                                        _showActionSnackBar('Settings tapped'),
-                                  ),
-                                  MechanixIconButton.standard(
-                                    icon: Icons.sensors,
-                                    size: IconButtonSize.small,
-                                    type: IconButtonType.rounded,
-                                    onPressed: () =>
-                                        _showActionSnackBar('Broadcast tapped'),
-                                  ),
-                                  MechanixIconButton.standard(
-                                    icon: Icons.chat_bubble_outline_rounded,
-                                    size: IconButtonSize.small,
-                                    type: IconButtonType.rounded,
-                                    onPressed: () =>
-                                        _showActionSnackBar('Chat tapped'),
-                                  ),
-                                ],
-                              );
-                            }),
-                          ),
-                        ],
+                          return MechanixSwipableListTile.segmented(
+                            key: ValueKey('seg_swipe_$index'),
+                            leading: const Icon(Icons.star_outline),
+                            labelText: 'Label text',
+                            trailingText: '⌘C',
+                            trailingWidgets: [
+                              MechanixIconButton.standard(
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () {},
+                                icon: Icons.more_vert,
+                              ),
+                            ],
+                            initiallyOpen: isOpen,
+                            actions: [
+                              MechanixIconButton.standard(
+                                icon: Icons.settings_outlined,
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () =>
+                                    _showActionSnackBar('Settings tapped'),
+                              ),
+                              MechanixIconButton.standard(
+                                icon: Icons.sensors,
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () =>
+                                    _showActionSnackBar('Broadcast tapped'),
+                              ),
+                              MechanixIconButton.standard(
+                                icon: Icons.chat_bubble_outline_rounded,
+                                size: IconButtonSize.small,
+                                type: IconButtonType.rounded,
+                                onPressed: () =>
+                                    _showActionSnackBar('Chat tapped'),
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -909,7 +909,7 @@ class _ListPreviewState extends State<ListPreview> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Standard Swipable List Tiles:',
+                'Standard Swipable List Tiles (Configurable 12px Gap):',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -919,6 +919,7 @@ class _ListPreviewState extends State<ListPreview> {
               const SizedBox(height: 12),
 
               MechanixSwipableList(
+                listItemGap: 12.0,
                 children: [
                   // 3 actions
                   MechanixSwipableListTile(
@@ -957,8 +958,6 @@ class _ListPreviewState extends State<ListPreview> {
                     ],
                   ),
 
-                  const Divider(height: 20),
-
                   // 2 actions
                   MechanixSwipableListTile(
                     leading: const Icon(Icons.share_outlined),
@@ -989,8 +988,6 @@ class _ListPreviewState extends State<ListPreview> {
                     ],
                   ),
 
-                  const Divider(height: 20),
-
                   // 1 action
                   MechanixSwipableListTile(
                     leading: const Icon(Icons.sync_rounded),
@@ -1020,7 +1017,7 @@ class _ListPreviewState extends State<ListPreview> {
               const SizedBox(height: 32),
 
               Text(
-                'Segmented Swipable List Tiles:',
+                'Segmented Swipable List Tiles (MechanixSwipableList.segmented with 4px Gap):',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -1029,80 +1026,74 @@ class _ListPreviewState extends State<ListPreview> {
               ),
               const SizedBox(height: 12),
 
-              MechanixSwipableList(
+              MechanixSwipableList.segmented(
+                listItemGap: 4.0,
                 children: [
-                  MechanixSegmentedList(
-                    children: [
-                      // 3 actions
-                      MechanixSwipableListTile.segmented(
-                        leading: const Icon(Icons.email_outlined),
-                        overline: 'Mail',
-                        labelText: 'Important Project Update',
-                        supportingText: 'Swipe left to reveal archive, flag, and reply actions',
-                        trailingText: '⌘C',
-                        trailingWidgets: [
-                          MechanixIconButton.standard(
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () {},
-                            icon: Icons.more_vert,
-                          ),
-                        ],
-                        actions: [
-                          MechanixIconButton.standard(
-                            icon: Icons.archive_outlined,
-                            size: IconButtonSize.medium,
-                            type: IconButtonType.rounded,
-                            onPressed: () =>
-                                _showActionSnackBar('Archive tapped'),
-                          ),
-                          MechanixIconButton.standard(
-                            icon: Icons.flag_outlined,
-                            size: IconButtonSize.medium,
-                            type: IconButtonType.rounded,
-                            onPressed: () => _showActionSnackBar('Flag tapped'),
-                          ),
-                          MechanixIconButton.standard(
-                            icon: Icons.reply_rounded,
-                            size: IconButtonSize.medium,
-                            type: IconButtonType.rounded,
-                            onPressed: () =>
-                                _showActionSnackBar('Reply tapped'),
-                          ),
-                        ],
+                  // 3 actions
+                  MechanixSwipableListTile.segmented(
+                    leading: const Icon(Icons.email_outlined),
+                    overline: 'Mail',
+                    labelText: 'Important Project Update',
+                    supportingText:
+                        'Swipe left to reveal archive, flag, and reply actions',
+                    trailingText: '⌘C',
+                    trailingWidgets: [
+                      MechanixIconButton.standard(
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        onPressed: () {},
+                        icon: Icons.more_vert,
                       ),
+                    ],
+                    actions: [
+                      MechanixIconButton.standard(
+                        icon: Icons.archive_outlined,
+                        size: IconButtonSize.medium,
+                        type: IconButtonType.rounded,
+                        onPressed: () => _showActionSnackBar('Archive tapped'),
+                      ),
+                      MechanixIconButton.standard(
+                        icon: Icons.flag_outlined,
+                        size: IconButtonSize.medium,
+                        type: IconButtonType.rounded,
+                        onPressed: () => _showActionSnackBar('Flag tapped'),
+                      ),
+                      MechanixIconButton.standard(
+                        icon: Icons.reply_rounded,
+                        size: IconButtonSize.medium,
+                        type: IconButtonType.rounded,
+                        onPressed: () => _showActionSnackBar('Reply tapped'),
+                      ),
+                    ],
+                  ),
 
-                      // 2 actions
-                      MechanixSwipableListTile.segmented(
-                        leading: const Icon(Icons.star_outline),
-                        overline: 'Notifications',
-                        labelText: 'Weekly Summary Available',
-                        supportingText: 'Swipe left to refresh or dismiss',
-                        trailingText: '⌘C',
-                        trailingWidgets: [
-                          MechanixIconButton.standard(
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () {},
-                            icon: Icons.more_vert,
-                          ),
-                        ],
-                        actions: [
-                          MechanixIconButton.standard(
-                            icon: Icons.delete_outline,
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () =>
-                                _showActionSnackBar('Delete tapped'),
-                          ),
-                          MechanixIconButton.standard(
-                            icon: Icons.refresh_rounded,
-                            size: IconButtonSize.small,
-                            type: IconButtonType.rounded,
-                            onPressed: () =>
-                                _showActionSnackBar('Refresh tapped'),
-                          ),
-                        ],
+                  // 2 actions
+                  MechanixSwipableListTile.segmented(
+                    leading: const Icon(Icons.star_outline),
+                    overline: 'Notifications',
+                    labelText: 'Weekly Summary Available',
+                    supportingText: 'Swipe left to refresh or dismiss',
+                    trailingText: '⌘C',
+                    trailingWidgets: [
+                      MechanixIconButton.standard(
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        onPressed: () {},
+                        icon: Icons.more_vert,
+                      ),
+                    ],
+                    actions: [
+                      MechanixIconButton.standard(
+                        icon: Icons.delete_outline,
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        onPressed: () => _showActionSnackBar('Delete tapped'),
+                      ),
+                      MechanixIconButton.standard(
+                        icon: Icons.refresh_rounded,
+                        size: IconButtonSize.small,
+                        type: IconButtonType.rounded,
+                        onPressed: () => _showActionSnackBar('Refresh tapped'),
                       ),
                     ],
                   ),

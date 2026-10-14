@@ -197,17 +197,60 @@ class MechanixSwipeController extends ChangeNotifier {
 /// Type alias for backwards-compatibility.
 typedef SlidableController = MechanixSwipeController;
 
-/// Scope for coordinating auto-closing behavior across sibling swipeable list tiles.
+/// Scope for coordinating auto-closing behavior across sibling swipeable list tiles
+/// and laying them out with a configurable vertical gap.
 class MechanixSwipableList extends StatefulWidget {
   const MechanixSwipableList({
     super.key,
     this.children = const [],
     this.child,
+    this.variant = ListTileVariant.standard,
+    this.listItemGap,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
     this.closeOnScroll = true,
   });
 
+  /// Factory constructor for a Segmented [MechanixSwipableList] with default 2px gap.
+  const MechanixSwipableList.segmented({
+    super.key,
+    this.children = const [],
+    this.child,
+    this.listItemGap,
+    this.padding,
+    this.shrinkWrap = true,
+    this.physics,
+    this.separator,
+    this.closeOnScroll = true,
+  }) : variant = ListTileVariant.segmented;
+
+  /// The swipeable list tile children.
   final List<Widget> children;
+
+  /// Custom child widget containing swipeable tiles (overrides [children]).
   final Widget? child;
+
+  /// The visual list variant.
+  final ListTileVariant variant;
+
+  /// Vertical spacing gap between adjacent list items.
+  final double? listItemGap;
+
+  /// Optional padding around the list.
+  final EdgeInsetsGeometry? padding;
+
+  /// Whether to shrink wrap the list. Defaults to true.
+  final bool shrinkWrap;
+
+  /// Optional scroll physics.
+  final ScrollPhysics? physics;
+
+  /// Optional custom separator widget.
+  final Widget? separator;
+
+  /// Whether scrolling automatically closes any open swipe actions.
   final bool closeOnScroll;
 
   @override
@@ -265,13 +308,22 @@ class _MechanixSwipableListState extends State<MechanixSwipableList> {
 
   @override
   Widget build(BuildContext context) {
+    final listWidget =
+        widget.child ??
+        MechanixList(
+          variant: widget.variant,
+          listItemGap: widget.listItemGap,
+          padding: widget.padding,
+          shrinkWrap: widget.shrinkWrap,
+          physics: widget.physics,
+          separator: widget.separator,
+          children: widget.children,
+        );
+
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: _onPointerDown,
-      child: _MechanixSwipeScope(
-        state: this,
-        child: widget.child ?? Column(children: widget.children),
-      ),
+      child: _MechanixSwipeScope(state: this, child: listWidget),
     );
   }
 }
@@ -355,6 +407,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.hoverColor,
     this.swipedBackgroundColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : assert(
          actions.length <= 3,
          'MechanixSwipableListTile supports a maximum of 3 reveal actions.',
@@ -402,6 +456,8 @@ class MechanixSwipableListTile extends StatefulWidget {
     this.hoverColor,
     this.swipedBackgroundColor,
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : variant = ListTileVariant.segmented,
        assert(
          actions.length <= 3,
@@ -531,6 +587,12 @@ class MechanixSwipableListTile extends StatefulWidget {
 
   /// Custom theme override.
   final ListTileThemeDataConfig? theme;
+
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
 
   @override
   State<MechanixSwipableListTile> createState() =>
@@ -824,6 +886,8 @@ class MechanixSwipableListTileState extends State<MechanixSwipableListTile>
               backgroundColor: effectiveBg,
               hoverColor: effectiveHoverColor,
               theme: widget.theme,
+              overlineLabelGap: widget.overlineLabelGap,
+              labelSupportingGap: widget.labelSupportingGap,
             );
 
             if (!hasActions) {

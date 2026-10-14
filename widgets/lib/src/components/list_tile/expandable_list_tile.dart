@@ -152,6 +152,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.height,
     this.gap = 8.0,
     this.expandedContentGap = 2.0,
+    this.listItemGap,
     this.contentPadding,
     this.borderRadius,
     this.backgroundColor,
@@ -160,6 +161,8 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.duration = const Duration(milliseconds: 250),
     this.curve = const Cubic(0.2, 0.0, 0.0, 1.0),
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   });
 
   /// Factory constructor for a Segmented Filled [MechanixExpandableListTile].
@@ -188,6 +191,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.height,
     this.gap = 8.0,
     this.expandedContentGap = 2.0,
+    this.listItemGap,
     this.contentPadding,
     this.borderRadius,
     this.backgroundColor,
@@ -196,6 +200,8 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.duration = const Duration(milliseconds: 250),
     this.curve = const Cubic(0.2, 0.0, 0.0, 1.0),
     this.theme,
+    this.overlineLabelGap = 4.0,
+    this.labelSupportingGap = 4.0,
   }) : variant = ListTileVariant.segmented;
 
   /// Visual styling variant.
@@ -270,6 +276,12 @@ class MechanixExpandableListTile extends StatefulWidget {
   /// Spacing between the header tile and the expanded content.
   final double expandedContentGap;
 
+  /// Spacing gap between adjacent expanded [children].
+  ///
+  /// If null, resolves from [ListTileThemeDataConfig.listItemGap] in [MechanixListTileTheme],
+  /// or defaults to `2.0` for [ListTileVariant.segmented] and `0.0` for [ListTileVariant.standard].
+  final double? listItemGap;
+
   /// Internal padding of the header tile.
   final EdgeInsetsGeometry? contentPadding;
 
@@ -293,6 +305,12 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Theme override.
   final ListTileThemeDataConfig? theme;
+
+  /// Vertical spacing between the overline and label.
+  final double overlineLabelGap;
+
+  /// Vertical spacing between the label and supporting text.
+  final double labelSupportingGap;
 
   @override
   State<MechanixExpandableListTile> createState() =>
@@ -400,13 +418,15 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       backgroundColor: headerBg,
       onTap: widget.headerTapExpands ? _toggleExpansion : null,
       theme: widget.theme,
+      overlineLabelGap: widget.overlineLabelGap,
+      labelSupportingGap: widget.labelSupportingGap,
     );
 
     final expandedContent =
         widget.child ??
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        MechanixList(
+          variant: widget.variant,
+          listItemGap: widget.listItemGap,
           children: widget.children,
         );
 
