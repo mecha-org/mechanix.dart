@@ -41,6 +41,11 @@ class MechanixMenuController extends ChangeNotifier {
     }
   }
 
+  /// Notifies listeners that the menu open or closed state has changed.
+  void notifyOpenStateChanged() {
+    notifyListeners();
+  }
+
   /// Internal attachment method linking to Flutter's native [MenuController].
   void attach(MenuController controller) {
     _nativeMenuController = controller;
