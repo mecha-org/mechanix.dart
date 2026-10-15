@@ -137,6 +137,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.showSupportingText = true,
     this.leadingWidgets = const [],
     this.showLeading = true,
+    this.trailingWidgets = const [],
     this.trailingText,
     this.showAccordionButton = true,
     this.accordionIcon,
@@ -176,6 +177,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.showSupportingText = true,
     this.leadingWidgets = const [],
     this.showLeading = true,
+    this.trailingWidgets = const [],
     this.trailingText,
     this.showAccordionButton = true,
     this.accordionIcon,
@@ -230,6 +232,9 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Whether to show the leading element.
   final bool showLeading;
+
+  /// Custom trailing widgets displayed before the accordion button.
+  final List<Widget> trailingWidgets;
 
   /// Trailing shortcut text preceding the accordion button.
   final String? trailingText;
@@ -407,7 +412,7 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       leadingWidgets: widget.leadingWidgets,
       showLeading: widget.showLeading,
       trailingText: widget.trailingText,
-      trailingWidgets: accordionButton != null ? [accordionButton] : const [],
+      trailingWidgets: [...widget.trailingWidgets, ?accordionButton],
       showTrailing: true,
       enabled: widget.enabled,
       minHeight: widget.minHeight,

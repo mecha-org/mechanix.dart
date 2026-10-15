@@ -311,5 +311,72 @@ void main() {
         expect(sizedBoxes.length, equals(1));
       },
     );
+
+    testWidgets('renders custom trailingWidgets alongside accordion button', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable with Trailing',
+              trailingWidgets: [
+                Icon(Icons.star, key: ValueKey('trailing_star')),
+              ],
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const ValueKey('trailing_star')), findsOneWidget);
+      expect(find.byType(MechanixAccordionButton), findsOneWidget);
+    });
+
+    testWidgets('renders trailingWidgets when showAccordionButton is false', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable No Accordion',
+              showAccordionButton: false,
+              trailingWidgets: [
+                Icon(Icons.star, key: ValueKey('trailing_star')),
+              ],
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const ValueKey('trailing_star')), findsOneWidget);
+      expect(find.byType(MechanixAccordionButton), findsNothing);
+    });
+
+    testWidgets('renders trailingWidgets in segmented variant', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile.segmented(
+              labelText: 'Segmented with Trailing',
+              trailingWidgets: [
+                Icon(Icons.star, key: ValueKey('trailing_star')),
+              ],
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const ValueKey('trailing_star')), findsOneWidget);
+      expect(find.byType(MechanixAccordionButton), findsOneWidget);
+    });
   });
 }

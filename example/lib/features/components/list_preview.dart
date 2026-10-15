@@ -227,11 +227,19 @@ class _ListPreviewState extends State<ListPreview> {
                     context,
                     title: '3. Expandable',
                     children: [
-                      const MechanixExpandableListTile(
-                        leadingWidgets: [Icon(Icons.star_outline)],
+                      MechanixExpandableListTile(
+                        leadingWidgets: const [Icon(Icons.star_outline)],
                         labelText: 'Label text',
                         trailingText: '⌘C',
-                        children: [
+                        trailingWidgets: [
+                          MechanixIconButton.standard(
+                            size: IconButtonSize.small,
+                            type: IconButtonType.rounded,
+                            onPressed: () {},
+                            icon: Icons.chat_bubble_outline,
+                          ),
+                        ],
+                        children: const [
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 4),
                             child: Text('Nested child item 1'),
@@ -703,7 +711,7 @@ class _ListPreviewState extends State<ListPreview> {
           title: 'Expandable Lists with Accordion Button',
           subtitle:
               'Collapsible accordion headers featuring configurable chevron '
-              'or +/- toggle buttons, or completely hidden buttons.',
+              'or +/- toggle buttons, trailing action widgets, or completely hidden buttons.',
         ),
         const SizedBox(height: 16),
         Container(
@@ -794,6 +802,34 @@ class _ListPreviewState extends State<ListPreview> {
                     leadingWidgets: [Icon(Icons.color_lens_outlined)],
                     labelText: 'Color Palette',
                     supportingText: 'Primary brand and surface tints',
+                  ),
+                ],
+              ),
+              const Divider(height: 24),
+              MechanixExpandableListTile(
+                leadingWidgets: const [Icon(Icons.notifications_outlined)],
+                labelText: 'Notifications & Alerts (With Trailing Action)',
+                supportingText:
+                    'Features an action button alongside the accordion toggle',
+                trailingText: '2 new',
+                trailingWidgets: [
+                  MechanixIconButton.standard(
+                    icon: Icons.mark_email_read_outlined,
+                    size: IconButtonSize.small,
+                    type: IconButtonType.rounded,
+                    onPressed: () => _showActionSnackBar('Marked all as read'),
+                  ),
+                ],
+                children: [
+                  MechanixListTile(
+                    leadingWidgets: [Icon(Icons.update_rounded)],
+                    labelText: 'System update available',
+                    supportingText: 'Mechanix OS v2.4 ready to install',
+                  ),
+                  MechanixListTile(
+                    leadingWidgets: [Icon(Icons.mail_outline_rounded)],
+                    labelText: 'New message received',
+                    supportingText: 'From Security Team',
                   ),
                 ],
               ),
