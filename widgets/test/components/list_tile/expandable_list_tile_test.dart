@@ -15,7 +15,7 @@ void main() {
           home: Scaffold(
             body: MechanixExpandableListTile(
               labelText: 'Expandable Title',
-              leading: const Icon(Icons.star_outline),
+              leadingWidgets: const [Icon(Icons.star_outline)],
               onExpansionChanged: (val) => expansionState = val,
               children: const [
                 Text('Expanded Content Item 1'),

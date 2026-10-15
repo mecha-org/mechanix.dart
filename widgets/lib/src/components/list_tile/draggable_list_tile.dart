@@ -102,7 +102,7 @@ class MechanixDraggableListTile extends StatelessWidget {
     this.showOverline = true,
     this.supportingText,
     this.showSupportingText = true,
-    this.leading,
+    this.leadingWidgets = const [],
     this.showLeading = true,
     this.trailingText,
     this.trailingWidgets = const [],
@@ -152,8 +152,8 @@ class MechanixDraggableListTile extends StatelessWidget {
   /// Whether to show the supporting text.
   final bool showSupportingText;
 
-  /// Leading element widget (e.g. icon).
-  final Widget? leading;
+  /// Custom leading widgets.
+  final List<Widget> leadingWidgets;
 
   /// Whether to show the leading element.
   final bool showLeading;
@@ -233,7 +233,7 @@ class MechanixDraggableListTile extends StatelessWidget {
       showOverline: showOverline,
       supportingText: supportingText,
       showSupportingText: showSupportingText,
-      leading: leading,
+      leadingWidgets: leadingWidgets,
       showLeading: showLeading,
       trailingText: trailingText,
       trailingWidgets: effectiveTrailingWidgets,
