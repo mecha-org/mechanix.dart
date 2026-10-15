@@ -378,5 +378,182 @@ void main() {
       expect(find.byKey(const ValueKey('trailing_star')), findsOneWidget);
       expect(find.byType(MechanixAccordionButton), findsOneWidget);
     });
+
+    testWidgets('renders top and bottom dividers when enabled', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable with Dividers',
+              showTopDivider: true,
+              showBottomDivider: true,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(MechanixDivider), findsNWidgets(2));
+    });
+
+    testWidgets('does not render dividers by default', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable No Dividers',
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(MechanixDivider), findsNothing);
+    });
+
+    testWidgets('supports topDivider and bottomDivider aliases', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable Alias Dividers',
+              showTopDivider: true,
+              showBottomDivider: true,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(MechanixDivider), findsNWidgets(2));
+    });
+
+    testWidgets('renders single top divider when only showTopDivider is true', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Only Top Divider',
+              showTopDivider: true,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(MechanixDivider), findsOneWidget);
+    });
+
+    testWidgets('applies contentPadding horizontal insets to dividers', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Expandable with Padded Dividers',
+              contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              showTopDivider: true,
+              showBottomDivider: true,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      final dividerPaddings = tester
+          .widgetList<Padding>(
+            find.ancestor(
+              of: find.byType(MechanixDivider),
+              matching: find.byType(Padding),
+            ),
+          )
+          .where(
+            (p) => p.padding == const EdgeInsets.only(left: 24.0, right: 24.0),
+          );
+
+      expect(dividerPaddings.length, equals(2));
+    });
+
+    testWidgets(
+      'does not apply contentPadding to dividers when applyContentPaddingToDividers is false',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: MechanixTheme.dark,
+            home: const Scaffold(
+              body: MechanixExpandableListTile(
+                labelText: 'Expandable Full Bleed Dividers',
+                contentPadding: EdgeInsets.symmetric(horizontal: 24),
+                applyContentPaddingToDividers: false,
+                showTopDivider: true,
+                showBottomDivider: true,
+                children: [Text('Child')],
+              ),
+            ),
+          ),
+        );
+
+        final dividerPaddings = tester
+            .widgetList<Padding>(
+              find.ancestor(
+                of: find.byType(MechanixDivider),
+                matching: find.byType(Padding),
+              ),
+            )
+            .where(
+              (p) =>
+                  p.padding == const EdgeInsets.only(left: 24.0, right: 24.0),
+            );
+
+        expect(dividerPaddings, isEmpty);
+      },
+    );
+
+    testWidgets('allows custom dividerIndent and dividerEndIndent', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: MechanixTheme.dark,
+          home: const Scaffold(
+            body: MechanixExpandableListTile(
+              labelText: 'Custom Indent Dividers',
+              dividerIndent: 30.0,
+              dividerEndIndent: 15.0,
+              showTopDivider: true,
+              showBottomDivider: true,
+              children: [Text('Child')],
+            ),
+          ),
+        ),
+      );
+
+      final dividerPaddings = tester
+          .widgetList<Padding>(
+            find.ancestor(
+              of: find.byType(MechanixDivider),
+              matching: find.byType(Padding),
+            ),
+          )
+          .where(
+            (p) => p.padding == const EdgeInsets.only(left: 30.0, right: 15.0),
+          );
+
+      expect(dividerPaddings.length, equals(2));
+    });
   });
 }

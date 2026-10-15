@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../divider/divider.dart';
 import 'list_tile.dart';
 
 /// A circular accordion toggle button displaying an animated chevron or custom icon widgets.
@@ -164,6 +165,12 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
+    this.showTopDivider = false,
+    this.showBottomDivider = false,
+    this.dividerColor,
+    this.applyContentPaddingToDividers = true,
+    this.dividerIndent,
+    this.dividerEndIndent,
   });
 
   /// Factory constructor for a Segmented Filled [MechanixExpandableListTile].
@@ -204,6 +211,12 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
+    this.showTopDivider = false,
+    this.showBottomDivider = false,
+    this.dividerColor,
+    this.applyContentPaddingToDividers = true,
+    this.dividerIndent,
+    this.dividerEndIndent,
   }) : variant = ListTileVariant.segmented;
 
   /// Visual styling variant.
@@ -316,6 +329,26 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Vertical spacing between the label and supporting text.
   final double labelSupportingGap;
+
+  /// Whether to display a divider at the top of the expandable list tile header.
+  final bool showTopDivider;
+
+  /// Whether to display a divider at the bottom of the expandable list tile header.
+  final bool showBottomDivider;
+
+  /// Optional color override for the top and bottom dividers.
+  final Color? dividerColor;
+
+  /// Whether horizontal insets from [contentPadding] are applied to the dividers.
+  ///
+  /// Defaults to true.
+  final bool applyContentPaddingToDividers;
+
+  /// Explicit left/leading indent for the dividers. Overrides [contentPadding] horizontal inset.
+  final double? dividerIndent;
+
+  /// Explicit right/trailing indent for the dividers. Overrides [contentPadding] horizontal inset.
+  final double? dividerEndIndent;
 
   @override
   State<MechanixExpandableListTile> createState() =>
@@ -447,6 +480,31 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       ],
     );
 
+    final scopedTheme = MechanixListTileTheme.of(context).merge(widget.theme);
+    final effectivePadding =
+        widget.contentPadding ??
+        scopedTheme.contentPadding ??
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+    final resolvedPadding = effectivePadding.resolve(
+      Directionality.maybeOf(context) ?? TextDirection.ltr,
+    );
+
+    final leftIndent = widget.dividerIndent ??
+        (widget.applyContentPaddingToDividers ? resolvedPadding.left : 0.0);
+    final rightIndent = widget.dividerEndIndent ??
+        (widget.applyContentPaddingToDividers ? resolvedPadding.right : 0.0);
+
+    Widget buildDivider() {
+      final divider = MechanixDivider(space: 0, color: widget.dividerColor);
+      if (leftIndent == 0.0 && rightIndent == 0.0) {
+        return divider;
+      }
+      return Padding(
+        padding: EdgeInsets.only(left: leftIndent, right: rightIndent),
+        child: divider,
+      );
+    }
+
     return AnimatedBuilder(
       animation: _controller.view,
       builder: (context, child) {
@@ -454,7 +512,9 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (widget.showTopDivider) buildDivider(),
             header,
+            if (widget.showBottomDivider) buildDivider(),
             ClipRect(
               child: Align(
                 alignment: Alignment.centerLeft,

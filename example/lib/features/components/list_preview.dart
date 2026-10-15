@@ -833,6 +833,32 @@ class _ListPreviewState extends State<ListPreview> {
                   ),
                 ],
               ),
+              const Divider(height: 24),
+              MechanixExpandableListTile(
+                contentPadding: EdgeInsetsDirectional.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                showTopDivider: true,
+                showBottomDivider: true,
+                leadingWidgets: const [Icon(Icons.sensors)],
+                labelText: 'Connectivity [03]',
+                supportingText: 'Features full-width top and bottom dividers',
+                accordionIcon: const Icon(Icons.add_rounded),
+                accordionExpandedIcon: const Icon(Icons.remove_rounded),
+                children: [
+                  MechanixListTile(
+                    leadingWidgets: [Icon(Icons.wifi)],
+                    labelText: 'Wi-Fi Networks',
+                    supportingText: 'Connected to Mechanix-5G',
+                  ),
+                  MechanixListTile(
+                    leadingWidgets: [Icon(Icons.bluetooth)],
+                    labelText: 'Bluetooth',
+                    supportingText: '2 devices paired',
+                  ),
+                ],
+              ),
             ],
           ),
         ),
