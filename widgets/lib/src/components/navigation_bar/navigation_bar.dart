@@ -61,7 +61,6 @@ class MechanixNavigationBar extends StatelessWidget {
   /// Creates a [MechanixNavigationBar].
   const MechanixNavigationBar({
     super.key,
-    this.animationDuration = Duration.zero,
     this.selectedIndex = 0,
     required this.destinations,
     this.onDestinationSelected,
@@ -78,11 +77,6 @@ class MechanixNavigationBar extends StatelessWidget {
          destinations.length >= 2,
          'destinations must have at least 2 items',
        );
-
-  /// Determines the transition duration between states.
-  ///
-  /// Defaults to 200 milliseconds.
-  final Duration animationDuration;
 
   /// The index of the currently selected destination.
   final int selectedIndex;
@@ -193,7 +187,6 @@ class MechanixNavigationBar extends StatelessWidget {
             destination: destination,
             config: effectiveConfig,
             labelBehavior: labelBehavior,
-            animationDuration: animationDuration,
             effectiveHeight: effectiveHeight,
             onTap: _isDestinationEnabled(destination)
                 ? () => onDestinationSelected?.call(index)
@@ -233,7 +226,6 @@ class _MechanixNavigationDestinationCell extends StatefulWidget {
     required this.destination,
     required this.config,
     required this.labelBehavior,
-    required this.animationDuration,
     required this.effectiveHeight,
     required this.onTap,
   });
@@ -243,7 +235,6 @@ class _MechanixNavigationDestinationCell extends StatefulWidget {
   final Widget destination;
   final NavigationBarThemeDataConfig config;
   final NavigationDestinationLabelBehavior labelBehavior;
-  final Duration animationDuration;
   final double effectiveHeight;
   final VoidCallback? onTap;
 
@@ -324,8 +315,7 @@ class _MechanixNavigationDestinationCellState
     if (applyToWholeItem) {
       // Whole Nav Item has hover, focus, pressed, and selected background
       // and 1px top border across the entire cell.
-      cellContent = AnimatedContainer(
-        duration: widget.animationDuration,
+      cellContent = Container(
         height: widget.effectiveHeight,
         decoration: BoxDecoration(
           color: itemBgColor,
@@ -339,8 +329,7 @@ class _MechanixNavigationDestinationCellState
               top: 0,
               left: 0,
               right: 0,
-              child: AnimatedContainer(
-                duration: widget.animationDuration,
+              child: Container(
                 height: borderWidth,
                 decoration: BoxDecoration(
                   color: topBorderColor,
@@ -365,8 +354,7 @@ class _MechanixNavigationDestinationCellState
                   iconContent,
                   if (showLabel) ...[
                     SizedBox(height: gap),
-                    AnimatedDefaultTextStyle(
-                      duration: widget.animationDuration,
+                    DefaultTextStyle(
                       style: effectiveLabelStyle,
                       child: Text(
                         info.label,
@@ -387,8 +375,7 @@ class _MechanixNavigationDestinationCellState
       final double itemWidth = widget.config.itemWidth ?? 56.0;
       final double itemHeight = widget.config.itemHeight ?? 32.0;
 
-      final containerWidget = AnimatedContainer(
-        duration: widget.animationDuration,
+      final containerWidget = Container(
         width: itemWidth,
         height: itemHeight,
         decoration: BoxDecoration(
@@ -402,8 +389,7 @@ class _MechanixNavigationDestinationCellState
               top: 0,
               left: 0,
               right: 0,
-              child: AnimatedContainer(
-                duration: widget.animationDuration,
+              child: Container(
                 height: borderWidth,
                 decoration: BoxDecoration(
                   color: topBorderColor,
@@ -428,8 +414,7 @@ class _MechanixNavigationDestinationCellState
           containerWidget,
           if (showLabel) ...[
             SizedBox(height: gap),
-            AnimatedDefaultTextStyle(
-              duration: widget.animationDuration,
+            DefaultTextStyle(
               style: effectiveLabelStyle,
               child: Text(
                 info.label,
