@@ -388,8 +388,8 @@ void main() {
           home: const Scaffold(
             body: MechanixExpandableListTile(
               labelText: 'Expandable with Dividers',
-              showTopDivider: true,
-              showBottomDivider: true,
+              showTopBorder: true,
+              showBottomBorder: true,
               children: [Text('Child')],
             ),
           ),
@@ -426,8 +426,8 @@ void main() {
           home: const Scaffold(
             body: MechanixExpandableListTile(
               labelText: 'Expandable Alias Dividers',
-              showTopDivider: true,
-              showBottomDivider: true,
+              showTopBorder: true,
+              showBottomBorder: true,
               children: [Text('Child')],
             ),
           ),
@@ -446,7 +446,7 @@ void main() {
           home: const Scaffold(
             body: MechanixExpandableListTile(
               labelText: 'Only Top Divider',
-              showTopDivider: true,
+              showTopBorder: true,
               children: [Text('Child')],
             ),
           ),
@@ -466,8 +466,8 @@ void main() {
             body: MechanixExpandableListTile(
               labelText: 'Expandable with Padded Dividers',
               contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-              showTopDivider: true,
-              showBottomDivider: true,
+              showTopBorder: true,
+              showBottomBorder: true,
               children: [Text('Child')],
             ),
           ),
@@ -499,8 +499,8 @@ void main() {
                 labelText: 'Expandable Full Bleed Dividers',
                 contentPadding: EdgeInsets.symmetric(horizontal: 24),
                 applyContentPaddingToDividers: false,
-                showTopDivider: true,
-                showBottomDivider: true,
+                showTopBorder: true,
+                showBottomBorder: true,
                 children: [Text('Child')],
               ),
             ),
@@ -534,8 +534,8 @@ void main() {
               labelText: 'Custom Indent Dividers',
               dividerIndent: 30.0,
               dividerEndIndent: 15.0,
-              showTopDivider: true,
-              showBottomDivider: true,
+              showTopBorder: true,
+              showBottomBorder: true,
               children: [Text('Child')],
             ),
           ),

@@ -165,9 +165,9 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
-    this.showTopDivider = false,
-    this.showBottomDivider = false,
-    this.dividerColor,
+    this.showTopBorder = false,
+    this.showBottomBorder = false,
+    this.borderColor,
     this.applyContentPaddingToDividers = true,
     this.dividerIndent,
     this.dividerEndIndent,
@@ -211,9 +211,9 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
-    this.showTopDivider = false,
-    this.showBottomDivider = false,
-    this.dividerColor,
+    this.showTopBorder = false,
+    this.showBottomBorder = false,
+    this.borderColor,
     this.applyContentPaddingToDividers = true,
     this.dividerIndent,
     this.dividerEndIndent,
@@ -330,14 +330,14 @@ class MechanixExpandableListTile extends StatefulWidget {
   /// Vertical spacing between the label and supporting text.
   final double labelSupportingGap;
 
-  /// Whether to display a divider at the top of the expandable list tile header.
-  final bool showTopDivider;
+  /// Whether to display a border at the top of the expandable list tile header.
+  final bool showTopBorder;
 
-  /// Whether to display a divider at the bottom of the expandable list tile header.
-  final bool showBottomDivider;
+  /// Whether to display a border at the bottom of the expandable list tile header.
+  final bool showBottomBorder;
 
-  /// Optional color override for the top and bottom dividers.
-  final Color? dividerColor;
+  /// Optional color override for the top and bottom borders.
+  final Color? borderColor;
 
   /// Whether horizontal insets from [contentPadding] are applied to the dividers.
   ///
@@ -489,13 +489,15 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       Directionality.maybeOf(context) ?? TextDirection.ltr,
     );
 
-    final leftIndent = widget.dividerIndent ??
+    final leftIndent =
+        widget.dividerIndent ??
         (widget.applyContentPaddingToDividers ? resolvedPadding.left : 0.0);
-    final rightIndent = widget.dividerEndIndent ??
+    final rightIndent =
+        widget.dividerEndIndent ??
         (widget.applyContentPaddingToDividers ? resolvedPadding.right : 0.0);
 
     Widget buildDivider() {
-      final divider = MechanixDivider(space: 0, color: widget.dividerColor);
+      final divider = MechanixDivider(space: 0, color: widget.borderColor);
       if (leftIndent == 0.0 && rightIndent == 0.0) {
         return divider;
       }
@@ -512,9 +514,9 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (widget.showTopDivider) buildDivider(),
+            if (widget.showTopBorder) buildDivider(),
             header,
-            if (widget.showBottomDivider) buildDivider(),
+            if (widget.showBottomBorder) buildDivider(),
             ClipRect(
               child: Align(
                 alignment: Alignment.centerLeft,
