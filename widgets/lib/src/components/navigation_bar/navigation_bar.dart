@@ -57,11 +57,10 @@ class MechanixNavigationDestination extends StatelessWidget {
   }
 }
 
-class MechanixNavigationBar extends StatefulWidget {
+class MechanixNavigationBar extends StatelessWidget {
   /// Creates a [MechanixNavigationBar].
   const MechanixNavigationBar({
     super.key,
-    this.animationDuration = const Duration(milliseconds: 200),
     this.selectedIndex = 0,
     required this.destinations,
     this.onDestinationSelected,
@@ -78,11 +77,6 @@ class MechanixNavigationBar extends StatefulWidget {
          destinations.length >= 2,
          'destinations must have at least 2 items',
        );
-
-  /// Determines the transition duration between states.
-  ///
-  /// Defaults to 200 milliseconds.
-  final Duration animationDuration;
 
   /// The index of the currently selected destination.
   final int selectedIndex;
@@ -132,108 +126,6 @@ class MechanixNavigationBar extends StatefulWidget {
   /// Optional per-instance [NavigationBarThemeDataConfig] override.
   final NavigationBarThemeDataConfig? theme;
 
-  @override
-  State<MechanixNavigationBar> createState() => _MechanixNavigationBarState();
-}
-
-class _MechanixNavigationBarState extends State<MechanixNavigationBar> {
-  @override
-  Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
-    final inheritedConfig = MechanixNavigationBarTheme.of(context);
-    final effectiveConfig = inheritedConfig.merge(widget.theme);
-
-    final double effectiveHeight =
-        widget.height ?? effectiveConfig.height ?? 80.0;
-    final Color effectiveBackgroundColor =
-        widget.backgroundColor ??
-        effectiveConfig.backgroundColor ??
-        themeData.colorScheme.surfaceContainerLow;
-    final double effectiveElevation =
-        widget.elevation ?? effectiveConfig.elevation ?? 0.0;
-    final Color effectiveShadowColor =
-        widget.shadowColor ??
-        effectiveConfig.shadowColor ??
-        themeData.colorScheme.shadow;
-    final Color effectiveSurfaceTintColor =
-        widget.surfaceTintColor ??
-        effectiveConfig.surfaceTintColor ??
-        Colors.transparent;
-
-    final double destinationGap =
-        widget.destinationGap ?? effectiveConfig.destinationGap ?? 4.0;
-    final bool showDividers = effectiveConfig.showDividers ?? true;
-    final Color dividerColor =
-        effectiveConfig.dividerColor ??
-        themeData.colorScheme.outlineVariant.withValues(alpha: 0.2);
-
-    Widget destinationsRow = LayoutBuilder(
-      builder: (context, constraints) {
-        final gap = destinationGap > 0 ? destinationGap : 0.0;
-        final totalGap = gap * (widget.destinations.length - 1);
-
-        final destinationWidth =
-            (constraints.maxWidth - totalGap) / widget.destinations.length;
-
-        return ListView.separated(
-          scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.destinations.length,
-          separatorBuilder: (context, index) {
-            if (destinationGap > 0) {
-              return SizedBox(width: destinationGap);
-            }
-
-            if (showDividers) {
-              return Container(
-                width: 1.0,
-                height: effectiveHeight,
-                color: dividerColor,
-              );
-            }
-
-            return const SizedBox.shrink();
-          },
-          itemBuilder: (context, index) {
-            return SizedBox(
-              width: destinationWidth,
-              child: _MechanixNavigationDestinationCell(
-                key: ValueKey('destination_$index'),
-                index: index,
-                isSelected: widget.selectedIndex == index,
-                destination: widget.destinations[index],
-                config: effectiveConfig,
-                labelBehavior: widget.labelBehavior,
-                animationDuration: widget.animationDuration,
-                effectiveHeight: effectiveHeight,
-                onTap: _isDestinationEnabled(widget.destinations[index])
-                    ? () => widget.onDestinationSelected?.call(index)
-                    : null,
-              ),
-            );
-          },
-        );
-      },
-    );
-    if (widget.padding != null) {
-      destinationsRow = Padding(
-        padding: widget.padding!,
-        child: destinationsRow,
-      );
-    }
-
-    return Material(
-      color: effectiveBackgroundColor,
-      elevation: effectiveElevation,
-      shadowColor: effectiveShadowColor,
-      surfaceTintColor: effectiveSurfaceTintColor,
-      child: SafeArea(
-        top: false,
-        child: SizedBox(height: effectiveHeight, child: destinationsRow),
-      ),
-    );
-  }
-
   bool _isDestinationEnabled(Widget destination) {
     if (destination is MechanixNavigationDestination) {
       return destination.enabled;
@@ -242,6 +134,86 @@ class _MechanixNavigationBarState extends State<MechanixNavigationBar> {
       return destination.enabled;
     }
     return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
+    final inheritedConfig = MechanixNavigationBarTheme.of(context);
+    final effectiveConfig = inheritedConfig.merge(theme);
+
+    final double effectiveHeight = height ?? effectiveConfig.height ?? 80.0;
+    final Color effectiveBackgroundColor =
+        backgroundColor ??
+        effectiveConfig.backgroundColor ??
+        themeData.colorScheme.surfaceContainerLow;
+    final double effectiveElevation =
+        elevation ?? effectiveConfig.elevation ?? 0.0;
+    final Color effectiveShadowColor =
+        shadowColor ??
+        effectiveConfig.shadowColor ??
+        themeData.colorScheme.shadow;
+    final Color effectiveSurfaceTintColor =
+        surfaceTintColor ??
+        effectiveConfig.surfaceTintColor ??
+        Colors.transparent;
+
+    final double effectiveGap =
+        destinationGap ?? effectiveConfig.destinationGap ?? 4.0;
+    final bool showDividers = effectiveConfig.showDividers ?? true;
+    final Color dividerColor =
+        effectiveConfig.dividerColor ??
+        themeData.colorScheme.outlineVariant.withValues(alpha: 0.2);
+
+    final children = <Widget>[];
+    for (int index = 0; index < destinations.length; index++) {
+      if (index > 0) {
+        if (effectiveGap > 0) {
+          children.add(SizedBox(width: effectiveGap));
+        } else if (showDividers) {
+          children.add(
+            Container(width: 1.0, height: effectiveHeight, color: dividerColor),
+          );
+        }
+      }
+
+      final destination = destinations[index];
+      children.add(
+        Expanded(
+          child: _MechanixNavigationDestinationCell(
+            key: ValueKey('destination_$index'),
+            index: index,
+            isSelected: selectedIndex == index,
+            destination: destination,
+            config: effectiveConfig,
+            labelBehavior: labelBehavior,
+            effectiveHeight: effectiveHeight,
+            onTap: _isDestinationEnabled(destination)
+                ? () => onDestinationSelected?.call(index)
+                : null,
+          ),
+        ),
+      );
+    }
+
+    Widget destinationsRow = Row(children: children);
+
+    if (padding != null) {
+      destinationsRow = Padding(padding: padding!, child: destinationsRow);
+    }
+
+    return RepaintBoundary(
+      child: Material(
+        color: effectiveBackgroundColor,
+        elevation: effectiveElevation,
+        shadowColor: effectiveShadowColor,
+        surfaceTintColor: effectiveSurfaceTintColor,
+        child: SafeArea(
+          top: false,
+          child: SizedBox(height: effectiveHeight, child: destinationsRow),
+        ),
+      ),
+    );
   }
 }
 
@@ -254,7 +226,6 @@ class _MechanixNavigationDestinationCell extends StatefulWidget {
     required this.destination,
     required this.config,
     required this.labelBehavior,
-    required this.animationDuration,
     required this.effectiveHeight,
     required this.onTap,
   });
@@ -264,7 +235,6 @@ class _MechanixNavigationDestinationCell extends StatefulWidget {
   final Widget destination;
   final NavigationBarThemeDataConfig config;
   final NavigationDestinationLabelBehavior labelBehavior;
-  final Duration animationDuration;
   final double effectiveHeight;
   final VoidCallback? onTap;
 
@@ -283,6 +253,10 @@ class _MechanixNavigationDestinationCellState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     final destination = widget.destination;
     final info = _DestinationInfo.fromWidget(destination);
 
@@ -292,20 +266,20 @@ class _MechanixNavigationDestinationCellState
       NavigationDestinationLabelBehavior.onlyShowSelected => widget.isSelected,
     };
 
-    final Color itemBgColor = _resolveItemBackgroundColor();
-    final Color topBorderColor = _resolveTopBorderColor();
-    final Color iconColor = _resolveIconColor();
+    final Color itemBgColor = _resolveItemBackgroundColor(colorScheme);
+    final Color topBorderColor = _resolveTopBorderColor(colorScheme);
+    final Color iconColor = _resolveIconColor(colorScheme);
 
     final TextStyle effectiveLabelStyle =
         (widget.config.labelTextStyle ??
-                Theme.of(context).textTheme.labelLarge ??
+                textTheme.labelLarge ??
                 const TextStyle(fontSize: 14.0))
             .copyWith(
               color: _isEnabled
                   ? (widget.config.labelColor ??
-                        Theme.of(context).colorScheme.onSecondaryContainer)
+                        colorScheme.onSecondaryContainer)
                   : (widget.config.labelColor ??
-                            Theme.of(context).colorScheme.onSecondaryContainer)
+                            colorScheme.onSecondaryContainer)
                         .withValues(alpha: 0.38),
             );
 
@@ -341,8 +315,7 @@ class _MechanixNavigationDestinationCellState
     if (applyToWholeItem) {
       // Whole Nav Item has hover, focus, pressed, and selected background
       // and 1px top border across the entire cell.
-      cellContent = AnimatedContainer(
-        duration: widget.animationDuration,
+      cellContent = Container(
         height: widget.effectiveHeight,
         decoration: BoxDecoration(
           color: itemBgColor,
@@ -356,8 +329,7 @@ class _MechanixNavigationDestinationCellState
               top: 0,
               left: 0,
               right: 0,
-              child: AnimatedContainer(
-                duration: widget.animationDuration,
+              child: Container(
                 height: borderWidth,
                 decoration: BoxDecoration(
                   color: topBorderColor,
@@ -382,8 +354,7 @@ class _MechanixNavigationDestinationCellState
                   iconContent,
                   if (showLabel) ...[
                     SizedBox(height: gap),
-                    AnimatedDefaultTextStyle(
-                      duration: widget.animationDuration,
+                    DefaultTextStyle(
                       style: effectiveLabelStyle,
                       child: Text(
                         info.label,
@@ -404,8 +375,7 @@ class _MechanixNavigationDestinationCellState
       final double itemWidth = widget.config.itemWidth ?? 56.0;
       final double itemHeight = widget.config.itemHeight ?? 32.0;
 
-      final containerWidget = AnimatedContainer(
-        duration: widget.animationDuration,
+      final containerWidget = Container(
         width: itemWidth,
         height: itemHeight,
         decoration: BoxDecoration(
@@ -419,8 +389,7 @@ class _MechanixNavigationDestinationCellState
               top: 0,
               left: 0,
               right: 0,
-              child: AnimatedContainer(
-                duration: widget.animationDuration,
+              child: Container(
                 height: borderWidth,
                 decoration: BoxDecoration(
                   color: topBorderColor,
@@ -445,8 +414,7 @@ class _MechanixNavigationDestinationCellState
           containerWidget,
           if (showLabel) ...[
             SizedBox(height: gap),
-            AnimatedDefaultTextStyle(
-              duration: widget.animationDuration,
+            DefaultTextStyle(
               style: effectiveLabelStyle,
               child: Text(
                 info.label,
@@ -490,13 +458,19 @@ class _MechanixNavigationDestinationCellState
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTapDown: _isEnabled
-              ? (_) => setState(() => _isPressed = true)
+              ? (_) {
+                  if (mounted) setState(() => _isPressed = true);
+                }
               : null,
           onTapUp: _isEnabled
-              ? (_) => setState(() => _isPressed = false)
+              ? (_) {
+                  if (mounted) setState(() => _isPressed = false);
+                }
               : null,
           onTapCancel: _isEnabled
-              ? () => setState(() => _isPressed = false)
+              ? () {
+                  if (mounted) setState(() => _isPressed = false);
+                }
               : null,
           onTap: widget.onTap,
           child: cellContent,
@@ -508,20 +482,19 @@ class _MechanixNavigationDestinationCellState
       interactiveCell = Tooltip(message: info.tooltip!, child: interactiveCell);
     }
 
-    return Semantics(
-      container: true,
-      selected: widget.isSelected,
-      enabled: _isEnabled,
-      label: info.label,
-      button: true,
-      child: interactiveCell,
+    return RepaintBoundary(
+      child: Semantics(
+        container: true,
+        selected: widget.isSelected,
+        enabled: _isEnabled,
+        label: info.label,
+        button: true,
+        child: interactiveCell,
+      ),
     );
   }
 
-  Color _resolveItemBackgroundColor() {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
+  Color _resolveItemBackgroundColor(ColorScheme colorScheme) {
     if (!_isEnabled) {
       return Colors.transparent;
     }
@@ -563,31 +536,28 @@ class _MechanixNavigationDestinationCellState
     return background;
   }
 
-  Color _resolveTopBorderColor() {
+  Color _resolveTopBorderColor(ColorScheme colorScheme) {
     if (!_isEnabled) {
       return Colors.transparent;
     }
     if (widget.isSelected) {
-      return widget.config.selectedBorderColor ??
-          Theme.of(context).colorScheme.onSecondaryFixed;
+      return widget.config.selectedBorderColor ?? colorScheme.onSecondaryFixed;
     }
     return Colors.transparent;
   }
 
-  Color _resolveIconColor() {
-    final theme = Theme.of(context);
+  Color _resolveIconColor(ColorScheme colorScheme) {
     if (!_isEnabled) {
       return (widget.isSelected
-              ? (widget.config.selectedItemColor ?? theme.colorScheme.onSurface)
+              ? (widget.config.selectedItemColor ?? colorScheme.onSurface)
               : (widget.config.unselectedItemColor ??
-                    theme.colorScheme.onSurfaceVariant))
+                    colorScheme.onSurfaceVariant))
           .withValues(alpha: 0.38);
     }
     if (widget.isSelected) {
-      return widget.config.selectedItemColor ?? theme.colorScheme.onSurface;
+      return widget.config.selectedItemColor ?? colorScheme.onSurface;
     }
-    return widget.config.unselectedItemColor ??
-        theme.colorScheme.onSurfaceVariant;
+    return widget.config.unselectedItemColor ?? colorScheme.onSurfaceVariant;
   }
 }
 
