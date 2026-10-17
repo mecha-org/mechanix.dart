@@ -215,6 +215,116 @@ void main() {
       },
     );
 
+    testWidgets(
+      'filled icon button has no border by default for both square and rounded shapes',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Column(
+                children: [
+                  MechanixIconButton.filled(
+                    key: const Key('filled_square'),
+                    type: IconButtonType.square,
+                    icon: Icons.star,
+                    onPressed: () {},
+                  ),
+                  MechanixIconButton.filled(
+                    key: const Key('filled_rounded'),
+                    type: IconButtonType.rounded,
+                    icon: Icons.share,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        final squareBtn = tester.widget<IconButton>(
+          find.descendant(
+            of: find.byKey(const Key('filled_square')),
+            matching: find.byType(IconButton),
+          ),
+        );
+        final roundedBtn = tester.widget<IconButton>(
+          find.descendant(
+            of: find.byKey(const Key('filled_rounded')),
+            matching: find.byType(IconButton),
+          ),
+        );
+
+        expect(squareBtn.style?.side?.resolve({}), isNull);
+        expect(roundedBtn.style?.side?.resolve({}), isNull);
+
+        // When focused, both still receive the focus indicator
+        expect(
+          squareBtn.style?.side?.resolve({WidgetState.focused})?.width,
+          equals(3.0),
+        );
+        expect(
+          roundedBtn.style?.side?.resolve({WidgetState.focused})?.width,
+          equals(3.0),
+        );
+      },
+    );
+
+    testWidgets(
+      'filled icon button in selected and disabled states has no border by default',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Column(
+                children: [
+                  MechanixIconButton.filled(
+                    key: const Key('filled_toggle_unsel'),
+                    isSelected: false,
+                    icon: Icons.star,
+                    onPressed: () {},
+                  ),
+                  MechanixIconButton.filled(
+                    key: const Key('filled_toggle_sel'),
+                    isSelected: true,
+                    icon: Icons.star,
+                    onPressed: () {},
+                  ),
+                  const MechanixIconButton.filled(
+                    key: Key('filled_disabled'),
+                    icon: Icons.star,
+                    onPressed: null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        final unselBtn = tester.widget<IconButton>(
+          find.descendant(
+            of: find.byKey(const Key('filled_toggle_unsel')),
+            matching: find.byType(IconButton),
+          ),
+        );
+        final selBtn = tester.widget<IconButton>(
+          find.descendant(
+            of: find.byKey(const Key('filled_toggle_sel')),
+            matching: find.byType(IconButton),
+          ),
+        );
+        final disBtn = tester.widget<IconButton>(
+          find.descendant(
+            of: find.byKey(const Key('filled_disabled')),
+            matching: find.byType(IconButton),
+          ),
+        );
+
+        expect(unselBtn.style?.side?.resolve({}), isNull);
+        expect(selBtn.style?.side?.resolve({WidgetState.selected}), isNull);
+        expect(disBtn.style?.side?.resolve({WidgetState.disabled}), isNull);
+      },
+    );
+
     testWidgets('verifies 48x48 min tap target for xSmall icon button', (
       WidgetTester tester,
     ) async {
