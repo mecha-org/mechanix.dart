@@ -732,6 +732,103 @@ void main() {
         expect(renderBox.size, equals(const Size(88.0, 40.0)));
       },
     );
+
+    testWidgets(
+      'renders track at 88x40 and handle at 32x32 without blurry scaling under shrinkWrap',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixSwitch(
+                value: false,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onChanged: (val) {},
+              ),
+            ),
+          ),
+        );
+
+        final handleFinder = find.byWidgetPredicate(
+          (w) =>
+              w is Container &&
+              w.constraints?.minWidth == 32.0 &&
+              w.constraints?.minHeight == 32.0,
+        );
+        expect(handleFinder, findsOneWidget);
+        expect(tester.getSize(handleFinder), equals(const Size(32.0, 32.0)));
+
+        final trackFinder = find.byWidgetPredicate(
+          (w) =>
+              w is AnimatedContainer &&
+              w.constraints?.minWidth == 88.0 &&
+              w.constraints?.minHeight == 40.0,
+        );
+        expect(trackFinder, findsOneWidget);
+        expect(tester.getSize(trackFinder), equals(const Size(88.0, 40.0)));
+      },
+    );
+
+    testWidgets(
+      'renders track at 88x40 and handle at 32x32 without blurry scaling under compact visual density',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixSwitch(
+                value: true,
+                visualDensity: VisualDensity.compact,
+                onChanged: (val) {},
+              ),
+            ),
+          ),
+        );
+
+        final handleFinder = find.byWidgetPredicate(
+          (w) =>
+              w is Container &&
+              w.constraints?.minWidth == 32.0 &&
+              w.constraints?.minHeight == 32.0,
+        );
+        expect(handleFinder, findsOneWidget);
+        expect(tester.getSize(handleFinder), equals(const Size(32.0, 32.0)));
+
+        final trackFinder = find.byWidgetPredicate(
+          (w) =>
+              w is AnimatedContainer &&
+              w.constraints?.minWidth == 88.0 &&
+              w.constraints?.minHeight == 40.0,
+        );
+        expect(trackFinder, findsOneWidget);
+        expect(tester.getSize(trackFinder), equals(const Size(88.0, 40.0)));
+      },
+    );
+
+    testWidgets(
+      'handle has null border by default when not hovered or configured',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: MechanixSwitch(
+                value: false,
+                onChanged: (val) {},
+              ),
+            ),
+          ),
+        );
+
+        final handleContainer = tester.widget<Container>(
+          find.byWidgetPredicate(
+            (w) =>
+                w is Container &&
+                w.constraints?.minWidth == 32.0 &&
+                w.constraints?.minHeight == 32.0,
+          ),
+        );
+        final decoration = handleContainer.decoration as BoxDecoration;
+        expect(decoration.border, isNull);
+      },
+    );
   });
 
   group('SwitchThemeDataConfig Unit Tests', () {

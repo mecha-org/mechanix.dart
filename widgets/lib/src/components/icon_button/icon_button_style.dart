@@ -305,28 +305,30 @@ abstract class IconButtonStyleResolver {
 
       if (states.contains(WidgetState.disabled)) {
         if (isSelected) {
-          return switch (variant) {
-            IconButtonVariant.filled => BorderSide(
-              color: scheme.secondary.withValues(alpha: 0.10),
+          if (customSelectedBorderColor != null) {
+            return BorderSide(
+              color: customSelectedBorderColor.withValues(alpha: 0.38),
               width: customBorderWidth ?? 1.0,
-            ),
-            IconButtonVariant.tonal ||
-            IconButtonVariant.outline ||
-            IconButtonVariant.standard => null,
-          };
+            );
+          }
+          if (theme?.selectedBorderColor != null) {
+            return BorderSide(
+              color: theme!.selectedBorderColor!.withValues(alpha: 0.38),
+              width: customBorderWidth ?? 1.0,
+            );
+          }
+          return null;
         }
         return switch (variant) {
-          IconButtonVariant.filled => BorderSide(
-            color: scheme.secondary.withValues(alpha: 0.10),
-            width: customBorderWidth ?? 1.0,
-          ),
           IconButtonVariant.outline => BorderSide(
             color: (customBorderColor ?? scheme.outline).withValues(
               alpha: 0.38,
             ),
             width: customBorderWidth ?? 2.0,
           ),
-          IconButtonVariant.tonal || IconButtonVariant.standard =>
+          IconButtonVariant.filled ||
+          IconButtonVariant.tonal ||
+          IconButtonVariant.standard =>
             customBorderColor != null
                 ? BorderSide(
                     color: customBorderColor.withValues(alpha: 0.38),
@@ -354,24 +356,17 @@ abstract class IconButtonStyleResolver {
                 (variant == IconButtonVariant.outline ? 2.0 : 1.0),
           );
         }
-        return switch (variant) {
-          IconButtonVariant.filled => BorderSide(
-            color: scheme.secondaryFixedDim,
-            width: customBorderWidth ?? 1.0,
-          ),
-          IconButtonVariant.outline ||
-          IconButtonVariant.tonal ||
-          IconButtonVariant.standard => null,
-        };
+        return null;
       }
 
       // Unselected / push button border
       final baseBorderColor =
           customBorderColor ??
           switch (variant) {
-            IconButtonVariant.filled => scheme.secondaryFixedDim,
             IconButtonVariant.outline => scheme.outline,
-            IconButtonVariant.tonal || IconButtonVariant.standard => null,
+            IconButtonVariant.filled ||
+            IconButtonVariant.tonal ||
+            IconButtonVariant.standard => null,
           };
       final baseBorderWidth =
           customBorderWidth ??

@@ -250,7 +250,9 @@ class _MechanixSwitchState extends State<MechanixSwitch> {
       height: _handleSize,
       decoration: BoxDecoration(
         color: resolvedStyle.handleColor,
-        border: Border.fromBorderSide(resolvedStyle.handleBorder),
+        border: resolvedStyle.handleBorder != BorderSide.none
+            ? Border.fromBorderSide(resolvedStyle.handleBorder)
+            : null,
       ),
     );
 
@@ -356,7 +358,7 @@ class _MechanixSwitchState extends State<MechanixSwitch> {
     final effectiveTapTargetSize =
         widget.materialTapTargetSize ?? Theme.of(context).materialTapTargetSize;
     final effectiveVisualDensity =
-        widget.visualDensity ?? Theme.of(context).visualDensity;
+        widget.visualDensity ?? VisualDensity.standard;
 
     final baseTargetWidth =
         effectiveTapTargetSize == MaterialTapTargetSize.shrinkWrap
@@ -395,6 +397,19 @@ class _MechanixSwitchState extends State<MechanixSwitch> {
               ? targetHeight.clamp(0.0, maxH)
               : targetHeight;
 
+          final bool shouldScale =
+              resolvedWidth < _trackWidth || resolvedHeight < _trackHeight;
+
+          final Widget trackContent = shouldScale
+              ? FittedBox(fit: BoxFit.scaleDown, child: visualTrack)
+              : OverflowBox(
+                  minWidth: _trackWidth,
+                  maxWidth: _trackWidth,
+                  minHeight: _trackHeight,
+                  maxHeight: _trackHeight,
+                  child: visualTrack,
+                );
+
           Widget switchBox = AnimatedContainer(
             duration: widget.duration,
             curve: widget.curve,
@@ -409,7 +424,7 @@ class _MechanixSwitchState extends State<MechanixSwitch> {
                     ),
             ),
             child: Center(
-              child: FittedBox(fit: BoxFit.scaleDown, child: visualTrack),
+              child: trackContent,
             ),
           );
 
