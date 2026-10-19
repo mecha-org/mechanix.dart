@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../divider/divider.dart';
 import 'list_tile.dart';
 
 /// A circular accordion toggle button displaying an animated chevron or custom icon widgets.
@@ -137,6 +138,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.showSupportingText = true,
     this.leadingWidgets = const [],
     this.showLeading = true,
+    this.trailingWidgets = const [],
     this.trailingText,
     this.showAccordionButton = true,
     this.accordionIcon,
@@ -163,6 +165,12 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
+    this.showTopBorder = false,
+    this.showBottomBorder = false,
+    this.borderColor,
+    this.applyContentPaddingToDividers = true,
+    this.dividerIndent,
+    this.dividerEndIndent,
   });
 
   /// Factory constructor for a Segmented Filled [MechanixExpandableListTile].
@@ -176,6 +184,7 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.showSupportingText = true,
     this.leadingWidgets = const [],
     this.showLeading = true,
+    this.trailingWidgets = const [],
     this.trailingText,
     this.showAccordionButton = true,
     this.accordionIcon,
@@ -202,6 +211,12 @@ class MechanixExpandableListTile extends StatefulWidget {
     this.theme,
     this.overlineLabelGap = 4.0,
     this.labelSupportingGap = 4.0,
+    this.showTopBorder = false,
+    this.showBottomBorder = false,
+    this.borderColor,
+    this.applyContentPaddingToDividers = true,
+    this.dividerIndent,
+    this.dividerEndIndent,
   }) : variant = ListTileVariant.segmented;
 
   /// Visual styling variant.
@@ -230,6 +245,9 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Whether to show the leading element.
   final bool showLeading;
+
+  /// Custom trailing widgets displayed before the accordion button.
+  final List<Widget> trailingWidgets;
 
   /// Trailing shortcut text preceding the accordion button.
   final String? trailingText;
@@ -311,6 +329,26 @@ class MechanixExpandableListTile extends StatefulWidget {
 
   /// Vertical spacing between the label and supporting text.
   final double labelSupportingGap;
+
+  /// Whether to display a border at the top of the expandable list tile header.
+  final bool showTopBorder;
+
+  /// Whether to display a border at the bottom of the expandable list tile header.
+  final bool showBottomBorder;
+
+  /// Optional color override for the top and bottom borders.
+  final Color? borderColor;
+
+  /// Whether horizontal insets from [contentPadding] are applied to the dividers.
+  ///
+  /// Defaults to true.
+  final bool applyContentPaddingToDividers;
+
+  /// Explicit left/leading indent for the dividers. Overrides [contentPadding] horizontal inset.
+  final double? dividerIndent;
+
+  /// Explicit right/trailing indent for the dividers. Overrides [contentPadding] horizontal inset.
+  final double? dividerEndIndent;
 
   @override
   State<MechanixExpandableListTile> createState() =>
@@ -407,7 +445,7 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       leadingWidgets: widget.leadingWidgets,
       showLeading: widget.showLeading,
       trailingText: widget.trailingText,
-      trailingWidgets: accordionButton != null ? [accordionButton] : const [],
+      trailingWidgets: [...widget.trailingWidgets, ?accordionButton],
       showTrailing: true,
       enabled: widget.enabled,
       minHeight: widget.minHeight,
@@ -442,6 +480,33 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
       ],
     );
 
+    final scopedTheme = MechanixListTileTheme.of(context).merge(widget.theme);
+    final effectivePadding =
+        widget.contentPadding ??
+        scopedTheme.contentPadding ??
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+    final resolvedPadding = effectivePadding.resolve(
+      Directionality.maybeOf(context) ?? TextDirection.ltr,
+    );
+
+    final leftIndent =
+        widget.dividerIndent ??
+        (widget.applyContentPaddingToDividers ? resolvedPadding.left : 0.0);
+    final rightIndent =
+        widget.dividerEndIndent ??
+        (widget.applyContentPaddingToDividers ? resolvedPadding.right : 0.0);
+
+    Widget buildDivider() {
+      final divider = MechanixDivider(space: 0, color: widget.borderColor);
+      if (leftIndent == 0.0 && rightIndent == 0.0) {
+        return divider;
+      }
+      return Padding(
+        padding: EdgeInsets.only(left: leftIndent, right: rightIndent),
+        child: divider,
+      );
+    }
+
     return AnimatedBuilder(
       animation: _controller.view,
       builder: (context, child) {
@@ -449,7 +514,9 @@ class _MechanixExpandableListTileState extends State<MechanixExpandableListTile>
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (widget.showTopBorder) buildDivider(),
             header,
+            if (widget.showBottomBorder) buildDivider(),
             ClipRect(
               child: Align(
                 alignment: Alignment.centerLeft,
