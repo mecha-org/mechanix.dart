@@ -532,6 +532,45 @@ void main() {
         paints..something(_rectColored(const Color(0xFF00FF00))),
       );
     });
+
+    testWidgets(
+      'dynamic instance theme update in didUpdateWidget updates pointer color',
+      (tester) async {
+        await tester.pumpWidget(
+          _harness(
+            MechanixSlider(
+              value: 50,
+              onChanged: (_) {},
+              theme: const SliderThemeDataConfig(
+                pointerColor: WidgetStatePropertyAll(Color(0xFF00FF00)),
+              ),
+            ),
+          ),
+        );
+        await _press(tester);
+        expect(
+          tester.renderObject(_paint),
+          paints..something(_rectColored(const Color(0xFF00FF00))),
+        );
+
+        await tester.pumpWidget(
+          _harness(
+            MechanixSlider(
+              value: 50,
+              onChanged: (_) {},
+              theme: const SliderThemeDataConfig(
+                pointerColor: WidgetStatePropertyAll(Color(0xFFFF00FF)),
+              ),
+            ),
+          ),
+        );
+        await _press(tester);
+        expect(
+          tester.renderObject(_paint),
+          paints..something(_rectColored(const Color(0xFFFF00FF))),
+        );
+      },
+    );
   });
 
   group('MechanixSlider Variant Tests', () {

@@ -1,6 +1,6 @@
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -112,17 +112,30 @@ class _MechanixSliderState extends State<MechanixSlider> {
   late SliderSizeConfig _sizeConfig;
   TextDirection _textDirection = TextDirection.ltr;
   Set<WidgetState>? _cachedStates;
+  late SliderThemeDataConfig _ambientTheme;
+  late SliderThemeDataConfig _themeConfig;
+
+  late final ValueNotifier<double> _fractionNotifier;
 
   @override
   void initState() {
     super.initState();
     _updateDimensions();
+    _fractionNotifier = ValueNotifier<double>(_calculateFraction(widget.value));
+  }
+
+  @override
+  void dispose() {
+    _fractionNotifier.dispose();
+    super.dispose();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _textDirection = Directionality.of(context);
+    _ambientTheme = MechanixSliderTheme.of(context);
+    _themeConfig = _ambientTheme.merge(widget.theme);
   }
 
   void _updateDimensions() {
@@ -132,6 +145,9 @@ class _MechanixSliderState extends State<MechanixSlider> {
     _pageStep = _range / 10 > _step ? _range / 10 : _step;
     _sizeConfig = SliderSizeConfig.of(widget.size);
   }
+
+  double _calculateFraction(double value) =>
+      _range == 0 ? 0.0 : ((value - widget.min) / _range).clamp(0.0, 1.0);
 
   String _format(double value) =>
       widget.labelFormatter?.call(value) ?? value.round().toString();
@@ -147,16 +163,26 @@ class _MechanixSliderState extends State<MechanixSlider> {
   bool _isReversed(TextDirection textDirection) =>
       widget.direction == Axis.vertical || textDirection == TextDirection.rtl;
 
+  RenderBox? _activeRenderBox;
+  double? _cachedTrackLength;
+
   /// Converts a local position into a value, along the slider axis.
   ///
   /// The length is read from the laid out render box, so no [LayoutBuilder]
   /// is needed to know it during build.
   double _valueAt(Offset position) {
-    final renderBox = context.findRenderObject() as RenderBox?;
-    if (renderBox == null || !renderBox.hasSize) return widget.value;
-    final size = renderBox.size;
+    final length = _cachedTrackLength ??
+        () {
+          final renderBox =
+              _activeRenderBox ?? (context.findRenderObject() as RenderBox?);
+          if (renderBox == null || !renderBox.hasSize) return null;
+          return widget.direction == Axis.horizontal
+              ? renderBox.size.width
+              : renderBox.size.height;
+        }();
+    if (length == null) return widget.value;
+
     final isHorizontal = widget.direction == Axis.horizontal;
-    final length = isHorizontal ? size.width : size.height;
     final pointerWidth = _sizeConfig.pointerWidth;
     var main = isHorizontal ? position.dx : position.dy;
     if (_isReversed(_textDirection)) main = length - main;
@@ -168,6 +194,10 @@ class _MechanixSliderState extends State<MechanixSlider> {
   }
 
   void _emit(double value) {
+    final newFraction = _calculateFraction(value);
+    if (_fractionNotifier.value != newFraction) {
+      _fractionNotifier.value = newFraction;
+    }
     if (value == _lastEmittedValue) return;
     _lastEmittedValue = value;
     if (value != widget.value) widget.onChanged?.call(value);
@@ -200,6 +230,12 @@ class _MechanixSliderState extends State<MechanixSlider> {
 
   void _handleDragStart(DragStartDetails details) {
     _cachedStates = null;
+    _activeRenderBox = context.findRenderObject() as RenderBox?;
+    if (_activeRenderBox != null && _activeRenderBox!.hasSize) {
+      _cachedTrackLength = widget.direction == Axis.horizontal
+          ? _activeRenderBox!.size.width
+          : _activeRenderBox!.size.height;
+    }
     setState(() => _isDragging = true);
     widget.onChangeStart?.call(widget.value);
     _emit(_valueAt(details.localPosition));
@@ -209,6 +245,8 @@ class _MechanixSliderState extends State<MechanixSlider> {
       _emit(_valueAt(details.localPosition));
 
   void _handleDragEnd([DragEndDetails? _]) {
+    _activeRenderBox = null;
+    _cachedTrackLength = null;
     if (!_isDragging) return;
     _cachedStates = null;
     setState(() => _isDragging = false);
@@ -264,6 +302,17 @@ class _MechanixSliderState extends State<MechanixSlider> {
         oldWidget.size != widget.size) {
       _updateDimensions();
     }
+    if (oldWidget.value != widget.value ||
+        oldWidget.min != widget.min ||
+        oldWidget.max != widget.max) {
+      final newFraction = _calculateFraction(widget.value);
+      if (_fractionNotifier.value != newFraction) {
+        _fractionNotifier.value = newFraction;
+      }
+    }
+    if (oldWidget.theme != widget.theme) {
+      _themeConfig = _ambientTheme.merge(widget.theme);
+    }
     if (oldWidget.isEnabled != widget.isEnabled) {
       _cachedStates = null;
     }
@@ -285,7 +334,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
     final colorScheme = themeData.colorScheme;
     final textDirection = _textDirection;
     final sizeConfig = _sizeConfig;
-    final themeConfig = MechanixSliderTheme.of(context).merge(widget.theme);
+    final themeConfig = _themeConfig;
     final states = _states;
     final isHorizontal = widget.direction == Axis.horizontal;
     final isEnabled = widget.isEnabled;
@@ -377,11 +426,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
                           ? constraints.maxWidth
                           : constraints.maxHeight;
                       final pointerWidth = sizeConfig.pointerWidth;
-                      final pointerCenter =
-                          pointerWidth / 2 + t * (length - pointerWidth);
                       final reversed = _isReversed(textDirection);
-                      final along =
-                          reversed ? length - pointerCenter : pointerCenter;
 
                       return Stack(
                         clipBehavior: Clip.none,
@@ -394,6 +439,7 @@ class _MechanixSliderState extends State<MechanixSlider> {
                                 painter: _SliderPainter(
                                   cache: _paintCache,
                                   fraction: t,
+                                  fractionListenable: _fractionNotifier,
                                   divisions: widget.divisions,
                                   direction: widget.direction,
                                   reversed: reversed,
@@ -407,13 +453,24 @@ class _MechanixSliderState extends State<MechanixSlider> {
                             ),
                           ),
                           if (widget.showValueLabel && isActive)
-                            _buildValueLabel(
-                              along: along,
-                              sizeConfig: sizeConfig,
-                              labelStyle: labelStyle,
-                              textDirection: textDirection,
-                              valueText: valueText,
-                              isHorizontal: isHorizontal,
+                            ValueListenableBuilder<double>(
+                              valueListenable: _fractionNotifier,
+                              builder: (context, fraction, _) {
+                                final pointerCenter = pointerWidth / 2 +
+                                    fraction * (length - pointerWidth);
+                                final along = reversed
+                                    ? length - pointerCenter
+                                    : pointerCenter;
+                                final val = widget.min + fraction * _range;
+                                return _buildValueLabel(
+                                  along: along,
+                                  sizeConfig: sizeConfig,
+                                  labelStyle: labelStyle,
+                                  textDirection: textDirection,
+                                  valueText: _format(val),
+                                  isHorizontal: isHorizontal,
+                                );
+                              },
                             ),
                         ],
                       );
@@ -571,6 +628,7 @@ class _SliderPainter extends CustomPainter {
   _SliderPainter({
     required this.cache,
     required this.fraction,
+    this.fractionListenable,
     required this.divisions,
     required this.direction,
     required this.reversed,
@@ -579,10 +637,11 @@ class _SliderPainter extends CustomPainter {
     required this.inactiveTickColor,
     required this.pointerColor,
     required this.showPointer,
-  });
+  }) : super(repaint: fractionListenable);
 
   final _SliderPaintCache cache;
   final double fraction;
+  final ValueListenable<double>? fractionListenable;
   final int? divisions;
   final Axis direction;
   final bool reversed;
@@ -591,6 +650,8 @@ class _SliderPainter extends CustomPainter {
   final Color inactiveTickColor;
   final Color pointerColor;
   final bool showPointer;
+
+  double get currentFraction => fractionListenable?.value ?? fraction;
 
   bool get _isHorizontal => direction == Axis.horizontal;
 
@@ -654,13 +715,14 @@ class _SliderPainter extends CustomPainter {
 
     final length = _isHorizontal ? size.width : size.height;
     final pointerWidth = sizeConfig.pointerWidth;
-    final pointerCenter = pointerWidth / 2 + fraction * (length - pointerWidth);
+    final pointerCenter =
+        pointerWidth / 2 + currentFraction * (length - pointerWidth);
     final clearance = pointerWidth / 2 + sizeConfig.tickGap;
 
     final centers = cache.tickCenters;
     final activeEnd = showPointer
         ? _firstIndex(centers, pointerCenter - clearance, false)
-        : fraction == 0
+        : currentFraction == 0
         ? 0
         : _firstIndex(centers, pointerCenter + 1e-6, false);
     final inactiveStart = showPointer
@@ -697,7 +759,8 @@ class _SliderPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_SliderPainter oldDelegate) {
-    return fraction != oldDelegate.fraction ||
+    return currentFraction != oldDelegate.currentFraction ||
+        fractionListenable != oldDelegate.fractionListenable ||
         showPointer != oldDelegate.showPointer ||
         activeTickColor != oldDelegate.activeTickColor ||
         inactiveTickColor != oldDelegate.inactiveTickColor ||
