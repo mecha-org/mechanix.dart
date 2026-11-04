@@ -57,3 +57,4 @@ export 'src/components/menu/menu.dart';
 export 'src/components/menu/dropdown_menu.dart';
 export 'src/components/search_bar/search_bar.dart';
 export 'src/components/search_bar/search_bar_theme.dart';
+export 'src/components/slider/slider.dart';

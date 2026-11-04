@@ -80,293 +80,11 @@ abstract class MechanixTheme extends StatefulWidget {
       appBarTheme: appBarTheme,
       splashFactory: const TouchOptimizedSplashFactory(),
       splashColor: colorScheme.onSurface.withValues(alpha: 0.12),
-      iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(
-          splashFactory: const TouchOptimizedSplashFactory(),
-          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return SystemMouseCursors.basic;
-            }
-            return SystemMouseCursors.click;
-          }),
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return colorScheme.onPrimary.withValues(alpha: 0.12);
-            }
-            if (states.contains(WidgetState.hovered) ||
-                states.contains(WidgetState.focused)) {
-              return colorScheme.onPrimary.withValues(alpha: 0.08);
-            }
-            return Colors.transparent;
-          }),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
-            }
-            if (states.contains(WidgetState.hovered) ||
-                states.contains(WidgetState.focused)) {
-              return Color.alphaBlend(
-                colorScheme.onPrimary.withValues(alpha: 0.08),
-                colorScheme.primary,
-              );
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return Color.alphaBlend(
-                colorScheme.onPrimary.withValues(alpha: 0.12),
-                colorScheme.primary,
-              );
-            }
-            return colorScheme.primary;
-          }),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            return colorScheme.onPrimary;
-          }),
-          iconColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            return colorScheme.onPrimary;
-          }),
-          side: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.focused)) {
-              return BorderSide(color: colorScheme.secondary, width: 3.0);
-            }
-            return null;
-          }),
-          animationDuration: const Duration(milliseconds: 200),
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: ButtonStyle(
-          splashFactory: const TouchOptimizedSplashFactory(),
-          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return SystemMouseCursors.basic;
-            }
-
-            return SystemMouseCursors.click;
-          }),
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return colorScheme.onPrimary.withValues(alpha: 0.12);
-            }
-            if (states.contains(WidgetState.hovered) ||
-                states.contains(WidgetState.focused)) {
-              return colorScheme.onPrimary.withValues(alpha: 0.08);
-            }
-            return Colors.transparent;
-          }),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return Color.alphaBlend(
-                colorScheme.onPrimary.withValues(alpha: 0.12),
-                colorScheme.secondaryFixedDim,
-              );
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return Color.alphaBlend(
-                colorScheme.onPrimary.withValues(alpha: 0.08),
-                colorScheme.secondaryFixedDim,
-              );
-            }
-            return colorScheme.secondaryFixedDim;
-          }),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
-            }
-            return colorScheme.onPrimary;
-          }),
-          iconColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.10);
-            }
-            return colorScheme.onPrimary;
-          }),
-          animationDuration: const Duration(milliseconds: 200),
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          splashFactory: const TouchOptimizedSplashFactory(),
-          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return SystemMouseCursors.basic;
-            }
-
-            return SystemMouseCursors.click;
-          }),
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return colorScheme.onSurfaceVariant.withValues(alpha: 0.12);
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return colorScheme.onSurfaceVariant.withValues(alpha: 0.08);
-            }
-            return Colors.transparent;
-          }),
-          // backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          backgroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return Color.alphaBlend(
-                colorScheme.onSurfaceVariant.withValues(alpha: 0.12),
-                Colors.transparent,
-              );
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return Color.alphaBlend(
-                colorScheme.onSurfaceVariant.withValues(alpha: 0.08),
-                Colors.transparent,
-              );
-            }
-            return Colors.transparent;
-          }),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            return colorScheme.onSurface;
-          }),
-          iconColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            return colorScheme.onSurface;
-          }),
-          side: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return BorderSide(
-                color: colorScheme.onSurface.withValues(alpha: 0.10),
-                width: 1.0,
-              );
-            }
-            if (states.contains(WidgetState.focused)) {
-              return BorderSide(color: colorScheme.outline, width: 3.0);
-            }
-            return BorderSide(color: colorScheme.outline, width: 1.0);
-          }),
-          animationDuration: const Duration(milliseconds: 200),
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: colorScheme.surfaceContainerHighest,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        border: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(
-            color: colorScheme.onSurfaceVariant,
-            width: 1.0,
-          ),
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(
-            color: colorScheme.onSurfaceVariant,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(color: colorScheme.primary, width: 3.0),
-        ),
-        errorBorder: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(color: colorScheme.error, width: 1.0),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(color: colorScheme.error, width: 3.0),
-        ),
-        disabledBorder: UnderlineInputBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
-          borderSide: BorderSide(color: colorScheme.onSurface, width: 1.0),
-        ),
-        labelStyle: textTheme.emphasized.labelLarge?.copyWith(
-          color: colorScheme.onSecondaryFixed,
-        ),
-        floatingLabelStyle: textTheme.labelMedium?.copyWith(
-          color: colorScheme.primary,
-        ),
-        hintStyle: textTheme.emphasized.titleMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
-        helperStyle: textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
-        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: ButtonStyle(
-          splashFactory: const TouchOptimizedSplashFactory(),
-          mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return SystemMouseCursors.basic;
-            }
-
-            return SystemMouseCursors.click;
-          }),
-          overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return Colors.transparent;
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return colorScheme.onSurface.withValues(alpha: 0.12);
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return colorScheme.onSurface.withValues(alpha: 0.08);
-            }
-            return Colors.transparent;
-          }),
-          backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return colorScheme.onSecondaryContainer;
-            }
-            return colorScheme.onSurface;
-          }),
-          iconColor: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return colorScheme.onSurface.withValues(alpha: 0.38);
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return colorScheme.onSecondaryContainer;
-            }
-            return colorScheme.onSurface;
-          }),
-          side: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.focused)) {
-              return BorderSide(color: colorScheme.outline, width: 3.0);
-            }
-            return null;
-          }),
-          animationDuration: const Duration(milliseconds: 200),
-        ),
-      ),
+      iconButtonTheme: _createIconButtonTheme(colorScheme),
+      filledButtonTheme: _createFilledButtonTheme(colorScheme),
+      outlinedButtonTheme: _createOutlinedButtonTheme(colorScheme),
+      inputDecorationTheme: _createInputDecorationTheme(colorScheme, textTheme),
+      textButtonTheme: _createTextButtonTheme(colorScheme),
       checkboxTheme: _createCheckboxTheme(colorScheme),
       radioTheme: _createRadioTheme(colorScheme),
       snackBarTheme: _createSnackBarTheme(colorScheme, textTheme),
@@ -388,58 +106,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ButtonThemeDataConfig(),
         IconButtonThemeDataConfig(),
         const FloatingActionButtonThemeDataConfig(),
-        SwitchThemeDataConfig(
-          trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
-          handleColor: WidgetStateProperty.resolveWith((states) {
-            final isSelected = states.contains(WidgetState.selected);
-            if (states.contains(WidgetState.disabled)) {
-              return isSelected
-                  ? colorScheme.primary.withValues(alpha: 0.52)
-                  : colorScheme.onSecondaryFixedVariant.withValues(alpha: 0.16);
-            }
-            if (states.contains(WidgetState.pressed)) {
-              return isSelected
-                  ? colorScheme.primaryFixed
-                  : colorScheme.onSurfaceVariant;
-            }
-            if (states.contains(WidgetState.hovered)) {
-              return isSelected
-                  ? colorScheme.primary
-                  : colorScheme.onSecondaryFixedVariant;
-            }
-            return isSelected
-                ? colorScheme.primary
-                : colorScheme.onSecondaryFixedVariant;
-          }),
-          handleBorder: WidgetStateProperty.resolveWith((states) {
-            if (states.contains(WidgetState.disabled)) {
-              return BorderSide.none;
-            }
-            final isSelected = states.contains(WidgetState.selected);
-            if (states.contains(WidgetState.hovered)) {
-              return BorderSide(
-                color: isSelected
-                    ? colorScheme.onPrimary.withValues(alpha: 0.16)
-                    : colorScheme.primary.withValues(alpha: 0.16),
-                width: 2.0,
-              );
-            }
-            return BorderSide.none;
-          }),
-          textColor: WidgetStateProperty.resolveWith((states) {
-            final isSelected = states.contains(WidgetState.selected);
-            if (states.contains(WidgetState.disabled)) {
-              return isSelected
-                  ? colorScheme.onPrimary.withValues(alpha: 0.16)
-                  : colorScheme.onSecondaryContainer.withValues(alpha: 0.16);
-            }
-            return isSelected
-                ? colorScheme.onPrimary
-                : colorScheme.onSecondaryContainer;
-          }),
-          focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
-          focusBorderWidth: 1.0,
-        ),
+        _createSwitchThemeConfig(colorScheme),
         NavigationBarThemeDataConfig.standard(colorScheme, textTheme),
         ListTileThemeDataConfig(
           focusBorderColor: colorScheme.outline,
@@ -448,6 +115,7 @@ abstract class MechanixTheme extends StatefulWidget {
         ),
         MenuThemeDataConfig.standard(colorScheme, textTheme, shapeTheme),
         SearchBarThemeDataConfig.standard(colorScheme, textTheme),
+        SliderThemeDataConfig.standard(colorScheme, textTheme),
       ],
     );
   }
@@ -761,6 +429,375 @@ abstract class MechanixTheme extends StatefulWidget {
       horizontalTitleGap: 8.0,
       minVerticalPadding: 8.0,
       visualDensity: VisualDensity.standard,
+    );
+  }
+
+  /// Creates an [IconButtonThemeData] configured with Mechanix specifications.
+  static IconButtonThemeData _createIconButtonTheme(ColorScheme colorScheme) {
+    return IconButtonThemeData(
+      style: ButtonStyle(
+        splashFactory: const TouchOptimizedSplashFactory(),
+        mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return SystemMouseCursors.basic;
+          }
+          return SystemMouseCursors.click;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.onPrimary.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.onPrimary.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.10);
+          }
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return Color.alphaBlend(
+              colorScheme.onPrimary.withValues(alpha: 0.08),
+              colorScheme.primary,
+            );
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return Color.alphaBlend(
+              colorScheme.onPrimary.withValues(alpha: 0.12),
+              colorScheme.primary,
+            );
+          }
+          return colorScheme.primary;
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          return colorScheme.onPrimary;
+        }),
+        iconColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          return colorScheme.onPrimary;
+        }),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
+            return BorderSide(color: colorScheme.secondary, width: 3.0);
+          }
+          return null;
+        }),
+        animationDuration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
+  /// Creates a [FilledButtonThemeData] configured with Mechanix specifications.
+  static FilledButtonThemeData _createFilledButtonTheme(ColorScheme colorScheme) {
+    return FilledButtonThemeData(
+      style: ButtonStyle(
+        splashFactory: const TouchOptimizedSplashFactory(),
+        mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return SystemMouseCursors.basic;
+          }
+
+          return SystemMouseCursors.click;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.onPrimary.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return colorScheme.onPrimary.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.10);
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return Color.alphaBlend(
+              colorScheme.onPrimary.withValues(alpha: 0.12),
+              colorScheme.secondaryFixedDim,
+            );
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return Color.alphaBlend(
+              colorScheme.onPrimary.withValues(alpha: 0.08),
+              colorScheme.secondaryFixedDim,
+            );
+          }
+          return colorScheme.secondaryFixedDim;
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.10);
+          }
+          return colorScheme.onPrimary;
+        }),
+        iconColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.10);
+          }
+          return colorScheme.onPrimary;
+        }),
+        animationDuration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
+  /// Creates an [OutlinedButtonThemeData] configured with Mechanix specifications.
+  static OutlinedButtonThemeData _createOutlinedButtonTheme(
+    ColorScheme colorScheme,
+  ) {
+    return OutlinedButtonThemeData(
+      style: ButtonStyle(
+        splashFactory: const TouchOptimizedSplashFactory(),
+        mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return SystemMouseCursors.basic;
+          }
+
+          return SystemMouseCursors.click;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.onSurfaceVariant.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.onSurfaceVariant.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return Color.alphaBlend(
+              colorScheme.onSurfaceVariant.withValues(alpha: 0.12),
+              Colors.transparent,
+            );
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return Color.alphaBlend(
+              colorScheme.onSurfaceVariant.withValues(alpha: 0.08),
+              Colors.transparent,
+            );
+          }
+          return Colors.transparent;
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          return colorScheme.onSurface;
+        }),
+        iconColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          return colorScheme.onSurface;
+        }),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return BorderSide(
+              color: colorScheme.onSurface.withValues(alpha: 0.10),
+              width: 1.0,
+            );
+          }
+          if (states.contains(WidgetState.focused)) {
+            return BorderSide(color: colorScheme.outline, width: 3.0);
+          }
+          return BorderSide(color: colorScheme.outline, width: 1.0);
+        }),
+        animationDuration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
+  /// Creates an [InputDecorationTheme] configured with Mechanix specifications.
+  static InputDecorationTheme _createInputDecorationTheme(
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
+    return InputDecorationTheme(
+      filled: true,
+      fillColor: colorScheme.surfaceContainerHighest,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 12,
+      ),
+      border: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(
+          color: colorScheme.onSurfaceVariant,
+          width: 1.0,
+        ),
+      ),
+      enabledBorder: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(
+          color: colorScheme.onSurfaceVariant,
+          width: 1.0,
+        ),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(color: colorScheme.primary, width: 3.0),
+      ),
+      errorBorder: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(color: colorScheme.error, width: 1.0),
+      ),
+      focusedErrorBorder: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(color: colorScheme.error, width: 3.0),
+      ),
+      disabledBorder: UnderlineInputBorder(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+        borderSide: BorderSide(color: colorScheme.onSurface, width: 1.0),
+      ),
+      labelStyle: textTheme.emphasized.labelLarge?.copyWith(
+        color: colorScheme.onSecondaryFixed,
+      ),
+      floatingLabelStyle: textTheme.labelMedium?.copyWith(
+        color: colorScheme.primary,
+      ),
+      hintStyle: textTheme.emphasized.titleMedium?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+      ),
+      helperStyle: textTheme.bodySmall?.copyWith(
+        color: colorScheme.onSurfaceVariant,
+      ),
+      errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+    );
+  }
+
+  /// Creates a [TextButtonThemeData] configured with Mechanix specifications.
+  static TextButtonThemeData _createTextButtonTheme(ColorScheme colorScheme) {
+    return TextButtonThemeData(
+      style: ButtonStyle(
+        splashFactory: const TouchOptimizedSplashFactory(),
+        mouseCursor: WidgetStateProperty.resolveWith<MouseCursor>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return SystemMouseCursors.basic;
+          }
+
+          return SystemMouseCursors.click;
+        }),
+        overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Colors.transparent;
+          }
+          if (states.contains(WidgetState.pressed)) {
+            return colorScheme.onSurface.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.onSurface.withValues(alpha: 0.08);
+          }
+          return Colors.transparent;
+        }),
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.onSecondaryContainer;
+          }
+          return colorScheme.onSurface;
+        }),
+        iconColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return colorScheme.onSurface.withValues(alpha: 0.38);
+          }
+          if (states.contains(WidgetState.hovered)) {
+            return colorScheme.onSecondaryContainer;
+          }
+          return colorScheme.onSurface;
+        }),
+        side: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
+            return BorderSide(color: colorScheme.outline, width: 3.0);
+          }
+          return null;
+        }),
+        animationDuration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
+  /// Creates a [SwitchThemeDataConfig] configured with Mechanix specifications.
+  static SwitchThemeDataConfig _createSwitchThemeConfig(
+    ColorScheme colorScheme,
+  ) {
+    return SwitchThemeDataConfig(
+      trackColor: WidgetStatePropertyAll(colorScheme.secondaryFixedDim),
+      handleColor: WidgetStateProperty.resolveWith((states) {
+        final isSelected = states.contains(WidgetState.selected);
+        if (states.contains(WidgetState.disabled)) {
+          return isSelected
+              ? colorScheme.primary.withValues(alpha: 0.52)
+              : colorScheme.onSecondaryFixedVariant.withValues(alpha: 0.16);
+        }
+        if (states.contains(WidgetState.pressed)) {
+          return isSelected
+              ? colorScheme.primaryFixed
+              : colorScheme.onSurfaceVariant;
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return isSelected
+              ? colorScheme.primary
+              : colorScheme.onSecondaryFixedVariant;
+        }
+        return isSelected
+            ? colorScheme.primary
+            : colorScheme.onSecondaryFixedVariant;
+      }),
+      handleBorder: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return BorderSide.none;
+        }
+        final isSelected = states.contains(WidgetState.selected);
+        if (states.contains(WidgetState.hovered)) {
+          return BorderSide(
+            color: isSelected
+                ? colorScheme.onPrimary.withValues(alpha: 0.16)
+                : colorScheme.primary.withValues(alpha: 0.16),
+            width: 2.0,
+          );
+        }
+        return BorderSide.none;
+      }),
+      textColor: WidgetStateProperty.resolveWith((states) {
+        final isSelected = states.contains(WidgetState.selected);
+        if (states.contains(WidgetState.disabled)) {
+          return isSelected
+              ? colorScheme.onPrimary.withValues(alpha: 0.16)
+              : colorScheme.onSecondaryContainer.withValues(alpha: 0.16);
+        }
+        return isSelected
+            ? colorScheme.onPrimary
+            : colorScheme.onSecondaryContainer;
+      }),
+      focusBorderColor: WidgetStatePropertyAll(colorScheme.outline),
+      focusBorderWidth: 1.0,
     );
   }
 

@@ -191,6 +191,12 @@ class AppSidebar extends StatelessWidget {
               ),
               _buildNavItem(
                 context,
+                id: 'slider',
+                title: 'Slider',
+                icon: Icons.tune_rounded,
+              ),
+              _buildNavItem(
+                context,
                 id: 'switch',
                 title: 'Switch',
                 icon: Icons.toggle_on_outlined,

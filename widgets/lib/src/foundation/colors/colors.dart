@@ -142,19 +142,19 @@ abstract final class MechanixColors {
     onSecondary: Color(0xFFFF7230),
     secondaryContainer: Color(0xFF232325),
     onSecondaryContainer: Color(0xFFA1A1A5),
-    secondaryFixed: Color(0xFF373739),
-    secondaryFixedDim: Color(0xFF3E3E40),
+    secondaryFixed: Color(0xFF19191A),
+    secondaryFixedDim: Color(0xFF373739),
     onSecondaryFixed: Color(0xFF8D8D91),
     onSecondaryFixedVariant: Color(0xFFA1A1A5),
     error: Color(0xFFFF4242),
     onError: Color(0xFFF5F5F5),
     errorContainer: Color(0xFFA80404),
     onErrorContainer: Color(0xFFFEE9E9),
-    surface: Color(0xFF1A1A1B),
+    surface: Color(0xFF232325),
     onSurface: Color(0xFFF5F5F5),
-    surfaceDim: Color(0xFF050505),
+    surfaceDim: Color(0xFF000000),
     surfaceBright: Color(0xFF232325),
-    surfaceContainerLowest: Color(0xFF050505),
+    surfaceContainerLowest: Color(0xFF000000),
     surfaceContainerLow: Color(0xFF141415),
     surfaceContainer: Color(0xFF19191A),
     surfaceContainerHigh: Color(0xFF232325),
@@ -163,36 +163,22 @@ abstract final class MechanixColors {
     outline: Color(0xFF373739),
     outlineVariant: Color(0xFF141415),
     inverseSurface: Color(0xFFFFFFFF),
-    onInverseSurface: Color(0xFF232325),
-    inversePrimary: Color(0xFFFC8845),
-    scrim: Color(0xFF050505),
-    shadow: Color(0xFF050505),
+    onInverseSurface: Color(0xFF19191A),
+    inversePrimary: Color(0xFFF5F5F5),
+    scrim: Color(0xFF000000),
+    shadow: Color(0xFF000000),
   );
 
   /// The default brand orange accent color.
-  static const Color defaultAccentColor = Color(0xFFFF7230);
+  static const Color defaultAccentColor = Color(0xFFF9640D);
 
   /// Generates a light [ColorScheme] for Mechanix apps with the specified [accentColor].
   static ColorScheme createLightColorScheme({Color? accentColor}) {
     if (accentColor == null || accentColor == defaultAccentColor) {
       return lightColorScheme;
     }
-    final seed = ColorScheme.fromSeed(
-      seedColor: accentColor,
-      brightness: Brightness.light,
-    );
-    return lightColorScheme.copyWith(
-      primary: accentColor,
-      onPrimary: seed.onPrimary,
-      primaryContainer: seed.primaryContainer,
-      onPrimaryContainer: seed.onPrimaryContainer,
-      primaryFixed: seed.primaryFixed,
-      primaryFixedDim: seed.primaryFixedDim,
-      onPrimaryFixed: seed.onPrimaryFixed,
-      onPrimaryFixedVariant: seed.onPrimaryFixedVariant,
-      onSecondary: accentColor,
-      inversePrimary: seed.inversePrimary,
-    );
+
+    return lightColorScheme;
   }
 
   /// Generates a dark [ColorScheme] for Mechanix apps with the specified [accentColor].
@@ -200,21 +186,7 @@ abstract final class MechanixColors {
     if (accentColor == null || accentColor == defaultAccentColor) {
       return darkColorScheme;
     }
-    final seed = ColorScheme.fromSeed(
-      seedColor: accentColor,
-      brightness: Brightness.dark,
-    );
-    return darkColorScheme.copyWith(
-      primary: accentColor,
-      onPrimary: seed.onPrimary,
-      primaryContainer: seed.primaryContainer,
-      onPrimaryContainer: seed.onPrimaryContainer,
-      primaryFixed: seed.primaryFixed,
-      primaryFixedDim: seed.primaryFixedDim,
-      onPrimaryFixed: seed.onPrimaryFixed,
-      onPrimaryFixedVariant: seed.onPrimaryFixedVariant,
-      onSecondary: accentColor,
-      inversePrimary: seed.inversePrimary,
-    );
+
+    return darkColorScheme;
   }
 }

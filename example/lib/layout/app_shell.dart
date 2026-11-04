@@ -14,6 +14,7 @@ import '../features/components/icon_button_preview.dart';
 import '../features/components/menu_preview.dart';
 import '../features/components/radio_preview.dart';
 import '../features/components/snackbar_preview.dart';
+import '../features/components/slider_preview.dart';
 import '../features/components/switch_preview.dart';
 import '../features/components/navigation_bar_preview.dart';
 import '../features/components/list_preview.dart';
@@ -141,6 +142,8 @@ class _AppShellState extends State<AppShell> {
         return 'Radio Buttons';
       case 'snackbars':
         return 'Snackbars';
+      case 'slider':
+        return 'Slider';
       case 'switch':
         return 'Switch';
       case 'bottom_sheets':
@@ -213,6 +216,9 @@ class _MainContent extends StatelessWidget {
         break;
       case 'snackbars':
         content = const SnackbarPreview();
+        break;
+      case 'slider':
+        content = const SliderPreview();
         break;
       case 'switch':
         content = const SwitchPreview();

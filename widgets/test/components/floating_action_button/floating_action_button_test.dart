@@ -13,7 +13,7 @@ void main() {
           home: Scaffold(
             body: Center(
               child: MechanixFloatingActionButton(
-                icon: Icons.add,
+                icon: const Icon(Icons.add),
                 onPressed: () {},
               ),
             ),
@@ -38,7 +38,7 @@ void main() {
           home: Scaffold(
             body: Center(
               child: MechanixFloatingActionButton.medium(
-                icon: Icons.add,
+                icon: const Icon(Icons.add),
                 onPressed: () {},
               ),
             ),
@@ -61,7 +61,7 @@ void main() {
           home: Scaffold(
             body: Center(
               child: MechanixFloatingActionButton.large(
-                icon: Icons.add,
+                icon: const Icon(Icons.add),
                 onPressed: () {},
               ),
             ),
@@ -77,7 +77,7 @@ void main() {
       expect(size.height, equals(96.0));
     });
 
-    testWidgets('4. Icon is rendered with IconData and Widget', (
+    testWidgets('4. Icon is rendered with Icon and Widget', (
       WidgetTester tester,
     ) async {
       await tester.pumpWidget(
@@ -87,7 +87,7 @@ void main() {
             body: Column(
               children: [
                 MechanixFloatingActionButton(
-                  icon: Icons.access_alarm,
+                  icon: const Icon(Icons.access_alarm),
                   onPressed: () {},
                 ),
                 MechanixFloatingActionButton(
@@ -103,8 +103,10 @@ void main() {
       expect(find.byIcon(Icons.access_alarm), findsOneWidget);
       expect(find.text('FAB'), findsOneWidget);
 
-      final iconWidget = tester.widget<Icon>(find.byIcon(Icons.access_alarm));
-      expect(iconWidget.size, equals(24.0)); // Small default icon size
+      final iconTheme = IconTheme.of(
+        tester.element(find.byIcon(Icons.access_alarm)),
+      );
+      expect(iconTheme.size, equals(24.0)); // Small default icon size
     });
 
     testWidgets('5. onPressed is triggered on tap', (
@@ -117,7 +119,7 @@ void main() {
           home: Scaffold(
             body: Center(
               child: MechanixFloatingActionButton(
-                icon: Icons.touch_app,
+                icon: const Icon(Icons.touch_app),
                 onPressed: () => pressed = true,
               ),
             ),
@@ -138,7 +140,7 @@ void main() {
             home: const Scaffold(
               body: Center(
                 child: MechanixFloatingActionButton(
-                  icon: Icons.block,
+                  icon: Icon(Icons.block),
                   onPressed: null,
                 ),
               ),
@@ -177,7 +179,7 @@ void main() {
             home: Scaffold(
               body: Center(
                 child: MechanixFloatingActionButton(
-                  icon: Icons.mouse,
+                  icon: const Icon(Icons.mouse),
                   onPressed: () {},
                 ),
               ),
@@ -240,7 +242,7 @@ void main() {
           home: Scaffold(
             body: Center(
               child: MechanixFloatingActionButton(
-                icon: Icons.touch_app,
+                icon: const Icon(Icons.touch_app),
                 onPressed: () {},
               ),
             ),
@@ -295,7 +297,7 @@ void main() {
                 child: MechanixFloatingActionButton(
                   focusNode: focusNode,
                   autofocus: true,
-                  icon: Icons.keyboard,
+                  icon: const Icon(Icons.keyboard),
                   onPressed: () => triggered = true,
                 ),
               ),
@@ -329,7 +331,7 @@ void main() {
             body: Center(
               child: MechanixFloatingActionButton(
                 focusNode: focusNode,
-                icon: Icons.visibility,
+                icon: const Icon(Icons.visibility),
                 onPressed: () {},
               ),
             ),
@@ -362,7 +364,7 @@ void main() {
                 child: MechanixFloatingActionButton(
                   focusNode: focusNode,
                   showFocusIndicator: false,
-                  icon: Icons.visibility_off,
+                  icon: const Icon(Icons.visibility_off),
                   onPressed: () {},
                 ),
               ),
@@ -390,7 +392,7 @@ void main() {
               body: Center(
                 child: MechanixFloatingActionButton(
                   focusNode: focusNode,
-                  icon: Icons.filter_center_focus,
+                  icon: const Icon(Icons.filter_center_focus),
                   onPressed: () {},
                 ),
               ),
@@ -443,7 +445,7 @@ void main() {
                   child: MechanixFloatingActionButton(
                     size: size,
                     focusNode: focusNode,
-                    icon: Icons.star,
+                    icon: const Icon(Icons.star),
                     onPressed: () {},
                   ),
                 ),
@@ -490,7 +492,7 @@ void main() {
             home: Scaffold(
               body: Center(
                 child: MechanixFloatingActionButton(
-                  icon: Icons.add,
+                  icon: const Icon(Icons.add),
                   tooltip: 'Add item',
                   onPressed: () {},
                 ),
@@ -524,13 +526,16 @@ void main() {
           home: Scaffold(
             body: Column(
               children: [
-                MechanixFloatingActionButton(icon: Icons.add, onPressed: () {}),
+                MechanixFloatingActionButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {},
+                ),
                 MechanixFloatingActionButton.medium(
-                  icon: Icons.edit,
+                  icon: const Icon(Icons.edit),
                   onPressed: () {},
                 ),
                 MechanixFloatingActionButton.large(
-                  icon: Icons.delete,
+                  icon: const Icon(Icons.delete),
                   onPressed: () {},
                 ),
               ],
@@ -568,7 +573,7 @@ void main() {
               child: MechanixFloatingActionButton(
                 backgroundColor: customBg,
                 foregroundColor: customFg,
-                icon: Icons.color_lens,
+                icon: const Icon(Icons.color_lens),
                 onPressed: () {},
               ),
             ),
@@ -585,8 +590,10 @@ void main() {
       final decoration = animatedContainer.decoration as BoxDecoration;
       expect(decoration.color, equals(customBg));
 
-      final iconWidget = tester.widget<Icon>(find.byIcon(Icons.color_lens));
-      expect(iconWidget.color, equals(customFg));
+      final iconTheme = IconTheme.of(
+        tester.element(find.byIcon(Icons.color_lens)),
+      );
+      expect(iconTheme.color, equals(customFg));
     });
 
     testWidgets(
@@ -598,7 +605,7 @@ void main() {
             home: Scaffold(
               body: Center(
                 child: MechanixFloatingActionButton(
-                  icon: Icons.star,
+                  icon: const Icon(Icons.star),
                   onPressed: () {},
                 ),
               ),
@@ -606,9 +613,11 @@ void main() {
           ),
         );
 
-        final iconWidget = tester.widget<Icon>(find.byIcon(Icons.star));
+        final iconTheme = IconTheme.of(
+          tester.element(find.byIcon(Icons.star)),
+        );
         expect(
-          iconWidget.color,
+          iconTheme.color,
           equals(MechanixTheme.lightColorScheme.primary),
         );
       },
